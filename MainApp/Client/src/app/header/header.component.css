@@ -1,0 +1,44 @@
+#top {
+  background-color: #585858;
+  height: 10px;
+}
+
+img {
+  width: 90px;
+  height: 90px;
+}
+
+#container {
+  color: #eeeeee;
+  display: flex;
+  padding-bottom: 0px;
+}
+
+.links {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.link {
+  display: inline-block;
+  height: 95px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.link:hover {
+  background-color: #E81831;
+  color: #eeeeee;
+}
+
+a {
+  text-decoration: none;
+  color: #585858;
+  line-height: 75px; 
+
+}
+
+#bottom {
+  background-color: #E81831;
+  height: 4px;
+}
