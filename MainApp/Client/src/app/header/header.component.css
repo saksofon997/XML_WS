@@ -1,32 +1,37 @@
 #top {
   background-color: #585858;
-  height: 10px;
+  height: 1vh;
 }
 
 img {
-  width: 90px;
-  height: 90px;
+  height: 7vh;
 }
 
 #container {
+  height: 7vh;
   color: #eeeeee;
   display: flex;
-  padding-bottom: 0px;
+  padding-bottom: 0em;
 }
 
 .links {
-  padding-bottom: 0px;
-  margin-bottom: 0px;
+  padding-bottom: 0em;
+  margin-bottom: 0em;
 }
 
 .link {
   display: inline-block;
-  height: 95px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
+  height: 7vh;
+  padding-bottom: 0em;
+  margin-bottom: 0em;
 }
 
 .link:hover {
+  outline-style: solid;
+  outline-color: #E81831;
+}
+
+.active {
   background-color: #E81831;
   color: #eeeeee;
 }
@@ -34,11 +39,18 @@ img {
 a {
   text-decoration: none;
   color: #585858;
-  line-height: 75px; 
-
 }
 
 #bottom {
   background-color: #E81831;
-  height: 4px;
+  height: 1vh;
+}
+
+.btn-outline-danger {
+  height: 6vh;
+  outline-color: #E81831;
+}
+
+.btn-outline-danger:hover {
+  background-color: #E81831;
 }
