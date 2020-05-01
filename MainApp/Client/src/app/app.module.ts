@@ -5,22 +5,18 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { SideListComponent } from './administration/side-list/side-list.component';
-import { AdminTableComponent } from './administration/admin-table/admin-table.component';
 
-const AdministrationComponents = [SideListComponent, AdminTableComponent]
 
 @NgModule({
    declarations: [
       AppComponent,
       HeaderComponent,
       routingComponents,
-      AdministrationComponents
 
    ],
-   imports: [
+   imports: [ // Import modules, except those that are lazy loaded (AdministrationModule)
       BrowserModule,
-      AppRoutingModule
+      AppRoutingModule,
    ],
    providers: [
       CookieService

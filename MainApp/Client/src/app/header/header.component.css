@@ -8,13 +8,13 @@ img {
 }
 
 #container {
-  height: 7vh;
   color: #eeeeee;
   display: flex;
   padding-bottom: 0em;
 }
 
 .links {
+  margin-top: 0.25em;
   padding-bottom: 0em;
   margin-bottom: 0em;
 }
@@ -47,6 +47,7 @@ a {
 }
 
 .btn-outline-danger {
+  margin-top: 0.25em;
   height: 6vh;
   outline-color: #E81831;
 }
