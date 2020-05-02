@@ -70,9 +70,7 @@
   color: #E81831;
 }
 
-#footer-id {
-  background-color:blue;
-}
+
 
 .anchor {
   display: block;
@@ -83,4 +81,9 @@
 
 .container {
   margin-bottom: 200px;
+}
+
+.images-container {
+  margin-left: 2vh;
+  margin-right: 2vh;
 }
