@@ -4,11 +4,11 @@ import { VehiclePageComponent } from './vehicle-page.component';
 
 const routes: Routes = [
   {
-    path: "", 
+    path: "",
     component: VehiclePageComponent,
     canActivate: [],
     children: [
-      
+
     ]
   }
 ];

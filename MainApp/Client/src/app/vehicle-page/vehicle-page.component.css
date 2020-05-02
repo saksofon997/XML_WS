@@ -1,27 +1,32 @@
 .sticky {
+  z-index: 1;
   position: sticky;
   top: 3vh;
   height: 7vh;
 }
 
 .links-border-top {
+  z-index: 1;
   position: sticky;
-  top: 0vh;
-  height: 3vh;
+  top: -0.2vh;
+  height: 3.2vh;
   background-color: white;
 }
 
 .links-border-bottom {
+  z-index: 1;
   position: sticky;
   top: 10vh;
-  height: 3vh;
+  height: 0.22vh;
   background-color: white;
+  border-bottom: dotted 1px #585858;
 }
 
 .link {
   display: inline-block;
   height: 7vh ;
   cursor: pointer;
+  font-size: 1.1rem
 }
 
 .underline {
@@ -35,7 +40,7 @@
 .active {
     font-weight: bold !important;
     color: #E81831 !important;
-    font-size: 1.2rem !important;
+    font-size: 1.3rem !important;
 }
 
 #i ul {
@@ -65,10 +70,17 @@
   color: #E81831;
 }
 
-/* #i {
-  margin: 0px 0px 40px 0px;
-} */
-
 #footer-id {
   background-color:blue;
+}
+
+.anchor {
+  display: block;
+  position: relative;
+  top: -39px;
+  visibility: hidden;
+}
+
+.container {
+  margin-bottom: 200px;
 }
