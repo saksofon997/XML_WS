@@ -1,0 +1,225 @@
+<span id="i">
+  <div class="links-border-top"></div>
+
+  <ul class="sticky">
+    <li>
+      <div class="link">
+        <a [ngClass]="{'active': currentActive === 1}">Home</a>
+        <div [ngClass]="{'underline-active': currentActive === 1}" class="underline"></div>
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a [ngClass]="{'active': currentActive === 2}" (click)="scrollToElement(new)">News</a>
+        <div [ngClass]="{'underline-active': currentActive === 2}" class="underline"></div>
+
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a [ngClass]="{'active': currentActive === 3}" (click)="scrollToElement(con)">Contact</a>
+        <div [ngClass]="{'underline-active': currentActive === 3}" class="underline"></div>
+
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a [ngClass]="{'active': currentActive === 4}" (click)="scrollToElement(about)">About</a>
+        <div [ngClass]="{'underline-active': currentActive === 4}" class="underline"></div>
+
+      </div>
+    </li>
+
+    <!-- <ul class="nav navbar-nav pull-right">
+        <li class="nav"><a class="link">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav pull-right">
+        <li class="nav">
+          <a href="#ta" (click)="scrollToElement(con)">Target: {{ currentActive }}</a>
+        </li>
+      </ul> -->
+      
+  </ul>
+  <div class="links-border-bottom"></div>
+</span>
+
+<div class="container" style="margin-bottom: 20px;">
+  <div #home>
+    <br />
+    <br />
+    <h1>Home | offset: {{ homeOffset }}</h1>
+    <p>You contact us here. Thank for your greatness</p>
+    <p>
+      Welcome to the Random Phrase and Idiom Generator. There will be times when
+      you may need more than a random word for what you want to accomplish, and
+      this free online tool can help. The use of this tool is quite simple. All
+      you need to do is indicate the number of random phrases you'd like to be
+      displayed, and then hit the "Generate Random Phrases" button. Once done,
+      your chosen number of idioms will be displayed along with the meaning of
+      the idiom.
+    </p>
+    <p>
+      Welcome to the Random Phrase and Idiom Generator. There will be times when
+      you may need more than a random word for what you want to accomplish, and
+      this free online tool can help. The use of this tool is quite simple. All
+      you need to do is indicate the number of random phrases you'd like to be
+      displayed, and then hit the "Generate Random Phrases" button. Once done,
+      your chosen number of idioms will be displayed along with the meaning of
+      the idiom.
+    </p>
+  </div>
+  <div #con>
+    <br />
+    <br />
+    <h1>Contact</h1>
+    <p>You contact us here. Thank for your greatness</p>
+    <p>
+      Idioms are a wonderful part of the English language that give it a lot of
+      flavor. They force people to know more than the literal meaning of words.
+      Idioms are commonly used phrases which have a meaning completely different
+      than their literal meaning. This can be quite confusing to those who
+      aren't familiar with the idiom and those who are studying English.
+    </p>
+    <p>
+      Idioms are a wonderful part of the English language that give it a lot of
+      flavor. They force people to know more than the literal meaning of words.
+      Idioms are commonly used phrases which have a meaning completely different
+      than their literal meaning. This can be quite confusing to those who
+      aren't familiar with the idiom and those who are studying English.
+    </p>
+  </div>
+
+  <div #new>
+    <br />
+    <br />
+    <h1>News</h1>
+    <p>This are new from us</p>
+    <p>
+      Using this tool can be excellent practice for students studying English as
+      a second language because it gives the literal meaning of each phrase.
+      This allows them to see the phrase and its meaning at the same time. While
+      there are long idiom lists available online, trying to navigate through
+      them all on a single page can be daunting. Being able to create the exact
+      number of random idioms which best suits your learning needs is a
+      advantage this tool has over standard phrase list. In this way, this tool
+      provides an excellent way for those learning English to practice their
+      knowledge of English idioms and to learn new ones in the process.
+    </p>
+    <p>
+      Using this tool can be excellent practice for students studying English as
+      a second language because it gives the literal meaning of each phrase.
+      This allows them to see the phrase and its meaning at the same time. While
+      there are long idiom lists available online, trying to navigate through
+      them all on a single page can be daunting. Being able to create the exact
+      number of random idioms which best suits your learning needs is a
+      advantage this tool has over standard phrase list. In this way, this tool
+      provides an excellent way for those learning English to practice their
+      knowledge of English idioms and to learn new ones in the process.
+    </p>
+  </div>
+
+  <div #about>
+    <br />
+    <br />
+    <h1>About</h1>
+    <p>This are new from us</p>
+    <p>
+      It can also be a wonderful way for writers to brainstorm and spur more
+      creativity in their writing. The tool can be used to get writing ideas
+      flowing forcing the writer to use more creativity than they would with a
+      single random word. For example, the writer can use the generated phrase
+      to create a new paragraph or story. Since the writer has no idea what will
+      appear, or even if they will be familiar with the idiom, it forces the
+      writer to use creativity to incorporate it into what they're writing.
+    </p>
+    <p>
+      It can also be a wonderful way for writers to brainstorm and spur more
+      creativity in their writing. The tool can be used to get writing ideas
+      flowing forcing the writer to use more creativity than they would with a
+      single random word. For example, the writer can use the generated phrase
+      to create a new paragraph or story. Since the writer has no idea what will
+      appear, or even if they will be familiar with the idiom, it forces the
+      writer to use creativity to incorporate it into what they're writing.
+    </p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small indigo" id="footer-id">
+  <!-- Footer Links -->
+  <div class="container text-center text-md-left">
+    <!-- Grid row -->
+    <div class="row">
+      <!-- Grid column -->
+      <div class="col-md-3 mx-auto">
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+
+        <ul class="list-unstyled">
+          <li><a href="#!">Very long link 1</a></li>
+          <li><a href="#!">Very long link 2</a></li>
+          <li><a href="#!">Very long link 3</a></li>
+          <li><a href="#!">Very long link 4</a></li>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none" />
+
+      <!-- Grid column -->
+      <div class="col-md-3 mx-auto">
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+
+        <ul class="list-unstyled">
+          <li><a href="#!">Link 1</a></li>
+          <li><a href="#!">Link 2</a></li>
+          <li><a href="#!">Link 3</a></li>
+          <li><a href="#!">Link 4</a></li>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none" />
+
+      <!-- Grid column -->
+      <div class="col-md-3 mx-auto">
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+
+        <ul class="list-unstyled">
+          <li><a href="#!">Link 1</a></li>
+          <li><a href="#!">Link 2</a></li>
+          <li><a href="#!">Link 3</a></li>
+          <li><a href="#!">Link 4</a></li>
+        </ul>
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none" />
+
+      <!-- Grid column -->
+      <div class="col-md-3 mx-auto">
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+
+        <ul class="list-unstyled">
+          <li><a href="#!">Link 1</a></li>
+          <li><a href="#!">Link 2</a></li>
+          <li><a href="#!">Link 3</a></li>
+          <li><a href="#!">Link 4</a></li>
+        </ul>
+      </div>
+      <!-- Grid column -->
+    </div>
+    <!-- Grid row -->
+  </div>
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">
+    © 2018 Copyright:
+    <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+</footer>
