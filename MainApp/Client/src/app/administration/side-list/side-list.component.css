@@ -7,14 +7,19 @@
     background-color: #c4c4c4;
 }
 
-.list-item {
-    color: #000000;
-    padding-top: 0.5em;
-    padding-top: 0.5em;
-}
-
 .list-group-item {
     color: #000000;
     margin-top: 0.5em;
     margin-top: 0.5em;
 }
+
+.list-group-item:hover {
+    cursor: pointer;
+    outline-style: solid;
+    outline-color: #E81831;
+}
+
+.active {
+    background-color: #E81831;
+    color: #eeeeee;
+  }

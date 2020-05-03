@@ -1,17 +1,13 @@
 <div class="container-fluid">
   <h2>Administration</h2>
 
-  <div class="row">
-    <div class="col-md-4">
-      <admin-side-list></admin-side-list>
+    <div class="row">
+      <div class="col-md-3">
+        <admin-side-list></admin-side-list>
+      </div>
+      <div class="col-md-9">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-    <div class="col-md-8">
-      <!-- Maaybe we will need router here-->
-      <!-- <router-outlet></router-outlet> -->
-      <!-- If angular data table cant be configured to work in one component
-      with different data then create more components with tables for each data type
-      and add those routes in administration-routing.module instead of app-routing.module -->
-      <app-admin-table></app-admin-table>
-    </div>
-  </div>
+
 </div>
