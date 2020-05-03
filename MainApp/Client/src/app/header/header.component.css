@@ -21,7 +21,7 @@ img {
 
 .link {
   display: inline-block;
-  height: 7vh;
+  line-height: 6vh;
   padding-bottom: 0em;
   margin-bottom: 0em;
 }
@@ -48,7 +48,7 @@ a {
 
 .btn-outline-danger {
   margin-top: 0.25em;
-  height: 6vh;
+  line-height: 6vh;
   outline-color: #E81831;
 }
 

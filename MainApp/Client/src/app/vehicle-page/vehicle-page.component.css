@@ -1,12 +1,12 @@
 .sticky {
-  z-index: 1;
+  z-index: 100;
   position: sticky;
   top: 3vh;
   height: 7vh;
 }
 
 .links-border-top {
-  z-index: 1;
+  z-index: 100;
   position: sticky;
   top: -0.2vh;
   height: 3.2vh;
@@ -14,7 +14,7 @@
 }
 
 .links-border-bottom {
-  z-index: 1;
+  z-index: 100;
   position: sticky;
   top: 10vh;
   height: 0.22vh;
