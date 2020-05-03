@@ -3,6 +3,8 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 
 const routes: Routes = [
+  // Lazy loading administration
+  { path: 'administration', loadChildren: () => import('./administration/administration.module').then(m => m.AdministrationModule)},,
   { path: 'vehicle', loadChildren: () => import('./vehicle-page/vehicle-page.module').then(m => m.VehiclePageModule)},
 ];
 
@@ -16,3 +18,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+/*Add all routing objects to this array*/
+export const routingComponents = []
