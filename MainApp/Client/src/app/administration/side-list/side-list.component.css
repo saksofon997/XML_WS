@@ -1,0 +1,25 @@
+.separator {
+    background-color: #585858;
+    height: 1vh;
+}
+
+.container-bg {
+    background-color: #c4c4c4;
+}
+
+.list-group-item {
+    color: #000000;
+    margin-top: 0.5em;
+    margin-top: 0.5em;
+}
+
+.list-group-item:hover {
+    cursor: pointer;
+    outline-style: solid;
+    outline-color: #E81831;
+}
+
+.active {
+    background-color: #E81831;
+    color: #eeeeee;
+  }
