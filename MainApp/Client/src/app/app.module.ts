@@ -21,7 +21,9 @@ import { HeaderComponent } from './header/header.component';
    providers: [
       CookieService
    ],
-   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+   schemas: [
+      CUSTOM_ELEMENTS_SCHEMA
+   ],
    bootstrap: [
       AppComponent
    ]

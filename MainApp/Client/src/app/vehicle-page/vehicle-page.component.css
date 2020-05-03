@@ -1,0 +1,89 @@
+.sticky {
+  z-index: 100;
+  position: sticky;
+  top: 3vh;
+  height: 7vh;
+}
+
+.links-border-top {
+  z-index: 100;
+  position: sticky;
+  top: -0.2vh;
+  height: 3.2vh;
+  background-color: white;
+}
+
+.links-border-bottom {
+  z-index: 100;
+  position: sticky;
+  top: 10vh;
+  height: 0.22vh;
+  background-color: white;
+  border-bottom: dotted 1px #585858;
+}
+
+.link {
+  display: inline-block;
+  height: 7vh ;
+  cursor: pointer;
+  font-size: 1.1rem
+}
+
+.underline {
+    height: 0.3em;
+}
+
+.underline-active {
+    background-color: #E81831 !important;
+}
+
+.active {
+    font-weight: bold !important;
+    color: #E81831 !important;
+    font-size: 1.3rem !important;
+}
+
+#i ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  padding-left: 4vh;
+  overflow: hidden;
+  background-color: white;
+
+}
+
+#i li {
+  float: left;
+}
+
+#i li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+#i li a:hover {
+  border-radius: 0px 0px 10px 10px;
+  color: #E81831;
+}
+
+
+
+.anchor {
+  display: block;
+  position: relative;
+  top: -39px;
+  visibility: hidden;
+}
+
+.container {
+  margin-bottom: 200px;
+}
+
+.images-container {
+  margin-left: 2vh;
+  margin-right: 2vh;
+}

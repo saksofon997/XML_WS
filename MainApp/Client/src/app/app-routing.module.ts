@@ -5,10 +5,16 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 const routes: Routes = [
   // Lazy loading administration
   { path: 'administration', loadChildren: () => import('./administration/administration.module').then(m => m.AdministrationModule)},
+  { path: 'vehicle', loadChildren: () => import('./vehicle-page/vehicle-page.module').then(m => m.VehiclePageModule)},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})],
+  imports: [RouterModule.forRoot(routes, {
+    preloadingStrategy: PreloadAllModules,
+    anchorScrolling: 'enabled',
+    onSameUrlNavigation: 'reload',
+    scrollPositionRestoration: 'enabled',
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

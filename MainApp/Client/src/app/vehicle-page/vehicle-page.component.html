@@ -1,0 +1,158 @@
+<span id="i">
+  <div class="links-border-top"></div>
+
+  <ul class="sticky">
+    <li>
+      <div class="link">
+        <a routerLink="./" [fragment]="'overview'" [ngClass]="{'active': currentActive === 1}">Overview</a>
+        <div [ngClass]="{'underline-active': currentActive === 1}" class="underline"></div>
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a routerLink="./" [fragment]="'features'" [ngClass]="{'active': currentActive === 2}">Features</a>
+        <div [ngClass]="{'underline-active': currentActive === 2}" class="underline"></div>
+
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a routerLink="./" [fragment]="'reviews'" [ngClass]="{'active': currentActive === 3}">Reviews</a>
+        <div [ngClass]="{'underline-active': currentActive === 3}" class="underline"></div>
+
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a routerLink="./" [fragment]="'location'" [ngClass]="{'active': currentActive === 4}">Location</a>
+        <div [ngClass]="{'underline-active': currentActive === 4}" class="underline"></div>
+
+      </div>
+    </li>
+  </ul>
+  <div class="links-border-bottom"></div>
+</span>
+
+<div class="container" style="margin-top: 20px;">
+  <div #overview>
+    <a class="anchor" id="overview"></a>
+    <div class="row images-container">
+      <div class="col">
+        <ng-image-slider [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider>
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <div class="row ">
+      <div class="col-sm-8" style="margin-top: 3.5vh;">
+        <app-vehicle-info></app-vehicle-info>
+      </div>
+      <div class="col-sm-4">
+        <app-reservation-box></app-reservation-box>
+      </div>
+    </div>
+  </div>
+
+  <div #features>
+    <a class="anchor" id="features"></a>
+    <div class="row ">
+
+      <div class="col">
+        <br />
+        <br />
+        <h1>Features</h1>
+        <p>This are new from us</p>
+        <p>
+          Using this tool can be excellent practice for students studying English as
+          a second language because it gives the literal meaning of each phrase.
+          This allows them to see the phrase and its meaning at the same time. While
+          there are long idiom lists available online, trying to navigate through
+          them all on a single page can be daunting. Being able to create the exact
+          number of random idioms which best suits your learning needs is a
+          advantage this tool has over standard phrase list. In this way, this tool
+          provides an excellent way for those learning English to practice their
+          knowledge of English idioms and to learn new ones in the process.
+        </p>
+        <p>
+          Using this tool can be excellent practice for students studying English as
+          a second language because it gives the literal meaning of each phrase.
+          This allows them to see the phrase and its meaning at the same time. While
+          there are long idiom lists available online, trying to navigate through
+          them all on a single page can be daunting. Being able to create the exact
+          number of random idioms which best suits your learning needs is a
+          advantage this tool has over standard phrase list. In this way, this tool
+          provides an excellent way for those learning English to practice their
+          knowledge of English idioms and to learn new ones in the process.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div #reviews>
+    <a class="anchor" id="reviews"></a>
+    <div class="row ">
+
+      <div class="col">
+        <br />
+        <br />
+        <h1>News</h1>
+        <p>This are new from us</p>
+        <p>
+          Using this tool can be excellent practice for students studying English as
+          a second language because it gives the literal meaning of each phrase.
+          This allows them to see the phrase and its meaning at the same time. While
+          there are long idiom lists available online, trying to navigate through
+          them all on a single page can be daunting. Being able to create the exact
+          number of random idioms which best suits your learning needs is a
+          advantage this tool has over standard phrase list. In this way, this tool
+          provides an excellent way for those learning English to practice their
+          knowledge of English idioms and to learn new ones in the process.
+        </p>
+        <p>
+          Using this tool can be excellent practice for students studying English as
+          a second language because it gives the literal meaning of each phrase.
+          This allows them to see the phrase and its meaning at the same time. While
+          there are long idiom lists available online, trying to navigate through
+          them all on a single page can be daunting. Being able to create the exact
+          number of random idioms which best suits your learning needs is a
+          advantage this tool has over standard phrase list. In this way, this tool
+          provides an excellent way for those learning English to practice their
+          knowledge of English idioms and to learn new ones in the process.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div #location>
+    <a class="anchor" id="location"></a>
+    <div class="row ">
+
+      <div class="col">
+        <br />
+        <br />
+        <h1>About</h1>
+        <p>This are new from us</p>
+        <p>
+          It can also be a wonderful way for writers to brainstorm and spur more
+          creativity in their writing. The tool can be used to get writing ideas
+          flowing forcing the writer to use more creativity than they would with a
+          single random word. For example, the writer can use the generated phrase
+          to create a new paragraph or story. Since the writer has no idea what will
+          appear, or even if they will be familiar with the idiom, it forces the
+          writer to use creativity to incorporate it into what they're writing.
+        </p>
+        <p>
+          It can also be a wonderful way for writers to brainstorm and spur more
+          creativity in their writing. The tool can be used to get writing ideas
+          flowing forcing the writer to use more creativity than they would with a
+          single random word. For example, the writer can use the generated phrase
+          to create a new paragraph or story. Since the writer has no idea what will
+          appear, or even if they will be familiar with the idiom, it forces the
+          writer to use creativity to incorporate it into what they're writing.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
