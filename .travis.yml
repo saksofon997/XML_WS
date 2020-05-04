@@ -3,31 +3,33 @@ sudo: false
 
 language: node_js
 node_js:
-	- '10'
+  - '10'
 
 addons:
-	apt:
-		sources:
-			- google-chrome
-		packages:
-			- google-chrome-stable
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 cache:
-	directories:
-		- ./MainApp/Client/node_modules
+  directories:
+    - ./MainApp/Client/node_modules
+
 before_install:
-	- cd MainApp/Client
+  - cd MainApp/Client
+
 install:
-	- npm install -g @angular/cli
+  - npm install -g @angular/cli
 
 script:
-	- npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
-	- ng build --prod --base-href https://saksofon997.github.io/XML_WS/
-	
+  - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+  - ng build --prod --base-href https://saksofon997.github.io/XML_WS/	
+
 deploy:
-	provider: pages
-	skip_cleanup: true
-	github_token: $GITHUB_TOKEN
-	local_dir: MainApp/Client/dist/Client
-	on:
-		branch: master
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: MainApp/Client/dist/Client
+  on:
+    branch: master
