@@ -18,7 +18,7 @@ before_install:
   - cd MainApp/Client
 
 install:
-  - npm install -g @angular/cli
+  - npm install -g @angular/cli@latest
 
 script:
   - ng build --prod --base-href https://saksofon997.github.io/XML_WS/	
