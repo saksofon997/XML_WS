@@ -10,15 +10,13 @@ notifications:
 addons:
   chrome: stable
 
-cache:
-  directories:
-    - ./MainApp/Client/node_modules
-
 before_install:
   - cd MainApp/Client
 
 install:
   - npm install -g @angular/cli@latest
+  - npm install --save-dev @angular-devkit/build-angular
+  - npm install
 
 script:
   - ng build --prod --base-href https://saksofon997.github.io/XML_WS/	
