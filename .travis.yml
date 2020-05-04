@@ -17,9 +17,9 @@ cache:
 		- ./node_modules
 
 install:
-	- cd MainApp/Client
+	- cd Client
 	- npm install
 
 script:
-	- cd MainApp/Client
+	- cd Client
 	- npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
