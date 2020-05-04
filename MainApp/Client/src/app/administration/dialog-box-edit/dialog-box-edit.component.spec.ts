@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DialogBoxEditComponent } from './dialog-box-edit.component';
+import { DialogBoxComponent } from './dialog-box-edit.component';
 
 describe('DialogBoxEditComponent', () => {
-  let component: DialogBoxEditComponent;
-  let fixture: ComponentFixture<DialogBoxEditComponent>;
+  let component: DialogBoxComponent;
+  let fixture: ComponentFixture<DialogBoxComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogBoxEditComponent ]
+      declarations: [ DialogBoxComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogBoxEditComponent);
+    fixture = TestBed.createComponent(DialogBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
