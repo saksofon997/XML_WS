@@ -6,17 +6,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
    declarations: [
       AppComponent,
       HeaderComponent,
       routingComponents,
+      FooterComponent
    ],
-   imports: [ // Import modules, except those that are lazy loaded (AdministrationModule)
+   imports: [
+      //Importmodules, except those that are lazy loaded (AdministrationModule)
       BrowserModule,
       AppRoutingModule,
-      BrowserAnimationsModule,
+      BrowserAnimationsModule
    ],
    providers: [
       CookieService
