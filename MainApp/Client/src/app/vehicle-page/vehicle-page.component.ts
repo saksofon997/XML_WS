@@ -41,9 +41,9 @@ export class VehiclePageComponent implements OnInit {
 
   ngAfterViewInit() {
     this.overviewOffset = this.overviewElement.nativeElement.offsetTop - 100;
-    this.featuresOffset = this.featuresElement.nativeElement.offsetTop- 100;
-    this.reviewsOffset = this.reviewsElement.nativeElement.offsetTop- 100;
-    this.locationOffset = this.locationElement.nativeElement.offsetTop;
+    this.featuresOffset = this.featuresElement.nativeElement.offsetTop - 100;
+    this.reviewsOffset = this.reviewsElement.nativeElement.offsetTop - 100;
+    this.locationOffset = this.locationElement.nativeElement.offsetTop - 100;
   }
 
   scrollToElement(test) {
