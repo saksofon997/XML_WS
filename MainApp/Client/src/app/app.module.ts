@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { SharedModule } from './shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
    declarations: [
@@ -17,6 +19,8 @@ import { HeaderComponent } from './header/header.component';
       BrowserModule,
       AppRoutingModule,
       BrowserAnimationsModule,
+      SharedModule,
+      NgbModule,
    ],
    providers: [
       CookieService
