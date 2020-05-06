@@ -64,7 +64,7 @@
     background: #fff;
     font-weight: bold;
     font-size: 1rem;
-    color: #999;
+    color: #585858;
     border-radius: 30rem;
     padding: 0.2rem 2rem;
     position: absolute;
@@ -90,4 +90,7 @@
   font-size: 0.8rem;
   list-style-type: none;
   padding-inline-start: 0;
+}
+.filters-container {
+  background-color: #C4C4C4;
 }
