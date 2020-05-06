@@ -1,0 +1,124 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+
+    <div class="row">
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Brand</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <mat-select formControlName="brand" name="brand">
+            <mat-option *ngFor="let brand of brands" [value]="brand.id">
+              {{brand.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!form.get('brand').valid || form.get('brand').touched">
+            Brand is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Model</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <mat-select formControlName="model" name="model">
+            <mat-option *ngFor="let model of models" [value]="model.id">
+              {{model.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!form.get('model').valid || form.get('model').touched">
+            Model is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Category</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <mat-select formControlName="category" name="category">
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+              {{category.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!form.get('category').valid || form.get('category').touched">
+            Category is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Fuel type</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <mat-select formControlName="fuel" name="fuel">
+            <mat-option *ngFor="let type of fuelTypes" [value]="type.id">
+              {{type.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!form.get('fuel').valid || form.get('fuel').touched">
+            Fuel type is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Transmission type</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <mat-select formControlName="transmission" name="transmission">
+            <mat-option *ngFor="let type of transmissionTypes" [value]="type.id">
+              {{type.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!form.get('transmission').valid || form.get('transmission').touched">
+            Transmission type is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Mileage</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field class="example-full-width">
+          <input formControlName="mileage" matInput ng-model="vehicle.mileage" type="number">
+          <mat-error *ngIf="!form.get('mileage').valid || form.get('mileage').touched">
+            Mileage is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-200"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Seats</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field class="example-full-width">
+          <input formControlName="seats" matInput ng-model="vehicle.mileage" type="number">
+          <mat-error *ngIf="!form.get('seats').valid || form.get('seats').touched">
+            Number of seats is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
+    </div>
+
+    <div class="col-sm-12 d-flex justify-content-center  mt-2">
+      <mat-card-actions>
+        <button mat-raised-button type="submit" class="submit">Create new vehicle</button>
+      </mat-card-actions>
+    </div>
+
+  </form>
+</div>
