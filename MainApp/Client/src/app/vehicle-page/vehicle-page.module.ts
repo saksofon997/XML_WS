@@ -6,7 +6,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgImageSliderModule } from 'ng-image-slider';
 
@@ -18,9 +20,7 @@ import { SharedModule } from '../shared/shared.module';
 import { VehicleAdministrationComponent } from './vehicle-administration/vehicle-administration.component';
 import { OccupancyViewComponent } from './occupancy-view/occupancy-view.component';
 import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-dialog-box.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 @NgModule({
   declarations: [ // Declare all components of module

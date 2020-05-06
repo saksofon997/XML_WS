@@ -1,7 +1,7 @@
 <div class="container-fluid">
  
   <div class="text-right">
-    <button mat-button (click)="openDialog('Add',{})" mat-flat-button >Add occupancy</button>
+    <button type="button" mat-button (click)="openDialog('Add',{})" mat-flat-button >Add occupancy</button>
   </div>
 
   <div class="text-center">
@@ -19,12 +19,12 @@
       <!-- Name Column -->
       <ng-container matColumnDef="from">
         <th mat-header-cell *matHeaderCellDef> From </th>
-        <td mat-cell *matCellDef="let element"> {{element.from}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.from.toLocaleString()}} </td>
       </ng-container>
       <!-- Name Column -->
       <ng-container matColumnDef="to">
         <th mat-header-cell *matHeaderCellDef> To </th>
-        <td mat-cell *matCellDef="let element"> {{element.to}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.to.toLocaleString()}} </td>
       </ng-container>
       <!-- Name Column -->
       <ng-container matColumnDef="type">
@@ -36,8 +36,11 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef> Action </th>
         <td mat-cell *matCellDef="let element" class="action-link"> 
-          <a (click)="openDialog('Update',element)">Edit</a> | 
-          <a (click)="openDialog('Delete',element)">Delete</a>  
+          <div *ngIf="element.type === 'Manual'">
+            <a (click)="openDialog('Update',element)">Edit</a> | 
+            <a (click)="openDialog('Delete',element)">Delete</a>  
+          </div>
+          
         </td>
       </ng-container>
   

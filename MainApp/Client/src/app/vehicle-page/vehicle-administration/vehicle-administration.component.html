@@ -158,10 +158,6 @@
       <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation] class="w-100"></div>
 
 
-
-
-
-
       <hr style=" width: 60%;">
       <div class="w-100"></div>
 
@@ -214,8 +210,11 @@
 
 
     <div class="col-sm-12 d-flex justify-content-center  mt-2">
-      <mat-card-actions>
+      <mat-card-actions *ngIf="!edditing">
         <button mat-raised-button type="submit" class="submit">Create new vehicle</button>
+      </mat-card-actions>
+      <mat-card-actions *ngIf="edditing">
+        <button mat-raised-button type="submit" class="submit">Submit changes</button>
       </mat-card-actions>
     </div>
 

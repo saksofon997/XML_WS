@@ -11,12 +11,12 @@ export interface UsersData {
   to: DateTime;
   type: string;
 }
- 
+
 const ELEMENT_DATA: UsersData[] = [
-  {id: 1, from: DateTime.fromMillis(1588712400000).toLocaleString(), to: DateTime.fromMillis(1588712400000).toLocaleString(), type: "Rental" },
-  {id: 2, from: DateTime.fromMillis(1588712400000).toLocaleString(), to: DateTime.fromMillis(1588712400000).toLocaleString(), type: "Manual" },
-  {id: 3, from: DateTime.fromMillis(1588712400000).toLocaleString(), to: DateTime.fromMillis(1588712400000).toLocaleString(), type: "Rental" },
-  {id: 4, from: DateTime.fromMillis(1588712400000).toLocaleString(), to: DateTime.fromMillis(1588712400000).toLocaleString(), type: "Manual" },
+  { id: 1, from: new Date(1588712400000), to: new Date(1588712400000), type: "Rental" },
+  { id: 2, from: new Date(1588712400000), to: new Date(1588712400000), type: "Manual" },
+  { id: 3, from: new Date(1588712400000), to: new Date(1588712400000), type: "Rental" },
+  { id: 4, from: new Date(1588712400000), to: new Date(1588712400000), type: "Manual" },
 ];
 
 @Component({
@@ -25,57 +25,61 @@ const ELEMENT_DATA: UsersData[] = [
   styleUrls: ['./occupancy-view.component.css']
 })
 export class OccupancyViewComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'from', 'to', 'type'];
+  displayedColumns: string[] = ['id', 'from', 'to', 'type', 'action'];
   dataSource = ELEMENT_DATA;
- 
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
- 
-  constructor(public dialog: MatDialog) {}
+
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
- 
-  openDialog(action,obj) {
+
+  openDialog(action, obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(OccupancyDialogBoxComponent, {
-      width: '300px',
-      data:obj
+      width: '420px',
+      data: obj
     });
- 
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event == 'Add'){
+      if (result?.event == 'Add') {
         this.addRowData(result.data);
-      }else if(result.event == 'Update'){
+      } else if (result?.event == 'Update') {
         this.updateRowData(result.data);
-      }else if(result.event == 'Delete'){
+      } else if (result?.event == 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
- 
-  addRowData(data){
+
+  addRowData(data) {
     var d = new Date();
+    // call backend than push
     this.dataSource.push({
       id: data.id,
       from: data.from,
       to: data.to,
-      type: data.type,
+      type: "Manual",
     });
     this.table.renderRows();
-    
+
   }
-  updateRowData(data){
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      if(value.id == data.id){
+  updateRowData(data) {
+    // call backend than filter
+
+    this.dataSource = this.dataSource.filter((value, key) => {
+      if (value.id == data.id) {
         value.from = data.from;
         value.to = data.to;
-        value.type = data.type;
       }
       return true;
     });
   }
-  deleteRowData(data){
-    this.dataSource = this.dataSource.filter((value,key)=>{
+  deleteRowData(data) {
+    // call backend than filter
+
+    this.dataSource = this.dataSource.filter((value, key) => {
       return value.id != data.id;
     });
   }

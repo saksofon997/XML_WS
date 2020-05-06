@@ -1,3 +1,37 @@
-<p>
-  occupancy-dialog-box works!
-</p>
+<h1 mat-dialog-title class="col-sm-12 d-flex justify-content-center mt-2"><strong>{{action}} </strong> &nbsp; Occupancy</h1>
+<div mat-dialog-content>
+  <div class="row" *ngIf="action != 'Delete'; else elseTemplate">
+
+    <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+      <p class="feature-name">From</p>
+    </div>
+    <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+      <mat-form-field>
+        <input [disabled]="true" [(ngModel)]="local_data.from" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="w-100"></div>
+
+    <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+      <p class="feature-name">To</p>
+    </div>
+    <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+      <mat-form-field>
+        <input [disabled]="true" [(ngModel)]="local_data.to" matInput [matDatepicker]="picker2">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker disabled="false" #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+
+  <ng-template #elseTemplate>
+    Delete occupancy: From: <b>{{local_data.from}}</b> To: <b>{{local_data.to}}</b> Type: <b>{{local_data.type}}</b>?
+  </ng-template>
+</div>
+<div mat-dialog-actions class="col-sm-12 d-flex justify-content-center mt-2">
+  <button mat-button (click)="doAction()" style="color: white; background-color: #E81831;">{{action}}</button>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+</div>
