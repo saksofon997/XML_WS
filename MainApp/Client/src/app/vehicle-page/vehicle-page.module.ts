@@ -16,6 +16,11 @@ import { ReservationBoxComponent } from './reservation-box/reservation-box.compo
 import { VehicleInfoComponent } from './vehicle-info/vehicle-info.component';
 import { SharedModule } from '../shared/shared.module';
 import { VehicleAdministrationComponent } from './vehicle-administration/vehicle-administration.component';
+import { OccupancyViewComponent } from './occupancy-view/occupancy-view.component';
+import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-dialog-box.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [ // Declare all components of module
@@ -23,6 +28,9 @@ import { VehicleAdministrationComponent } from './vehicle-administration/vehicle
     ReservationBoxComponent,
     VehicleInfoComponent,
     VehicleAdministrationComponent,
+    OccupancyViewComponent,
+    OccupancyDialogBoxComponent,
+
   ],
   imports: [ // Import anything you would need to use in this module (froms...)
     CommonModule,
@@ -36,6 +44,9 @@ import { VehicleAdministrationComponent } from './vehicle-administration/vehicle
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
 
     NgImageSliderModule,
 

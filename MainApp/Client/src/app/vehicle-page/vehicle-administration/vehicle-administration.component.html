@@ -175,10 +175,9 @@
       </div>
 
       <div class="col-sm-8">
-        <div 
-          class="col d-flex justify-content-sm-start justify-content-center mt-2">
+        <div class="col d-flex justify-content-sm-start justify-content-center mt-2">
           <div class="" *ngIf="!form.get('unlimitedMileage').value" [@inOutAnimation]>
-            <mat-form-field class="example-full-width" style="width: 90%;" >
+            <mat-form-field class="example-full-width" style="width: 90%;">
               <input formControlName="alowedMileage" matInput type="number">
               <!-- <mat-error *ngIf="!form.get('mileage').valid || form.get('mileage').touched">
               Mileage is required
@@ -186,14 +185,10 @@
             </mat-form-field>
           </div>
           <div class="feature">
-            <mat-checkbox  [labelPosition]="'after'" formControlName="unlimitedMileage"> &nbsp; Unlimited
+            <mat-checkbox [labelPosition]="'after'" formControlName="unlimitedMileage"> &nbsp; Unlimited
             </mat-checkbox>
           </div>
-          
-          
         </div>
-
-
       </div>
 
       <div class="w-100"></div>
@@ -202,25 +197,29 @@
         <p class="feature-name">Collision Damage Waiver</p>
       </div>
       <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-        <mat-checkbox class="feature" [labelPosition]="'after'" formControlName="cdw" style="padding-left: 0.8rem;"> &nbsp;
+        <mat-checkbox class="feature" [labelPosition]="'after'" formControlName="cdw" style="padding-left: 0.8rem;">
+          &nbsp;
           {{ form.get('cdw').value ? 'Available' : 'Not Available' }}
         </mat-checkbox>
       </div>
       <div class="w-100"></div>
-
-
-
-
-
-
-
     </div>
+
+    <hr style=" width: 60%;">
+    <div class="w-100"></div>
+
+    <div class="col-sm-12 d-flex justify-content-center  mt-2">
+      <app-occupancy-view></app-occupancy-view>
+    </div>
+
 
     <div class="col-sm-12 d-flex justify-content-center  mt-2">
       <mat-card-actions>
         <button mat-raised-button type="submit" class="submit">Create new vehicle</button>
       </mat-card-actions>
     </div>
+
+
 
   </form>
 </div>
