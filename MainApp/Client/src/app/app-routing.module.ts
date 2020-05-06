@@ -6,6 +6,7 @@ const routes: Routes = [
   // Lazy loading administration
   { path: 'administration', loadChildren: () => import('./administration/administration.module').then(m => m.AdministrationModule)},
   { path: 'vehicle', loadChildren: () => import('./vehicle-page/vehicle-page.module').then(m => m.VehiclePageModule)},
+  { path: 'rentals', loadChildren: () => import('./rentals/rentals.module').then(m => m.RentalsModule)},
 ];
 
 @NgModule({

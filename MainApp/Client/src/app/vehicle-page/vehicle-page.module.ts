@@ -27,6 +27,9 @@ import { VehicleInfoComponent } from './vehicle-info/vehicle-info.component';
 
     VehiclePageRoutingModule,
   ],
+  exports: [
+    VehicleInfoComponent
+  ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ], 
   // Exports should not be in lazy loaded modules
   providers: [
