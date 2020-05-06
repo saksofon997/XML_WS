@@ -92,7 +92,7 @@
       </div>
       <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
         <mat-form-field class="example-full-width">
-          <input formControlName="mileage" matInput ng-model="vehicle.mileage" type="number">
+          <input formControlName="mileage" matInput type="number">
           <mat-error *ngIf="!form.get('mileage').valid || form.get('mileage').touched">
             Mileage is required
           </mat-error>
@@ -105,13 +105,115 @@
       </div>
       <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
         <mat-form-field class="example-full-width">
-          <input formControlName="seats" matInput ng-model="vehicle.mileage" type="number">
+          <input formControlName="seats" matInput type="number">
           <mat-error *ngIf="!form.get('seats').valid || form.get('seats').touched">
             Number of seats is required
           </mat-error>
         </mat-form-field>
       </div>
+
+      <hr style=" width: 60%;">
       <div class="w-100"></div>
+
+      <div class="col-sm-12 d-flex  justify-content-center mt-2">
+        <p class="feature-name">Availability</p>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-12 d-flex  justify-content-center mt-2">
+        <!-- <p class="feature-name">Always available</p> -->
+        <mat-checkbox class="feature-name" [labelPosition]="'before'" formControlName="alwaysAvailable"> Always
+          available &nbsp;&nbsp;&nbsp; </mat-checkbox>
+      </div>
+      <div class="w-100"></div>
+
+
+      <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
+        class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Available from</p>
+      </div>
+      <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
+        class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <input [disabled]="true" formControlName="availableFrom" matInput [matDatepicker]="picker" [min]="now">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation] class="w-100"></div>
+
+      <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
+        class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Until</p>
+      </div>
+      <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
+        class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <input [disabled]="true" formControlName="availableUntil" matInput [matDatepicker]="picker2"
+            [min]="form.get('availableFrom').value">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker disabled="false" #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation] class="w-100"></div>
+
+
+
+
+
+
+      <hr style=" width: 60%;">
+      <div class="w-100"></div>
+
+      <div class="col-sm-12 d-flex  justify-content-center mt-2">
+        <p class="feature-name">Features</p>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2 align-items-center">
+        <p class="feature-name ">Allowed mileage</p>
+      </div>
+
+      <div class="col-sm-8">
+        <div 
+          class="col d-flex justify-content-sm-start justify-content-center mt-2">
+          <div class="" *ngIf="!form.get('unlimitedMileage').value" [@inOutAnimation]>
+            <mat-form-field class="example-full-width" style="width: 90%;" >
+              <input formControlName="alowedMileage" matInput type="number">
+              <!-- <mat-error *ngIf="!form.get('mileage').valid || form.get('mileage').touched">
+              Mileage is required
+            </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div class="feature">
+            <mat-checkbox  [labelPosition]="'after'" formControlName="unlimitedMileage"> &nbsp; Unlimited
+            </mat-checkbox>
+          </div>
+          
+          
+        </div>
+
+
+      </div>
+
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Collision Damage Waiver</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-checkbox class="feature" [labelPosition]="'after'" formControlName="cdw" style="padding-left: 0.8rem;"> &nbsp;
+          {{ form.get('cdw').value ? 'Available' : 'Not Available' }}
+        </mat-checkbox>
+      </div>
+      <div class="w-100"></div>
+
+
+
+
+
+
+
     </div>
 
     <div class="col-sm-12 d-flex justify-content-center  mt-2">

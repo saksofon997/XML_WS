@@ -1,11 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-vehicle-administration',
   templateUrl: './vehicle-administration.component.html',
-  styleUrls: ['./vehicle-administration.component.css']
+  styleUrls: ['./vehicle-administration.component.css'],
+  animations: [
+    trigger(
+      'inOutAnimation', 
+      [
+        transition(
+          ':enter', 
+          [
+            style({ opacity: 0 }),
+            animate('1s ease-out', 
+                    style({opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave', 
+          [
+            style({ opacity: 1 }),
+            animate('1s ease-in', 
+                    style({  opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ]
 })
 export class VehicleAdministrationComponent implements OnInit {
 
@@ -46,6 +71,7 @@ export class VehicleAdministrationComponent implements OnInit {
   private sub: any;
   form: FormGroup;
   edditing: boolean = false;
+  now: Date = new Date();
 
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -59,6 +85,12 @@ export class VehicleAdministrationComponent implements OnInit {
         fuel: ['', [Validators.required]],
         mileage: ['', [Validators.required]],
         seats: ['', [Validators.required]],
+        alwaysAvailable: [false],
+        availableFrom: [''],
+        availableUntil: [''],
+        unlimitedMileage: [false],
+        alowedMileage: [''],
+        cdw: [false],
       });
   }
 
@@ -66,11 +98,18 @@ export class VehicleAdministrationComponent implements OnInit {
     this.sub = this.activatedRoute.params.subscribe((params) => {
       //var vehicle_id = params.id;
 
-      //change form
-      // this.expenForm.setValue({
-      //   person_name: this.expen.person_name,
-      //   amount: this.expen.amount
-      //   description: this.expen.description
+      //change form with vehicle
+      // this.form.setValue({
+      //   brand:  1560608796014,
+      //   model: 1560608769632,
+      //   category: 1560608805101,
+      //   transmission: 1560608805101,
+      //   fuel: 1560608805101,
+      //   mileage: 30000,
+      //   seats: 3,
+      //   alwaysAvailable: true,
+      //   availableFrom: [''],
+      //   availableUntil: [''],
       // });
     });
 
@@ -83,5 +122,6 @@ export class VehicleAdministrationComponent implements OnInit {
   onSubmit(data) {
     console.log(data);
   }
+
 
 }

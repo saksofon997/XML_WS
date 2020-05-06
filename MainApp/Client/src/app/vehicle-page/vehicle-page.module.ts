@@ -5,6 +5,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgImageSliderModule } from 'ng-image-slider';
 
@@ -24,14 +26,18 @@ import { VehicleAdministrationComponent } from './vehicle-administration/vehicle
   ],
   imports: [ // Import anything you would need to use in this module (froms...)
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    // material
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    MatCheckboxModule,
+
     NgImageSliderModule,
-    FormsModule,
-    ReactiveFormsModule,
 
     VehiclePageRoutingModule,
     SharedModule,
