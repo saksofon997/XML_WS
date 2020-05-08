@@ -1,6 +1,5 @@
 import { LocationService } from './location.service';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, ViewEncapsulation } from '@angular/core';
-import { StarRatingComponent } from 'ng-starrating';
 import {AngularYandexMapsModule} from 'angular8-yandex-maps';
 import { Car } from '../models/Car.model';
 import { Review } from '../models/Review.model';
@@ -60,10 +59,5 @@ export class RentalsComponent implements OnInit {
   selectionChanged(event){
 
   }
-  onRate($event:{oldValue:number, newValue:number, starRating:StarRatingComponent}) {
-    alert(`Old Value:${$event.oldValue}, 
-      New Value: ${$event.newValue}, 
-      Checked Color: ${$event.starRating.checkedcolor}, 
-      Unchecked Color: ${$event.starRating.uncheckedcolor}`);
-  }
+
 }
