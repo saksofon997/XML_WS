@@ -1,4 +1,3 @@
-import { RatingModule } from 'ng-starrating';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RentalsComponent } from './rentals.component';
@@ -15,6 +14,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
 import { VehiclePageModule } from '../vehicle-page/vehicle-page.module';
 import { CarTeaserComponent } from './car-teaser/car-teaser.component';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../shared/shared.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ import { CarTeaserComponent } from './car-teaser/car-teaser.component';
     MatCheckboxModule,
     MatListModule,
     VehiclePageModule,
-    RatingModule
+    NgbRatingModule,
+    SharedModule
   ],
   declarations: [RentalsComponent,
     CarTeaserComponent

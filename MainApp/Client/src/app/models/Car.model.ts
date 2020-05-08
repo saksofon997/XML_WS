@@ -1,3 +1,4 @@
+import { Review } from './Review.model';
 
 
 export class Car {
@@ -11,10 +12,10 @@ export class Car {
     mileage: String;
     price: Number;
     commentNo: Number;
-
+    review: Review;
     constructor(src: String, brand: String, model: String, fuel: String,
         transmission : String, carClass : String, seats: Number, mileage: String,
-         price: Number, commentNo: Number){
+         price: Number, commentNo: Number, review: Review){
              this.src = src;
              this.brand = brand;
              this.model = model;
@@ -25,6 +26,7 @@ export class Car {
               this.mileage = mileage;
               this.price = price;
               this.commentNo = commentNo;
+              this.review = review;
 
     }
 
