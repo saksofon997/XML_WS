@@ -92,5 +92,19 @@
   padding-inline-start: 0;
 }
 .filters-container {
-  background-color: #C4C4C4;
+  background-color: rgb(243, 243, 243);
+}
+.comment-icon {
+  width:1.5em;
+  height:1.5em;
+}
+.info-label {
+  font-family: RlBasisGrotesque,  Avenir,  Helvetica Neue,  Helvetica,  sans-serif;
+  text-transform: none;
+  margin-right: 0.4em;
+  font-weight: bold;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #E81831;
 }

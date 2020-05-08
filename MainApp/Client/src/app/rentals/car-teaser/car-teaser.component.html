@@ -1,0 +1,65 @@
+<div class="row m-3 shadow-sm  m-1 bg-white rounded">
+  <div class="col-md-4 col-left">
+    <img class="car-Image shadow-sm bg-white rounded"
+      src="{{car.src}}">
+  </div>
+  <div class="col-md-4 col-left ">
+    <!--
+      <app-vehicle-info style="font-size: 0.8em;">
+      </app-vehicle-info>
+    -->
+    <ul class="vehicle-info mt-1">
+      <li>
+        Brand: {{car.brand}}
+      </li>
+      <li>
+        Model: {{car.model}}
+      </li>
+      <li>
+        Fuel: {{car.fuel}}
+      </li>
+      <li>
+        Transmission: {{car.transmission}}
+      </li>
+      <li>
+        Class: {{car.carClass}}
+      </li>
+      <li>
+        Kids seats No: {{car.seats}}
+      </li>
+      <li>
+        Mileage: {{car.mileage}}
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-2 col-left">
+    <div class="row">
+      <star-rating value="5" totalstars="5" checkedcolor="red" uncheckedcolor="black" size="100px"
+        readonly="true"></star-rating>
+
+    </div>
+    <div class="row">
+      <div class="col-md-1">
+        <img class="comment-icon mt-3" src="assets/images/comment.png" alt="">
+      </div>
+      <div class="col-md-5">
+        <span class="badge mt-3">{{car.commentNo}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-2 col-left">
+    <div class="row mt-3 ml-3">
+      <label class="info-label">Price: </label>
+      <label>${{car.price}}</label>
+    </div>
+    <div class="row mt-3 ml-3" style="margin-bottom: 0; margin-right: 0;">
+      CWD
+    </div>
+    <div class="row mt-3 ml-3" style="margin-bottom: 0; margin-right: 0;">
+      <a class="btn btn-sm btn-outline-danger search-button" style="margin-bottom: 0; margin-right: 0;">Add to
+        cart</a>
+    </div>
+  </div>
+
+</div>

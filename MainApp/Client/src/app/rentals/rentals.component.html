@@ -232,88 +232,15 @@
     </div>
     <div class="col-md-9 " style="height: 100%;">
       <!--
-          <div class="row m-3 ngFor="let vehicle of vehicles" shadow-sm  m-1 bg-white rounded">
-            Vehicle one
-          </div>
+          List of cars
       -->
-      <div class="row m-3 shadow-sm  m-1 bg-white rounded">
-        <div class="col-md-4 col-left">
-          <img class="car-Image shadow-sm bg-white rounded"
-            src="https://article.images.consumerreports.org/f_auto/prod/content/dam/CRO%20Images%202018/Cars/November/CR-Cars-InlineHero-2019-Honda-Insight-driving-trees-11-18">
-        </div>
-        <div class="col-md-3 col-left">
-          <ul class="vehicle-info mt-1">
-            <li>
-              Brand:
-            </li>
-            <li>
-              Model:
-            </li>
-            <li>
-              Fuel:
-            </li>
-            <li>
-              Transmission:
-            </li>
-            <li>
-              Class:
-            </li>
-            <li>
-              Kids seats No:
-            </li>
-            <li>
-              Mileage:
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-2 col-left">
-          <star-rating value='5' totalstars="5" checkedcolor="blue" uncheckedcolor="gray" size="24px" readonly="true"></star-rating>
-          comments
-        </div>
-        <div class="col-md-2 col-left">
-          price:
-          add to cart
-        </div>
+      <app-car-teaser *ngFor="let car of cars" [car]=car>
+        {{car.src}}
+      </app-car-teaser>
 
-      </div>
       <div class="row m-3 shadow-sm  m-1 bg-white rounded">
-        <div class="col-md-4 col-left">
-          <img class="car-Image shadow-sm bg-white rounded"
-            src="https://www.testoviautomobila.rs/wp-content/uploads/2015/05/fica-prelepa-slika-840x420.jpg">
-        </div>
-        <div class="col-md-3 col-left">
-          <!--
-            <app-vehicle-info style="font-size: 0.8em;">
-            </app-vehicle-info>
-          --> 
-          <ul class="vehicle-info mt-1">
-            <li>
-              Brand: Zastava
-            </li>
-            <li>
-              Model: 500
-            </li>
-            <li>
-              Fuel: Gasoline
-            </li>
-            <li>
-              Transmission: Manual
-            </li>
-            <li>
-              Class: Small
-            </li>
-            <li>
-              Kids seats No: 0
-            </li>
-            <li>
-              Mileage: Unlimited
-            </li>
-          </ul>
-        </div>
       </div>
-      <div class="row m-3 shadow-sm  m-1 bg-white rounded">
-        Vehicle three
-      </div>
+
       List of vehicles...
       <hr class="dashed">
     </div>

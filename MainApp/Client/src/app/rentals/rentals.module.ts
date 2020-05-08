@@ -1,3 +1,4 @@
+import { RatingModule } from 'ng-starrating';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RentalsComponent } from './rentals.component';
@@ -12,8 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
-import { RatingModule } from 'ng-starrating';
 import { VehiclePageModule } from '../vehicle-page/vehicle-page.module';
+import { CarTeaserComponent } from './car-teaser/car-teaser.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,11 +29,12 @@ import { VehiclePageModule } from '../vehicle-page/vehicle-page.module';
     ReactiveFormsModule,
     MatAutocompleteModule, 
     MatCheckboxModule,
-    RatingModule,
     MatListModule,
     VehiclePageModule,
+    RatingModule
   ],
   declarations: [RentalsComponent,
+    CarTeaserComponent
     ]
 })
 export class RentalsModule { }

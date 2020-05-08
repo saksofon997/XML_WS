@@ -21,7 +21,7 @@ import { HttpModule } from '@angular/http';
       BrowserAnimationsModule,
       HttpClientModule,
       HttpModule,
-      SelectDropDownModule 
+      SelectDropDownModule,
    ],
    providers: [
       CookieService
