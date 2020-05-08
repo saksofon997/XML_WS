@@ -8,10 +8,7 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 export class VehiclePageComponent implements OnInit {
 
   imageSize: Object = {width: '400px', height: '300px', space: 4}
-  images: Array<object> = [{
-    image: 'https://lh3.googleusercontent.com/proxy/ALI_tszGz9qA4ptTF653t2ftXcO08M32XZ_9JMSCTVyT1uQ0FZCWOGuq-xnXiPYlKfV5-f3Sj-vg9OuSiOPHsY6bJpLG2RAQXwUKl3GNH5OPL7ClRrg',
-    thumbImage: 'https://lh3.googleusercontent.com/proxy/ALI_tszGz9qA4ptTF653t2ftXcO08M32XZ_9JMSCTVyT1uQ0FZCWOGuq-xnXiPYlKfV5-f3Sj-vg9OuSiOPHsY6bJpLG2RAQXwUKl3GNH5OPL7ClRrg'
-  },
+  images: Array<object> = [
   {
     image: 'https://i.ytimg.com/vi/H19PR3N8QI0/hqdefault.jpg',
     thumbImage: 'https://i.ytimg.com/vi/H19PR3N8QI0/hqdefault.jpg'
@@ -44,9 +41,9 @@ export class VehiclePageComponent implements OnInit {
 
   ngAfterViewInit() {
     this.overviewOffset = this.overviewElement.nativeElement.offsetTop - 100;
-    this.featuresOffset = this.featuresElement.nativeElement.offsetTop- 100;
-    this.reviewsOffset = this.reviewsElement.nativeElement.offsetTop- 100;
-    this.locationOffset = this.locationElement.nativeElement.offsetTop;
+    this.featuresOffset = this.featuresElement.nativeElement.offsetTop - 100;
+    this.reviewsOffset = this.reviewsElement.nativeElement.offsetTop - 100;
+    this.locationOffset = this.locationElement.nativeElement.offsetTop - 100;
   }
 
   scrollToElement(test) {

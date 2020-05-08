@@ -10,6 +10,7 @@ import { VehiclePageComponent } from './vehicle-page.component';
 import { VehiclePageRoutingModule } from './vehicle-page-routing.module';
 import { ReservationBoxComponent } from './reservation-box/reservation-box.component';
 import { VehicleInfoComponent } from './vehicle-info/vehicle-info.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [ // Declare all components of module
@@ -26,6 +27,7 @@ import { VehicleInfoComponent } from './vehicle-info/vehicle-info.component';
     NgImageSliderModule,
 
     VehiclePageRoutingModule,
+    SharedModule,
   ],
   exports: [
     VehicleInfoComponent

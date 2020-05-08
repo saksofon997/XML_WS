@@ -38,7 +38,7 @@
     <a class="anchor" id="overview"></a>
     <div class="row images-container">
       <div class="col">
-        <ng-image-slider [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider>
+        <ng-image-slider [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider> <!-- property -->
       </div>
     </div>
 
@@ -90,69 +90,76 @@
 
   </div>
 
-  <div #reviews>
-    <a class="anchor" id="reviews"></a>
+  <div #reviews style="margin-top: 9vh;">
+    <a class="anchor" id="reviews" style="top: -75px;"></a>
     <div class="row ">
-
+      <div class="col-sm-4 col-md-2 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p style="font-size: 1.3rem; font-weight: 500;">Reviews</p>
+      </div>
       <div class="col">
-        <br />
-        <br />
-        <h1>News</h1>
-        <p>This are new from us</p>
-        <p>
-          Using this tool can be excellent practice for students studying English as
-          a second language because it gives the literal meaning of each phrase.
-          This allows them to see the phrase and its meaning at the same time. While
-          there are long idiom lists available online, trying to navigate through
-          them all on a single page can be daunting. Being able to create the exact
-          number of random idioms which best suits your learning needs is a
-          advantage this tool has over standard phrase list. In this way, this tool
-          provides an excellent way for those learning English to practice their
-          knowledge of English idioms and to learn new ones in the process.
-        </p>
-        <p>
-          Using this tool can be excellent practice for students studying English as
-          a second language because it gives the literal meaning of each phrase.
-          This allows them to see the phrase and its meaning at the same time. While
-          there are long idiom lists available online, trying to navigate through
-          them all on a single page can be daunting. Being able to create the exact
-          number of random idioms which best suits your learning needs is a
-          advantage this tool has over standard phrase list. In this way, this tool
-          provides an excellent way for those learning English to practice their
-          knowledge of English idioms and to learn new ones in the process.
-        </p>
+        <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+          <p style="font-size: 2.5rem; font-weight: 900;">4.5</p> <!-- property -->
+        </div>
+        <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+          <p style=" font-size: 1rem; font-weight: 200;">20 reviews</p> <!-- property -->
+        </div>
+      </div>
+      
+
+      <div class="w-100"></div>
+    </div>
+
+    <div class="row ">
+      <!-- NgFor ... -->
+
+      <div class="col-sm-2 col-md-2">
+      </div>
+
+      <div class="col-sm-8">
+        <div class="row ">
+          <app-review></app-review>
+
+        </div>
+        <div class="row ">
+          <app-review></app-review>
+
+        </div>
+        <div class="row ">
+          <app-review></app-review>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div #location>
+      <a class="anchor" id="location"></a>
+      <div class="row ">
+
+        <div class="col">
+          <br />
+          <br />
+          <h1>About</h1>
+          <p>This are new from us</p>
+          <p>
+            It can also be a wonderful way for writers to brainstorm and spur more
+            creativity in their writing. The tool can be used to get writing ideas
+            flowing forcing the writer to use more creativity than they would with a
+            single random word. For example, the writer can use the generated phrase
+            to create a new paragraph or story. Since the writer has no idea what will
+            appear, or even if they will be familiar with the idiom, it forces the
+            writer to use creativity to incorporate it into what they're writing.
+          </p>
+          <p>
+            It can also be a wonderful way for writers to brainstorm and spur more
+            creativity in their writing. The tool can be used to get writing ideas
+            flowing forcing the writer to use more creativity than they would with a
+            single random word. For example, the writer can use the generated phrase
+            to create a new paragraph or story. Since the writer has no idea what will
+            appear, or even if they will be familiar with the idiom, it forces the
+            writer to use creativity to incorporate it into what they're writing.
+          </p>
+        </div>
       </div>
     </div>
   </div>
-
-  <div #location>
-    <a class="anchor" id="location"></a>
-    <div class="row ">
-
-      <div class="col">
-        <br />
-        <br />
-        <h1>About</h1>
-        <p>This are new from us</p>
-        <p>
-          It can also be a wonderful way for writers to brainstorm and spur more
-          creativity in their writing. The tool can be used to get writing ideas
-          flowing forcing the writer to use more creativity than they would with a
-          single random word. For example, the writer can use the generated phrase
-          to create a new paragraph or story. Since the writer has no idea what will
-          appear, or even if they will be familiar with the idiom, it forces the
-          writer to use creativity to incorporate it into what they're writing.
-        </p>
-        <p>
-          It can also be a wonderful way for writers to brainstorm and spur more
-          creativity in their writing. The tool can be used to get writing ideas
-          flowing forcing the writer to use more creativity than they would with a
-          single random word. For example, the writer can use the generated phrase
-          to create a new paragraph or story. Since the writer has no idea what will
-          appear, or even if they will be familiar with the idiom, it forces the
-          writer to use creativity to incorporate it into what they're writing.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
