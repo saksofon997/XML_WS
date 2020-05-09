@@ -1,0 +1,110 @@
+.btn-outline-danger {
+  margin-top: 0.25em;
+  line-height: 6vh;
+  outline-color: #E81831;
+}
+
+.btn-outline-danger:hover {
+  background-color: #E81831;
+}
+
+
+  .form-field-wrapper {
+    position: relative;
+    display: flex;
+  }
+ .search-form {
+  width: 100%;
+ }
+  .form-field {
+    width: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    color: #585858;
+  }
+
+  .btn-wrapper {
+    
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .search-button {
+    padding-top: 0;
+    padding-bottom: 0;
+    align-items: center;
+    justify-content: center;
+    margin-left:auto;
+    margin-right:0;
+  }
+  .filter-Button {
+    align-items: center;
+    justify-content: center;
+
+  }
+  .filterHeading {
+    font-family: RlBasisGrotesque,  Avenir,  Helvetica Neue,  Helvetica,  sans-serif;
+    text-transform: none;
+  }
+
+  hr.hr-text {
+    position: relative;
+      border: none;
+      height: 1px;
+      background: #999;
+      margin-bottom: 1.5em;
+  }
+
+  hr.hr-text::before {
+    content: attr(data-content);
+    display: inline-block;
+    background: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #585858;
+    border-radius: 30rem;
+    padding: 0.2rem 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+}
+.car-Image {
+  width:100%;
+  height:100%;
+  object-fit: contain;
+}
+.col-left {
+  padding-left: 0;
+  align-items: center;
+  justify-content: center;
+}
+.col-vehicle-info {
+  padding-left: 0.35em;
+  padding-right: 0;
+}
+.vehicle-info {
+  font-size: 0.8rem;
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+.filters-container {
+  background-color: rgb(243, 243, 243);
+}
+.comment-icon {
+  width:1.5em;
+  height:1.5em;
+}
+.info-label {
+  font-family: RlBasisGrotesque,  Avenir,  Helvetica Neue,  Helvetica,  sans-serif;
+  text-transform: none;
+  margin-right: 0.4em;
+  font-weight: bold;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #E81831;
+}

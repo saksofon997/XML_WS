@@ -29,6 +29,9 @@ import { SharedModule } from '../shared/shared.module';
     VehiclePageRoutingModule,
     SharedModule,
   ],
+  exports: [
+    VehicleInfoComponent
+  ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ], 
   // Exports should not be in lazy loaded modules
   providers: [
