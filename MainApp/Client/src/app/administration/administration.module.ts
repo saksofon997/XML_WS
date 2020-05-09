@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { DialogBoxComponent } from './dialog-box-edit/dialog-box-edit.component';
+import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
   declarations: [ // Declare all components of module
@@ -30,6 +31,7 @@ import { DialogBoxComponent } from './dialog-box-edit/dialog-box-edit.component'
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
+    MatIconModule,
     AdministrationRoutingModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ], 
