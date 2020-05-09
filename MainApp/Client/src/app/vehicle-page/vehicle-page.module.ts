@@ -53,10 +53,13 @@ import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-di
     VehiclePageRoutingModule,
     SharedModule,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  exports: [
+    VehicleInfoComponent
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   // Exports should not be in lazy loaded modules
   providers: [
     MatDatepickerModule,
   ]
 })
-export class VehiclePageModule { } 
+export class VehiclePageModule { }

@@ -1,0 +1,10 @@
+label {
+    font-family: RlBasisGrotesque,  Avenir,  Helvetica Neue,  Helvetica,  sans-serif;
+    text-transform: none;
+    margin-right: 0.4em;
+    font-weight: bold;
+  }
+  .star {
+    font-size: 1.5rem;
+    margin-top: 5em;
+  }

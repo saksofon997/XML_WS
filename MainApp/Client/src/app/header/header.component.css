@@ -55,3 +55,6 @@ a {
 .btn-outline-danger:hover {
   background-color: #E81831;
 }
+ul {
+  list-style-type: none;
+ }
