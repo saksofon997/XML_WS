@@ -1,0 +1,48 @@
+<div class="row m-3 shadow-sm  m-1 bg-white rounded">
+  <div class="col-md-4 col-left">
+    <img class="car-Image shadow-sm bg-white rounded" src="{{car.src}}">
+  </div>
+  <div class="col-md-6 col-left ">
+    <ul class="vehicle-info mt-1">
+      <li>
+        Brand: {{car.brand}}
+      </li>
+      <li>
+        Model: {{car.model}}
+      </li>
+      <li>
+        Fuel: {{car.fuel}}
+      </li>
+      <li>
+        Transmission: {{car.transmission}}
+      </li>
+      <li>
+        Class: {{car.carClass}}
+      </li>
+      <li>
+        Kids seats No: {{car.seats}}
+      </li>
+      <li>
+        Mileage: {{car.mileage}}
+      </li>
+    </ul>
+  </div>
+  <div class="col-sm-2 col-left">
+    <div class="row mt-3">
+      <ngb-rating [(rate)]="car.review.stars" readonly=true max=5>
+        <ng-template let-fill="fill" let-index="index">
+          <span class="star" [class.filled]="fill === 100">&#9733;</span>
+        </ng-template>
+      </ngb-rating>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-1">
+        <img class="comment-icon mt-3" src="assets/images/comment.png" alt="">
+      </div>
+      <div class="col-sm-5">
+        <span class="badge mt-3">{{car.commentNo}}</span>
+      </div>
+    </div>
+  </div>
+</div>
