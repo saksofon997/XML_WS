@@ -22,6 +22,7 @@ export class VehiclePageComponent implements OnInit {
     thumbImage: 'https://i2.wp.com/asiatimes.com/wp-content/uploads/2019/01/T-34-in-snow.jpg?fit=1600%2C1067&ssl=1'
   }
   ];
+  //location: Number[] = [37.587874, 55.73367];
 
   constructor() { }
 
