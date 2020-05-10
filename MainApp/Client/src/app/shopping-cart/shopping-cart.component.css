@@ -1,0 +1,12 @@
+#create-bundle-div {
+  align-items: center;
+  justify-content: center;
+}
+
+#create-bundle:hover {
+  color: white;
+} 
+
+.active {
+  background-color: #585858;
+}

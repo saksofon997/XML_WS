@@ -1,11 +1,31 @@
 <div class="container">
   <div class="row">
     <div class="col-md-9 " style="height: 100%;">
-      <app-sc-car-teaser *ngFor="let rental of rentals" [rental]=rental></app-sc-car-teaser>
+      <app-sc-car-teaser *ngFor="let rental of rentals" [rental]=rental [bundles]=bundles></app-sc-car-teaser>
 
     </div>
     <div class="col-md-3 " style="height: 100%;">
-      Proceed with checkout
+
+      <div class="row m-3 m-1" id="create-bundle-div" >
+        <a class="btn btn-sm btn-outline-danger" id="create-bundle">Create Bundle</a>
+      </div>
+
+
+      <div class="row" *ngFor="let bundle of bundles">
+        <div class="col">
+          <div class="row">
+            <div class="col m-2">
+
+              <ul class="list-group">
+                <li class="list-group-item active">{{bundle.name}}</li>
+                <li class="list-group-item" *ngFor="let rental of bundle.rentals">{{rental.car.model}}</li>
+              </ul>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

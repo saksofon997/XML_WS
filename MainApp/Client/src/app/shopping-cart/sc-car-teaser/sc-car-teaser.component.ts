@@ -9,11 +9,17 @@ import { Rental } from 'src/app/models/Rental.model';
 })
 export class ScCarTeaserComponent implements OnInit {
 
+  @Input() bundles: any;
   @Input() rental: Rental;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addToBundle(){
+    this.bundles[0].rentals.push(this.rental);
+    console.log(this.bundles);
   }
 
 }

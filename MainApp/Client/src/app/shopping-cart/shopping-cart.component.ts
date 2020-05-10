@@ -3,12 +3,19 @@ import { Car } from '../models/Car.model';
 import { Review } from '../models/Review.model';
 import { Rental } from '../models/Rental.model';
 
+class Bundle {
+  name: string;
+  rentals?: Array<Rental>;
+}
+
 @Component({
   selector: 'app-shopping-cart',
   templateUrl: './shopping-cart.component.html',
   styleUrls: ['./shopping-cart.component.css']
 })
 export class ShoppingCartComponent implements OnInit {
+
+  bundles = new Array<any>();
 
   rentals = new Array<Rental>();
   constructor() {
@@ -19,6 +26,20 @@ export class ShoppingCartComponent implements OnInit {
     "Jaguar", "I dont know", "Diesel", "Automatic", "A", 2, "Unlimited", 1000, 2, review),  new Date(1588712400000),  new Date(1588782400000)));
     this.rentals.push(new Rental(new Car("https://www.testoviautomobila.rs/wp-content/uploads/2015/05/fica-prelepa-slika-840x420.jpg",
     "Zastava", "500", "Gasoline", "Manual", "A", 15, "Unlimited", 5000, 5, review),  new Date(1588712400000),  new Date(1588782400000)));
+  
+    var bundle = new Bundle();
+    bundle.name = "First bundle";
+    bundle.rentals = new Array<Rental>();
+    bundle.rentals.push(this.rentals[0]);
+    this.bundles.push(bundle);
+    console.log(this.bundles);
+
+    var bundle = new Bundle();
+    bundle.name = "Second bundle";
+    bundle.rentals = new Array<Rental>();
+    bundle.rentals.push(this.rentals[1]);
+    this.bundles.push(bundle);
+    console.log(this.bundles);
   }
 
   ngOnInit() {
