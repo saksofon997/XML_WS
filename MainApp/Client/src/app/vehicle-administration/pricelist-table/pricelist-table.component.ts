@@ -70,6 +70,10 @@ export class PricelistTableComponent implements OnInit {
     this.dataSource = this.dataSource.filter((value, key) => {
       if (value.id == row_obj.id) {
         value.name = row_obj.name;
+        value.pricePerDay = row_obj.pricePerDay;
+        value.cdw = row_obj.cdw;
+        value.pricePerKm = row_obj.pricePerKm;
+        value.description = row_obj.description;
       }
       return true;
     });
