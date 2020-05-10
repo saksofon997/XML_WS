@@ -1,6 +1,6 @@
 .separator {
     background-color: #585858;
-    height: 1vh;
+    height: 1em;
 }
 
 .container-bg {
@@ -9,8 +9,8 @@
 
 .list-group-item {
     color: #000000;
-    margin-top: 0.5em;
-    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: large;
 }
 
 .list-group-item:hover {
@@ -20,6 +20,7 @@
 }
 
 .active {
+    margin-bottom: 0.5em;
     background-color: #E81831;
     color: #eeeeee;
   }

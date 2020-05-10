@@ -1,0 +1,12 @@
+.mat-tab-labels, .mat-tab-label, .mat-tab-link {
+    font-size: 1.2em;
+    color: #585858;
+}
+  
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
+    background: #E81831;
+}
+
+.container {
+    padding-top: 1em;
+}

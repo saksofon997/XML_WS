@@ -16,6 +16,7 @@ import { VehiclePageModule } from '../vehicle-page/vehicle-page.module';
 import { CarTeaserComponent } from './car-teaser/car-teaser.component';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { SharedModule } from '../shared/shared.module';
     MatNativeDateModule ,
     MatSelectModule,
     MatInputModule,
+    MatIconModule,
     AngularYandexMapsModule.forRoot("73d3c687-6c0b-4a6a-9d44-865e790fb034"),
     FormsModule,
     SelectDropDownModule,
