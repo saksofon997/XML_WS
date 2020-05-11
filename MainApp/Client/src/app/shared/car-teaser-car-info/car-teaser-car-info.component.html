@@ -2,33 +2,30 @@
   <div class="col-md-4 col-left">
     <img class="car-Image shadow-sm bg-white rounded" src="{{car.src}}">
   </div>
-  <div class="col-md-6 col-left ">
+  <div class="col-md-6 col-left d-flex justify-content-sm-start justify-content-center mt-3 align-items-center">
     <ul class="vehicle-info mt-1">
       <li>
-        Brand: {{car.brand}}
+        <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon> {{car.brand}} {{car.model}}
       </li>
       <li>
-        Model: {{car.model}}
+        <mat-icon matTooltip="Fuel type" [matTooltipPosition]="'below'"> local_gas_station</mat-icon> {{car.fuel}}
       </li>
       <li>
-        Fuel: {{car.fuel}}
+        <mat-icon matTooltip="Transmission type" [matTooltipPosition]="'below'">open_with</mat-icon> {{car.transmission}}
       </li>
       <li>
-        Transmission: {{car.transmission}}
+        <mat-icon matTooltip="Vehicle category" [matTooltipPosition]="'below'">commute</mat-icon> {{car.carClass}}
       </li>
       <li>
-        Class: {{car.carClass}}
+        <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        Kids seats No: {{car.seats}}
-      </li>
-      <li>
-        Mileage: {{car.mileage}}
+        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{car.mileage}}
       </li>
     </ul>
   </div>
-  <div class="col-sm-2 col-left">
-    <div class="row mt-3">
+  <div class="col-sm-4 col-md-2 col-left">
+    <div class="row mt-3 d-flex justify-content-center align-self-center">
       <ngb-rating [(rate)]="car.review.stars" readonly=true max=5>
         <ng-template let-fill="fill" let-index="index">
           <span class="star" [class.filled]="fill === 100">&#9733;</span>
@@ -36,11 +33,11 @@
       </ngb-rating>
 
     </div>
-    <div class="row">
-      <div class="col-sm-1">
+    <div class="row d-flex justify-content-center align-self-center">
+      <div class="col-sm-4 col-md-1 d-flex justify-content-center align-self-center">
         <img class="comment-icon mt-3" src="assets/images/comment.png" alt="">
       </div>
-      <div class="col-sm-5">
+      <div class="col-sm-4 col-md-3 d-flex justify-content-center align-self-center">
         <span class="badge mt-3">{{car.commentNo}}</span>
       </div>
     </div>

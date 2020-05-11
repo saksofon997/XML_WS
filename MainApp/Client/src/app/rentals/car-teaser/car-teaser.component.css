@@ -9,7 +9,11 @@ label {
     margin-top: 5em;
   }
 .mat-icon {
-    padding-top: 5px;
     font-size: 17px;
     width: 17px;
+    font-family: 'Material Icons' !important;
+    vertical-align: middle;
+    margin-right: 1rem; 
+    margin-left: 0.5rem;
+    cursor: help;
   }

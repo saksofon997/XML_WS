@@ -10,22 +10,22 @@
     -->
     <ul class="vehicle-info mt-1">
       <li>
-        <mat-icon> directions_car</mat-icon>: {{car.brand}} {{car.model}}
+        <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon> {{car.brand}} {{car.model}}
       </li>
       <li>
-        <mat-icon> local_gas_station</mat-icon>: {{car.fuel}}
+        <mat-icon matTooltip="Fuel type" [matTooltipPosition]="'below'"> local_gas_station</mat-icon> {{car.fuel}}
       </li>
       <li>
-        <mat-icon>open_with</mat-icon>: {{car.transmission}}
+        <mat-icon matTooltip="Transmission type" [matTooltipPosition]="'below'">open_with</mat-icon> {{car.transmission}}
       </li>
       <li>
-        <mat-icon>commute</mat-icon>: {{car.carClass}}
+        <mat-icon matTooltip="Vehicle category" [matTooltipPosition]="'below'">commute</mat-icon> {{car.carClass}}
       </li>
       <li>
-        <mat-icon>airline_seat_recline_extra</mat-icon>: {{car.seats}}
+        <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        <mat-icon>trending_up</mat-icon>: {{car.mileage}}
+        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{car.mileage}}
       </li>
     </ul>
   </div>

@@ -31,3 +31,12 @@
   margin-right: 0.4em;
   font-weight: bold;
 }
+.mat-icon {
+  font-size: 17px;
+  width: 17px;
+  font-family: 'Material Icons' !important;
+  vertical-align: middle;
+  margin-right: 1rem; 
+  margin-left: 0.5rem;
+  cursor: help;
+}
