@@ -17,9 +17,15 @@ export class ScCarTeaserComponent implements OnInit {
   ngOnInit() {
   }
 
-  addToBundle(){
-    this.bundles[0].rentals.push(this.rental);
-    console.log(this.bundles);
+  addToBundle(bundle) {
+    if ((bundle.owner) && bundle.owner !==  this.rental.car.ownerId){
+      alert('Cant add to bundle bla bla bla... prettier alert needed');
+      return;
+    }
+
+    bundle.owner = this.rental.car.ownerId;
+    bundle.rentals.push(this.rental);
+    this.rental.bundle = bundle.name;
   }
 
 }

@@ -13,9 +13,10 @@ export class Car {
     price: Number;
     commentNo: Number;
     review: Review;
+    ownerId: Number;
     constructor(src: String, brand: String, model: String, fuel: String,
         transmission : String, carClass : String, seats: Number, mileage: String,
-         price: Number, commentNo: Number, review: Review){
+         price: Number, commentNo: Number, review: Review, ownerId: Number){
              this.src = src;
              this.brand = brand;
              this.model = model;
@@ -27,6 +28,7 @@ export class Car {
               this.price = price;
               this.commentNo = commentNo;
               this.review = review;
+              this.ownerId = ownerId;
 
     }
 

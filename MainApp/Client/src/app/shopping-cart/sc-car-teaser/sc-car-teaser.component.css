@@ -9,3 +9,23 @@
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: #E81831;
 }
+
+.mat-icon {
+  font-size: 17px;
+  width: 17px;
+  font-family: 'Material Icons' !important;
+  vertical-align: middle;
+  margin-right: 1rem; 
+  margin-left: 0.5rem;
+  cursor: help;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+a:visited,
+a:active,
+a:focus {
+  background-color: transparent;
+}

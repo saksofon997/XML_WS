@@ -34,7 +34,7 @@
             <mat-checkbox [labelPosition]="'after'" style="padding-left: 0.8rem;">
             </mat-checkbox>
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -48,7 +48,22 @@
           <p class="">500$</p>
         </div>
         <div class="col-sm-12 d-flex justify-content-center align-self-center">
-          <button (click)=addToBundle()>Add to bundle</button>
+          <div class="dropdown" *ngIf="rental.bundle === null">
+            <button class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" mat-button
+              aria-haspopup="true" aria-expanded="false">
+              <span style="padding-bottom: 7px; padding-right: 7px;">Add to bundle</span>
+              <mat-icon style="cursor: pointer; font-size: 24px; margin-left: 0px; margin-right: 0px;
+                      width: 24px;">add</mat-icon>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" *ngFor="let bundle of bundles" style="cursor: pointer;"
+                (click)="addToBundle(bundle)">{{bundle.name}}</a>
+            </div>
+          </div>
+          <div *ngIf="rental.bundle !== null">
+            Bundle: <b>{{rental.bundle}}</b>
+          </div>
+
         </div>
       </div>
     </div>
