@@ -21,7 +21,7 @@ const ELEMENT_DATA: UsersData[] = [
   styleUrls: ['./fuel-table.component.css']
 })
 export class FuelTableComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'action'];
+  displayedColumns: string[] = ['name', 'action'];
   dataSource = ELEMENT_DATA;
  
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;

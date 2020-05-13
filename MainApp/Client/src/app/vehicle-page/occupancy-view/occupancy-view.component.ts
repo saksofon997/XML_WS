@@ -25,7 +25,7 @@ const ELEMENT_DATA: UsersData[] = [
   styleUrls: ['./occupancy-view.component.css']
 })
 export class OccupancyViewComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'from', 'to', 'type', 'action'];
+  displayedColumns: string[] = ['from', 'to', 'type', 'action'];
   dataSource = ELEMENT_DATA;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;

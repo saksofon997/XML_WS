@@ -21,7 +21,7 @@ const ELEMENT_DATA: UsersData[] = [
   styleUrls: ['./model-table.component.css']
 })
 export class ModelTableComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'action'];
+  displayedColumns: string[] = ['name', 'action'];
   dataSource = ELEMENT_DATA;
  
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;

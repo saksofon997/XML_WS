@@ -55,9 +55,6 @@ import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-di
     VehiclePageRoutingModule,
     SharedModule,
   ],
-  exports: [
-    VehicleInfoComponent
-  ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   // Exports should not be in lazy loaded modules
   providers: [

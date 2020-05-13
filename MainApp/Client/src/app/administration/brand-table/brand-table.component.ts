@@ -22,7 +22,7 @@ const ELEMENT_DATA: UsersData[] = [
 })
 export class BrandTableComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'action'];
+  displayedColumns: string[] = ['name', 'action'];
   dataSource = ELEMENT_DATA;
  
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;

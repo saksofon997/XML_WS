@@ -58,3 +58,13 @@ a {
 ul {
   list-style-type: none;
  }
+
+.mat-icon {
+  font-family: 'Material Icons' !important;
+  vertical-align: middle;
+  margin-right: 1rem; 
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: #E81831;
+  outline: none;
+  }

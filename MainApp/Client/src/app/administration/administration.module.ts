@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { DialogBoxComponent } from './dialog-box-edit/dialog-box-edit.component';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [ // Declare all components of module
@@ -29,7 +29,6 @@ import { MatIconModule } from '@angular/material/icon'
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatInputModule,
     MatSelectModule,
     MatIconModule,
     AdministrationRoutingModule
