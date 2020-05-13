@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { AngularYandexMapsModule } from 'angular8-yandex-maps';
 
 import { VehiclePageComponent } from './vehicle-page.component';
 import { VehiclePageRoutingModule } from './vehicle-page-routing.module';
@@ -49,6 +50,7 @@ import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-di
     MatFormFieldModule,
 
     NgImageSliderModule,
+    AngularYandexMapsModule.forRoot("73d3c687-6c0b-4a6a-9d44-865e790fb034"),
 
     VehiclePageRoutingModule,
     SharedModule,
