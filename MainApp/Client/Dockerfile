@@ -1,11 +1,9 @@
-FROM node:12.7-alpine AS build
-WORKDIR /usr/src/app
-COPY package.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+FROM node:alpine3.11
 
-### STAGE 2: Run ###
-FROM nginx:1.17.1-alpine
-COPY default.conf /etc/nginx/conf.d/
-COPY --from=build /usr/src/app/dist/Client /usr/share/nginx/html
+LABEL maintainer="saksofon997@gmail.com"
+
+WORKDIR /usr/src/Client 
+COPY . .
+# RUN ["npm", "install"]
+EXPOSE 4200
+CMD [ "npm", "start"]
