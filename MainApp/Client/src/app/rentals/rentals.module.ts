@@ -17,6 +17,7 @@ import { CarTeaserComponent } from './car-teaser/car-teaser.component';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatAutocompleteModule, 
     MatCheckboxModule,
     MatListModule,
+    MatTooltipModule,
     VehiclePageModule,
     NgbRatingModule,
     SharedModule

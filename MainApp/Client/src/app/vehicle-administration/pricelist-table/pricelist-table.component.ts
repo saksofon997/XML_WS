@@ -25,7 +25,7 @@ const ELEMENT_DATA: Pricing[] = [
   styleUrls: ['./pricelist-table.component.css']
 })
 export class PricelistTableComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'pricePerDay', 'cdw', 'pricePerKm', 'action'];
+  displayedColumns: string[] = ['name', 'pricePerDay', 'cdw', 'pricePerKm', 'action'];
   dataSource = ELEMENT_DATA;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;

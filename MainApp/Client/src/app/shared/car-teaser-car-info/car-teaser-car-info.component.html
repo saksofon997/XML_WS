@@ -1,13 +1,8 @@
 <div class="row m-3 shadow-sm  m-1 bg-white rounded">
   <div class="col-md-4 col-left">
-    <img class="car-Image shadow-sm bg-white rounded"
-      src="{{car.src}}">
+    <img class="car-Image shadow-sm bg-white rounded" src="{{car.src}}">
   </div>
-  <div class="col-md-4 col-left ">
-    <!--
-      <app-vehicle-info style="font-size: 0.8em;">
-      </app-vehicle-info>
-    -->
+  <div class="col-md-6 col-left d-flex justify-content-sm-start justify-content-center mt-3 align-items-center">
     <ul class="vehicle-info mt-1">
       <li>
         <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon> {{car.brand}} {{car.model}}
@@ -29,8 +24,8 @@
       </li>
     </ul>
   </div>
-  <div class="col-md-2 col-left">
-    <div class="row mt-3">
+  <div class="col-sm-4 col-md-2 col-left">
+    <div class="row mt-3 d-flex justify-content-center align-self-center">
       <ngb-rating [(rate)]="car.review.stars" readonly=true max=5>
         <ng-template let-fill="fill" let-index="index">
           <span class="star" [class.filled]="fill === 100">&#9733;</span>
@@ -38,28 +33,13 @@
       </ngb-rating>
 
     </div>
-    <div class="row">
-      <div class="col-md-1">
+    <div class="row d-flex justify-content-center align-self-center">
+      <div class="col-sm-4 col-md-1 d-flex justify-content-center align-self-center">
         <img class="comment-icon mt-3" src="assets/images/comment.png" alt="">
       </div>
-      <div class="col-md-5">
+      <div class="col-sm-4 col-md-3 d-flex justify-content-center align-self-center">
         <span class="badge mt-3">{{car.commentNo}}</span>
       </div>
     </div>
   </div>
-
-  <div class="col-md-2 col-left">
-    <div class="row mt-3 ml-3">
-      <label class="info-label">Price: </label>
-      <label>${{car.price}}</label>
-    </div>
-    <div class="row mt-3 ml-3" style="margin-bottom: 0; margin-right: 0;">
-      CWD
-    </div>
-    <div class="row mt-3 ml-3" style="margin-bottom: 0; margin-right: 0;">
-      <a class="btn btn-sm btn-outline-danger search-button" style="margin-bottom: 0; margin-right: 0;">Add to
-        cart</a>
-    </div>
-  </div>
-
 </div>

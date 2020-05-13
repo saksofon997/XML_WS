@@ -74,7 +74,7 @@
   margin:0;
   text-align:center;
 }
-@media (max-width:991px)
+/* @media (max-width:991px)
 {
   .site-footer [class^=col-]
   {
@@ -93,7 +93,7 @@
   {
     text-align:center
   }
-}
+} */
 .social-icons
 {
   padding-left:0;
