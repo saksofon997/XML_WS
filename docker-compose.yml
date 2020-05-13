@@ -48,7 +48,7 @@ services:
   front:
     build: ./MainApp/Client
     ports:
-    - "4200:4200"
+    - "4200:80"
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
     tty: true
