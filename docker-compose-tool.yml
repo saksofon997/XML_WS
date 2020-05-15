@@ -51,10 +51,11 @@ services:
     - "4200:4200"
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
+      - CHOKIDAR_USEPOLLING=true
     tty: true
     volumes:
-      - ./MainApp/Client:/usr/src/Client 
-      - /usr/src/Client/node_modules
+      - /XML_WS/MainApp/Client:/usr/src/Client  
+      - /XML_WS/MainApp/Client/node_modules
 
   zuul:
     build: ./MainApp/Servers/zuul
