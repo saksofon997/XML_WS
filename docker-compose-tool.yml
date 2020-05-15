@@ -44,6 +44,8 @@ services:
       - eureka-serviceregistry
       - postgres
       - axon-server
+    volumes: 
+      - maven-repo:/root/.m2
 
   front:
     build: ./MainApp/Client
@@ -71,6 +73,8 @@ services:
       - postgres
       - axon-server
       - xmlws
+    volumes: 
+      - maven-repo2:/root/.m2
 
 networks:
   demo:
@@ -79,3 +83,5 @@ networks:
 volumes:
   database-data:
   front-storage:
+  maven-repo:
+  maven-repo2:
