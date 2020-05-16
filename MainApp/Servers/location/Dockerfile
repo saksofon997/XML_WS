@@ -15,4 +15,4 @@ COPY --from=backend /usr/src/server/target/location.jar ./
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "xmlws.jar"]
+CMD ["java", "-jar", "location.jar"]

@@ -15,4 +15,4 @@ COPY --from=backend /usr/src/server/target/chat.jar ./
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "xmlws.jar"]
+CMD ["java", "-jar", "chat.jar"]
