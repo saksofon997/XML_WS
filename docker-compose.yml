@@ -133,7 +133,7 @@ services:
     networks:
       - demo
     ports:
-    - "8083:8083"
+    - "8087:8083"
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
     tty: true
