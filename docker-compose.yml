@@ -71,7 +71,6 @@ services:
       - eureka-serviceregistry
       - postgres
       - axon-server
-      - xmlws
     volumes: 
       - maven-repo2:/root/.m2
 
