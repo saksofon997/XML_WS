@@ -11,7 +11,7 @@ RUN ["mvn", "package", "-DskipTests"]
 
 FROM openjdk:8-jdk-alpine
 WORKDIR /app
-COPY --from=backend /usr/src/server/target/xmlws.jar ./
+COPY --from=backend /usr/src/server/target/chat.jar ./
 
 EXPOSE 8080
 
