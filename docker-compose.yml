@@ -44,6 +44,8 @@ services:
       - eureka-serviceregistry
       - postgres
       - axon-server
+    volumes: 
+      - maven-repo:/root/.m2
 
   front:
     build: ./MainApp/Client
@@ -51,11 +53,10 @@ services:
     - "4200:4200"
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
-      #- CHOKIDAR_USEPOLLING=true
     tty: true
     volumes:
-      - ./MainApp/Client:/usr/src/Client      #  - /XML_WS/MainApp/Client:/usr/src/Client  
-      - /usr/src/Client/node_modules          #  - /XML_WS/MainApp/Client/node_modules
+      - ./MainApp/Client:/usr/src/Client 
+      - /usr/src/Client/node_modules
 
   zuul:
     build: ./MainApp/Servers/zuul
@@ -71,6 +72,8 @@ services:
       - postgres
       - axon-server
       - xmlws
+    volumes: 
+      - maven-repo2:/root/.m2
 
 networks:
   demo:
@@ -79,3 +82,5 @@ networks:
 volumes:
   database-data:
   front-storage:
+  maven-repo:
+  maven-repo2:
