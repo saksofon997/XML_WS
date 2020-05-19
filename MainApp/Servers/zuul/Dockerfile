@@ -10,7 +10,8 @@ COPY . .
 RUN ["mvn", "package", "-DskipTests"]
 
 FROM openjdk:8-jdk-alpine
-COPY entrypoint.sh /entrypoint.sh
+#COPY entrypoint.sh /entrypoint.sh
 COPY --from=zuul /usr/src/server/target/zuul.jar zuul-1.0.0.jar
-RUN chmod +x /entrypoint.sh
-CMD ["/entrypoint.sh"]
+#RUN chmod +x /entrypoint.sh
+#CMD ["/entrypoint.sh"]
+CMD ["java", "-jar", "zuul-1.0.0.jar"]

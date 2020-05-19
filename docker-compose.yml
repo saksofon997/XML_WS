@@ -44,6 +44,7 @@ services:
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
+      POSTGRES_DB: test_database
     networks:
       - demo
     depends_on:
