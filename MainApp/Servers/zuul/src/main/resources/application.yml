@@ -1,0 +1,6 @@
+zuul:
+  routes:
+    user:
+      path: /test/**
+      stripPrefix: false
+      serviceId: user
