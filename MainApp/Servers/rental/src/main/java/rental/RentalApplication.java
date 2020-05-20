@@ -2,6 +2,13 @@ package rental;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import rental.security.JWTAuthorizationFilter;
 
 @SpringBootApplication
 public class RentalApplication {
@@ -10,4 +17,16 @@ public class RentalApplication {
 		SpringApplication.run(RentalApplication.class, args);
 	}
 
+	@EnableWebSecurity
+	@Configuration
+	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http.csrf().disable()
+					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+					.authorizeRequests()
+					.anyRequest().authenticated();
+		}
+	}
 }

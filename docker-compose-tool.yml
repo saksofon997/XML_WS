@@ -3,6 +3,7 @@ services:
 
   eureka-serviceregistry:
     build: ./MainApp/Servers/eureka
+    container_name: eureka-serviceregistry
     networks:
       - demo
     ports:
@@ -37,13 +38,17 @@ services:
     build: ./MainApp/Servers/user
     ports:
     - "8081:8080"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
     tty: true
+    environment:
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+    networks:
+      - demo
     depends_on:
       - eureka-serviceregistry
       - postgres
-      - axon-server
     volumes: 
       - /c/Users/Mihajlo/.m2:/root/.m2
 
@@ -52,7 +57,12 @@ services:
     ports:
     - "8082:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+    networks:
+      - demo
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -66,7 +76,12 @@ services:
     ports:
     - "8083:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+    networks:
+      - demo
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -80,7 +95,12 @@ services:
     ports:
     - "8084:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+    networks:
+      - demo
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -94,7 +114,12 @@ services:
     ports:
     - "8085:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+    networks:
+      - demo
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -108,7 +133,12 @@ services:
     ports:
     - "8086:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+    networks:
+      - demo
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -136,7 +166,10 @@ services:
     ports:
     - "8087:8083"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
