@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS users;
+
 INSERT INTO users.permission(
     id, name)
     VALUES (nextval('permissions_id_seq'), 'READ_PERMISSION'); /*1*/
