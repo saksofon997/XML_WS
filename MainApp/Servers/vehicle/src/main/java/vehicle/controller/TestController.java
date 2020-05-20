@@ -12,6 +12,6 @@ public class TestController {
     @GetMapping(path = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String getClinic() {
-        return "CAO JA SAM VEHICLE SERVIS";
+        return "CAO JA SAM VEHICLE SERVIS izmenjen malo";
     }
 }
