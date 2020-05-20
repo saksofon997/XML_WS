@@ -4,3 +4,11 @@ zuul:
       path: /test/**
       stripPrefix: false
       serviceId: user
+    user1:
+      path: /auth/**
+      stripPrefix: false
+      serviceId: user
+    rental:
+      path: /api/**
+      stripPrefix: false
+      serviceId: rental
