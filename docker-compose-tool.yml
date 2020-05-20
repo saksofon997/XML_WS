@@ -45,7 +45,7 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   rental:
     build: ./MainApp/Servers/rental
@@ -59,7 +59,7 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   search:
     build: ./MainApp/Servers/search
@@ -73,7 +73,7 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   vehicle:
     build: ./MainApp/Servers/vehicle
@@ -87,7 +87,7 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   location:
     build: ./MainApp/Servers/location
@@ -101,7 +101,7 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   chat:
     build: ./MainApp/Servers/chat
@@ -115,19 +115,19 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
-  front:
-    build: ./MainApp/Client
-    ports:
-    - "4200:4200"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-      - CHOKIDAR_USEPOLLING=true
-    tty: true
-    volumes:
-      - /XML_WS/MainApp/Client:/usr/src/Client  
-      - /XML_WS/MainApp/Client/node_modules
+  # front:
+  #   build: ./MainApp/Client
+  #   ports:
+  #   - "4200:4200"
+  #   environment:
+  #     - REGISTRY_HOST=eureka-serviceregistry
+  #     - CHOKIDAR_USEPOLLING=true
+  #   tty: true
+  #   volumes:
+  #     - /XML_WS/MainApp/Client:/usr/src/Client  
+  #     - /XML_WS/MainApp/Client/node_modules
 
   zuul:
     build: ./MainApp/Servers/zuul
@@ -143,7 +143,7 @@ services:
       - postgres
       - axon-server
     volumes: 
-      - maven-repo2:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
 networks:
   demo:
