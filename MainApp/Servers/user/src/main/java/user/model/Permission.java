@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,31 @@ public class Permission {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "permissions", cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "role_permission",
+            joinColumns = @JoinColumn(name = "permissions_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
     private Set<Role> roles;
+
+    @Override
+    public int hashCode() {
+        if (id != null) {
+            return id.hashCode();
+        } else if (name != null) {
+            return name.hashCode();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object another) {
+        if (another == null || !(another instanceof Permission))
+            return false;
+
+        Permission anotherPermission = (Permission) another;
+
+        return (anotherPermission.id != null && (anotherPermission.id == this.id))
+                || (anotherPermission.id == null && anotherPermission.name != null && (anotherPermission.name.equals(this.name)));
+    }
 }
