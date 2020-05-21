@@ -59,4 +59,12 @@ public class ApiError {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Throwable getEx() {
+        return ex;
+    }
+
+    public void setEx(Throwable ex) {
+        this.ex = ex;
+    }
 }

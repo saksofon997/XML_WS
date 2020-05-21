@@ -39,6 +39,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             ItemNotFound ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
+        apiError.setEx(ex);
         return buildResponseEntity(apiError);
     }
 

@@ -19,7 +19,7 @@ public class BrandController {
     @Autowired
     ValidationService validationService;
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAll() throws ItemNotFound {
 
         brandService.getAll();
@@ -27,8 +27,8 @@ public class BrandController {
         return new ResponseEntity<>("GET: /brand", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(consumes = "application/json",
-                 produces = "application/json")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNew(@RequestBody String brandDTO) {
 
         return new ResponseEntity<>(brandDTO, HttpStatus.ACCEPTED);
