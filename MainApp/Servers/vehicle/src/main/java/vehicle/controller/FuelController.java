@@ -6,38 +6,38 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api")
+@RequestMapping(value = "api/fuel")
 public class FuelController {
 
-    @GetMapping(path = "/fuel",
+    @GetMapping(path = "",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAll() {
 
         return new ResponseEntity<>("fuel", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "/fuel",
+    @PostMapping(path = "",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNew(@RequestBody String fuelDTO) {
 
         return new ResponseEntity<>(fuelDTO, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/fuel/{id}",
+    @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getOne(@PathVariable String id) {
 
         return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping(path = "/fuel/{id}",
+    @PutMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> update(@PathVariable String id, @RequestBody String fuelDTO) {
 
         return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(path = "/fuel/{id}",
+    @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> delete(@PathVariable String id) {
 

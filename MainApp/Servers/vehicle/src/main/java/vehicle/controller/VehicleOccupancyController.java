@@ -18,19 +18,21 @@ public class VehicleOccupancyController {
 
     @PostMapping(path = "/vehicle/{vehicleId}/occupancy",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createNew(@PathVariable String vehicleId, @RequestBody String occupanyDTO) {
+    public ResponseEntity<String> createNew(@PathVariable String vehicleId, @RequestBody String occupancyDTO) {
 
-        return new ResponseEntity<>(occupanyDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(occupancyDTO, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping(path = "/vehicle/{vehicleId}/occupancy{id}",
+    @PutMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> update(@PathVariable String vehicleId, @PathVariable String id, @RequestBody String occupanyDTO) {
+    public ResponseEntity<String> update(@PathVariable String vehicleId,
+                                         @PathVariable String id,
+                                         @RequestBody String occupancyDTO) {
 
         return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(path = "/vehicle/{vehicleId}/occupancy{id}",
+    @DeleteMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> delete(@PathVariable String vehicleId, @PathVariable String id) {
 

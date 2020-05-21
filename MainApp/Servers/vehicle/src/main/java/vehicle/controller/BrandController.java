@@ -7,17 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.exceptions.ItemNotFound;
 import vehicle.service.BrandService;
-import vehicle.utils.ErrorMessages;
+import vehicle.service.ValidationService;
 
 @RestController
-@RequestMapping(value = "api")
+@RequestMapping(value = "api/brand")
 public class BrandController {
 
     @Autowired
     BrandService brandService;
 
-    @GetMapping(path = "/brand",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Autowired
+    ValidationService validationService;
+
+    @GetMapping(produces = "application/json")
     public ResponseEntity<String> getAll() throws ItemNotFound {
 
         brandService.getAll();
@@ -25,30 +27,28 @@ public class BrandController {
         return new ResponseEntity<>("GET: /brand", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "/brand",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = "application/json",
+                 produces = "application/json")
     public ResponseEntity<String> createNew(@RequestBody String brandDTO) {
-        if (brandDTO == null){
-            return new ResponseEntity<>(ErrorMessages.REQUEST_ERROR(), HttpStatus.BAD_REQUEST);
-        }
+
         return new ResponseEntity<>(brandDTO, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/brand/{id}",
+    @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getOne(@PathVariable String id) {
 
         return new ResponseEntity<>("GET: /brand/"+id, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping(path = "/brand/{id}",
+    @PutMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> update(@PathVariable String id, @RequestBody String brandDTO) {
 
         return new ResponseEntity<>("PUT: /brand/"+id, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(path = "/brand/{id}",
+    @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> delete(@PathVariable String id) {
 
