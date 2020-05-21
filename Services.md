@@ -90,8 +90,6 @@ Microservice that handles rentals, bundles and rental reports.
 - **/rental/{id}** PUT: Change single rental
 - **/rental/{id}** DELETE: Delete/reject single rental
 
-#### Unsure:
-(is it better the other way arround (customer/{id}/rental)...?)
 - **/customer/{id}/rental** GET: Get rentals of a customer
 - **/vehicle/{id}/rental** GET: Get rentals of a vehicle
 - **/owner/{id}/rental** GET: Get rentals of an owner
