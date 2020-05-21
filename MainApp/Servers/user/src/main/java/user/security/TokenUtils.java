@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import user.model.User;
@@ -12,6 +13,7 @@ import user.service.AuthUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class TokenUtils {
@@ -50,7 +52,9 @@ public class TokenUtils {
                 //.setExpiration(generateExpirationDate())
                 // .claim("role", role) //postavljanje proizvoljnih podataka u telo JWT tokena
                 .claim("authorities",
-                        user.getAuthorities())
+                        user.getAuthorities().stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList()))
 //        grantedAuthorities.stream()
 //                .map(GrantedAuthority::getAuthority)
 //                .collect(Collectors.toList()))
@@ -98,11 +102,10 @@ public class TokenUtils {
 
     // Funkcija za validaciju JWT tokena
     public Boolean validateToken(String token, UserDetails userDetails) {
-        User user = (User) userDetails;
         final String email = getEmailFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
 
-        return (email != null && email.equals(((User) userDetails).getEmail()));
+        return (email != null && email.equals(userDetails.getUsername()));
     }
 
     public String getEmailFromToken(String token) {

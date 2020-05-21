@@ -1,7 +1,6 @@
 package user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import user.model.Permission;
 import user.model.Role;
 import user.model.User;
-import user.repository.RoleRepository;
 import user.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -27,15 +25,6 @@ public class AuthUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private IUserService service;
-
-//    @Autowired
-//    private MessageSource messages;
-
-//    @Autowired
-//    private RoleRepository roleRepository;
-
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
@@ -46,8 +35,6 @@ public class AuthUserDetailsService implements UserDetailsService {
                     " ", " ", true, true, true, true,
                     getAuthorities(Arrays.asList(
                               null)));
-//                    getAuthorities(Arrays.asList(
-//                            roleRepository.findByName("ROLE_USER"))));
         }
 
         return new org.springframework.security.core.userdetails.User(
@@ -67,6 +54,7 @@ public class AuthUserDetailsService implements UserDetailsService {
         List<Permission> collection = new ArrayList<>();
         for (Role role : roles) {
             collection.addAll(role.getPermissions());
+            permissions.add(role.getName()); // Role as a permission, why not -> hasAuthority("ROLE_ADMIN") ?
         }
         for (Permission item : collection) {
             permissions.add(item.getName());

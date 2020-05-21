@@ -10,10 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 import user.dto.UserDTO;
 import user.model.User;
 import user.repository.UserRepository;
@@ -36,7 +34,7 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private AuthUserDetailsService userDetailsService;
+    private AuthUserDetailsService authUserDetailsService;
 
     @Autowired
     private UserRepository userRepository;
@@ -73,6 +71,25 @@ public class AuthenticationController {
         // Vrati token kao odgovor na uspesno autentifikaciju
         return ResponseEntity.ok(userState);
     }
+
+    @RequestMapping(value = "/verify/{token}", method = RequestMethod.GET)
+    public ResponseEntity<?> verify(@PathVariable("token") String token){
+        String email = tokenUtils.getEmailFromToken(token);
+        if (email == null){
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+        UserDetails user = authUserDetailsService.loadUserByUsername(email);
+        if (user == null){
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+
+        if (tokenUtils.validateToken(token, user)) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     static class UserState {
         public String token;
