@@ -24,7 +24,7 @@ public class AuthFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 1;
+        return 10;
     }
 
     @Override
@@ -49,6 +49,8 @@ public class AuthFilter extends ZuulFilter {
         try {
             boolean valid = authClient.verify(jwtToken);
             System.out.println(valid);
+
+            // redirection (?)
         } catch (Exception e) {
             setFailedRequest("Invalid token", 403);
         }
