@@ -1,37 +1,37 @@
-package vehicle.model;
+package vehicle.dto;
 
-public class Vehicle {
+public class VehicleDTO {
 
     private Long id;
-    private Brand brand;
-    private Model model;
-    private Category category;
-    private Transmission transmission;
-    private Fuel fuel;
+    private BrandDTO brand;
+    private ModelDTO model;
+    private CategoryDTO category;
+    private TransmissionDTO transmission;
+    private FuelDTO fuel;
     private int seats;
     private int childSeats;
     private long mileage;
     private long cdw;
-    private Pricelist pricelist;
+    private PricelistDTO pricelist;
     private int numberOfStars;
     private int numberOfReviews;
 
-    public Vehicle() {
+    public VehicleDTO() {
     }
 
-    public Vehicle(Long id,
-                   Brand brand,
-                   Model model,
-                   Category category,
-                   Transmission transmission,
-                   Fuel fuel,
-                   int seats,
-                   int childSeats,
-                   long mileage,
-                   long cdw,
-                   Pricelist pricelist,
-                   int numberOfStars,
-                   int numberOfReviews) {
+    public VehicleDTO(Long id,
+                      BrandDTO brand,
+                      ModelDTO model,
+                      CategoryDTO category,
+                      TransmissionDTO transmission,
+                      FuelDTO fuel,
+                      int seats,
+                      int childSeats,
+                      long mileage,
+                      long cdw,
+                      PricelistDTO pricelist,
+                      int numberOfStars,
+                      int numberOfReviews) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -55,43 +55,43 @@ public class Vehicle {
         this.id = id;
     }
 
-    public Brand getBrand() {
+    public BrandDTO getBrand() {
         return brand;
     }
 
-    public void setBrand(Brand brand) {
+    public void setBrand(BrandDTO brand) {
         this.brand = brand;
     }
 
-    public Model getModel() {
+    public ModelDTO getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(ModelDTO model) {
         this.model = model;
     }
 
-    public Category getCategory() {
+    public CategoryDTO getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryDTO category) {
         this.category = category;
     }
 
-    public Transmission getTransmission() {
+    public TransmissionDTO getTransmission() {
         return transmission;
     }
 
-    public void setTransmission(Transmission transmission) {
+    public void setTransmission(TransmissionDTO transmission) {
         this.transmission = transmission;
     }
 
-    public Fuel getFuel() {
+    public FuelDTO getFuel() {
         return fuel;
     }
 
-    public void setFuel(Fuel fuel) {
+    public void setFuel(FuelDTO fuel) {
         this.fuel = fuel;
     }
 
@@ -127,11 +127,11 @@ public class Vehicle {
         this.cdw = cdw;
     }
 
-    public Pricelist getPricelist() {
+    public PricelistDTO getPricelist() {
         return pricelist;
     }
 
-    public void setPricelist(Pricelist pricelist) {
+    public void setPricelist(PricelistDTO pricelist) {
         this.pricelist = pricelist;
     }
 

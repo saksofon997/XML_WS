@@ -1,11 +1,14 @@
-package vehicle.model;
+package vehicle.dto;
 
-public class Fuel {
+public class ModelDTO {
 
     private Long id;
     private String name;
 
-    public Fuel(Long id, String name) {
+    public ModelDTO() {
+    }
+
+    public ModelDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -1,19 +1,24 @@
-package vehicle.model;
+package vehicle.dto;
+
+import vehicle.model.Model;
 
 import java.util.ArrayList;
 
-public class Brand {
+public class BrandDTO {
 
     private Long id;
     private String name;
-    private ArrayList<Model> models;
+    private ArrayList<ModelDTO> models;
 
-    public Brand(Long id, String name) {
+    public BrandDTO() {
+    }
+
+    public BrandDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Brand(Long id, String name, ArrayList<Model> models) {
+    public BrandDTO(Long id, String name, ArrayList<ModelDTO> models) {
         this.id = id;
         this.name = name;
         this.models = models;
@@ -35,11 +40,11 @@ public class Brand {
         this.name = name;
     }
 
-    public ArrayList<Model> getModels() {
+    public ArrayList<ModelDTO> getModels() {
         return models;
     }
 
-    public void setModels(ArrayList<Model> models) {
+    public void setModels(ArrayList<ModelDTO> models) {
         this.models = models;
     }
 }

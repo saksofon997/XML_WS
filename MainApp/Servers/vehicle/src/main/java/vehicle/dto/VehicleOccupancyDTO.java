@@ -1,8 +1,6 @@
-package vehicle.model;
+package vehicle.dto;
 
-import org.joda.time.DateTime;
-
-public class VehicleOccupancy {
+public class VehicleOccupancyDTO {
 
     private Long id;
     private long startTime;
@@ -10,7 +8,10 @@ public class VehicleOccupancy {
     private String type;
     private String locations;
 
-    public VehicleOccupancy(Long id, long startTime, long endTime, String type, String locations) {
+    public VehicleOccupancyDTO() {
+    }
+
+    public VehicleOccupancyDTO(Long id, long startTime, long endTime, String type, String locations) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
