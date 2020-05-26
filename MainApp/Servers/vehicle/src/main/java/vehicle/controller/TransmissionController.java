@@ -1,46 +1,65 @@
 package vehicle.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vehicle.dto.TransmissionDTO;
+import vehicle.service.TransmissionService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/transmission")
 public class TransmissionController {
 
-    @GetMapping(path = "",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAll() {
+    @Autowired
+    TransmissionService transmissionService;
 
-        return new ResponseEntity<>("transmission", HttpStatus.ACCEPTED);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TransmissionDTO>> getAll() {
+
+        List<TransmissionDTO> transmissions = transmissionService.getAll();
+
+        return new ResponseEntity<>(transmissions, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createNew(@RequestBody String transmissionDTO) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TransmissionDTO> createNew(@RequestBody TransmissionDTO transmissionDTO) {
+
+        TransmissionDTO added = transmissionService.add(transmissionDTO);
+
+        return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(path = "/{id}",
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TransmissionDTO> getOne(@PathVariable Long id) {
+
+        TransmissionDTO transmissionDTO = transmissionService.getOne(id);
 
         return new ResponseEntity<>(transmissionDTO, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getOne(@PathVariable String id) {
-
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
-    }
-
     @PutMapping(path = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> update(@PathVariable String id, @RequestBody String transmissionDTO) {
+                consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TransmissionDTO> update(@PathVariable Long id,
+                                                  @RequestBody TransmissionDTO transmissionDTO) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        TransmissionDTO updated = transmissionService.update(id, transmissionDTO);
+
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping(path = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> delete(@PathVariable String id) {
+                   produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TransmissionDTO> delete(@PathVariable Long id) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        TransmissionDTO deleted = transmissionService.delete(id);
+
+        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
 }

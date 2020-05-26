@@ -1,41 +1,60 @@
 package vehicle.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vehicle.dto.VehicleOccupancyDTO;
+import vehicle.service.VehicleOccupancyService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api")
 public class VehicleOccupancyController {
 
+    @Autowired
+    VehicleOccupancyService vehicleOccupancyService;
+
     @GetMapping(path = "/vehicle/{vehicleId}/occupancy",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> get(@PathVariable String vehicleId) {
+    public ResponseEntity<List<VehicleOccupancyDTO>> get(@PathVariable Long vehicleId) {
 
-        return new ResponseEntity<>(vehicleId, HttpStatus.ACCEPTED);
+        List<VehicleOccupancyDTO> occupancies = vehicleOccupancyService.getAll(vehicleId);
+
+        return new ResponseEntity<>(occupancies, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(path = "/vehicle/{vehicleId}/occupancy",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createNew(@PathVariable String vehicleId, @RequestBody String occupancyDTO) {
+                 consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VehicleOccupancyDTO> createNew(@PathVariable Long vehicleId,
+                                                         @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) {
 
-        return new ResponseEntity<>(occupancyDTO, HttpStatus.ACCEPTED);
+        VehicleOccupancyDTO added = vehicleOccupancyService.add(vehicleId, vehicleOccupancyDTO);
+
+        return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> update(@PathVariable String vehicleId,
-                                         @PathVariable String id,
-                                         @RequestBody String occupancyDTO) {
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VehicleOccupancyDTO> update(@PathVariable Long vehicleId,
+                                                      @PathVariable Long id,
+                                                      @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        VehicleOccupancyDTO updated = vehicleOccupancyService.update(vehicleId, id, vehicleOccupancyDTO);
+
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> delete(@PathVariable String vehicleId, @PathVariable String id) {
+    public ResponseEntity<VehicleOccupancyDTO> delete(@PathVariable Long vehicleId,
+                                                      @PathVariable Long id) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        VehicleOccupancyDTO deleted = vehicleOccupancyService.delete(vehicleId, id);
+
+        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
 }
