@@ -21,9 +21,6 @@ public class BrandController {
     @Autowired
     BrandService brandService;
 
-    @Autowired
-    ValidationService validationService;
-
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BrandDTO>> getAll() throws EntityNotFound {
 
@@ -51,6 +48,7 @@ public class BrandController {
     }
 
     @PutMapping(path = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BrandDTO> update(@PathVariable Long id,
                                            @RequestBody BrandDTO brandDTO) throws UnexpectedError {

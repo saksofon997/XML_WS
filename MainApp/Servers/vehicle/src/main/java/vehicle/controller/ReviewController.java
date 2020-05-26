@@ -1,19 +1,29 @@
 package vehicle.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vehicle.dto.ReviewDTO;
+import vehicle.service.ReviewService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api")
 public class ReviewController {
 
+    @Autowired
+    ReviewService reviewService;
+
     @GetMapping(path = "/review",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAll() {
+    public ResponseEntity<List<ReviewDTO>> getPending() {
 
-        return new ResponseEntity<>("review", HttpStatus.ACCEPTED);
+        List<ReviewDTO> pending = reviewService.getPending();
+
+        return new ResponseEntity<>(pending, HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/vehicle/{vehicleId}/review",
