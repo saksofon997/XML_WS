@@ -5,12 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.BrandDTO;
-import vehicle.exceptions.DuplicateEntity;
-import vehicle.exceptions.EntityNotFound;
-import vehicle.exceptions.UnexpectedError;
-import vehicle.service.BrandService;
-import vehicle.service.ValidationService;
+import search.dto.BrandDTO;
+import search.exceptions.DuplicateEntity;
+import search.exceptions.EntityNotFound;
+import search.exceptions.UnexpectedError;
+import search.service.BrandService;
 
 import java.util.List;
 

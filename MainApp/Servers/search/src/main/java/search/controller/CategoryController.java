@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.CategoryDTO;
-import vehicle.model.Category;
-import vehicle.service.CategoryService;
+import search.dto.CategoryDTO;
+import search.model.Category;
+import search.service.CategoryService;
 
 import java.util.List;
 
