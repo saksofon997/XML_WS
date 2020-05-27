@@ -28,7 +28,7 @@ public class SearchController {
                                                         @RequestParam("transmission") String transmission,
 
                                                         @RequestParam("location") String location,
-                                                        @RequestParam("time") long time,
+                                                        @RequestParam("time") long time
                                                         ) {
 
         List<SearchResultDTO> vehicles = searchService.doSearch(brand, category, fuel, model,
