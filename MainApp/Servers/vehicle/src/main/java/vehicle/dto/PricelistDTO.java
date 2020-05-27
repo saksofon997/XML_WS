@@ -1,8 +1,8 @@
-package vehicle.model;
+package vehicle.dto;
 
 import java.util.ArrayList;
 
-public class Pricelist {
+public class PricelistDTO {
 
     private Long id;
     private Long ownerId;
@@ -11,15 +11,18 @@ public class Pricelist {
     private long pricePerKm;
     private long cdw;
     private String description;
-    private ArrayList<Vehicle> vehicles;
+    private ArrayList<VehicleDTO> vehicles;
 
-    public Pricelist(Long id,
-                     Long ownerId,
-                     String name,
-                     long pricePerDay,
-                     long pricePerKm,
-                     long cdw,
-                     String description) {
+    public PricelistDTO() {
+    }
+
+    public PricelistDTO(Long id,
+                        Long ownerId,
+                        String name,
+                        long pricePerDay,
+                        long pricePerKm,
+                        long cdw,
+                        String description) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -29,14 +32,14 @@ public class Pricelist {
         this.description = description;
     }
 
-    public Pricelist(Long id,
-                     Long ownerId,
-                     String name,
-                     long pricePerDay,
-                     long pricePerKm,
-                     long cdw,
-                     String description,
-                     ArrayList<Vehicle> vehicles) {
+    public PricelistDTO(Long id,
+                        Long ownerId,
+                        String name,
+                        long pricePerDay,
+                        long pricePerKm,
+                        long cdw,
+                        String description,
+                        ArrayList<VehicleDTO> vehicles) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -103,11 +106,11 @@ public class Pricelist {
         this.description = description;
     }
 
-    public ArrayList<Vehicle> getVehicles() {
+    public ArrayList<VehicleDTO> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(ArrayList<Vehicle> vehicles) {
+    public void setVehicles(ArrayList<VehicleDTO> vehicles) {
         this.vehicles = vehicles;
     }
 }

@@ -1,6 +1,8 @@
-package vehicle.model;
+package vehicle.dto;
 
-public class Review {
+import vehicle.model.Vehicle;
+
+public class ReviewDTO {
 
     private Long id;
     private Long customerId;
@@ -8,17 +10,13 @@ public class Review {
     private int stars;
     private String text;
 
-    public Review(Long id, Long customerId, Vehicle vehicle, int stars, String text) {
+    public ReviewDTO() {
+    }
+
+    public ReviewDTO(Long id, Long customerId, Vehicle vehicle, int stars, String text) {
         this.id = id;
         this.customerId = customerId;
         this.vehicle = vehicle;
-        this.stars = stars;
-        this.text = text;
-    }
-
-    public Review(Long id, Long customerId, int stars, String text) {
-        this.id = id;
-        this.customerId = customerId;
         this.stars = stars;
         this.text = text;
     }

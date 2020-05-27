@@ -1,48 +1,72 @@
 package vehicle.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vehicle.dto.ModelDTO;
+import vehicle.model.Model;
+import vehicle.service.ModelService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/brand")
 public class ModelController {
 
-    @GetMapping(path = "/{brandId}/model",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAll(@PathVariable String brandId) {
+    @Autowired
+    ModelService modelService;
 
-        return new ResponseEntity<>(brandId, HttpStatus.ACCEPTED);
+    @GetMapping(path = "/{brandId}/model",
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ModelDTO>> getAll(@PathVariable Long brandId) {
+
+        List<ModelDTO> models = modelService.getAll(brandId);
+
+        return new ResponseEntity<>(models, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(path = "/{brandId}/model",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createNew(@PathVariable String brandId, @RequestBody String modelDTO) {
+                consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ModelDTO> createNew(@PathVariable Long brandId,
+                                              @RequestBody ModelDTO modelDTO) {
 
-        return new ResponseEntity<>(brandId, HttpStatus.ACCEPTED);
+        ModelDTO added = modelService.add(brandId, modelDTO);
+
+        return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/{brandId}/model/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getOne(@PathVariable String brandId, @PathVariable String id) {
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ModelDTO> getOne(@PathVariable Long brandId,
+                                           @PathVariable Long id) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        ModelDTO modelDTO = modelService.getOne(brandId, id);
+
+        return new ResponseEntity<>(modelDTO, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(path = "/{brandId}/model/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> update(@PathVariable String brandId,
-                                         @PathVariable String id,
-                                         @RequestBody String modelDTO) {
+                consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ModelDTO> update(@PathVariable Long brandId,
+                                           @PathVariable Long id,
+                                           @RequestBody ModelDTO modelDTO) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        ModelDTO updated = modelService.update(brandId, id, modelDTO);
+
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping(path = "/{brandId}/model/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> delete(@PathVariable String brandId, @PathVariable String id) {
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ModelDTO> delete(@PathVariable Long brandId,
+                                           @PathVariable Long id) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        ModelDTO deleted = modelService.delete(brandId, id);
+
+        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
 }

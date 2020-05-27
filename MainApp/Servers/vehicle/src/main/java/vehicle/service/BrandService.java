@@ -1,13 +1,27 @@
 package vehicle.service;
 
-import org.springframework.stereotype.Service;
-import vehicle.exceptions.ItemNotFound;
-import vehicle.utils.ErrorMessages;
+import vehicle.dto.BrandDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
+import vehicle.exceptions.UnexpectedError;
+import vehicle.model.Brand;
 
-@Service
-public class BrandService {
+import java.util.List;
 
-    public void getAll() throws ItemNotFound {
-        throw new ItemNotFound(ErrorMessages.ITEM_NOT_FOUND());
-    }
+public interface BrandService {
+
+    BrandDTO convertToDTO(Brand brand) throws ConversionFailedError;
+
+    Brand convertToModel(BrandDTO brandDTO) throws ConversionFailedError;
+
+    BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity;
+
+    BrandDTO getOne(Long id) throws EntityNotFound;
+
+    List<BrandDTO> getAll() throws EntityNotFound;
+
+    BrandDTO update(Long id, BrandDTO brandDTO) throws UnexpectedError;
+
+    BrandDTO delete(Long id) throws EntityNotFound;
 }

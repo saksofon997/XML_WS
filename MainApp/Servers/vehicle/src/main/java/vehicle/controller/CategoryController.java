@@ -1,44 +1,66 @@
 package vehicle.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vehicle.dto.CategoryDTO;
+import vehicle.model.Category;
+import vehicle.service.CategoryService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api/category")
 public class CategoryController {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getAll() {
+    @Autowired
+    CategoryService categoryService;
 
-        return new ResponseEntity<>("categories", HttpStatus.ACCEPTED);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CategoryDTO>> getAll() {
+
+        List<CategoryDTO> categories = categoryService.getAll();
+
+        return new ResponseEntity<>(categories, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createNew(@RequestBody String categoryDTO) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+                 produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CategoryDTO> createNew(@RequestBody CategoryDTO categoryDTO) {
 
-        return new ResponseEntity<>(categoryDTO, HttpStatus.ACCEPTED);
+        CategoryDTO added = categoryService.add(categoryDTO);
+
+        return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getOne(@PathVariable String id) {
+    public ResponseEntity<CategoryDTO> getOne(@PathVariable Long id) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        CategoryDTO categoryDTO = categoryService.getOne(id);
+
+        return new ResponseEntity<>(categoryDTO, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(path = "/{id}",
+                consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> update(@PathVariable String id, @RequestBody String categoryDTO) {
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id,
+                                         @RequestBody CategoryDTO categoryDTO) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        CategoryDTO updated = categoryService.update(id, categoryDTO);
+
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping(path = "/{id}",
-                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> delete(@PathVariable String id) {
+                   produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CategoryDTO> delete(@PathVariable Long id) {
 
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        CategoryDTO deleted = categoryService.delete(id);
+
+        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
 }
