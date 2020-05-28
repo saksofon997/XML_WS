@@ -1,9 +1,23 @@
 package vehicle.model;
 
-public class Category {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
+public class Category implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="category_id_seq",sequenceName="category_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="category_id_seq")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    public Category(){
+    }
 
     public Category(Long id, String name) {
         this.id = id;

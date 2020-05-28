@@ -1,19 +1,34 @@
 package vehicle.model;
 
-import java.util.ArrayList;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
-public class Brand {
+@Entity
+public class Brand implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="brand_id_seq",sequenceName="brand_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="brand_id_seq")
     private Long id;
+
+    @Column(name = "name")
     private String name;
-    private ArrayList<Model> models;
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    private List<Model> models;
+
+    public Brand(){
+    }
 
     public Brand(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Brand(Long id, String name, ArrayList<Model> models) {
+    public Brand(Long id, String name, List<Model> models) {
         this.id = id;
         this.name = name;
         this.models = models;
@@ -35,11 +50,11 @@ public class Brand {
         this.name = name;
     }
 
-    public ArrayList<Model> getModels() {
+    public List<Model> getModels() {
         return models;
     }
 
-    public void setModels(ArrayList<Model> models) {
+    public void setModels(List<Model> models) {
         this.models = models;
     }
 }

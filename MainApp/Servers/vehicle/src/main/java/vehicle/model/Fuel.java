@@ -1,9 +1,23 @@
 package vehicle.model;
 
-public class Fuel {
+import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
+public class Fuel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="fuel_id_seq",sequenceName="fuel_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="fuel_id_seq")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    public Fuel(){
+    }
 
     public Fuel(Long id, String name) {
         this.id = id;

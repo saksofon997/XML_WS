@@ -1,11 +1,29 @@
 package vehicle.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 public class Review {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="pricelist_id_seq",sequenceName="pricelist_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="pricelist_id_seq")
     private Long id;
+
+
     private Long customerId;
+
+
     private Vehicle vehicle;
+
+
     private int stars;
+
+
     private String text;
 
     public Review(Long id, Long customerId, Vehicle vehicle, int stars, String text) {
