@@ -22,6 +22,8 @@ services:
         - POSTGRES_PASSWORD=test
         - POSTGRES_DB=test_database
         - REGISTRY_HOST=eureka-serviceregistry
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     tty: true
