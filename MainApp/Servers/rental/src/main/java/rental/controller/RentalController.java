@@ -33,7 +33,7 @@ public class RentalController {
 
         RentalDTO rentalDTO = rentalService.getOne(id);
 
-        return new ResponseEntity<>(rentalDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(rentalDTO, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}",
@@ -45,7 +45,7 @@ public class RentalController {
 
         RentalDTO updated = rentalService.update(id, rentalDTO);
 
-        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}",
@@ -55,6 +55,6 @@ public class RentalController {
 
         RentalDTO deleted = rentalService.delete(id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 }

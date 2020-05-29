@@ -55,7 +55,7 @@ public class UserController {
 
         UserDTO userDTO = userService.getOne(id);
 
-        return new ResponseEntity<>(userDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}",
@@ -67,7 +67,7 @@ public class UserController {
 
         UserDTO updated = userService.update(id, userDTO);
 
-        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @PatchMapping(path = "/{id}",
@@ -79,7 +79,7 @@ public class UserController {
 
         UserDTO updated = userService.activateOrDeactivate(id, userDTO);
 
-        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}",
@@ -89,6 +89,6 @@ public class UserController {
 
         UserDTO deleted = userService.delete(id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 }
