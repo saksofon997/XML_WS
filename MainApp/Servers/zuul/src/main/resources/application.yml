@@ -8,6 +8,11 @@ zuul:
       path: /auth/**
       stripPrefix: false
       serviceId: user
+    user2:
+      path: /user/**
+      stripPrefix: false
+      serviceId: user
+
     rental:
       path: /api/**
       stripPrefix: false
