@@ -3,8 +3,7 @@ services:
 
   eureka-serviceregistry:
     build: ./MainApp/Servers/eureka
-    networks:
-      - demo
+    container_name: eureka-serviceregistry
     ports:
       - "8761:8761"
     tty: true
@@ -13,22 +12,20 @@ services:
     image: 'postgres'
     container_name: postgres
     restart: always
-    networks:
-      - demo
     environment:
         - POSTGRES_PASSWORD=root
         - POSTGRES_USER=test
         - POSTGRES_PASSWORD=test
         - POSTGRES_DB=test_database
         - REGISTRY_HOST=eureka-serviceregistry
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     tty: true
   
   axon-server:
     image: axoniq/axonserver:4.3.2
-    networks:
-      - demo
     ports:
       - 8024:8024
       - 8124:8124
@@ -36,118 +33,134 @@ services:
   user:
     build: ./MainApp/Servers/user
     ports:
-    - "8081:8080"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+    - "8081:8081"
     tty: true
+    environment:
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
+      POSTGRES_DB: test_database
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
-    volumes: 
-      - maven-repo:/root/.m2
+    volumes:
+      - $USERPROFILE/.m2:/root/.m2
 
   rental:
     build: ./MainApp/Servers/rental
     ports:
-    - "8081:8080"
+    - "8082:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   search:
     build: ./MainApp/Servers/search
     ports:
-    - "8081:8080"
+    - "8083:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   vehicle:
     build: ./MainApp/Servers/vehicle
     ports:
-    - "8081:8080"
+    - "8084:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   location:
     build: ./MainApp/Servers/location
     ports:
-    - "8081:8080"
+    - "8085:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
   chat:
     build: ./MainApp/Servers/chat
     ports:
-    - "8081:8080"
+    - "8086:8080"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
     volumes: 
-      - maven-repo:/root/.m2
+      - $USERPROFILE/.m2:/root/.m2
 
-  front:
-    build: ./MainApp/Client
-    ports:
-    - "4200:4200"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    volumes:
-      - ./MainApp/Client:/usr/src/Client 
-      - /usr/src/Client/node_modules
+  # front:
+  #   build: ./MainApp/Client
+  #   ports:
+  #   - "4200:4200"
+  #   environment:
+  #     - REGISTRY_HOST=eureka-serviceregistry
+  #   tty: true
+  #   volumes:
+  #     - ./MainApp/Client:/usr/src/Client 
+  #     - /usr/src/Client/node_modules
 
   zuul:
     build: ./MainApp/Servers/zuul
-    networks:
-      - demo
     ports:
-    - "8083:8083"
+    - "8087:8083"
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+      DATABASE_USERNAME: test
+      DATABASE_PASSWORD: test
+      DATABASE_DOMAIN: postgres
+      REGISTRY_HOST: eureka-serviceregistry
     tty: true
     depends_on:
       - eureka-serviceregistry
       - postgres
       - axon-server
-      - xmlws
-    volumes: 
-      - maven-repo2:/root/.m2
-
-networks:
-  demo:
-    driver: bridge
+      - user
+    volumes:
+      - $USERPROFILE/.m2:/root/.m2
 
 volumes:
   database-data:
