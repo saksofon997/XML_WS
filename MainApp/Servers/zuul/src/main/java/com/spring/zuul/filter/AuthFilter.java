@@ -40,6 +40,7 @@ public class AuthFilter extends ZuulFilter {
 
         String authenticationHeader = request.getHeader(HEADER);
         if (authenticationHeader == null || !authenticationHeader.startsWith(PREFIX)){
+            System.out.println( "No header present");
             return null;
         }
 
@@ -49,8 +50,7 @@ public class AuthFilter extends ZuulFilter {
         try {
             boolean valid = authClient.verify(jwtToken);
             System.out.println(valid);
-
-            // redirection (?)
+            // redirection (?) -> not needed I fixed it... :)
         } catch (Exception e) {
             setFailedRequest("Invalid token", 403);
         }
