@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDTO convertToDTO(User brand) throws ConversionFailedError;
+    UserDTO convertToDTO(User user) throws ConversionFailedError;
 
-    User convertToModel(UserDTO brandDTO) throws ConversionFailedError;
+    User convertToModel(UserDTO userDTO) throws ConversionFailedError;
 
-    UserDTO add(UserDTO brandDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError;
+    UserDTO add(UserDTO userDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError;
 
     UserDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
     UserPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError;
 
-    UserDTO update(Long id, UserDTO brandDTO) throws EntityNotFound, ConversionFailedError;
+    UserDTO update(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError;
 
     UserDTO activateOrDeactivate(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError;
 

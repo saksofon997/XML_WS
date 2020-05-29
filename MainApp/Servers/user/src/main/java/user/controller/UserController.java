@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
-@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.GET })
 public class UserController {
 
     @Autowired

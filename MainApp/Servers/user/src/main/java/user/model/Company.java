@@ -13,8 +13,8 @@ import java.util.Set;
 @Data
 public class Company {
     @Id
-    @SequenceGenerator(name="users_id_seq",sequenceName="users_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="users_id_seq")
+    @SequenceGenerator(name="company_id_seq",sequenceName="company_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="company_id_seq")
     private Long id;
 
     @Column(name = "cid", nullable = false, unique = true)
