@@ -9,7 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import user.model.User;
+import user.repository.UserRepository;
 import user.service.AuthUserDetailsService;
+import user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -41,9 +43,13 @@ public class TokenUtils {
     @Autowired
     private AuthUserDetailsService authUserDetailsService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // Funkcija za generisanje JWT token
     public String generateToken(String email) {
         UserDetails user = authUserDetailsService.loadUserByUsername(email);
+        User u = userRepository.findByEmail(user.getUsername());
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(email)
@@ -55,6 +61,8 @@ public class TokenUtils {
                         user.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)
                                 .collect(Collectors.toList()))
+                .claim("userId",
+                        u.getId())
 //        grantedAuthorities.stream()
 //                .map(GrantedAuthority::getAuthority)
 //                .collect(Collectors.toList()))

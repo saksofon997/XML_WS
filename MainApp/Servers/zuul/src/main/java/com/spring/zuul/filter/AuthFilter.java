@@ -50,7 +50,7 @@ public class AuthFilter extends ZuulFilter {
         try {
             boolean valid = authClient.verify(jwtToken);
             System.out.println(valid);
-            // redirection (?) -> not needed I fixed it... :)
+            // redirection (?) -> not needed I fixed it... :) -> FUCK YEAH!
         } catch (Exception e) {
             setFailedRequest("Invalid token", 403);
         }
