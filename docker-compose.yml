@@ -141,7 +141,7 @@ services:
   #     - REGISTRY_HOST=eureka-serviceregistry
   #   tty: true
   #   volumes:
-  #     - ./MainApp/Client:/usr/src/Client 
+  #     - ./MainApp/Client:/usr/src/Client
   #     - /usr/src/Client/node_modules
 
   zuul:

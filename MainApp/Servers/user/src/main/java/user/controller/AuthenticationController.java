@@ -89,11 +89,7 @@ public class AuthenticationController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping(path = "/test",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getClinic() {
-        return "CAO JA SAM USER SERVIS izmenjen doduse drugi put";
-    }
+
 
     static class UserState {
         public String token;
