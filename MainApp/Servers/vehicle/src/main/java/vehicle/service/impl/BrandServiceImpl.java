@@ -5,15 +5,19 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vehicle.dto.BrandDTO;
+import vehicle.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.UnexpectedError;
 import vehicle.model.Brand;
+import vehicle.model.Model;
 import vehicle.repository.BrandRepo;
 import vehicle.service.BrandService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -31,28 +35,85 @@ public class BrandServiceImpl implements BrandService {
         return new DozerBeanMapper().map(brandDTO, Brand.class);
     }
 
-    @Override
-    public BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity {
-        return null;
+    public Model convertToModel(ModelDTO modelDTO) throws ConversionFailedError {
+        return new DozerBeanMapper().map(modelDTO, Model.class);
     }
 
     @Override
-    public BrandDTO getOne(Long id) throws EntityNotFound {
-        return null;
+    public BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity, ConversionFailedError {
+
+        Brand newBrand = convertToModel(brandDTO);
+
+        if (!brandRepo.existsByName(brandDTO.getName()))
+            brandRepo.save(newBrand);
+        else
+            throw new DuplicateEntity("Item with name: "+brandDTO.getName()+" already exists");
+
+        return brandDTO;
     }
 
     @Override
-    public List<BrandDTO> getAll() throws EntityNotFound {
-        return null;
+    public BrandDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {
+
+        Optional<Brand> brand = brandRepo.findById(id);
+
+        if (!brand.isPresent()){
+            throw new EntityNotFound("No item with ID: "+id);
+        }
+        else {
+            return convertToDTO(brand.get());
+        }
     }
 
     @Override
-    public BrandDTO update(Long id, BrandDTO brandDTO) throws UnexpectedError {
-        return null;
+    public List<BrandDTO> getAll() throws EntityNotFound, ConversionFailedError {
+
+        List<Brand> brands = brandRepo.findAll();
+
+        if (brands.isEmpty()) {
+            throw new EntityNotFound("Items not found");
+        }
+
+        List<BrandDTO> brandDTOS = new ArrayList<>();
+
+        for (Brand b : brands) {
+            brandDTOS.add(convertToDTO(b));
+        }
+
+        return brandDTOS;
     }
 
     @Override
-    public BrandDTO delete(Long id) throws EntityNotFound {
-        return null;
+    public BrandDTO update(Long id, BrandDTO brandDTO) throws EntityNotFound, ConversionFailedError {
+
+        Optional<Brand> change = brandRepo.findById(id);
+
+        if (!change.isPresent())
+            throw new EntityNotFound("No item with ID: "+id);
+
+        change.get().setName(brandDTO.getName());
+
+        List<Model> newModels = new ArrayList<>();
+
+        for(ModelDTO m : brandDTO.getModels()) {
+            newModels.add(convertToModel(m));
+        }
+
+        change.get().setModels(newModels);
+
+        return brandDTO;
+    }
+
+    @Override
+    public BrandDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+
+        Optional<Brand> deleted = brandRepo.findById(id);
+
+        if (!deleted.isPresent())
+            throw new EntityNotFound("No item with ID: "+id);
+        else
+            brandRepo.deleteById(id);
+
+        return convertToDTO(deleted.get());
     }
 }

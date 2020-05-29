@@ -1,11 +1,10 @@
 package vehicle.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.io.Serializable;
 
-public class Review {
+@Entity
+public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,17 +13,20 @@ public class Review {
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="pricelist_id_seq")
     private Long id;
 
-
+    @Column(name = "customerId")
     private Long customerId;
 
-
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Vehicle vehicle;
 
-
+    @Column(name = "stars")
     private int stars;
 
-
+    @Column(name = "text")
     private String text;
+
+    public Review() {
+    }
 
     public Review(Long id, Long customerId, Vehicle vehicle, int stars, String text) {
         this.id = id;

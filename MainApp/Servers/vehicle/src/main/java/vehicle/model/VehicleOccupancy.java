@@ -1,14 +1,32 @@
 package vehicle.model;
 
-import org.joda.time.DateTime;
+import javax.persistence.*;
+import java.io.Serializable;
 
-public class VehicleOccupancy {
+@Entity
+public class VehicleOccupancy implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="vehicleOccupancy_id_seq",sequenceName="vehicleOccupancy_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="vehicleOccupancy_id_seq")
     private Long id;
+
+    @Column(name = "startTime")
     private long startTime;
+
+    @Column(name = "endTime")
     private long endTime;
+
+    @Column(name = "type")
     private String type;
+
+    @Column(name = "locations")
     private String locations;
+
+    public VehicleOccupancy() {
+    }
 
     public VehicleOccupancy(Long id, long startTime, long endTime, String type, String locations) {
         this.id = id;
