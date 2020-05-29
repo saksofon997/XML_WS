@@ -6,7 +6,7 @@ import rental.model.Rental;
 
 public interface RentalService {
 
-    RentalDTO convertToDTO(Rental brand) throws ConversionFailedError;
+    RentalDTO convertToDTO(Rental rental) throws ConversionFailedError;
 
     Rental convertToModel(RentalDTO rentalDTO) throws ConversionFailedError;
 

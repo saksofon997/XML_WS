@@ -1,5 +1,6 @@
 package rental.service.impl;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rental.dto.RentalDTO;
@@ -16,14 +17,25 @@ public class RentalServiceImpl implements RentalService {
     @Autowired
     RentalRepository rentalRepository;
 
+    @Autowired
+    DozerBeanMapper mapper;
+
     @Override
-    public RentalDTO convertToDTO(Rental brand) throws ConversionFailedError {
-        return null;
+    public RentalDTO convertToDTO(Rental rental) throws ConversionFailedError {
+        try {
+            return mapper.map(rental, RentalDTO.class);
+        } catch (Exception e) {
+            throw new ConversionFailedError("Internal server error");
+        }
     }
 
     @Override
     public Rental convertToModel(RentalDTO rentalDTO) throws ConversionFailedError {
-        return null;
+        try {
+            return mapper.map(rentalDTO, Rental.class);
+        } catch (Exception e) {
+            throw new ConversionFailedError("Invalid data");
+        }
     }
 
     @Override
