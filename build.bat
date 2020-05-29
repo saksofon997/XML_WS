@@ -7,7 +7,7 @@ FOR /d %%i IN (".\MainApp\Servers\*") DO (
 		) else (
 				echo Executing maven package for service %%a ...
 				cd %%i
-				call mvn package -DskipTests 
+				call mvn clean package -DskipTests 
 				cd ../../..
 		)
 	)
