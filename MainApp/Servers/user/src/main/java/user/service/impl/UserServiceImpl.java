@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Lazy
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     DozerBeanMapper mapper;
@@ -128,13 +128,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO userDTO) throws UnexpectedError {
-        return null;
+    public UserDTO update(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError {
+        Optional<User> check = userRepository.findById(id);
+        if (!check.isPresent() || !id.equals(userDTO.getId())){
+            throw new EntityNotFound("User not found, invalid data");
+        }
+        User user = check.get();
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setAddress(userDTO.getAddress());
+        user.setCity(userDTO.getCity());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setState(userDTO.getState());
+        return convertToDTO(userRepository.save(user));
     }
 
     @Override
-    public UserDTO delete(Long id) throws EntityNotFound {
-        return null;
+    public UserDTO activateOrDeactivate(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError {
+        Optional<User> check = userRepository.findById(id);
+        if (!check.isPresent() || !id.equals(userDTO.getId())){
+            throw new EntityNotFound("User not found, invalid data");
+        }
+        User user = check.get();
+        user.setEnabled(userDTO.isEnabled());
+        return convertToDTO(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+        Optional<User> check = userRepository.findById(id);
+        if (!check.isPresent()){
+            throw new EntityNotFound("User not found, invalid data");
+        }
+        User user = check.get();
+        user.setDeleted(true);
+        return convertToDTO(userRepository.save(user));
     }
 
     public static boolean isValidEmailAddress(String email) {

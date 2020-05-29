@@ -18,8 +18,10 @@ public interface UserService {
 
     List<UserDTO> getAll() throws ConversionFailedError;
 
-    UserDTO update(Long id, UserDTO brandDTO) throws UnexpectedError;
+    UserDTO update(Long id, UserDTO brandDTO) throws EntityNotFound, ConversionFailedError;
 
-    UserDTO delete(Long id) throws EntityNotFound;
+    UserDTO activateOrDeactivate(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError;
+
+    UserDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 
 }

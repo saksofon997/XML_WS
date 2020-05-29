@@ -10,6 +10,9 @@ INSERT INTO users.permission(
 INSERT INTO users.permission(
     id, name)
     VALUES (nextval('permissions_id_seq'), 'CREATE_USER_PERMISSION'); /*4*/
+INSERT INTO users.permission(
+    id, name)
+    VALUES (nextval('permissions_id_seq'), 'CHANGE_USER_PERMISSION'); /*5*/
 
 INSERT INTO users.role(
     id, name)
@@ -19,6 +22,12 @@ INSERT INTO users.role(
     VALUES (nextval('roles_id_seq'), 'SIMPLE_USER'); /*2*/
 
 
+INSERT INTO users.role_permission(
+    roles_id, permissions_id)
+    VALUES (1, 5);
+INSERT INTO users.role_permission(
+    roles_id, permissions_id)
+    VALUES (2, 5);
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
     VALUES (1, 1);

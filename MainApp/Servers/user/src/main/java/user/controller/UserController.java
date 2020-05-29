@@ -54,17 +54,31 @@ public class UserController {
     @PutMapping(path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_USER_PERMISSION')")
     public ResponseEntity<UserDTO> update(@PathVariable Long id,
-                                           @RequestBody UserDTO userDTO) throws EntityNotFound, UnexpectedError {
+                                           @RequestBody UserDTO userDTO) throws EntityNotFound, UnexpectedError, ConversionFailedError {
 
         UserDTO updated = userService.update(id, userDTO);
 
         return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
     }
 
+    @PatchMapping(path = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('ACTIVATE_USER_PERMISSION') or hasAuthority('DEACTIVATE_USER_PERMISSION')")
+    public ResponseEntity<UserDTO> activateOrDeactivate(@PathVariable Long id,
+                                          @RequestBody UserDTO userDTO) throws EntityNotFound, UnexpectedError, ConversionFailedError {
+
+        UserDTO updated = userService.activateOrDeactivate(id, userDTO);
+
+        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> delete(@PathVariable Long id) throws EntityNotFound {
+    @PreAuthorize("hasAuthority('REMOVE_USER_PERMISSION')")
+    public ResponseEntity<UserDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         UserDTO deleted = userService.delete(id);
 
