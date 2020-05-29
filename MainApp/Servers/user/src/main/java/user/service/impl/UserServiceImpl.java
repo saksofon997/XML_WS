@@ -5,10 +5,15 @@ import org.dozer.loader.api.BeanMappingBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import user.dto.RoleDTO;
 import user.dto.UserDTO;
+import user.dto.UserPageDTO;
 import user.exceptions.*;
 import user.model.Role;
 import user.model.User;
@@ -118,13 +123,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAll() throws ConversionFailedError {
-        List<User> users = userRepository.findAll();
-        List<UserDTO> dtos = new ArrayList<>();
-        for (User user: users){
-            dtos.add(convertToDTO(user));
+    public UserPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError {
+
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Page<User> pagedResult = userRepository.findAll(page);
+
+        UserPageDTO pageDTO = new UserPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (User user: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(user));
         }
-        return dtos;
+
+        return pageDTO;
     }
 
     @Override

@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import user.dto.UserDTO;
+import user.dto.UserPageDTO;
 import user.exceptions.*;
 import user.service.UserService;
 
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 @RestController
@@ -23,11 +25,17 @@ public class UserController {
     @RequestMapping(value = "",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserDTO>> getAll() throws ConversionFailedError {
+    public ResponseEntity<UserPageDTO> getAll(
+            @RequestParam(value = "page", required = false) Integer pageNo,
+            @RequestParam(value = "sort", required = false) String sort
+            ) throws ConversionFailedError {
 
-        List<UserDTO> brands = userService.getAll();
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
 
-        return new ResponseEntity<>(brands, HttpStatus.OK);
+        UserPageDTO page = userService.getAll(pageNo, sort);
+
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @RequestMapping(value = "",
@@ -46,9 +54,9 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> getOne(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
-        UserDTO brandDTO = userService.getOne(id);
+        UserDTO userDTO = userService.getOne(id);
 
-        return new ResponseEntity<>(brandDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userDTO, HttpStatus.ACCEPTED);
     }
 
     @PutMapping(path = "/{id}",

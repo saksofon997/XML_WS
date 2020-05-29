@@ -1,6 +1,7 @@
 package user.service;
 
 import user.dto.UserDTO;
+import user.dto.UserPageDTO;
 import user.exceptions.*;
 import user.model.User;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     UserDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    List<UserDTO> getAll() throws ConversionFailedError;
+    UserPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError;
 
     UserDTO update(Long id, UserDTO brandDTO) throws EntityNotFound, ConversionFailedError;
 
