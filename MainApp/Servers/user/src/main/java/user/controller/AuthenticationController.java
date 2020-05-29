@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,11 +14,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import user.dto.UserDTO;
+import user.exceptions.ConversionFailedError;
+import user.exceptions.DuplicateEntity;
+import user.exceptions.InvalidEmailOrPasswordError;
 import user.model.User;
 import user.repository.UserRepository;
 import user.security.JwtAuthenticationRequest;
 import user.security.TokenUtils;
 import user.service.AuthUserDetailsService;
+import user.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,6 +43,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
@@ -61,9 +69,9 @@ public class AuthenticationController {
         User user = userRepository.findByEmail(loggedInUser.getName());
 
         String jwt = tokenUtils.generateToken(user.getEmail());
+        // Izbaceno (za sad?)
         int expiresIn = tokenUtils.getExpiredIn();
 
-        // Provera promene passworda pri prvom loginu
         UserState userState = new UserState();
         userState.token = jwt;
         userState.user = new UserDTO(user);
@@ -91,9 +99,20 @@ public class AuthenticationController {
     }
 
 
+    @RequestMapping(value = "/register",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> createNew(@RequestBody UserDTO userDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError {
+
+        UserDTO added = userService.add(userDTO);
+
+        return new ResponseEntity<>(added, HttpStatus.CREATED);
+    }
+
+
     static class UserState {
         public String token;
-        //public UserDTO user;
         public UserDTO user;
     }
 }

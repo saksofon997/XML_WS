@@ -1,5 +1,7 @@
 package user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import user.model.Company;
 import user.model.Role;
@@ -12,6 +14,7 @@ import java.util.Set;
 public class UserDTO {
 
     private Long id;
+    private String password;
     private String email;
     private String name;
     private String surname;
@@ -22,6 +25,10 @@ public class UserDTO {
     private boolean enabled;
     private Company company;
     private Set<RoleDTO> roles = new HashSet<RoleDTO>();
+
+    public UserDTO() {
+
+    }
 
     public UserDTO(User user) {
         this.id = user.getId();

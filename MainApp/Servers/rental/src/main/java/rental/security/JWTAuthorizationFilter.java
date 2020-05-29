@@ -37,6 +37,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         try {
             if (checkJWTToken(request, response)) {
                 Claims claims = validateToken(request);
+                if (claims.get("userId") != null){
+                    Long id =  ((Integer) claims.get("userId")).longValue();
+                    request.setAttribute("userId", id);
+                }
                 if (claims.get("authorities") != null) {
                     setUpSpringAuthentication(claims);
                 } else {

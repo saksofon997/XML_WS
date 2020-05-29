@@ -1,9 +1,9 @@
 package user.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity(name ="users")
 @RequiredArgsConstructor
 @Data
+@Where(clause="deleted=false")
 public class User implements UserDetails {
     @Id
     @SequenceGenerator(name="users_id_seq",sequenceName="users_id_seq", allocationSize=1)
@@ -47,7 +48,6 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled;
 
-
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Company company;
 
@@ -57,6 +57,9 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> roles;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     @Override
     public String getUsername() {

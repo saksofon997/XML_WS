@@ -7,14 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping(value = "api")
 public class TestController {
 
     @GetMapping(path = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('WRITE_PERMISSION')")
-    public String getClinic() {
-        return "CAO JA SAM RENTAL SERVIS";
+    @PreAuthorize("hasAuthority('ACTIVATE_USER_PERMISSION')")
+    public String getClinic(HttpServletRequest request) {
+        return "CAO JA SAM RENTAL SERVIS, User id: " + request.getAttribute("userId");
     }
 }
