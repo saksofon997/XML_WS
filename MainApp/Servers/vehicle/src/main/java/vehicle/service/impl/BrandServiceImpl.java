@@ -9,11 +9,11 @@ import vehicle.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.exceptions.UnexpectedError;
 import vehicle.model.Brand;
 import vehicle.model.Model;
 import vehicle.repository.BrandRepo;
 import vehicle.service.BrandService;
+import vehicle.service.ModelService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +25,28 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     BrandRepo brandRepo;
 
+    @Autowired
+    DozerBeanMapper mapper;
+
+    @Autowired
+    ModelService modelService;
+
     @Override
     public BrandDTO convertToDTO(Brand brand) throws ConversionFailedError {
-        return new DozerBeanMapper().map(brand, BrandDTO.class);
+        try {
+            return mapper.map(brand, BrandDTO.class);
+        } catch (Exception e) {
+            throw new ConversionFailedError("Internal server error");
+        }
     }
 
     @Override
     public Brand convertToModel(BrandDTO brandDTO) throws ConversionFailedError {
-        return new DozerBeanMapper().map(brandDTO, Brand.class);
-    }
-
-    public Model convertToModel(ModelDTO modelDTO) throws ConversionFailedError {
-        return new DozerBeanMapper().map(modelDTO, Model.class);
+        try {
+            return mapper.map(brandDTO, Brand.class);
+        } catch (Exception e) {
+            throw new ConversionFailedError("Invalid data");
+        }
     }
 
     @Override
@@ -57,12 +67,10 @@ public class BrandServiceImpl implements BrandService {
 
         Optional<Brand> brand = brandRepo.findById(id);
 
-        if (!brand.isPresent()){
+        if (!brand.isPresent())
             throw new EntityNotFound("No item with ID: "+id);
-        }
-        else {
+        else
             return convertToDTO(brand.get());
-        }
     }
 
     @Override
@@ -70,15 +78,13 @@ public class BrandServiceImpl implements BrandService {
 
         List<Brand> brands = brandRepo.findAll();
 
-        if (brands.isEmpty()) {
+        if (brands.isEmpty())
             throw new EntityNotFound("Items not found");
-        }
 
         List<BrandDTO> brandDTOS = new ArrayList<>();
 
-        for (Brand b : brands) {
+        for (Brand b : brands)
             brandDTOS.add(convertToDTO(b));
-        }
 
         return brandDTOS;
     }
@@ -95,11 +101,12 @@ public class BrandServiceImpl implements BrandService {
 
         List<Model> newModels = new ArrayList<>();
 
-        for(ModelDTO m : brandDTO.getModels()) {
-            newModels.add(convertToModel(m));
-        }
+        for(ModelDTO m : brandDTO.getModels())
+            newModels.add(modelService.convertToModel(m));
 
         change.get().setModels(newModels);
+
+        brandRepo.save(change.get());
 
         return brandDTO;
     }

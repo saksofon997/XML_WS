@@ -25,6 +25,9 @@ public class Review implements Serializable {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "status")
+    private ReviewStatus status;
+
     public Review() {
     }
 

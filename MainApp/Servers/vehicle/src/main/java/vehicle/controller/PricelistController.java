@@ -6,6 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.PricelistDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.PricelistService;
 
 import java.util.List;
@@ -19,7 +22,8 @@ public class PricelistController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PricelistDTO> createNew(@RequestBody PricelistDTO pricelistDTO) {
+    public ResponseEntity<PricelistDTO> createNew(@RequestBody PricelistDTO pricelistDTO)
+            throws ConversionFailedError, DuplicateEntity {
 
         PricelistDTO added = pricelistService.add(pricelistDTO);
 
@@ -28,7 +32,8 @@ public class PricelistController {
 
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PricelistDTO> getOne(@PathVariable Long id) {
+    public ResponseEntity<PricelistDTO> getOne(@PathVariable Long id)
+            throws ConversionFailedError, EntityNotFound {
 
         PricelistDTO pricelistDTO = pricelistService.getOne(id);
 
@@ -39,7 +44,8 @@ public class PricelistController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PricelistDTO> update(@PathVariable Long id,
-                                               @RequestBody Long pricelistDTO) {
+                                               @RequestBody PricelistDTO pricelistDTO)
+            throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
         PricelistDTO updated = pricelistService.update(id, pricelistDTO);
 
@@ -48,7 +54,8 @@ public class PricelistController {
 
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PricelistDTO> delete(@PathVariable Long id) {
+    public ResponseEntity<PricelistDTO> delete(@PathVariable Long id)
+            throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
         PricelistDTO deleted = pricelistService.delete(id);
 
@@ -57,7 +64,8 @@ public class PricelistController {
 
     @GetMapping(path = "/owner/{ownerId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PricelistDTO>> get(@PathVariable Long ownerId) {
+    public ResponseEntity<List<PricelistDTO>> get(@PathVariable Long ownerId)
+            throws ConversionFailedError, EntityNotFound {
 
         List<PricelistDTO> pricing = pricelistService.getByOwner(ownerId);
 
