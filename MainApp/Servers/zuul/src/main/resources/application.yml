@@ -1,5 +1,6 @@
 zuul:
   routes:
+    # ----- USER -----
     user:
       path: /test/**
       stripPrefix: false
@@ -13,7 +14,29 @@ zuul:
       stripPrefix: false
       serviceId: user
 
+    # ----- RENTAL -----
     rental:
-      path: /api/**
+      path: /rental/**
       stripPrefix: false
       serviceId: rental
+    rental1:
+      path: /bundle/**
+      stripPrefix: false
+      serviceId: rental
+    rental2:
+      path: /customer/**/rental
+      stripPrefix: false
+      serviceId: rental
+    rental3:
+      path: /vehicle/**/rental
+      stripPrefix: false
+      serviceId: rental
+    rental4:
+      path: /owner/**/rental
+      stripPrefix: false
+      serviceId: rental
+
+    zuul: # needed for the auth filter to work
+      path: /checkout
+      stripPrefix: false
+      url: forward:/
