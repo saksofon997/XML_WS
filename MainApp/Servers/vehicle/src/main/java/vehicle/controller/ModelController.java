@@ -6,6 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.ModelDTO;
+import vehicle.dto.ModelPageDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Model;
 import vehicle.service.ModelService;
 
@@ -20,8 +23,8 @@ public class ModelController {
 
     @GetMapping(path = "/{brandId}/model",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ModelDTO>> getAll(@PathVariable Long brandId) {
-
+    public ResponseEntity<List<ModelDTO>> getAll(@PathVariable Long brandId)
+            throws ConversionFailedError, EntityNotFound {
         List<ModelDTO> models = modelService.getAll(brandId);
 
         return new ResponseEntity<>(models, HttpStatus.ACCEPTED);
