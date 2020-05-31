@@ -1,9 +1,14 @@
 package vehicle.model;
 
+import lombok.Data;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Data
+@Where(clause="deleted=false")
 public class VehicleOccupancy implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +32,9 @@ public class VehicleOccupancy implements Serializable {
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Vehicle vehicle;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public VehicleOccupancy() {
     }
@@ -86,5 +94,13 @@ public class VehicleOccupancy implements Serializable {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

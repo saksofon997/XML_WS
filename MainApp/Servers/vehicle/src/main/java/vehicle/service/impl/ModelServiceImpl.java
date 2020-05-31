@@ -50,7 +50,13 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public List<ModelDTO> getAll(Long brandId) throws EntityNotFound, ConversionFailedError {
 
-        List<Model> models = modelRepo.findAll();
+        Optional<Brand> brand = brandRepo.findById(brandId);
+
+        if (!brand.isPresent()) {
+            throw new EntityNotFound("No item with ID: "+brandId);
+        }
+
+        List<Model> models = modelRepo.findByBrand(brand.get());
 
         if (models.isEmpty()) {
             throw new EntityNotFound("Items not found");

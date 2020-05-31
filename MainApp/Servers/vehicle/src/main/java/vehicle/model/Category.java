@@ -1,9 +1,14 @@
 package vehicle.model;
 
+import lombok.Data;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Data
+@Where(clause="deleted=false")
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -13,8 +18,11 @@ public class Category implements Serializable {
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="category_id_seq")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Category(){
     }
@@ -38,5 +46,13 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

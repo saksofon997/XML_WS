@@ -1,10 +1,13 @@
 package vehicle.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
+@Entity(name = "brand")
+@Where(clause="deleted=false")
 public class Brand implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -14,11 +17,14 @@ public class Brand implements Serializable {
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="brand_id_seq")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
     private List<Model> models;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Brand(){
     }
@@ -56,5 +62,13 @@ public class Brand implements Serializable {
 
     public void setModels(List<Model> models) {
         this.models = models;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

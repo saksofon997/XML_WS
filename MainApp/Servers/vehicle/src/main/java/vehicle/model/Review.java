@@ -1,9 +1,14 @@
 package vehicle.model;
 
+import lombok.Data;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Data
+@Where(clause="deleted=false")
 public class Review implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,8 +30,11 @@ public class Review implements Serializable {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private ReviewStatus status;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Review() {
     }
@@ -84,5 +92,21 @@ public class Review implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public ReviewStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ReviewStatus status) {
+        this.status = status;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

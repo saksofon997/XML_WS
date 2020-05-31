@@ -1,8 +1,13 @@
 package vehicle.model;
 
+import lombok.Data;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 
 @Entity
+@Data
+@Where(clause="deleted=false")
 public class Vehicle {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +52,9 @@ public class Vehicle {
 
     @Column(name = "numberOfReviews")
     private int numberOfReviews;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Vehicle() {
     }
@@ -181,5 +189,13 @@ public class Vehicle {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

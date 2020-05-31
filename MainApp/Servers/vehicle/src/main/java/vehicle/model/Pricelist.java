@@ -1,10 +1,15 @@
 package vehicle.model;
 
+import lombok.Data;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Data
+@Where(clause="deleted=false")
 public class Pricelist implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,6 +39,9 @@ public class Pricelist implements Serializable {
 
     @OneToMany(mappedBy = "pricelist", fetch = FetchType.LAZY)
     private List<Vehicle> vehicles;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Pricelist() {
     }
@@ -134,5 +142,13 @@ public class Pricelist implements Serializable {
 
     public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
