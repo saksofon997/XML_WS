@@ -25,15 +25,19 @@ public class VehicleOccupancy implements Serializable {
     @Column(name = "locations")
     private String locations;
 
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    private Vehicle vehicle;
+
     public VehicleOccupancy() {
     }
 
-    public VehicleOccupancy(Long id, long startTime, long endTime, String type, String locations) {
+    public VehicleOccupancy(Long id, long startTime, long endTime, String type, String locations, Vehicle vehicle) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.type = type;
         this.locations = locations;
+        this.vehicle = vehicle;
     }
 
     public Long getId() {
@@ -74,5 +78,13 @@ public class VehicleOccupancy implements Serializable {
 
     public void setLocations(String locations) {
         this.locations = locations;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 }

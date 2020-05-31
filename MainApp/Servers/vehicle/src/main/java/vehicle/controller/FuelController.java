@@ -6,19 +6,22 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.FuelDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.FuelService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/fuel")
+@RequestMapping(value = "fuel")
 public class FuelController {
 
     @Autowired
     FuelService fuelService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FuelDTO>> getAll() {
+    public ResponseEntity<List<FuelDTO>> getAll() throws ConversionFailedError, EntityNotFound {
 
         List<FuelDTO> fuels = fuelService.getAll();
 
@@ -27,7 +30,7 @@ public class FuelController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FuelDTO> createNew(@RequestBody FuelDTO fuelDTO) {
+    public ResponseEntity<FuelDTO> createNew(@RequestBody FuelDTO fuelDTO) throws ConversionFailedError, DuplicateEntity {
 
         FuelDTO added = fuelService.add(fuelDTO);
 
@@ -36,7 +39,7 @@ public class FuelController {
 
     @GetMapping(path = "/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FuelDTO> getOne(@PathVariable Long id) {
+    public ResponseEntity<FuelDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         FuelDTO fuelDTO = fuelService.getOne(id);
 
@@ -47,7 +50,7 @@ public class FuelController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FuelDTO> update(@PathVariable Long id,
-                                          @RequestBody FuelDTO fuelDTO) {
+                                          @RequestBody FuelDTO fuelDTO) throws EntityNotFound {
 
         FuelDTO updated = fuelService.update(id, fuelDTO);
 
@@ -56,7 +59,7 @@ public class FuelController {
 
     @DeleteMapping(path = "/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FuelDTO> delete(@PathVariable Long id) {
+    public ResponseEntity<FuelDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         FuelDTO deleted = fuelService.delete(id);
 

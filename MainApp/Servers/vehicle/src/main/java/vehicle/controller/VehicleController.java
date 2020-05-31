@@ -11,7 +11,7 @@ import vehicle.service.VehicleService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/vehicle")
+@RequestMapping(value = "vehicle")
 public class VehicleController {
 
     @Autowired

@@ -14,7 +14,7 @@ import vehicle.service.PricelistService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/pricelist")
+@RequestMapping(value = "pricelist")
 public class PricelistController {
 
     @Autowired

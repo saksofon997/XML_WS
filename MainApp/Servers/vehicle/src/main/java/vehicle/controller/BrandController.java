@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.BrandDTO;
+import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.UnexpectedError;
@@ -15,14 +16,14 @@ import vehicle.service.ValidationService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/brand")
+@RequestMapping(value = "brand")
 public class BrandController {
 
     @Autowired
     BrandService brandService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BrandDTO>> getAll() throws EntityNotFound {
+    public ResponseEntity<List<BrandDTO>> getAll() throws EntityNotFound, ConversionFailedError {
 
         List<BrandDTO> brands = brandService.getAll();
 
@@ -31,7 +32,7 @@ public class BrandController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandDTO> createNew(@RequestBody BrandDTO brandDTO) throws DuplicateEntity {
+    public ResponseEntity<BrandDTO> createNew(@RequestBody BrandDTO brandDTO) throws DuplicateEntity, ConversionFailedError {
 
         BrandDTO added = brandService.add(brandDTO);
 
@@ -40,7 +41,7 @@ public class BrandController {
 
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandDTO> getOne(@PathVariable Long id) throws EntityNotFound {
+    public ResponseEntity<BrandDTO> getOne(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         BrandDTO brandDTO = brandService.getOne(id);
 
@@ -51,7 +52,7 @@ public class BrandController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BrandDTO> update(@PathVariable Long id,
-                                           @RequestBody BrandDTO brandDTO) throws UnexpectedError {
+                                           @RequestBody BrandDTO brandDTO) throws UnexpectedError, ConversionFailedError, EntityNotFound {
 
         BrandDTO updated = brandService.update(id, brandDTO);
 
@@ -60,7 +61,7 @@ public class BrandController {
 
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandDTO> delete(@PathVariable Long id) throws EntityNotFound {
+    public ResponseEntity<BrandDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         BrandDTO deleted = brandService.delete(id);
 

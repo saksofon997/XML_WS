@@ -6,19 +6,22 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.TransmissionDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.TransmissionService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/transmission")
+@RequestMapping(value = "transmission")
 public class TransmissionController {
 
     @Autowired
     TransmissionService transmissionService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TransmissionDTO>> getAll() {
+    public ResponseEntity<List<TransmissionDTO>> getAll() throws ConversionFailedError, EntityNotFound {
 
         List<TransmissionDTO> transmissions = transmissionService.getAll();
 
@@ -27,7 +30,7 @@ public class TransmissionController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransmissionDTO> createNew(@RequestBody TransmissionDTO transmissionDTO) {
+    public ResponseEntity<TransmissionDTO> createNew(@RequestBody TransmissionDTO transmissionDTO) throws ConversionFailedError, DuplicateEntity {
 
         TransmissionDTO added = transmissionService.add(transmissionDTO);
 
@@ -36,7 +39,7 @@ public class TransmissionController {
 
     @GetMapping(path = "/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransmissionDTO> getOne(@PathVariable Long id) {
+    public ResponseEntity<TransmissionDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         TransmissionDTO transmissionDTO = transmissionService.getOne(id);
 
@@ -47,7 +50,7 @@ public class TransmissionController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TransmissionDTO> update(@PathVariable Long id,
-                                                  @RequestBody TransmissionDTO transmissionDTO) {
+                                                  @RequestBody TransmissionDTO transmissionDTO) throws EntityNotFound {
 
         TransmissionDTO updated = transmissionService.update(id, transmissionDTO);
 
@@ -56,7 +59,7 @@ public class TransmissionController {
 
     @DeleteMapping(path = "/{id}",
                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TransmissionDTO> delete(@PathVariable Long id) {
+    public ResponseEntity<TransmissionDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         TransmissionDTO deleted = transmissionService.delete(id);
 
