@@ -2,9 +2,14 @@ package vehicle.service.impl;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vehicle.dto.CategoryDTO;
 import vehicle.dto.FuelDTO;
+import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -42,22 +47,20 @@ public class FuelServiceImpl implements FuelService {
         }
     }
 
+
     @Override
-    public List<FuelDTO> getAll() throws EntityNotFound, ConversionFailedError {
+    public FuelPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Page<Fuel> pagedResult = fuelRepo.findAll(page);
 
-        List<Fuel> fuels = fuelRepo.findAll();
-
-        if (fuels.isEmpty()) {
-            throw new EntityNotFound("Items not found");
+        FuelPageDTO pageDTO = new FuelPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Fuel fuel: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(fuel));
         }
 
-        List<FuelDTO> fuelDTOS = new ArrayList<>();
-
-        for (Fuel f : fuels) {
-            fuelDTOS.add(convertToDTO(f));
-        }
-
-        return fuelDTOS;
+        return pageDTO;
     }
 
     @Override

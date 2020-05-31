@@ -1,6 +1,6 @@
 package search.service;
 
-import search.dto.BrandDTO;
+import saga.dto.BrandDTO;
 import search.exceptions.ConversionFailedError;
 import search.exceptions.DuplicateEntity;
 import search.exceptions.EntityNotFound;
@@ -15,13 +15,13 @@ public interface BrandService {
 
     Brand convertToModel(BrandDTO brandDTO) throws ConversionFailedError;
 
-    BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity;
+    BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity, ConversionFailedError;
 
-    BrandDTO getOne(Long id) throws EntityNotFound;
+    BrandDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
     List<BrandDTO> getAll() throws EntityNotFound;
 
-    BrandDTO update(Long id, BrandDTO brandDTO) throws UnexpectedError;
+    BrandDTO update(Long id, BrandDTO brandDTO) throws EntityNotFound, ConversionFailedError;
 
-    BrandDTO delete(Long id) throws EntityNotFound;
+    BrandDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 }

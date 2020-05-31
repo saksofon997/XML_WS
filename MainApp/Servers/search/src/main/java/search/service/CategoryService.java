@@ -1,17 +1,25 @@
 package search.service;
 
 import search.dto.CategoryDTO;
+import search.exceptions.ConversionFailedError;
+import search.exceptions.DuplicateEntity;
+import search.exceptions.EntityNotFound;
+import search.model.Category;
 
 import java.util.List;
 
 public interface CategoryService {
     List<CategoryDTO> getAll();
 
-    CategoryDTO add(CategoryDTO categoryDTO);
+    CategoryDTO convertToDTO(Category category) throws ConversionFailedError;
 
-    CategoryDTO getOne(Long id);
+    Category convertToModel(CategoryDTO categoryDTO) throws ConversionFailedError;
 
-    CategoryDTO update(Long id, CategoryDTO categoryDTO);
+    CategoryDTO add(CategoryDTO categoryDTO) throws DuplicateEntity, ConversionFailedError;
 
-    CategoryDTO delete(Long id);
+    CategoryDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
+
+    CategoryDTO update(Long id, CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError;
+
+    CategoryDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 }

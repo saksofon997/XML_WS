@@ -1,0 +1,6 @@
+saga\events\BrandCreatedFailedEvent.class
+saga\dto\ModelDTO.class
+saga\events\BrandRollbackEvent.class
+saga\dto\BrandDTO.class
+saga\commands\CreateBrandCommand.class
+saga\events\BrandCreatedEvent.class

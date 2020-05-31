@@ -2,9 +2,14 @@ package vehicle.service.impl;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vehicle.dto.BrandDTO;
 import vehicle.dto.CategoryDTO;
+import vehicle.dto.CategoryPageDTO;
 import vehicle.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
@@ -45,21 +50,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDTO> getAll() throws EntityNotFound, ConversionFailedError {
+    public CategoryPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError{
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Page<Category> pagedResult = categoryRepo.findAll(page);
 
-        List<Category> categories = categoryRepo.findAll();
-
-        if (categories.isEmpty()) {
-            throw new EntityNotFound("Items not found");
+        CategoryPageDTO pageDTO = new CategoryPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Category category: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(category));
         }
 
-        List<CategoryDTO> categoryDTOS = new ArrayList<>();
-
-        for (Category c : categories) {
-            categoryDTOS.add(convertToDTO(c));
-        }
-
-        return categoryDTOS;
+        return pageDTO;
     }
 
     @Override

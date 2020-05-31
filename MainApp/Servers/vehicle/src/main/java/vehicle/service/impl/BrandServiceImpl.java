@@ -3,8 +3,13 @@ package vehicle.service.impl;
 import com.netflix.discovery.converters.Auto;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vehicle.dto.BrandDTO;
+import vehicle.dto.BrandPageDTO;
 import vehicle.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
@@ -74,19 +79,18 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<BrandDTO> getAll() throws EntityNotFound, ConversionFailedError {
+    public BrandPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Page<Brand> pagedResult = brandRepo.findAll(page);
 
-        List<Brand> brands = brandRepo.findAll();
+        BrandPageDTO pageDTO = new BrandPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Brand brand: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(brand));
+        }
 
-        if (brands.isEmpty())
-            throw new EntityNotFound("Items not found");
-
-        List<BrandDTO> brandDTOS = new ArrayList<>();
-
-        for (Brand b : brands)
-            brandDTOS.add(convertToDTO(b));
-
-        return brandDTOS;
+        return pageDTO;
     }
 
     @Override
