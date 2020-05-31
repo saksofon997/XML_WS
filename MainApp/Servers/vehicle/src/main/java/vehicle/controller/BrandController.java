@@ -6,32 +6,38 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.BrandDTO;
+import vehicle.dto.BrandPageDTO;
+import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.UnexpectedError;
 import vehicle.service.BrandService;
 import vehicle.service.ValidationService;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/brand")
+@RequestMapping(value = "/brand")
 public class BrandController {
 
     @Autowired
     BrandService brandService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BrandDTO>> getAll() throws EntityNotFound {
+    public ResponseEntity<BrandPageDTO> getAll(
+            @RequestParam(value = "page", required = false) Integer pageNo,
+            @RequestParam(value = "sort", required = false) String sort) throws ConversionFailedError {
 
-        List<BrandDTO> brands = brandService.getAll();
-
-        return new ResponseEntity<>(brands, HttpStatus.ACCEPTED);
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
+        BrandPageDTO page = brandService.getAll(pageNo, sort);
+        return new ResponseEntity<>(page, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandDTO> createNew(@RequestBody BrandDTO brandDTO) throws DuplicateEntity {
+    @PreAuthorize("hasAuthority('CREATE_BRAND_PERMISSION')")
+    public ResponseEntity<BrandDTO> createNew(@RequestBody BrandDTO brandDTO) throws DuplicateEntity, ConversionFailedError {
 
         BrandDTO added = brandService.add(brandDTO);
 
@@ -40,7 +46,7 @@ public class BrandController {
 
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandDTO> getOne(@PathVariable Long id) throws EntityNotFound {
+    public ResponseEntity<BrandDTO> getOne(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         BrandDTO brandDTO = brandService.getOne(id);
 
@@ -50,8 +56,10 @@ public class BrandController {
     @PutMapping(path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_BRAND_PERMISSION')")
     public ResponseEntity<BrandDTO> update(@PathVariable Long id,
-                                           @RequestBody BrandDTO brandDTO) throws UnexpectedError {
+                                           @RequestBody BrandDTO brandDTO)
+            throws EntityNotFound, UnexpectedError, ConversionFailedError {
 
         BrandDTO updated = brandService.update(id, brandDTO);
 
@@ -60,7 +68,8 @@ public class BrandController {
 
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandDTO> delete(@PathVariable Long id) throws EntityNotFound {
+    @PreAuthorize("hasAuthority('REMOVE_BRAND_PERMISSION')")
+    public ResponseEntity<BrandDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         BrandDTO deleted = brandService.delete(id);
 

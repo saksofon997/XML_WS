@@ -80,6 +80,12 @@
             <artifactId>dozer</artifactId>
             <version>5.5.1</version>
         </dependency>
+		<!-- Axon -->
+		<dependency>
+			<groupId>org.axonframework</groupId>
+			<artifactId>axon-spring-boot-starter</artifactId>
+			<version>4.3.2</version>
+		</dependency>
     </dependencies>
 
 	<dependencyManagement>

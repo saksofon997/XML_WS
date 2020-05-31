@@ -22,6 +22,15 @@ INSERT INTO users.permission(
 INSERT INTO users.permission(
     id, name)
     VALUES (nextval('permissions_id_seq'), 'DELETE_RENTAL_PERMISSION'); /*8*/
+INSERT INTO users.permission(
+    id, name)
+    VALUES (nextval('permissions_id_seq'), 'CREATE_BRAND_PERMISSION'); /*9*/
+INSERT INTO users.permission(
+    id, name)
+    VALUES (nextval('permissions_id_seq'), 'CHANGE_BRAND_PERMISSION'); /*10*/
+INSERT INTO users.permission(
+    id, name)
+    VALUES (nextval('permissions_id_seq'), 'DELETE_BRAND_PERMISSION'); /*11*/
 
 INSERT INTO users.role(
     id, name)
@@ -33,16 +42,22 @@ INSERT INTO users.role(
     id, name)
     VALUES (nextval('roles_id_seq'), 'ROLE_VEHICLE_OWNER'); /*3*/
 
-
+-- Admin permissions
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
     VALUES (1, 5);
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
-    VALUES (2, 5);
+    VALUES (1, 1);
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
-    VALUES (1, 1);
+    VALUES (1, 9);
+INSERT INTO users.role_permission(
+    roles_id, permissions_id)
+    VALUES (1, 10);
+INSERT INTO users.role_permission(
+    roles_id, permissions_id)
+    VALUES (1, 11);
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
     VALUES (1, 2);
@@ -52,6 +67,13 @@ INSERT INTO users.role_permission(
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
     VALUES (1, 4);
+
+-- Simple user permissions
+INSERT INTO users.role_permission(
+    roles_id, permissions_id)
+    VALUES (2, 5);
+
+-- Vehicle owner permissions
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
     VALUES (3, 6);

@@ -6,6 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.CategoryDTO;
+import vehicle.dto.CategoryPageDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Category;
 import vehicle.service.CategoryService;
 
@@ -19,16 +23,19 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CategoryDTO>> getAll() {
-
-        List<CategoryDTO> categories = categoryService.getAll();
+    public ResponseEntity<CategoryPageDTO> getAll(@RequestParam(value = "page", required = false) Integer pageNo,
+                                                  @RequestParam(value = "sort", required = false) String sort)
+            throws ConversionFailedError {
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
+        CategoryPageDTO categories = categoryService.getAll(pageNo, sort);
 
         return new ResponseEntity<>(categories, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDTO> createNew(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> createNew(@RequestBody CategoryDTO categoryDTO) throws DuplicateEntity, ConversionFailedError {
 
         CategoryDTO added = categoryService.add(categoryDTO);
 
@@ -37,7 +44,7 @@ public class CategoryController {
 
     @GetMapping(path = "/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDTO> getOne(@PathVariable Long id) {
+    public ResponseEntity<CategoryDTO> getOne(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         CategoryDTO categoryDTO = categoryService.getOne(id);
 
@@ -48,7 +55,7 @@ public class CategoryController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id,
-                                         @RequestBody CategoryDTO categoryDTO) {
+                                         @RequestBody CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError {
 
         CategoryDTO updated = categoryService.update(id, categoryDTO);
 
@@ -57,7 +64,7 @@ public class CategoryController {
 
     @DeleteMapping(path = "/{id}",
                    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDTO> delete(@PathVariable Long id) {
+    public ResponseEntity<CategoryDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         CategoryDTO deleted = categoryService.delete(id);
 

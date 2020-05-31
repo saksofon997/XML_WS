@@ -1,17 +1,28 @@
 package vehicle.service;
 
+import vehicle.dto.BrandDTO;
 import vehicle.dto.CategoryDTO;
+import vehicle.dto.CategoryPageDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
+import vehicle.model.Brand;
+import vehicle.model.Category;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDTO> getAll();
+    CategoryDTO convertToDTO(Category category) throws ConversionFailedError;
 
-    CategoryDTO add(CategoryDTO categoryDTO);
+    Category convertToModel(CategoryDTO categoryDTO) throws ConversionFailedError;
 
-    CategoryDTO getOne(Long id);
+    CategoryPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError;
 
-    CategoryDTO update(Long id, CategoryDTO categoryDTO);
+    CategoryDTO add(CategoryDTO categoryDTO) throws DuplicateEntity, ConversionFailedError;
 
-    CategoryDTO delete(Long id);
+    CategoryDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
+
+    CategoryDTO update(Long id, CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError;
+
+    CategoryDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 }

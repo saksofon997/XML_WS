@@ -1,16 +1,39 @@
 package vehicle.model;
 
-import java.util.ArrayList;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Where;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity(name ="brand")
+@Data
+@Where(clause="deleted=false")
 public class Brand {
 
+    @Id
+    @SequenceGenerator(name="brand_id_seq",sequenceName="brand_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="brand_id_seq")
     private Long id;
-    private String name;
-    private ArrayList<Model> models;
 
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    List<Model> models;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
+    public Brand(){
+        models = new ArrayList<Model>();
+    }
     public Brand(Long id, String name) {
         this.id = id;
         this.name = name;
+        models = new ArrayList<Model>();
     }
 
     public Brand(Long id, String name, ArrayList<Model> models) {
@@ -35,7 +58,7 @@ public class Brand {
         this.name = name;
     }
 
-    public ArrayList<Model> getModels() {
+    public List<Model> getModels() {
         return models;
     }
 

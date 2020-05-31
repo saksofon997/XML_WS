@@ -1,6 +1,7 @@
 package vehicle.service;
 
 import vehicle.dto.BrandDTO;
+import vehicle.dto.BrandPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -15,13 +16,13 @@ public interface BrandService {
 
     Brand convertToModel(BrandDTO brandDTO) throws ConversionFailedError;
 
-    BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity;
+    BrandDTO add(BrandDTO brandDTO) throws DuplicateEntity, ConversionFailedError;
 
-    BrandDTO getOne(Long id) throws EntityNotFound;
+    BrandDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    List<BrandDTO> getAll() throws EntityNotFound;
+    BrandPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError;
 
-    BrandDTO update(Long id, BrandDTO brandDTO) throws UnexpectedError;
+    BrandDTO update(Long id, BrandDTO brandDTO) throws EntityNotFound, ConversionFailedError;
 
-    BrandDTO delete(Long id) throws EntityNotFound;
+    BrandDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 }
