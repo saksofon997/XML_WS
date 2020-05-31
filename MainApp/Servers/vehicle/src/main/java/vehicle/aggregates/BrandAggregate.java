@@ -7,6 +7,7 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import saga.commands.CreateBrandCommand;
 import saga.commands.RollBackBrandCommand;
+import saga.dto.BrandDTO;
 import saga.events.BrandCreatedEvent;
 import saga.events.BrandRollbackEvent;
 import vehicle.service.BrandService;
@@ -15,7 +16,7 @@ import vehicle.service.BrandService;
 public class BrandAggregate {
 
     @AggregateIdentifier
-    private Long brandId;
+    private String brandId;
 
     public BrandAggregate() {}
 
@@ -28,7 +29,8 @@ public class BrandAggregate {
     @EventSourcingHandler
     public void on(BrandCreatedEvent brandCreatedEvent) {
         System.out.println("ODJE SAM 1");
-        this.brandId = brandCreatedEvent.getBrandId();
+        System.out.println(brandCreatedEvent.getBrandId());
+        this.brandId = brandCreatedEvent.getBrandId().toString() + "brandAggregate";
     }
 
     @CommandHandler

@@ -1,6 +1,6 @@
 package vehicle.service;
 
-import vehicle.dto.VehicleOccupancyDTO;
+import saga.dto.VehicleOccupancyDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;

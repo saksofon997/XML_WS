@@ -2,7 +2,7 @@ package search.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import search.dto.ModelDTO;
+import saga.dto.ModelDTO;
 import search.repository.ModelRepo;
 import search.service.ModelService;
 

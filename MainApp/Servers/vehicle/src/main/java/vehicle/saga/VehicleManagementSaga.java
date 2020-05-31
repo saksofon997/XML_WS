@@ -6,7 +6,10 @@ import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 import saga.commands.ReplicateBrandCommand;
+import saga.commands.ReplicateVehicleCommand;
 import saga.commands.RollBackBrandCommand;
+import saga.commands.RollbackVehicleCommand;
+import saga.dto.BrandDTO;
 import saga.events.*;
 
 import javax.inject.Inject;
@@ -49,5 +52,4 @@ public class VehicleManagementSaga {
         System.out.println("Saga finishing!");
         SagaLifecycle.end();
     }
-
 }

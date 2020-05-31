@@ -3,7 +3,7 @@ package search.service.impl;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import search.dto.CategoryDTO;
+import saga.dto.CategoryDTO;
 import search.exceptions.ConversionFailedError;
 import search.exceptions.DuplicateEntity;
 import search.exceptions.EntityNotFound;

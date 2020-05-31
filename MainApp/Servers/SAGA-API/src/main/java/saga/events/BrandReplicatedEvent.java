@@ -1,7 +1,5 @@
 package saga.events;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
-
 public class BrandReplicatedEvent {
 
     private String brandAggregateId;

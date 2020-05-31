@@ -4,8 +4,8 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saga.dto.ModelDTO;
-import vehicle.dto.ReviewDTO;
-import vehicle.dto.TransmissionDTO;
+import saga.dto.ReviewDTO;
+import saga.dto.TransmissionDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -69,11 +69,11 @@ public class TransmissionServiceImpl implements TransmissionService {
 
         Transmission newTransmission = convertToModel(transmissionDTO);
 
-        if (!transmissionRepo.existsByName(transmissionDTO.getName()))
+        if (!transmissionRepo.existsByName(transmissionDTO.getName())) {
             transmissionRepo.save(newTransmission);
-        else
-            throw new DuplicateEntity("Item with name: "+transmissionDTO.getName()+" already exists");
-
+        } else {
+            throw new DuplicateEntity("Item with name: " + transmissionDTO.getName() + " already exists");
+        }
         return transmissionDTO;
     }
 
@@ -82,10 +82,11 @@ public class TransmissionServiceImpl implements TransmissionService {
 
         Optional<Transmission> transmission = transmissionRepo.findById(id);
 
-        if (!transmission.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!transmission.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }else {
             return convertToDTO(transmission.get());
+        }
     }
 
     @Override
@@ -93,9 +94,9 @@ public class TransmissionServiceImpl implements TransmissionService {
 
         Optional<Transmission> change = transmissionRepo.findById(id);
 
-        if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }
         change.get().setName(transmissionDTO.getName());
 
         transmissionRepo.save(change.get());
@@ -108,11 +109,11 @@ public class TransmissionServiceImpl implements TransmissionService {
 
         Optional<Transmission> deleted = transmissionRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }else {
             transmissionRepo.deleteById(id);
-
+        }
         return convertToDTO(deleted.get());
     }
 }

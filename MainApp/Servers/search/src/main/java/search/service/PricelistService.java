@@ -1,6 +1,6 @@
 package search.service;
 
-import search.dto.PricelistDTO;
+import saga.dto.PricelistDTO;
 
 import java.util.List;
 

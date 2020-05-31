@@ -99,10 +99,11 @@ public class ModelServiceImpl implements ModelService {
 
         Optional<Model> model = modelRepo.findById(id);
 
-        if (!model.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!model.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
             return convertToDTO(model.get());
+        }
     }
 
     @Override

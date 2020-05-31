@@ -1,14 +1,14 @@
-package search.dto;
+package saga.dto;
 
-public class CategoryDTO {
+public class FuelDTO {
 
     private Long id;
     private String name;
 
-    public CategoryDTO() {
+    public FuelDTO() {
     }
 
-    public CategoryDTO(Long id, String name) {
+    public FuelDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }

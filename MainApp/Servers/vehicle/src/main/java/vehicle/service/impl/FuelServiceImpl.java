@@ -7,8 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import vehicle.dto.CategoryDTO;
-import vehicle.dto.FuelDTO;
+import saga.dto.CategoryDTO;
+import saga.dto.FuelDTO;
 import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
@@ -68,11 +68,11 @@ public class FuelServiceImpl implements FuelService {
 
         Fuel newFuel = convertToModel(fuelDTO);
 
-        if (!fuelRepo.existsByName(fuelDTO.getName()))
+        if (!fuelRepo.existsByName(fuelDTO.getName())) {
             fuelRepo.save(newFuel);
-        else
-            throw new DuplicateEntity("Item with name: "+fuelDTO.getName()+" already exists");
-
+        } else {
+            throw new DuplicateEntity("Item with name: " + fuelDTO.getName() + " already exists");
+        }
         return fuelDTO;
     }
 
@@ -81,10 +81,11 @@ public class FuelServiceImpl implements FuelService {
 
         Optional<Fuel> fuel = fuelRepo.findById(id);
 
-        if (!fuel.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!fuel.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
             return convertToDTO(fuel.get());
+        }
     }
 
     @Override
@@ -92,9 +93,9 @@ public class FuelServiceImpl implements FuelService {
 
         Optional<Fuel> change = fuelRepo.findById(id);
 
-        if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }
         change.get().setName(fuelDTO.getName());
 
         fuelRepo.save(change.get());
@@ -107,11 +108,11 @@ public class FuelServiceImpl implements FuelService {
 
         Optional<Fuel> deleted = fuelRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }else {
             fuelRepo.deleteById(id);
-
+        }
         return convertToDTO(deleted.get());
     }
 }

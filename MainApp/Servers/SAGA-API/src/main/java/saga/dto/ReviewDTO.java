@@ -1,19 +1,17 @@
-package search.dto;
-
-import search.model.Vehicle;
+package saga.dto;
 
 public class ReviewDTO {
 
     private Long id;
     private Long customerId;
-    private Vehicle vehicle;
+    private VehicleDTO vehicle;
     private int stars;
     private String text;
 
     public ReviewDTO() {
     }
 
-    public ReviewDTO(Long id, Long customerId, Vehicle vehicle, int stars, String text) {
+    public ReviewDTO(Long id, Long customerId, VehicleDTO vehicle, int stars, String text) {
         this.id = id;
         this.customerId = customerId;
         this.vehicle = vehicle;
@@ -37,11 +35,11 @@ public class ReviewDTO {
         this.customerId = customerId;
     }
 
-    public Vehicle getVehicle() {
+    public VehicleDTO getVehicle() {
         return vehicle;
     }
 
-    public void setVehicle(Vehicle vehicle) {
+    public void setVehicle(VehicleDTO vehicle) {
         this.vehicle = vehicle;
     }
 

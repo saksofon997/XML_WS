@@ -1,7 +1,4 @@
-package vehicle.dto;
-
-import saga.dto.BrandDTO;
-import saga.dto.ModelDTO;
+package saga.dto;
 
 public class VehicleDTO {
 

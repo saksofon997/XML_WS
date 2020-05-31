@@ -2,7 +2,7 @@ package search.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import search.dto.PricelistDTO;
+import saga.dto.PricelistDTO;
 import search.repository.PricelistRepo;
 import search.service.PricelistService;
 

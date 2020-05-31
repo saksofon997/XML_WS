@@ -1,6 +1,6 @@
 package vehicle.service;
 
-import vehicle.dto.FuelDTO;
+import saga.dto.FuelDTO;
 import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;

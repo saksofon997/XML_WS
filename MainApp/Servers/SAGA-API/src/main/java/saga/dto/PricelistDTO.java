@@ -1,4 +1,4 @@
-package vehicle.dto;
+package saga.dto;
 
 import java.util.ArrayList;
 

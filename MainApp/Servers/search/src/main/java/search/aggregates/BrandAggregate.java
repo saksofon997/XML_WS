@@ -6,8 +6,6 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import saga.commands.ReplicateBrandCommand;
-import saga.events.BrandCreatedEvent;
-import saga.events.BrandCreatedFailedEvent;
 import saga.events.BrandReplicatedEvent;
 import saga.events.BrandReplicatedFailedEvent;
 import search.exceptions.ConversionFailedError;

@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.VehicleDTO;
+import saga.dto.VehicleDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.VehicleService;
 
 import java.util.List;
@@ -27,7 +30,7 @@ public class VehicleController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> createNew(@RequestBody VehicleDTO vehicleDTO) {
+    public ResponseEntity<VehicleDTO> createNew(@RequestBody VehicleDTO vehicleDTO) throws DuplicateEntity, ConversionFailedError {
 
         VehicleDTO added = vehicleService.add(vehicleDTO);
 
@@ -36,27 +39,27 @@ public class VehicleController {
 
     @GetMapping(path = "/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> getOne(@PathVariable Long id) {
+    public ResponseEntity<VehicleDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         VehicleDTO vehicleDTO = vehicleService.getOne(id);
 
-        return new ResponseEntity<>(vehicleDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(vehicleDTO, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}",
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> update(@PathVariable Long id,
-                                             @RequestBody VehicleDTO vehicleDTO) {
+                                             @RequestBody VehicleDTO vehicleDTO) throws ConversionFailedError, EntityNotFound {
 
         VehicleDTO updated = vehicleService.update(id, vehicleDTO);
 
-        return new ResponseEntity<>(updated, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) {
+    public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         VehicleDTO deleted = vehicleService.delete(id);
 

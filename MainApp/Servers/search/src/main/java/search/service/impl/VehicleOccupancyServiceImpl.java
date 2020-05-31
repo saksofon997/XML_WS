@@ -2,7 +2,7 @@ package search.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import search.dto.VehicleOccupancyDTO;
+import saga.dto.VehicleOccupancyDTO;
 import search.repository.VehicleOccupancyRepo;
 import search.service.VehicleOccupancyService;
 

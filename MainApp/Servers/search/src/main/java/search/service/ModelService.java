@@ -1,6 +1,6 @@
 package search.service;
 
-import search.dto.ModelDTO;
+import saga.dto.ModelDTO;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package search.service;
 
-import search.dto.TransmissionDTO;
+import saga.dto.TransmissionDTO;
 
 import java.util.List;
 

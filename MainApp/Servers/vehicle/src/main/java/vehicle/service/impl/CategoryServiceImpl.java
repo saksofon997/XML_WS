@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import saga.dto.BrandDTO;
-import vehicle.dto.CategoryDTO;
+import saga.dto.CategoryDTO;
 import vehicle.dto.CategoryPageDTO;
 import saga.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -69,11 +69,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category newCat = convertToModel(categoryDTO);
 
-        if (!categoryRepo.existsByName(categoryDTO.getName()))
+        if (!categoryRepo.existsByName(categoryDTO.getName())) {
             categoryRepo.save(newCat);
-        else
-            throw new DuplicateEntity("Item with name: "+categoryDTO.getName()+" already exists");
-
+        } else {
+            throw new DuplicateEntity("Item with name: " + categoryDTO.getName() + " already exists");
+        }
         return categoryDTO;
     }
 
@@ -82,10 +82,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> category = categoryRepo.findById(id);
 
-        if (!category.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!category.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
             return convertToDTO(category.get());
+        }
     }
 
     @Override
@@ -93,9 +94,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> change = categoryRepo.findById(id);
 
-        if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }
         change.get().setName(categoryDTO.getName());
 
         categoryRepo.save(change.get());
@@ -108,10 +109,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> deleted = categoryRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
             categoryRepo.deleteById(id);
+        }
 
         return convertToDTO(deleted.get());
     }

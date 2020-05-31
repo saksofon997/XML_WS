@@ -1,6 +1,7 @@
 package vehicle.dto;
 
 import lombok.Data;
+import saga.dto.FuelDTO;
 
 import java.util.ArrayList;
 import java.util.List;

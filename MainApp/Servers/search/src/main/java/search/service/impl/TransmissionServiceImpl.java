@@ -2,7 +2,7 @@ package search.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import search.dto.TransmissionDTO;
+import saga.dto.TransmissionDTO;
 import search.repository.TransmissionRepo;
 import search.service.TransmissionService;
 

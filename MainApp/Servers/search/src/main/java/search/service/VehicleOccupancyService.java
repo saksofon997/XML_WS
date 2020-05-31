@@ -1,6 +1,6 @@
 package search.service;
 
-import search.dto.VehicleOccupancyDTO;
+import saga.dto.VehicleOccupancyDTO;
 
 import java.util.List;
 

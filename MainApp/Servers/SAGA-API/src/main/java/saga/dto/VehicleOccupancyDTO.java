@@ -1,4 +1,4 @@
-package search.dto;
+package saga.dto;
 
 public class VehicleOccupancyDTO {
 

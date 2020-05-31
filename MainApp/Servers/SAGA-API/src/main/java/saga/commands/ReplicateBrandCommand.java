@@ -40,7 +40,7 @@ public class ReplicateBrandCommand {
         return brandAggregateId;
     }
 
-    public void setBrandAggregateId(String orderAggregateId) {
-        this.brandAggregateId = orderAggregateId;
+    public void setBrandAggregateId(String brandAggregateId) {
+        this.brandAggregateId = brandAggregateId;
     }
 }

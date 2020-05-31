@@ -1,6 +1,6 @@
 package search.service;
 
-import search.dto.FuelDTO;
+import saga.dto.FuelDTO;
 import search.exceptions.ConversionFailedError;
 import search.exceptions.DuplicateEntity;
 import search.exceptions.EntityNotFound;

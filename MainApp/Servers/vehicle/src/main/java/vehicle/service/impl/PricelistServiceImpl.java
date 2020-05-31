@@ -4,7 +4,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saga.dto.ModelDTO;
-import vehicle.dto.PricelistDTO;
+import saga.dto.PricelistDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -52,11 +52,11 @@ public class PricelistServiceImpl implements PricelistService {
         Pricelist newPricelist = convertToModel(pricelistDTO);
 
         if (pricelistRepo.existsByName(pricelistDTO.getName()) &&
-            pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId()))
+            pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId())) {
             pricelistRepo.save(newPricelist);
-        else
+        } else {
             throw new DuplicateEntity("Item already exists");
-
+        }
         return pricelistDTO;
     }
 
@@ -65,10 +65,11 @@ public class PricelistServiceImpl implements PricelistService {
 
         Optional<Pricelist> pricelist = pricelistRepo.findById(id);
 
-        if (!pricelist.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!pricelist.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }else {
             return convertToDTO(pricelist.get());
+        }
     }
 
     @Override
@@ -76,12 +77,12 @@ public class PricelistServiceImpl implements PricelistService {
 
         Optional<Pricelist> change = pricelistRepo.findById(id);
 
-        if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
-        if (vehicleRepo.existsByPricelist(change.get()))
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }
+        if (vehicleRepo.existsByPricelist(change.get())) {
             throw new DuplicateEntity("Unable to change item");
-
+        }
         Pricelist changed = convertToModel(pricelistDTO);
         changed.setId(id);
 
@@ -95,12 +96,11 @@ public class PricelistServiceImpl implements PricelistService {
 
         Optional<Pricelist> deleted = pricelistRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
-        else if (vehicleRepo.existsByPricelist(deleted.get()))
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else if (vehicleRepo.existsByPricelist(deleted.get())) {
             throw new DuplicateEntity("Unable to delete item");
-
+        }
         pricelistRepo.deleteById(id);
 
         return convertToDTO(deleted.get());
