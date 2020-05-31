@@ -6,12 +6,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.VehicleOccupancyDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.VehicleOccupancyService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api")
+@RequestMapping(value = "")
 public class VehicleOccupancyController {
 
     @Autowired
@@ -19,7 +22,7 @@ public class VehicleOccupancyController {
 
     @GetMapping(path = "/vehicle/{vehicleId}/occupancy",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<VehicleOccupancyDTO>> get(@PathVariable Long vehicleId) {
+    public ResponseEntity<List<VehicleOccupancyDTO>> get(@PathVariable Long vehicleId) throws ConversionFailedError, EntityNotFound {
 
         List<VehicleOccupancyDTO> occupancies = vehicleOccupancyService.getAll(vehicleId);
 
@@ -30,7 +33,7 @@ public class VehicleOccupancyController {
                  consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleOccupancyDTO> createNew(@PathVariable Long vehicleId,
-                                                         @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) {
+                                                         @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
         VehicleOccupancyDTO added = vehicleOccupancyService.add(vehicleId, vehicleOccupancyDTO);
 
@@ -41,7 +44,7 @@ public class VehicleOccupancyController {
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleOccupancyDTO> update(@PathVariable Long vehicleId,
                                                       @PathVariable Long id,
-                                                      @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) {
+                                                      @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
         VehicleOccupancyDTO updated = vehicleOccupancyService.update(vehicleId, id, vehicleOccupancyDTO);
 
@@ -51,7 +54,7 @@ public class VehicleOccupancyController {
     @DeleteMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleOccupancyDTO> delete(@PathVariable Long vehicleId,
-                                                      @PathVariable Long id) {
+                                                      @PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         VehicleOccupancyDTO deleted = vehicleOccupancyService.delete(vehicleId, id);
 

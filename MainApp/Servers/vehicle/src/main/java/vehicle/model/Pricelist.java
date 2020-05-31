@@ -1,17 +1,50 @@
 package vehicle.model;
 
-import java.util.ArrayList;
+import lombok.Data;
+import org.hibernate.annotations.Where;
 
-public class Pricelist {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
+@Entity
+@Data
+@Where(clause="deleted=false")
+public class Pricelist implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="pricelist_id_seq",sequenceName="pricelist_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="pricelist_id_seq")
     private Long id;
+
+    @Column(name = "owner")
     private Long ownerId;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "pricePerDay")
     private long pricePerDay;
+
+    @Column(name = "pricePerKm")
     private long pricePerKm;
+
+    @Column(name = "cdw")
     private long cdw;
+
+    @Column(name = "description")
     private String description;
-    private ArrayList<Vehicle> vehicles;
+
+    @OneToMany(mappedBy = "pricelist", fetch = FetchType.LAZY)
+    private List<Vehicle> vehicles;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
+    public Pricelist() {
+    }
 
     public Pricelist(Long id,
                      Long ownerId,
@@ -36,7 +69,7 @@ public class Pricelist {
                      long pricePerKm,
                      long cdw,
                      String description,
-                     ArrayList<Vehicle> vehicles) {
+                     List<Vehicle> vehicles) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -103,11 +136,19 @@ public class Pricelist {
         this.description = description;
     }
 
-    public ArrayList<Vehicle> getVehicles() {
+    public List<Vehicle> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(ArrayList<Vehicle> vehicles) {
+    public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

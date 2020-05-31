@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vehicle.dto.ReviewDTO;
 import vehicle.dto.VehicleDTO;
+import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.ReviewService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api")
+@RequestMapping(value = "")
 public class ReviewController {
 
     @Autowired
@@ -20,7 +22,7 @@ public class ReviewController {
 
     @GetMapping(path = "/review",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ReviewDTO>> getPending() {
+    public ResponseEntity<List<ReviewDTO>> getPending() throws ConversionFailedError, EntityNotFound {
 
         List<ReviewDTO> pending = reviewService.getPending();
 
@@ -29,7 +31,7 @@ public class ReviewController {
 
     @GetMapping(path = "/vehicle/{vehicleId}/review",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ReviewDTO>> get(@PathVariable Long vehicleId) {
+    public ResponseEntity<List<ReviewDTO>> get(@PathVariable Long vehicleId) throws ConversionFailedError, EntityNotFound {
 
         List<ReviewDTO> reviews = reviewService.getByVehicle(vehicleId);
 
@@ -40,7 +42,7 @@ public class ReviewController {
                  consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewDTO> createNew(@PathVariable Long vehicleId,
-                                               @RequestBody ReviewDTO reviewDTO) {
+                                               @RequestBody ReviewDTO reviewDTO) throws ConversionFailedError {
 
         ReviewDTO added = reviewService.add(vehicleId, reviewDTO);
 
@@ -50,7 +52,7 @@ public class ReviewController {
     @GetMapping(path = "/vehicle/{vehicleId}/review/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewDTO> getOne(@PathVariable Long vehicleId,
-                                            @PathVariable Long id) {
+                                            @PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         ReviewDTO reviewDTO = reviewService.getOne(vehicleId, id);
 
@@ -62,7 +64,7 @@ public class ReviewController {
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewDTO> update(@PathVariable Long vehicleId,
                                             @PathVariable Long id,
-                                            @RequestBody ReviewDTO reviewDTO) {
+                                            @RequestBody ReviewDTO reviewDTO) throws ConversionFailedError, EntityNotFound {
 
         ReviewDTO updated = reviewService.update(vehicleId, id, reviewDTO);
 
@@ -72,7 +74,7 @@ public class ReviewController {
     @DeleteMapping(path = "/vehicle/{vehicleId}/review/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewDTO> delete(@PathVariable Long vehicleId,
-                                            @PathVariable Long id) {
+                                            @PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         ReviewDTO deleted = reviewService.delete(vehicleId, id);
 

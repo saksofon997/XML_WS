@@ -1,20 +1,60 @@
 package vehicle.model;
 
+import lombok.Data;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@Where(clause="deleted=false")
 public class Vehicle {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name="vehicle_id_seq",sequenceName="vehicle_id_seq", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="vehicle_id_seq")
     private Long id;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Brand brand;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Model model;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Category category;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Transmission transmission;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Fuel fuel;
+
+    @Column(name = "seats")
     private int seats;
+
+    @Column(name = "childSeats")
     private int childSeats;
+
+    @Column(name = "mileage")
     private long mileage;
+
+    @Column(name = "cdw")
     private long cdw;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Pricelist pricelist;
+
+    @Column(name = "numberOfStars")
     private int numberOfStars;
+
+    @Column(name = "numberOfReviews")
     private int numberOfReviews;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Vehicle() {
     }
@@ -149,5 +189,13 @@ public class Vehicle {
 
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -1,14 +1,12 @@
 package vehicle.dto;
 
-import vehicle.model.Model;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class BrandDTO {
 
     private Long id;
     private String name;
-    private ArrayList<ModelDTO> models;
+    private List<ModelDTO> models;
 
     public BrandDTO() {
     }
@@ -18,7 +16,7 @@ public class BrandDTO {
         this.name = name;
     }
 
-    public BrandDTO(Long id, String name, ArrayList<ModelDTO> models) {
+    public BrandDTO(Long id, String name, List<ModelDTO> models) {
         this.id = id;
         this.name = name;
         this.models = models;
@@ -40,11 +38,11 @@ public class BrandDTO {
         this.name = name;
     }
 
-    public ArrayList<ModelDTO> getModels() {
+    public List<ModelDTO> getModels() {
         return models;
     }
 
-    public void setModels(ArrayList<ModelDTO> models) {
+    public void setModels(List<ModelDTO> models) {
         this.models = models;
     }
 }
