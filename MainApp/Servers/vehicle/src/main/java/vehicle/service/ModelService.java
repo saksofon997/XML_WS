@@ -1,6 +1,6 @@
 package vehicle.service;
 
-import vehicle.dto.ModelDTO;
+import saga.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;

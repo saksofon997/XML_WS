@@ -1,16 +1,17 @@
 package search.model;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity(name ="category")
-@RequiredArgsConstructor
+@Entity
 @Data
 @Where(clause="deleted=false")
-public class Category {
+public class Category implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @SequenceGenerator(name="category_id_seq",sequenceName="category_id_seq", allocationSize=1)
@@ -22,6 +23,9 @@ public class Category {
 
     @Column(name = "deleted")
     private boolean deleted = false;
+
+    public Category(){
+    }
 
     public Category(Long id, String name) {
         this.id = id;
@@ -42,5 +46,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

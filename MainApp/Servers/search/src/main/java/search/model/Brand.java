@@ -1,16 +1,16 @@
 package search.model;
 
-import lombok.Data;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
-@Entity(name ="brand")
-@Data
+@Entity(name = "brand")
 @Where(clause="deleted=false")
-public class Brand {
+public class Brand implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @SequenceGenerator(name="brand_id_seq",sequenceName="brand_id_seq", allocationSize=1)
@@ -21,21 +21,20 @@ public class Brand {
     private String name;
 
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
-    List<Model> models;
+    private List<Model> models;
 
     @Column(name = "deleted")
     private boolean deleted = false;
 
     public Brand(){
-        models = new ArrayList<Model>();
     }
+
     public Brand(Long id, String name) {
         this.id = id;
         this.name = name;
-        models = new ArrayList<Model>();
     }
 
-    public Brand(Long id, String name, ArrayList<Model> models) {
+    public Brand(Long id, String name, List<Model> models) {
         this.id = id;
         this.name = name;
         this.models = models;
@@ -61,7 +60,15 @@ public class Brand {
         return models;
     }
 
-    public void setModels(ArrayList<Model> models) {
+    public void setModels(List<Model> models) {
         this.models = models;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

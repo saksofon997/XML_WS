@@ -3,7 +3,7 @@ package vehicle.service.impl;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vehicle.dto.ModelDTO;
+import saga.dto.ModelDTO;
 import vehicle.dto.ReviewDTO;
 import vehicle.dto.TransmissionDTO;
 import vehicle.exceptions.ConversionFailedError;

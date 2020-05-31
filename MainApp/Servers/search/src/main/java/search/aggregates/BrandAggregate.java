@@ -5,9 +5,11 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
-import saga.commands.CreateBrandCommand;
+import saga.commands.ReplicateBrandCommand;
 import saga.events.BrandCreatedEvent;
 import saga.events.BrandCreatedFailedEvent;
+import saga.events.BrandReplicatedEvent;
+import saga.events.BrandReplicatedFailedEvent;
 import search.exceptions.ConversionFailedError;
 import search.exceptions.DuplicateEntity;
 import search.service.BrandService;
@@ -18,21 +20,22 @@ public class BrandAggregate {
     private String brandAggregateId;
 
     @CommandHandler
-    public BrandAggregate(CreateBrandCommand createBrandCommand, BrandService brandService) {
+    public BrandAggregate(ReplicateBrandCommand replicateBrandCommand, BrandService brandService) {
+        System.out.println("USO SAM U SEARCH");
         try{
-            brandService.add(createBrandCommand.getBrandDTO());
-            AggregateLifecycle.apply(new BrandCreatedEvent(createBrandCommand.getBrandAggregateId()));
+            brandService.add(replicateBrandCommand.getBrandDTO());
+            AggregateLifecycle.apply(new BrandReplicatedEvent(replicateBrandCommand.getBrandAggregateId()));
         } catch (ConversionFailedError conversionFailedError) {
             System.out.println(conversionFailedError.getMessage());
             conversionFailedError.printStackTrace();
-            AggregateLifecycle.apply(new BrandCreatedFailedEvent(createBrandCommand.getBrandAggregateId(),
-                    createBrandCommand.getBrandId(),
+            AggregateLifecycle.apply(new BrandReplicatedFailedEvent(replicateBrandCommand.getBrandAggregateId(),
+                    replicateBrandCommand.getBrandId(),
                     conversionFailedError.getMessage()));
         } catch (DuplicateEntity duplicateEntity) {
             System.out.println(duplicateEntity.getMessage());
             duplicateEntity.printStackTrace();
-            AggregateLifecycle.apply(new BrandCreatedFailedEvent(createBrandCommand.getBrandAggregateId(),
-                    createBrandCommand.getBrandId(),
+            AggregateLifecycle.apply(new BrandReplicatedFailedEvent(replicateBrandCommand.getBrandAggregateId(),
+                    replicateBrandCommand.getBrandId(),
                     duplicateEntity.getMessage()));
 
         }
@@ -40,12 +43,12 @@ public class BrandAggregate {
     }
 
     @EventSourcingHandler
-    protected void on(BrandCreatedEvent brandCreatedEvent) {
-        this.brandAggregateId = brandCreatedEvent.getBrandAggregateId();
+    protected void on(BrandReplicatedEvent brandReplicatedEvent) {
+        this.brandAggregateId = brandReplicatedEvent.getBrandAggregateId();
     }
 
     @EventSourcingHandler
-    protected void on(BrandCreatedFailedEvent brandCreatedFailedEvent) {
-        this.brandAggregateId = brandCreatedFailedEvent.getBrandAggregateId();
+    protected void on(BrandReplicatedFailedEvent brandReplicatedFailedEvent) {
+        this.brandAggregateId = brandReplicatedFailedEvent.getBrandAggregateId();
     }
 }

@@ -1,6 +1,7 @@
 package vehicle.service.impl;
 
 import com.netflix.discovery.converters.Auto;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,9 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import vehicle.dto.BrandDTO;
+import saga.commands.CreateBrandCommand;
+import saga.dto.BrandDTO;
 import vehicle.dto.BrandPageDTO;
-import vehicle.dto.ModelDTO;
+import saga.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -20,9 +22,11 @@ import vehicle.repository.BrandRepo;
 import vehicle.service.BrandService;
 import vehicle.service.ModelService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -35,6 +39,8 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     ModelService modelService;
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public BrandDTO convertToDTO(Brand brand) throws ConversionFailedError {
@@ -59,10 +65,16 @@ public class BrandServiceImpl implements BrandService {
 
         Brand newBrand = convertToModel(brandDTO);
 
-        if (!brandRepo.existsByName(brandDTO.getName()))
-            brandRepo.save(newBrand);
-        else
+        if (!brandRepo.existsByName(brandDTO.getName())){
+            Brand savedBrand = brandRepo.save(newBrand);
+
+            String brandAggregateId = UUID.randomUUID().toString();
+            System.out.println(savedBrand.getId());
+            commandGateway.send(new CreateBrandCommand(savedBrand.getId(),brandDTO));
+        }
+        else{
             throw new DuplicateEntity("Item with name: "+brandDTO.getName()+" already exists");
+        }
 
         return brandDTO;
     }

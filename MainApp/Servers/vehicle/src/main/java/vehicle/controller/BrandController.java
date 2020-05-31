@@ -5,14 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.BrandDTO;
+import saga.dto.BrandDTO;
 import vehicle.dto.BrandPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.UnexpectedError;
 import vehicle.service.BrandService;
-import vehicle.service.ValidationService;
 
 import java.util.List;
 

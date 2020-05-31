@@ -1,23 +1,31 @@
 package saga.events;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.dto.BrandDTO;
 
 public class BrandCreatedEvent {
-    @TargetAggregateIdentifier
-    private String brandAggregateId;
+    private Long brandId;
+    private BrandDTO brandDTO;
 
     public BrandCreatedEvent() {}
 
-    public BrandCreatedEvent(String brandAggregateId) {
-        this.brandAggregateId = brandAggregateId;
+    public BrandCreatedEvent(Long brandId, BrandDTO brandDTO) {
+        this.brandId = brandId;
+        this.brandDTO = brandDTO;
     }
 
-    public String getBrandAggregateId() {
-        return brandAggregateId;
+    public Long getBrandId() {
+        return brandId;
     }
 
-    public void setBrandAggregateId(String brandAggregateId) {
-        this.brandAggregateId = brandAggregateId;
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
+    }
+
+    public BrandDTO getBrandDTO() {
+        return brandDTO;
+    }
+
+    public void setBrandDTO(BrandDTO brandDTO) {
+        this.brandDTO = brandDTO;
     }
 }

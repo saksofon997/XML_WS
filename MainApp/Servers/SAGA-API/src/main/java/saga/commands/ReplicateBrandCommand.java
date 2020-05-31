@@ -1,19 +1,21 @@
 package saga.commands;
 
-
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.dto.BrandDTO;
 
-public class CreateBrandCommand {
+public class ReplicateBrandCommand {
     @TargetAggregateIdentifier
+    private String brandAggregateId;
+
     private Long brandId;
     private BrandDTO brandDTO;
 
-    public CreateBrandCommand(){
+    public ReplicateBrandCommand(){
 
     }
 
-    public CreateBrandCommand(Long brandId, BrandDTO brandDTO) {
+    public ReplicateBrandCommand(String brandAggregateId, Long brandId, BrandDTO brandDTO) {
+        this.brandAggregateId = brandAggregateId;
         this.brandId = brandId;
         this.brandDTO = brandDTO;
     }
@@ -34,4 +36,11 @@ public class CreateBrandCommand {
         this.brandDTO = brandDTO;
     }
 
+    public String getBrandAggregateId() {
+        return brandAggregateId;
+    }
+
+    public void setBrandAggregateId(String orderAggregateId) {
+        this.brandAggregateId = orderAggregateId;
+    }
 }

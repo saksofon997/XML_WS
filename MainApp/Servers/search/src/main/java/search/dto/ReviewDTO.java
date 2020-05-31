@@ -1,6 +1,6 @@
 package search.dto;
 
-import vehicle.model.Vehicle;
+import search.model.Vehicle;
 
 public class ReviewDTO {
 

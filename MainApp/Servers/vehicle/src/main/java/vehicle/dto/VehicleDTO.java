@@ -1,5 +1,8 @@
 package vehicle.dto;
 
+import saga.dto.BrandDTO;
+import saga.dto.ModelDTO;
+
 public class VehicleDTO {
 
     private Long id;
