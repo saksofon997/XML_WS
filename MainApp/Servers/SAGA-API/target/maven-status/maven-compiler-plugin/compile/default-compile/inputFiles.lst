@@ -2,11 +2,11 @@ C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\ReplicateBrandCommand.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\BrandReplicatedEvent.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\VehicleReplicatedFailedEvent.java
-C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\BrandCreatedFailedEvent.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\TransmissionDTO.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\RollBackBrandCommand.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\ModelDTO.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\VehicleMainEvent.java
+C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\BrandMainEvent.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\BrandRollbackEvent.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\VehicleMainFailedEvent.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\ReplicateVehicleCommand.java
@@ -16,11 +16,11 @@ C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\VehicleDTO.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\MainVehicleCommand.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\BrandDTO.java
+C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\MainBrandCommand.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\FuelDTO.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\TypeOfCommand.java
-C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\BrandCreatedEvent.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\ReviewDTO.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\VehicleOccupancyDTO.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\VehicleRollbackEvent.java
-C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\commands\CreateBrandCommand.java
 C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\dto\PricelistDTO.java
+C:\Users\Petar\Desktop\Faks_razno\4.god\8.Semestar\XMLiWebServisi\XML_WS\MainApp\Servers\SAGA-API\src\main\java\saga\events\BrandMainFailedEvent.java

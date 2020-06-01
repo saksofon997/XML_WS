@@ -36,7 +36,6 @@ public class VehicleSaga {
 
     @SagaEventHandler(associationProperty = "vehicleAggregateId")
     public void handle(VehicleReplicatedEvent vehicleReplicatedEvent) {
-        System.out.println("Saga finishing...");
         String message = "Saga finishing... \n";
         if (vehicleReplicatedEvent.getTypeOfCommand() == TypeOfCommand.CREATE) {
             System.out.println(message + "Vehicle created and replicated successfully!");
@@ -53,7 +52,9 @@ public class VehicleSaga {
     public void handle(VehicleReplicatedFailedEvent vehicleReplicatedFailedEvent) {
         System.out.println("Saga declined, starting compensation transaction!");
 
-        commandGateway.send(new RollbackVehicleCommand(vehicleReplicatedFailedEvent.getVehicleId(), vehicleReplicatedFailedEvent.getReason(), vehicleReplicatedFailedEvent.getTypeOfCommand()));
+        commandGateway.send(new RollbackVehicleCommand(vehicleReplicatedFailedEvent.getVehicleId(),
+                vehicleReplicatedFailedEvent.getReason(),
+                vehicleReplicatedFailedEvent.getTypeOfCommand()));
     }
 
     @SagaEventHandler(associationProperty = "vehicleId")

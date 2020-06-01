@@ -1,16 +1,19 @@
 package saga.events;
 
+import saga.commands.TypeOfCommand;
 import saga.dto.BrandDTO;
 
-public class BrandCreatedEvent {
+public class BrandMainEvent {
     private Long brandId;
     private BrandDTO brandDTO;
+    private TypeOfCommand typeOfCommand;
 
-    public BrandCreatedEvent() {}
+    public BrandMainEvent() {}
 
-    public BrandCreatedEvent(Long brandId, BrandDTO brandDTO) {
+    public BrandMainEvent(Long brandId, BrandDTO brandDTO, TypeOfCommand typeOfCommand) {
         this.brandId = brandId;
         this.brandDTO = brandDTO;
+        this.typeOfCommand = typeOfCommand;
     }
 
     public Long getBrandId() {
@@ -27,5 +30,13 @@ public class BrandCreatedEvent {
 
     public void setBrandDTO(BrandDTO brandDTO) {
         this.brandDTO = brandDTO;
+    }
+
+    public TypeOfCommand getTypeOfCommand() {
+        return typeOfCommand;
+    }
+
+    public void setTypeOfCommand(TypeOfCommand typeOfCommand) {
+        this.typeOfCommand = typeOfCommand;
     }
 }

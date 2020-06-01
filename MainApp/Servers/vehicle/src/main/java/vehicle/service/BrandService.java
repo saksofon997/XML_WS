@@ -25,4 +25,6 @@ public interface BrandService {
     BrandDTO update(Long id, BrandDTO brandDTO) throws UnexpectedError, EntityNotFound, ConversionFailedError;
 
     BrandDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+
+    BrandDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
 }

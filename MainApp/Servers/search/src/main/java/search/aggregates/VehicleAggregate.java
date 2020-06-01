@@ -37,19 +37,9 @@ public class VehicleAggregate {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            if(replicateVehicleCommand.getTypeOfCommand() == TypeOfCommand.CREATE) {
                 AggregateLifecycle.apply(new VehicleReplicatedFailedEvent(replicateVehicleCommand.getVehicleAggregateId(),
                         replicateVehicleCommand.getVehicleId(),
-                        e.getMessage(), TypeOfCommand.CREATE));
-            } else if (replicateVehicleCommand.getTypeOfCommand() == TypeOfCommand.UPDATE){
-                AggregateLifecycle.apply(new VehicleReplicatedFailedEvent(replicateVehicleCommand.getVehicleAggregateId(),
-                        replicateVehicleCommand.getVehicleId(),
-                        e.getMessage(), TypeOfCommand.UPDATE));
-            } else {
-                AggregateLifecycle.apply(new VehicleReplicatedFailedEvent(replicateVehicleCommand.getVehicleAggregateId(),
-                        replicateVehicleCommand.getVehicleId(),
-                        e.getMessage(), TypeOfCommand.DELETE));
-            }
+                        e.getMessage(), replicateVehicleCommand.getTypeOfCommand()));
         }
 
     }

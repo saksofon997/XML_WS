@@ -6,12 +6,14 @@ public class RollBackBrandCommand {
     @TargetAggregateIdentifier
     private Long brandId;
     private String status;
+    private TypeOfCommand typeOfCommand;
 
     public RollBackBrandCommand() {}
 
-    public RollBackBrandCommand(Long brandId, String status) {
+    public RollBackBrandCommand(Long brandId, String status, TypeOfCommand typeOfCommand) {
         this.brandId = brandId;
         this.status = status;
+        this.typeOfCommand = typeOfCommand;
     }
 
     public Long getBrandId() {
@@ -28,5 +30,13 @@ public class RollBackBrandCommand {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public TypeOfCommand getTypeOfCommand() {
+        return typeOfCommand;
+    }
+
+    public void setTypeOfCommand(TypeOfCommand typeOfCommand) {
+        this.typeOfCommand = typeOfCommand;
     }
 }

@@ -9,15 +9,25 @@ public class ReplicateBrandCommand {
 
     private Long brandId;
     private BrandDTO brandDTO;
+    private TypeOfCommand typeOfCommand;
 
     public ReplicateBrandCommand(){
 
     }
 
-    public ReplicateBrandCommand(String brandAggregateId, Long brandId, BrandDTO brandDTO) {
+    public ReplicateBrandCommand(String brandAggregateId, Long brandId, BrandDTO brandDTO, TypeOfCommand typeOfCommand) {
         this.brandAggregateId = brandAggregateId;
         this.brandId = brandId;
         this.brandDTO = brandDTO;
+        this.typeOfCommand = typeOfCommand;
+    }
+
+    public String getBrandAggregateId() {
+        return brandAggregateId;
+    }
+
+    public void setBrandAggregateId(String brandAggregateId) {
+        this.brandAggregateId = brandAggregateId;
     }
 
     public Long getBrandId() {
@@ -36,11 +46,11 @@ public class ReplicateBrandCommand {
         this.brandDTO = brandDTO;
     }
 
-    public String getBrandAggregateId() {
-        return brandAggregateId;
+    public TypeOfCommand getTypeOfCommand() {
+        return typeOfCommand;
     }
 
-    public void setBrandAggregateId(String brandAggregateId) {
-        this.brandAggregateId = brandAggregateId;
+    public void setTypeOfCommand(TypeOfCommand typeOfCommand) {
+        this.typeOfCommand = typeOfCommand;
     }
 }

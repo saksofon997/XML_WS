@@ -10,9 +10,9 @@ import saga.commands.RollbackVehicleCommand;
 import saga.commands.TypeOfCommand;
 import saga.events.VehicleMainEvent;
 import saga.events.VehicleRollbackEvent;
-import vehicle.exceptions.ConversionFailedError;
-import vehicle.exceptions.EntityNotFound;
 import vehicle.service.VehicleService;
+
+import java.util.UUID;
 
 @Aggregate
 public class VehicleAggregate {
@@ -29,15 +29,15 @@ public class VehicleAggregate {
 
     @EventSourcingHandler
     public void on(VehicleMainEvent vehicleMainEvent) {
-        System.out.println("Setting aggregate ID...");
+        System.out.println("Setting vehicle aggregate ID...");
         System.out.println(vehicleMainEvent);
-        this.vehicleId = vehicleMainEvent.getVehicleId().toString() + "vehicleAggregate" + vehicleMainEvent.getTypeOfCommand();
+        this.vehicleId = vehicleMainEvent.getVehicleId().toString() + "vehicleAggregate" + vehicleMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
     }
 
     @CommandHandler
     public void on(RollbackVehicleCommand rollbackVehicleCommand, VehicleService vehicleService) {
         //brandService.update(rollbackOrderCommand.getBrandId(), OrderStatus.REJECTED);
-        System.out.println("Performing rollback...");
+        System.out.println("Performing rollback for vehicle...");
         try{
             if (rollbackVehicleCommand.getTypeOfCommand() == TypeOfCommand.CREATE) {
                 vehicleService.deletePermanent(rollbackVehicleCommand.getVehicleId());
