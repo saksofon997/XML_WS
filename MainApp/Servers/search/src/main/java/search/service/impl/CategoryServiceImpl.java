@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Category> check = categoryRepo.findById(id);
         if (!check.isPresent() || !id.equals(id)){
-            throw new EntityNotFound("Brand not found, invalid data");
+            throw new EntityNotFound("Category not found, invalid data");
         }
         Category category = check.get();
         category.setDeleted(true);

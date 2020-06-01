@@ -21,7 +21,7 @@ public class BrandSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "brandId")
     public void handle(BrandMainEvent brandMainEvent) {
-        System.out.println("Saga invoked");
+        System.out.println("Saga invoked for brand.");
 
         String brandAggregateId = UUID.randomUUID().toString();
 

@@ -24,7 +24,7 @@ public class VehicleSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "vehicleId")
     public void handle(VehicleMainEvent vehicleMainEvent) {
-        System.out.println("Saga invoked");
+        System.out.println("Saga invoked for vehicle.");
 
         String vehicleAggregateId = UUID.randomUUID().toString();
 
