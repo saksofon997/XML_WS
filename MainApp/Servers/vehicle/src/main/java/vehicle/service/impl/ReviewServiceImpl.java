@@ -1,8 +1,12 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saga.commands.TypeOfCommand;
+import saga.commands.priceListCommands.MainPriceListCommand;
+import saga.commands.reviewCommands.MainReviewCommand;
 import saga.dto.PricelistDTO;
 import saga.dto.ReviewDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -16,6 +20,7 @@ import vehicle.repository.ReviewRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.ReviewService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +36,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public ReviewDTO convertToDTO(Review review) throws ConversionFailedError {
@@ -78,8 +86,9 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review newReview = convertToModel(reviewDTO);
 
-        reviewRepo.save(newReview);
-        // Todo saga add command here
+        Review savedReview = reviewRepo.save(newReview);
+        commandGateway.send(new MainReviewCommand(savedReview.getId(),vehicleId, reviewDTO, TypeOfCommand.CREATE));
+
         return reviewDTO;
     }
 
@@ -119,8 +128,9 @@ public class ReviewServiceImpl implements ReviewService {
         Review updated = convertToModel(reviewDTO);
         updated.setId(id);
 
-        reviewRepo.save(updated);
-        // Todo saga update command here
+        Review savedReview = reviewRepo.save(updated);
+        commandGateway.send(new MainReviewCommand(savedReview.getId(),vehicleId, reviewDTO, TypeOfCommand.UPDATE));
+
         return reviewDTO;
     }
 
@@ -141,7 +151,7 @@ public class ReviewServiceImpl implements ReviewService {
         deleted.get().setDeleted(true);
         reviewRepo.save(deleted.get());
         // reviewRepo.deleteById(id);
-        // Todo saga delete command here
+        commandGateway.send(new MainReviewCommand(deleted.get().getId(),vehicleId, convertToDTO(deleted.get()), TypeOfCommand.DELETE));
         return convertToDTO(deleted.get());
     }
 
