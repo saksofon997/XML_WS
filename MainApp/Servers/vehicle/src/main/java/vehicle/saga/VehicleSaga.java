@@ -7,7 +7,8 @@ import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 import saga.commands.ReplicateVehicleCommand;
 import saga.commands.RollbackVehicleCommand;
-import saga.events.VehicleCreatedEvent;
+import saga.commands.TypeOfCommand;
+import saga.events.VehicleMainEvent;
 import saga.events.VehicleReplicatedEvent;
 import saga.events.VehicleReplicatedFailedEvent;
 import saga.events.VehicleRollbackEvent;
@@ -22,20 +23,28 @@ public class VehicleSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = "vehicleId")
-    public void handle(VehicleCreatedEvent vehicleCreatedEvent) {
+    public void handle(VehicleMainEvent vehicleMainEvent) {
         System.out.println("Saga invoked");
 
         String vehicleAggregateId = UUID.randomUUID().toString();
 
         SagaLifecycle.associateWith("vehicleAggregateId", vehicleAggregateId);
 
-        commandGateway.send(new ReplicateVehicleCommand(vehicleAggregateId, vehicleCreatedEvent.getVehicleId(),
-                vehicleCreatedEvent.getVehicleDTO()));
+        commandGateway.send(new ReplicateVehicleCommand(vehicleAggregateId, vehicleMainEvent.getVehicleId(),
+                vehicleMainEvent.getVehicleDTO(), vehicleMainEvent.getTypeOfCommand()));
     }
 
     @SagaEventHandler(associationProperty = "vehicleAggregateId")
     public void handle(VehicleReplicatedEvent vehicleReplicatedEvent) {
-        System.out.println("Saga finishing, both order and ticket created!");
+        System.out.println("Saga finishing...");
+        String message = "Saga finishing... \n";
+        if (vehicleReplicatedEvent.getTypeOfCommand() == TypeOfCommand.CREATE) {
+            System.out.println(message + "Vehicle created and replicated successfully!");
+        } else if (vehicleReplicatedEvent.getTypeOfCommand() == TypeOfCommand.UPDATE) {
+            System.out.println(message + "Vehicle updated and update replicated successfully!");
+        } else {
+            System.out.println(message + "Vehicle deleted successfully!");
+        }
 
         SagaLifecycle.end();
     }
@@ -44,11 +53,11 @@ public class VehicleSaga {
     public void handle(VehicleReplicatedFailedEvent vehicleReplicatedFailedEvent) {
         System.out.println("Saga declined, starting compensation transaction!");
 
-        commandGateway.send(new RollbackVehicleCommand(vehicleReplicatedFailedEvent.getVehicleId(), vehicleReplicatedFailedEvent.getReason()));
+        commandGateway.send(new RollbackVehicleCommand(vehicleReplicatedFailedEvent.getVehicleId(), vehicleReplicatedFailedEvent.getReason(), vehicleReplicatedFailedEvent.getTypeOfCommand()));
     }
 
     @SagaEventHandler(associationProperty = "vehicleId")
-    public void handle(VehicleRollbackEvent vehicleUpdatedEvent) {
+    public void handle(VehicleRollbackEvent vehicleRollbackEvent) {
         System.out.println("Saga finishing!");
         SagaLifecycle.end();
     }

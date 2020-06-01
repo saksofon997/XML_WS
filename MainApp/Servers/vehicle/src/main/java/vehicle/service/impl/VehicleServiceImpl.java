@@ -4,25 +4,19 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import saga.commands.CreateBrandCommand;
-import saga.commands.CreateVehicleCommand;
-import saga.dto.BrandDTO;
-import saga.dto.ModelDTO;
+import saga.commands.MainVehicleCommand;
+import saga.commands.TypeOfCommand;
 import saga.dto.VehicleDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Brand;
-import vehicle.model.Model;
 import vehicle.model.Vehicle;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.VehicleService;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -64,7 +58,7 @@ public class VehicleServiceImpl implements VehicleService {
             Vehicle savedVehicle = vehicleRepo.save(newBrand);
 
             System.out.println(savedVehicle.getId());
-            commandGateway.send(new CreateVehicleCommand(savedVehicle.getId(),vehicleDTO));
+            commandGateway.send(new MainVehicleCommand(savedVehicle.getId(),vehicleDTO, TypeOfCommand.CREATE));
 
         return vehicleDTO;
     }
@@ -91,7 +85,9 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle updatedVehicle = convertToModel(vehicleDTO);
         updatedVehicle.setId(change.get().getId());
 
-        vehicleRepo.save(updatedVehicle);
+        Vehicle savedVehicle = vehicleRepo.save(updatedVehicle);
+        vehicleDTO.setId(savedVehicle.getId());
+        commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.UPDATE));
         return vehicleDTO;
     }
 
@@ -105,7 +101,22 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = deleted.get();
         vehicle.setDeleted(true);
         Vehicle deletedVehicle = vehicleRepo.save(vehicle);
-
-        return convertToDTO(deletedVehicle);
+        VehicleDTO deletedVehicleDTO = convertToDTO(deletedVehicle);
+        commandGateway.send(new MainVehicleCommand(deletedVehicle.getId(),deletedVehicleDTO, TypeOfCommand.DELETE));
+        return deletedVehicleDTO;
     }
+
+    @Override
+    public VehicleDTO deletePermanent (Long id) throws EntityNotFound, ConversionFailedError {
+        Optional<Vehicle> deleted = vehicleRepo.findById(id);
+
+        if (!deleted.isPresent()){
+            throw new EntityNotFound("No item with ID: "+id);
+        }
+        vehicleRepo.deleteById(id);
+        VehicleDTO deletedVehicleDTO = convertToDTO(deleted.get());
+        commandGateway.send(new MainVehicleCommand(id,deletedVehicleDTO, TypeOfCommand.DELETE));
+        return deletedVehicleDTO;
+    }
+
 }

@@ -25,4 +25,6 @@ public interface VehicleService {
     VehicleDTO update(Long id, VehicleDTO vehicleDTO) throws EntityNotFound, ConversionFailedError;
 
     VehicleDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+
+    VehicleDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
 }

@@ -3,30 +3,19 @@ package saga.commands;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.dto.VehicleDTO;
 
-public class ReplicateVehicleCommand {
+public class MainVehicleCommand {
     @TargetAggregateIdentifier
-    private String vehicleAggregateId;
-
     private Long vehicleId;
     private VehicleDTO vehicleDTO;
     private TypeOfCommand typeOfCommand;
 
-    public ReplicateVehicleCommand() {
+    public MainVehicleCommand() {
     }
 
-    public ReplicateVehicleCommand(String vehicleAggregateId, Long vehicleId, VehicleDTO vehicleDTO, TypeOfCommand typeOfCommand) {
-        this.vehicleAggregateId = vehicleAggregateId;
+    public MainVehicleCommand(Long vehicleId, VehicleDTO vehicleDTO, TypeOfCommand typeOfCommand) {
         this.vehicleId = vehicleId;
         this.vehicleDTO = vehicleDTO;
         this.typeOfCommand = typeOfCommand;
-    }
-
-    public String getVehicleAggregateId() {
-        return vehicleAggregateId;
-    }
-
-    public void setVehicleAggregateId(String vehicleAggregateId) {
-        this.vehicleAggregateId = vehicleAggregateId;
     }
 
     public Long getVehicleId() {

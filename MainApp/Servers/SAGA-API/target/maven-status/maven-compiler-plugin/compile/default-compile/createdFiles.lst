@@ -1,16 +1,16 @@
 saga\events\BrandCreatedFailedEvent.class
+saga\events\VehicleMainFailedEvent.class
 saga\events\VehicleReplicatedFailedEvent.class
 saga\events\VehicleRollbackEvent.class
+saga\events\VehicleMainEvent.class
 saga\events\BrandRollbackEvent.class
 saga\commands\ReplicateVehicleCommand.class
 saga\dto\CategoryDTO.class
 saga\events\BrandCreatedEvent.class
-saga\events\VehicleCreatedFailedEvent.class
 saga\dto\ModelDTO.class
 saga\commands\ReplicateBrandCommand.class
 saga\dto\PricelistDTO.class
-saga\commands\CreateVehicleCommand.class
-saga\events\VehicleCreatedEvent.class
+saga\commands\MainVehicleCommand.class
 saga\dto\VehicleDTO.class
 saga\dto\FuelDTO.class
 saga\events\VehicleReplicatedEvent.class
@@ -19,6 +19,7 @@ saga\events\BrandReplicatedFailedEvent.class
 saga\commands\RollbackVehicleCommand.class
 saga\dto\BrandDTO.class
 saga\dto\TransmissionDTO.class
+saga\commands\TypeOfCommand.class
 saga\commands\RollBackBrandCommand.class
 saga\dto\VehicleOccupancyDTO.class
 saga\commands\CreateBrandCommand.class

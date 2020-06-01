@@ -6,13 +6,15 @@ public class RollbackVehicleCommand {
     @TargetAggregateIdentifier
     private Long vehicleId;
     private String status;
+    private TypeOfCommand typeOfCommand;
 
     public RollbackVehicleCommand() {
     }
 
-    public RollbackVehicleCommand(Long vehicleId, String status) {
+    public RollbackVehicleCommand(Long vehicleId, String status, TypeOfCommand typeOfCommand) {
         this.vehicleId = vehicleId;
         this.status = status;
+        this.typeOfCommand = typeOfCommand;
     }
 
     public Long getVehicleId() {
@@ -29,5 +31,13 @@ public class RollbackVehicleCommand {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public TypeOfCommand getTypeOfCommand() {
+        return typeOfCommand;
+    }
+
+    public void setTypeOfCommand(TypeOfCommand typeOfCommand) {
+        this.typeOfCommand = typeOfCommand;
     }
 }

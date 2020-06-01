@@ -1,17 +1,21 @@
 package saga.events;
 
-public class VehicleCreatedFailedEvent {
+import saga.commands.TypeOfCommand;
+
+public class VehicleMainFailedEvent {
     private String vehicleAggregateId;
     private Long vehicleId;
     private String reason;
+    private TypeOfCommand typeOfCommand;
 
-    public VehicleCreatedFailedEvent() {
+    public VehicleMainFailedEvent() {
     }
 
-    public VehicleCreatedFailedEvent(String vehicleAggregateId, Long vehicleId, String reason) {
+    public VehicleMainFailedEvent(String vehicleAggregateId, Long vehicleId, String reason, TypeOfCommand typeOfCommand) {
         this.vehicleAggregateId = vehicleAggregateId;
         this.vehicleId = vehicleId;
         this.reason = reason;
+        this.typeOfCommand = typeOfCommand;
     }
 
     public String getVehicleAggregateId() {
@@ -36,5 +40,13 @@ public class VehicleCreatedFailedEvent {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public TypeOfCommand getTypeOfCommand() {
+        return typeOfCommand;
+    }
+
+    public void setTypeOfCommand(TypeOfCommand typeOfCommand) {
+        this.typeOfCommand = typeOfCommand;
     }
 }
