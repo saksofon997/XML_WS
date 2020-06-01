@@ -31,6 +31,7 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     @Autowired
     VehicleRepo vehicleRepo;
 
+    @Override
     public VehicleOccupancyDTO convertToDTO(VehicleOccupancy vehicleOccupancy) throws ConversionFailedError {
         try {
             return mapper.map(vehicleOccupancy, VehicleOccupancyDTO.class);
@@ -39,6 +40,7 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         }
     }
 
+    @Override
     public VehicleOccupancy convertToModel(VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError {
         try {
             return mapper.map(vehicleOccupancyDTO, VehicleOccupancy.class);
@@ -84,6 +86,7 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
         if(checkAvailable(vehicleId, newOccupancy)) {
             vehicleOccupancyRepo.save(newOccupancy);
+            // Todo saga add command here.
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -131,6 +134,7 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         if(checkAvailable(vehicleId, newOccupancy)) {
             vehicleOccupancyRepo.deleteById(id);
             vehicleOccupancyRepo.save(newOccupancy);
+            // Todo saga update command here.
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -152,9 +156,10 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         if(!deleted.isPresent()) {
             throw new EntityNotFound("Items not found");
         }
-
-        vehicleOccupancyRepo.deleteById(id);
-
+        deleted.get().setDeleted(true);
+        vehicleOccupancyRepo.save(deleted.get());
+        // vehicleOccupancyRepo.deleteById(id);
+        // Todo saga delete command here.
         return convertToDTO(deleted.get());
     }
 }

@@ -20,4 +20,8 @@ public interface ModelService {
     ModelDTO delete(Long brandId, Long id) throws EntityNotFound, ConversionFailedError;
 
     Model convertToModel(ModelDTO m) throws ConversionFailedError;
+
+    ModelDTO convertToDTO(Model model) throws ConversionFailedError;
+
+    public ModelDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
 }

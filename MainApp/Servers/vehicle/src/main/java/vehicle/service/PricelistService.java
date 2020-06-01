@@ -4,6 +4,7 @@ import saga.dto.PricelistDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.model.Pricelist;
 
 import java.util.List;
 
@@ -17,4 +18,8 @@ public interface PricelistService {
     PricelistDTO delete(Long id) throws EntityNotFound, DuplicateEntity, ConversionFailedError;
 
     List<PricelistDTO> getByOwner(Long ownerId) throws EntityNotFound, ConversionFailedError;
+
+    public PricelistDTO convertToDTO(Pricelist pricelist) throws ConversionFailedError;
+
+    public Pricelist convertToModel(PricelistDTO pricelistDTO) throws ConversionFailedError;
 }

@@ -30,6 +30,7 @@ public class TransmissionServiceImpl implements TransmissionService {
     @Autowired
     DozerBeanMapper mapper;
 
+    @Override
     public TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError {
         try {
             return mapper.map(transmission, TransmissionDTO.class);
@@ -38,6 +39,7 @@ public class TransmissionServiceImpl implements TransmissionService {
         }
     }
 
+    @Override
     public Transmission convertToModel(TransmissionDTO transmissionDTO) throws ConversionFailedError {
         try {
             return mapper.map(transmissionDTO, Transmission.class);
@@ -71,6 +73,7 @@ public class TransmissionServiceImpl implements TransmissionService {
 
         if (!transmissionRepo.existsByName(transmissionDTO.getName())) {
             transmissionRepo.save(newTransmission);
+            // Todo saga add command here.
         } else {
             throw new DuplicateEntity("Item with name: " + transmissionDTO.getName() + " already exists");
         }
@@ -100,7 +103,7 @@ public class TransmissionServiceImpl implements TransmissionService {
         change.get().setName(transmissionDTO.getName());
 
         transmissionRepo.save(change.get());
-
+        // Todo saga update command here.
         return transmissionDTO;
     }
 
@@ -112,7 +115,10 @@ public class TransmissionServiceImpl implements TransmissionService {
         if (!deleted.isPresent()) {
             throw new EntityNotFound("No item with ID: " + id);
         }else {
-            transmissionRepo.deleteById(id);
+            deleted.get().setDeleted(true);
+            transmissionRepo.save(deleted.get());
+            //transmissionRepo.deleteById(id);
+            // Todo saga delete command here.
         }
         return convertToDTO(deleted.get());
     }

@@ -30,6 +30,7 @@ public class PricelistServiceImpl implements PricelistService {
     @Autowired
     DozerBeanMapper mapper;
 
+    @Override
     public PricelistDTO convertToDTO(Pricelist pricelist) throws ConversionFailedError {
         try {
             return mapper.map(pricelist, PricelistDTO.class);
@@ -38,6 +39,7 @@ public class PricelistServiceImpl implements PricelistService {
         }
     }
 
+    @Override
     public Pricelist convertToModel(PricelistDTO pricelistDTO) throws ConversionFailedError {
         try {
             return mapper.map(pricelistDTO, Pricelist.class);
@@ -54,6 +56,7 @@ public class PricelistServiceImpl implements PricelistService {
         if (pricelistRepo.existsByName(pricelistDTO.getName()) &&
             pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId())) {
             pricelistRepo.save(newPricelist);
+            // Todo saga add command here.
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -87,7 +90,7 @@ public class PricelistServiceImpl implements PricelistService {
         changed.setId(id);
 
         pricelistRepo.save(changed);
-
+        // Todo saga update command here.
         return pricelistDTO;
     }
 
@@ -101,11 +104,27 @@ public class PricelistServiceImpl implements PricelistService {
         } else if (vehicleRepo.existsByPricelist(deleted.get())) {
             throw new DuplicateEntity("Unable to delete item");
         }
-        pricelistRepo.deleteById(id);
+        deleted.get().setDeleted(true);
+        pricelistRepo.save(deleted.get());
+        // Todo saga delete command here.
 
         return convertToDTO(deleted.get());
     }
 
+    // For saga rollback purpose
+    public PricelistDTO deletePermanent(Long id) throws EntityNotFound, DuplicateEntity, ConversionFailedError {
+
+        Optional<Pricelist> deleted = pricelistRepo.findById(id);
+
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else if (vehicleRepo.existsByPricelist(deleted.get())) {
+            throw new DuplicateEntity("Unable to delete item");
+        }
+        pricelistRepo.deleteById(id);
+
+        return convertToDTO(deleted.get());
+    }
     @Override
     public List<PricelistDTO> getByOwner(Long ownerId) throws EntityNotFound, ConversionFailedError {
 

@@ -4,7 +4,6 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import saga.commands.CreateVehicleCommand;
 import saga.dto.VehicleDTO;
 import search.exceptions.ConversionFailedError;
 import search.exceptions.DuplicateEntity;

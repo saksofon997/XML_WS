@@ -90,7 +90,7 @@ public class ModelServiceImpl implements ModelService {
         brandRepo.save(brand.get());
 
         modelRepo.save(newModel);
-
+        // Todo saga add command here.
         return modelDTO;
     }
 
@@ -117,7 +117,7 @@ public class ModelServiceImpl implements ModelService {
         change.get().setName(modelDTO.getName());
 
         modelRepo.save(change.get());
-
+        // Todo saga update command here.
         return modelDTO;
     }
 
@@ -126,11 +126,26 @@ public class ModelServiceImpl implements ModelService {
 
         Optional<Model> deleted = modelRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
-            modelRepo.deleteById(id);
+        if (!deleted.isPresent()){
+            throw new EntityNotFound("No item with ID: " + id);
+         } else {
+            deleted.get().setDeleted(true);
+            modelRepo.save(deleted.get());
+            // Todo saga delete command here.
+        }
+        return convertToDTO(deleted.get());
+    }
 
+    // For saga rollback
+    @Override
+    public ModelDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError {
+        Optional<Model> deleted = modelRepo.findById(id);
+
+        if (!deleted.isPresent()){
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
+            modelRepo.deleteById(id);
+        }
         return convertToDTO(deleted.get());
     }
 }

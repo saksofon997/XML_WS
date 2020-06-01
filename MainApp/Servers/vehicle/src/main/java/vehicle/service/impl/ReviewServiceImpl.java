@@ -32,6 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     DozerBeanMapper mapper;
 
+    @Override
     public ReviewDTO convertToDTO(Review review) throws ConversionFailedError {
         try {
             return mapper.map(review, ReviewDTO.class);
@@ -40,6 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    @Override
     public Review convertToModel(ReviewDTO reviewDTO) throws ConversionFailedError {
         try {
             return mapper.map(reviewDTO, Review.class);
@@ -70,19 +72,6 @@ public class ReviewServiceImpl implements ReviewService {
         return getReviewDTOS(reviews);
     }
 
-    private List<ReviewDTO> getReviewDTOS(List<Review> reviews) throws EntityNotFound, ConversionFailedError {
-        if (reviews.isEmpty()) {
-            throw new EntityNotFound("Items not found");
-        }
-
-        List<ReviewDTO> reviewDTOS = new ArrayList<>();
-
-        for (Review r : reviews) {
-            reviewDTOS.add(convertToDTO(r));
-        }
-
-        return reviewDTOS;
-    }
 
     @Override
     public ReviewDTO add(Long vehicleId, ReviewDTO reviewDTO) throws ConversionFailedError {
@@ -90,7 +79,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review newReview = convertToModel(reviewDTO);
 
         reviewRepo.save(newReview);
-
+        // Todo saga add command here
         return reviewDTO;
     }
 
@@ -131,7 +120,7 @@ public class ReviewServiceImpl implements ReviewService {
         updated.setId(id);
 
         reviewRepo.save(updated);
-
+        // Todo saga update command here
         return reviewDTO;
     }
 
@@ -149,9 +138,24 @@ public class ReviewServiceImpl implements ReviewService {
         if(!deleted.isPresent()) {
             throw new EntityNotFound("Items not found");
         }
-
-        reviewRepo.deleteById(id);
-
+        deleted.get().setDeleted(true);
+        reviewRepo.save(deleted.get());
+        // reviewRepo.deleteById(id);
+        // Todo saga delete command here
         return convertToDTO(deleted.get());
+    }
+
+    private List<ReviewDTO> getReviewDTOS(List<Review> reviews) throws EntityNotFound, ConversionFailedError {
+        if (reviews.isEmpty()) {
+            throw new EntityNotFound("Items not found");
+        }
+
+        List<ReviewDTO> reviewDTOS = new ArrayList<>();
+
+        for (Review r : reviews) {
+            reviewDTOS.add(convertToDTO(r));
+        }
+
+        return reviewDTOS;
     }
 }
