@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.TransmissionDTO;
+import saga.dto.TransmissionDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -50,7 +50,7 @@ public class TransmissionController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TransmissionDTO> update(@PathVariable Long id,
-                                                  @RequestBody TransmissionDTO transmissionDTO) throws EntityNotFound {
+                                                  @RequestBody TransmissionDTO transmissionDTO) throws EntityNotFound, ConversionFailedError {
 
         TransmissionDTO updated = transmissionService.update(id, transmissionDTO);
 

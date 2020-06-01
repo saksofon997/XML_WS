@@ -5,13 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.BrandDTO;
+import saga.dto.BrandDTO;
+import vehicle.dto.BrandPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.UnexpectedError;
 import vehicle.service.BrandService;
-import vehicle.service.ValidationService;
 
 import java.util.List;
 
@@ -23,11 +23,14 @@ public class BrandController {
     BrandService brandService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BrandDTO>> getAll() throws EntityNotFound, ConversionFailedError {
+    public ResponseEntity<BrandPageDTO> getAll(
+            @RequestParam(value = "page", required = false) Integer pageNo,
+            @RequestParam(value = "sort", required = false) String sort) throws ConversionFailedError, EntityNotFound {
 
-        List<BrandDTO> brands = brandService.getAll();
-
-        return new ResponseEntity<>(brands, HttpStatus.ACCEPTED);
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
+        BrandPageDTO page = brandService.getAll(pageNo, sort);
+        return new ResponseEntity<>(page, HttpStatus.ACCEPTED);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,

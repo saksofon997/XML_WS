@@ -1,10 +1,13 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vehicle.dto.ModelDTO;
-import vehicle.dto.PricelistDTO;
+import saga.commands.TypeOfCommand;
+import saga.commands.priceListCommands.MainPriceListCommand;
+import saga.dto.ModelDTO;
+import saga.dto.PricelistDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -14,6 +17,7 @@ import vehicle.repository.PricelistRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.PricelistService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +34,10 @@ public class PricelistServiceImpl implements PricelistService {
     @Autowired
     DozerBeanMapper mapper;
 
+    @Inject
+    private transient CommandGateway commandGateway;
+
+    @Override
     public PricelistDTO convertToDTO(Pricelist pricelist) throws ConversionFailedError {
         try {
             return mapper.map(pricelist, PricelistDTO.class);
@@ -38,6 +46,7 @@ public class PricelistServiceImpl implements PricelistService {
         }
     }
 
+    @Override
     public Pricelist convertToModel(PricelistDTO pricelistDTO) throws ConversionFailedError {
         try {
             return mapper.map(pricelistDTO, Pricelist.class);
@@ -52,11 +61,13 @@ public class PricelistServiceImpl implements PricelistService {
         Pricelist newPricelist = convertToModel(pricelistDTO);
 
         if (pricelistRepo.existsByName(pricelistDTO.getName()) &&
-            pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId()))
-            pricelistRepo.save(newPricelist);
-        else
-            throw new DuplicateEntity("Item already exists");
+            pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId())) {
+            Pricelist savedPriceList = pricelistRepo.save(newPricelist);
+            commandGateway.send(new MainPriceListCommand(savedPriceList.getId(), pricelistDTO, TypeOfCommand.CREATE));
 
+        } else {
+            throw new DuplicateEntity("Item already exists");
+        }
         return pricelistDTO;
     }
 
@@ -65,10 +76,11 @@ public class PricelistServiceImpl implements PricelistService {
 
         Optional<Pricelist> pricelist = pricelistRepo.findById(id);
 
-        if (!pricelist.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!pricelist.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }else {
             return convertToDTO(pricelist.get());
+        }
     }
 
     @Override
@@ -76,16 +88,17 @@ public class PricelistServiceImpl implements PricelistService {
 
         Optional<Pricelist> change = pricelistRepo.findById(id);
 
-        if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
-        if (vehicleRepo.existsByPricelist(change.get()))
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        }
+        if (vehicleRepo.existsByPricelist(change.get())) {
             throw new DuplicateEntity("Unable to change item");
-
+        }
         Pricelist changed = convertToModel(pricelistDTO);
         changed.setId(id);
 
-        pricelistRepo.save(changed);
+        Pricelist savedPriceList = pricelistRepo.save(changed);
+        commandGateway.send(new MainPriceListCommand(savedPriceList.getId(), pricelistDTO, TypeOfCommand.UPDATE));
 
         return pricelistDTO;
     }
@@ -95,17 +108,32 @@ public class PricelistServiceImpl implements PricelistService {
 
         Optional<Pricelist> deleted = pricelistRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
-        else if (vehicleRepo.existsByPricelist(deleted.get()))
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else if (vehicleRepo.existsByPricelist(deleted.get())) {
             throw new DuplicateEntity("Unable to delete item");
-
-        pricelistRepo.deleteById(id);
+        }
+        deleted.get().setDeleted(true);
+        pricelistRepo.save(deleted.get());
+        commandGateway.send(new MainPriceListCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
 
         return convertToDTO(deleted.get());
     }
 
+    // For saga rollback purpose
+    public PricelistDTO deletePermanent(Long id) throws EntityNotFound, DuplicateEntity, ConversionFailedError {
+
+        Optional<Pricelist> deleted = pricelistRepo.findById(id);
+
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else if (vehicleRepo.existsByPricelist(deleted.get())) {
+            throw new DuplicateEntity("Unable to delete item");
+        }
+        pricelistRepo.deleteById(id);
+
+        return convertToDTO(deleted.get());
+    }
     @Override
     public List<PricelistDTO> getByOwner(Long ownerId) throws EntityNotFound, ConversionFailedError {
 

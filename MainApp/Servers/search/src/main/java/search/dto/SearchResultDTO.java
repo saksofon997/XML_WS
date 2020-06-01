@@ -1,5 +1,7 @@
 package search.dto;
 
+import saga.dto.VehicleDTO;
+
 import java.util.List;
 
 public class SearchResultDTO {

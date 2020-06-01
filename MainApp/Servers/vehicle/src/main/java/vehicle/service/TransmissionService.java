@@ -1,9 +1,10 @@
 package vehicle.service;
 
-import vehicle.dto.TransmissionDTO;
+import saga.dto.TransmissionDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.model.Transmission;
 
 import java.util.List;
 
@@ -14,7 +15,11 @@ public interface TransmissionService {
 
     TransmissionDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    TransmissionDTO update(Long id, TransmissionDTO transmissionDTO) throws EntityNotFound;
+    TransmissionDTO update(Long id, TransmissionDTO transmissionDTO) throws EntityNotFound, ConversionFailedError;
 
     TransmissionDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+
+    public TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError;
+
+    public Transmission convertToModel(TransmissionDTO transmissionDTO) throws ConversionFailedError;
 }

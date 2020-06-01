@@ -1,8 +1,9 @@
 package vehicle.service;
 
-import vehicle.dto.ReviewDTO;
+import saga.dto.ReviewDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.model.Review;
 
 import java.util.List;
 
@@ -18,4 +19,8 @@ public interface ReviewService {
     ReviewDTO update(Long vehicleId, Long id, ReviewDTO reviewDTO) throws EntityNotFound, ConversionFailedError;
 
     ReviewDTO delete(Long vehicleId, Long id) throws EntityNotFound, ConversionFailedError;
+
+    public ReviewDTO convertToDTO(Review review) throws ConversionFailedError;
+
+    public Review convertToModel(ReviewDTO reviewDTO) throws ConversionFailedError;
 }

@@ -1,10 +1,19 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import vehicle.dto.CategoryDTO;
-import vehicle.dto.FuelDTO;
+import saga.commands.TypeOfCommand;
+import saga.commands.vehiclePartsCommands.MainCategoryCommand;
+import saga.commands.vehiclePartsCommands.MainFuelCommand;
+import saga.dto.CategoryDTO;
+import saga.dto.FuelDTO;
+import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -13,6 +22,7 @@ import vehicle.model.Fuel;
 import vehicle.repository.FuelRepo;
 import vehicle.service.FuelService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +35,9 @@ public class FuelServiceImpl implements FuelService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     public FuelDTO convertToDTO(Fuel fuel) throws ConversionFailedError {
         try {
@@ -42,22 +55,20 @@ public class FuelServiceImpl implements FuelService {
         }
     }
 
+
     @Override
-    public List<FuelDTO> getAll() throws EntityNotFound, ConversionFailedError {
+    public FuelPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Page<Fuel> pagedResult = fuelRepo.findAll(page);
 
-        List<Fuel> fuels = fuelRepo.findAll();
-
-        if (fuels.isEmpty()) {
-            throw new EntityNotFound("Items not found");
+        FuelPageDTO pageDTO = new FuelPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Fuel fuel: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(fuel));
         }
 
-        List<FuelDTO> fuelDTOS = new ArrayList<>();
-
-        for (Fuel f : fuels) {
-            fuelDTOS.add(convertToDTO(f));
-        }
-
-        return fuelDTOS;
+        return pageDTO;
     }
 
     @Override
@@ -65,11 +76,13 @@ public class FuelServiceImpl implements FuelService {
 
         Fuel newFuel = convertToModel(fuelDTO);
 
-        if (!fuelRepo.existsByName(fuelDTO.getName()))
-            fuelRepo.save(newFuel);
-        else
-            throw new DuplicateEntity("Item with name: "+fuelDTO.getName()+" already exists");
+        if (!fuelRepo.existsByName(fuelDTO.getName())) {
+            Fuel savedFuel = fuelRepo.save(newFuel);
+            commandGateway.send(new MainFuelCommand(savedFuel.getId(), fuelDTO, TypeOfCommand.CREATE));
 
+        } else {
+            throw new DuplicateEntity("Fuel with name: " + fuelDTO.getName() + " already exists");
+        }
         return fuelDTO;
     }
 
@@ -78,10 +91,11 @@ public class FuelServiceImpl implements FuelService {
 
         Optional<Fuel> fuel = fuelRepo.findById(id);
 
-        if (!fuel.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!fuel.isPresent()) {
+            throw new EntityNotFound("No fuel with ID: " + id);
+        } else {
             return convertToDTO(fuel.get());
+        }
     }
 
     @Override
@@ -89,12 +103,13 @@ public class FuelServiceImpl implements FuelService {
 
         Optional<Fuel> change = fuelRepo.findById(id);
 
-        if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No fuel with ID: " + id);
+        }
         change.get().setName(fuelDTO.getName());
 
-        fuelRepo.save(change.get());
+        Fuel savedFuel = fuelRepo.save(change.get());
+        commandGateway.send(new MainFuelCommand(savedFuel.getId(), fuelDTO, TypeOfCommand.UPDATE));
 
         return fuelDTO;
     }
@@ -104,11 +119,13 @@ public class FuelServiceImpl implements FuelService {
 
         Optional<Fuel> deleted = fuelRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No fuel with ID: " + id);
+        }else {
             fuelRepo.deleteById(id);
+            commandGateway.send(new MainFuelCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
 
+        }
         return convertToDTO(deleted.get());
     }
 }

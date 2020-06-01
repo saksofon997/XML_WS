@@ -3,7 +3,7 @@ package vehicle.service.impl;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vehicle.dto.ModelDTO;
+import saga.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -16,7 +16,6 @@ import vehicle.service.ModelService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -89,9 +88,9 @@ public class ModelServiceImpl implements ModelService {
         brand.get().getModels().add(newModel);
 
         brandRepo.save(brand.get());
-
+        newModel.setBrand(brand.get());
         modelRepo.save(newModel);
-
+        // Todo saga add command here.
         return modelDTO;
     }
 
@@ -100,10 +99,11 @@ public class ModelServiceImpl implements ModelService {
 
         Optional<Model> model = modelRepo.findById(id);
 
-        if (!model.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
+        if (!model.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
             return convertToDTO(model.get());
+        }
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ModelServiceImpl implements ModelService {
         change.get().setName(modelDTO.getName());
 
         modelRepo.save(change.get());
-
+        // Todo saga update command here.
         return modelDTO;
     }
 
@@ -126,11 +126,26 @@ public class ModelServiceImpl implements ModelService {
 
         Optional<Model> deleted = modelRepo.findById(id);
 
-        if (!deleted.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
-        else
-            modelRepo.deleteById(id);
+        if (!deleted.isPresent()){
+            throw new EntityNotFound("No item with ID: " + id);
+         } else {
+            deleted.get().setDeleted(true);
+            modelRepo.save(deleted.get());
+            // Todo saga delete command here.
+        }
+        return convertToDTO(deleted.get());
+    }
 
+    // For saga rollback
+    @Override
+    public ModelDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError {
+        Optional<Model> deleted = modelRepo.findById(id);
+
+        if (!deleted.isPresent()){
+            throw new EntityNotFound("No item with ID: " + id);
+        } else {
+            modelRepo.deleteById(id);
+        }
         return convertToDTO(deleted.get());
     }
 }

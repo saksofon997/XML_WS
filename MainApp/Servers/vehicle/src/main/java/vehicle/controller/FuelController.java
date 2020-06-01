@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.FuelDTO;
+import saga.dto.FuelDTO;
+import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -21,9 +22,12 @@ public class FuelController {
     FuelService fuelService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FuelDTO>> getAll() throws ConversionFailedError, EntityNotFound {
-
-        List<FuelDTO> fuels = fuelService.getAll();
+    public ResponseEntity<FuelPageDTO> getAll(
+            @RequestParam(value = "page", required = false) Integer pageNo,
+            @RequestParam(value = "sort", required = false) String sort) throws ConversionFailedError, EntityNotFound {
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
+        FuelPageDTO fuels = fuelService.getAll(pageNo, sort);
 
         return new ResponseEntity<>(fuels, HttpStatus.ACCEPTED);
     }

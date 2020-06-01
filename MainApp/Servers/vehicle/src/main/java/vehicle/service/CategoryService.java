@@ -1,6 +1,7 @@
 package vehicle.service;
 
-import vehicle.dto.CategoryDTO;
+import saga.dto.CategoryDTO;
+import vehicle.dto.CategoryPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -8,7 +9,7 @@ import vehicle.exceptions.EntityNotFound;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDTO> getAll() throws EntityNotFound, ConversionFailedError;
+    CategoryPageDTO getAll(Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
 
     CategoryDTO add(CategoryDTO categoryDTO) throws ConversionFailedError, DuplicateEntity;
 

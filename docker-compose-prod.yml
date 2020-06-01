@@ -44,6 +44,7 @@ services:
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
       POSTGRES_DB: test_database
+      AXON_HOST: axon-server
     depends_on:
       - eureka-serviceregistry
       - postgres
@@ -62,6 +63,7 @@ services:
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
+      AXON_HOST: axon-server
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -81,6 +83,7 @@ services:
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
+      AXON_HOST: axon-server
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -100,6 +103,7 @@ services:
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
+      AXON_HOST: axon-server
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -119,6 +123,7 @@ services:
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
+      AXON_HOST: axon-server
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -138,6 +143,7 @@ services:
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
+      AXON_HOST: axon-server
     tty: true
     depends_on:
       - eureka-serviceregistry

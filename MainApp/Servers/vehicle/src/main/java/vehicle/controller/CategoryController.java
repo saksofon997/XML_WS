@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vehicle.dto.CategoryDTO;
+import saga.dto.CategoryDTO;
+import vehicle.dto.CategoryPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -22,9 +23,12 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CategoryDTO>> getAll() throws ConversionFailedError, EntityNotFound {
-
-        List<CategoryDTO> categories = categoryService.getAll();
+    public ResponseEntity<CategoryPageDTO> getAll(@RequestParam(value = "page", required = false) Integer pageNo,
+                                                  @RequestParam(value = "sort", required = false) String sort)
+            throws ConversionFailedError, EntityNotFound {
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
+        CategoryPageDTO categories = categoryService.getAll(pageNo, sort);
 
         return new ResponseEntity<>(categories, HttpStatus.ACCEPTED);
     }
