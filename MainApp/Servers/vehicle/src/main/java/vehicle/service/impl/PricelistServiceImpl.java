@@ -1,8 +1,11 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saga.commands.TypeOfCommand;
+import saga.commands.priceListCommands.MainPriceListCommand;
 import saga.dto.ModelDTO;
 import saga.dto.PricelistDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -14,6 +17,7 @@ import vehicle.repository.PricelistRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.PricelistService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +33,9 @@ public class PricelistServiceImpl implements PricelistService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public PricelistDTO convertToDTO(Pricelist pricelist) throws ConversionFailedError {
@@ -55,8 +62,9 @@ public class PricelistServiceImpl implements PricelistService {
 
         if (pricelistRepo.existsByName(pricelistDTO.getName()) &&
             pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId())) {
-            pricelistRepo.save(newPricelist);
-            // Todo saga add command here.
+            Pricelist savedPriceList = pricelistRepo.save(newPricelist);
+            commandGateway.send(new MainPriceListCommand(savedPriceList.getId(), pricelistDTO, TypeOfCommand.CREATE));
+
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -89,8 +97,9 @@ public class PricelistServiceImpl implements PricelistService {
         Pricelist changed = convertToModel(pricelistDTO);
         changed.setId(id);
 
-        pricelistRepo.save(changed);
-        // Todo saga update command here.
+        Pricelist savedPriceList = pricelistRepo.save(changed);
+        commandGateway.send(new MainPriceListCommand(savedPriceList.getId(), pricelistDTO, TypeOfCommand.UPDATE));
+
         return pricelistDTO;
     }
 
@@ -106,7 +115,7 @@ public class PricelistServiceImpl implements PricelistService {
         }
         deleted.get().setDeleted(true);
         pricelistRepo.save(deleted.get());
-        // Todo saga delete command here.
+        commandGateway.send(new MainPriceListCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
 
         return convertToDTO(deleted.get());
     }
