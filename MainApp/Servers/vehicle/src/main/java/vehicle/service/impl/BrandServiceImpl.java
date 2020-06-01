@@ -39,6 +39,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     ModelService modelService;
+
     @Inject
     private transient CommandGateway commandGateway;
 
@@ -72,7 +73,7 @@ public class BrandServiceImpl implements BrandService {
             System.out.println(savedBrand.getId());
             commandGateway.send(new MainBrandCommand(savedBrand.getId(),brandDTO, TypeOfCommand.CREATE));
         } else {
-            throw new DuplicateEntity("Item with name: "+brandDTO.getName()+" already exists");
+            throw new DuplicateEntity("Brand with name: "+brandDTO.getName()+" already exists");
         }
 
         return brandDTO;
@@ -84,7 +85,7 @@ public class BrandServiceImpl implements BrandService {
         Optional<Brand> brand = brandRepo.findById(id);
 
         if (!brand.isPresent()) {
-            throw new EntityNotFound("No item with ID: " + id);
+            throw new EntityNotFound("No brand with ID: " + id);
         } else {
             return convertToDTO(brand.get());
         }
@@ -111,7 +112,7 @@ public class BrandServiceImpl implements BrandService {
         Optional<Brand> change = brandRepo.findById(id);
 
         if (!change.isPresent())
-            throw new EntityNotFound("No item with ID: "+id);
+            throw new EntityNotFound("No brand with ID: "+id);
 
         change.get().setName(brandDTO.getName());
 
@@ -135,7 +136,7 @@ public class BrandServiceImpl implements BrandService {
         Optional<Brand> deleted = brandRepo.findById(id);
 
         if (!deleted.isPresent()){
-            throw new EntityNotFound("No item with ID: "+id);
+            throw new EntityNotFound("No brand with ID: "+id);
         } else {
             brandRepo.deleteById(id);
             commandGateway.send(new MainBrandCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
@@ -150,7 +151,7 @@ public class BrandServiceImpl implements BrandService {
         Optional<Brand> deleted = brandRepo.findById(id);
 
         if (!deleted.isPresent()){
-            throw new EntityNotFound("No item with ID: "+id);
+            throw new EntityNotFound("No brand with ID: "+id);
         } else {
             brandRepo.deleteById(id);
         }
