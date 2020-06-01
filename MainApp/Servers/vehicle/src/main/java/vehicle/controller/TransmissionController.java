@@ -50,7 +50,7 @@ public class TransmissionController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TransmissionDTO> update(@PathVariable Long id,
-                                                  @RequestBody TransmissionDTO transmissionDTO) throws EntityNotFound {
+                                                  @RequestBody TransmissionDTO transmissionDTO) throws EntityNotFound, ConversionFailedError {
 
         TransmissionDTO updated = transmissionService.update(id, transmissionDTO);
 

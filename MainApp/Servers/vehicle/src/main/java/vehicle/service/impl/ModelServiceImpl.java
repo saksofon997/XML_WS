@@ -88,7 +88,7 @@ public class ModelServiceImpl implements ModelService {
         brand.get().getModels().add(newModel);
 
         brandRepo.save(brand.get());
-
+        newModel.setBrand(brand.get());
         modelRepo.save(newModel);
         // Todo saga add command here.
         return modelDTO;
