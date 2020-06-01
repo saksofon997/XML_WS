@@ -1,8 +1,12 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saga.commands.TypeOfCommand;
+import saga.commands.vehiclePartsCommands.MainFuelCommand;
+import saga.commands.vehiclePartsCommands.MainTransmissionCommand;
 import saga.dto.ModelDTO;
 import saga.dto.ReviewDTO;
 import saga.dto.TransmissionDTO;
@@ -17,6 +21,7 @@ import vehicle.repository.TransmissionRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.TransmissionService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +34,9 @@ public class TransmissionServiceImpl implements TransmissionService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError {
@@ -72,8 +80,9 @@ public class TransmissionServiceImpl implements TransmissionService {
         Transmission newTransmission = convertToModel(transmissionDTO);
 
         if (!transmissionRepo.existsByName(transmissionDTO.getName())) {
-            transmissionRepo.save(newTransmission);
-            // Todo saga add command here.
+            Transmission savedTransmission = transmissionRepo.save(newTransmission);
+            commandGateway.send(new MainTransmissionCommand(savedTransmission.getId(), transmissionDTO, TypeOfCommand.CREATE));
+
         } else {
             throw new DuplicateEntity("Item with name: " + transmissionDTO.getName() + " already exists");
         }
@@ -93,7 +102,7 @@ public class TransmissionServiceImpl implements TransmissionService {
     }
 
     @Override
-    public TransmissionDTO update(Long id, TransmissionDTO transmissionDTO) throws EntityNotFound {
+    public TransmissionDTO update(Long id, TransmissionDTO transmissionDTO) throws EntityNotFound, ConversionFailedError {
 
         Optional<Transmission> change = transmissionRepo.findById(id);
 
@@ -102,8 +111,10 @@ public class TransmissionServiceImpl implements TransmissionService {
         }
         change.get().setName(transmissionDTO.getName());
 
-        transmissionRepo.save(change.get());
-        // Todo saga update command here.
+        Transmission savedTransmission = transmissionRepo.save(change.get());
+        transmissionDTO.setId(savedTransmission.getId());
+        commandGateway.send(new MainTransmissionCommand(savedTransmission.getId(), transmissionDTO, TypeOfCommand.UPDATE));
+
         return transmissionDTO;
     }
 
@@ -118,7 +129,8 @@ public class TransmissionServiceImpl implements TransmissionService {
             deleted.get().setDeleted(true);
             transmissionRepo.save(deleted.get());
             //transmissionRepo.deleteById(id);
-            // Todo saga delete command here.
+            commandGateway.send(new MainTransmissionCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
+
         }
         return convertToDTO(deleted.get());
     }
