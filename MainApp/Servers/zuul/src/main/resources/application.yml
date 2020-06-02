@@ -36,6 +36,43 @@ zuul:
       stripPrefix: false
       serviceId: rental
 
+    # ----- VEHICLE -----
+    vehicle:
+      path: /brand/**
+      stripPrefix: false
+      serviceId: vehicle
+    vehicle1:
+      path: /category/**
+      stripPrefix: false
+      serviceId: vehicle
+    vehicle2:
+      path: /transmission/**
+      stripPrefix: false
+      serviceId: vehicle
+    vehicle3:
+      path: /fuel/**
+      stripPrefix: false
+      serviceId: vehicle
+    vehicle4:
+      path: /vehicle/**
+      stripPrefix: false
+      serviceId: vehicle
+    vehicle5:
+      path: /pricelist/**
+      stripPrefix: false
+      serviceId: vehicle
+    vehicle6:
+      path: /review/**
+      stripPrefix: false
+      serviceId: vehicle
+
+    # ----- SEARCH -----
+    search:
+      path: /search/**
+      stripPrefix: false
+      serviceId: search
+
+
     zuul: # needed for the auth filter to work
       path: /checkout
       stripPrefix: false

@@ -14,25 +14,29 @@ import search.service.SearchService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/search")
+@RequestMapping(value = "search")
 public class SearchController {
 
     @Autowired
     SearchService searchService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SearchResultDTO>> search(@RequestParam("brand") String brand,
-                                                        @RequestParam("category") String category,
-                                                        @RequestParam("fuel") String fuel,
-                                                        @RequestParam("model") String model,
-                                                        @RequestParam("transmission") String transmission,
+    public ResponseEntity<List<SearchResultDTO>> search(
+                    @RequestParam(value = "brand", required = false) String brand,
+                    @RequestParam(value = "category", required = false) String category,
+                    @RequestParam(value = "fuel", required = false) String fuel,
+                    @RequestParam(value = "model", required = false) String model,
+                    @RequestParam(value = "transmission", required = false) String transmission,
 
-                                                        @RequestParam("location") String location,
-                                                        @RequestParam("time") long time
-                                                        ) {
+                    @RequestParam("location") String location,
+                    @RequestParam("start") long startTime,
+                    @RequestParam("end") long endTime
+
+                    ) {
+
 
         List<SearchResultDTO> vehicles = searchService.doSearch(brand, category, fuel, model,
-                                                                transmission, location, time);
+                                                                transmission, location, startTime);
 
         return new ResponseEntity<>(vehicles, HttpStatus.ACCEPTED);
     }
