@@ -1,8 +1,11 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saga.commands.TypeOfCommand;
+import saga.commands.vehicleOccupancyCommands.MainOccupancyCommand;
 import saga.dto.ReviewDTO;
 import saga.dto.VehicleOccupancyDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -15,6 +18,7 @@ import vehicle.repository.VehicleOccupancyRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.VehicleOccupancyService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +34,9 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
     @Autowired
     VehicleRepo vehicleRepo;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public VehicleOccupancyDTO convertToDTO(VehicleOccupancy vehicleOccupancy) throws ConversionFailedError {
@@ -85,8 +92,9 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         VehicleOccupancy newOccupancy = convertToModel(vehicleOccupancyDTO);
 
         if(checkAvailable(vehicleId, newOccupancy)) {
-            vehicleOccupancyRepo.save(newOccupancy);
-            // Todo saga add command here.
+            VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
+
+            commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.CREATE));
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -133,8 +141,10 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
         if(checkAvailable(vehicleId, newOccupancy)) {
             vehicleOccupancyRepo.deleteById(id);
-            vehicleOccupancyRepo.save(newOccupancy);
-            // Todo saga update command here.
+            newOccupancy.setId(id);
+            VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
+
+            commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.UPDATE));
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -157,9 +167,10 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
             throw new EntityNotFound("Items not found");
         }
         deleted.get().setDeleted(true);
-        vehicleOccupancyRepo.save(deleted.get());
-        // vehicleOccupancyRepo.deleteById(id);
-        // Todo saga delete command here.
+        VehicleOccupancy saved = vehicleOccupancyRepo.save(deleted.get());
+
+        commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.DELETE));
+
         return convertToDTO(deleted.get());
     }
 }

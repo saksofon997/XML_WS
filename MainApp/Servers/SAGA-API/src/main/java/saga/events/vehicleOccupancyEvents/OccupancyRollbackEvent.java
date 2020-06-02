@@ -1,22 +1,18 @@
-package saga.commands.vehicleOccupancyCommands;
+package saga.events.vehicleOccupancyEvents;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.commands.TypeOfCommand;
 
-public class RollbackOccupancyCommand {
-    @TargetAggregateIdentifier
+public class OccupancyRollbackEvent {
     private Long vehicleOccupancyId;
     private Long vehicleId;
-    private String status;
     private TypeOfCommand typeOfCommand;
 
-    public RollbackOccupancyCommand() {
+    public OccupancyRollbackEvent() {
     }
 
-    public RollbackOccupancyCommand(Long vehicleOccupancyId, Long vehicleId, String status, TypeOfCommand typeOfCommand) {
+    public OccupancyRollbackEvent(Long vehicleOccupancyId, Long vehicleId, TypeOfCommand typeOfCommand) {
         this.vehicleOccupancyId = vehicleOccupancyId;
         this.vehicleId = vehicleId;
-        this.status = status;
         this.typeOfCommand = typeOfCommand;
     }
 
@@ -34,14 +30,6 @@ public class RollbackOccupancyCommand {
 
     public void setVehicleId(Long vehicleId) {
         this.vehicleId = vehicleId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public TypeOfCommand getTypeOfCommand() {

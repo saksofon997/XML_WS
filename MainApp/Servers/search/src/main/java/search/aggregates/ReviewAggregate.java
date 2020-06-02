@@ -22,7 +22,7 @@ public class ReviewAggregate {
 
     @CommandHandler
     public ReviewAggregate(ReplicateReviewCommand replicateReviewCommand, ReviewService reviewService) {
-        System.out.println("USO SAM U SEARCH FUEL");
+        System.out.println("USO SAM U SEARCH REVIEW");
         try{
             if(replicateReviewCommand.getTypeOfCommand() == TypeOfCommand.CREATE){
                 reviewService.add(replicateReviewCommand.getVehicleId(),replicateReviewCommand.getReviewDTO() );

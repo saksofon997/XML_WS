@@ -1,35 +1,22 @@
-package saga.commands.vehicleOccupancyCommands;
+package saga.events.vehicleOccupancyEvents;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.commands.TypeOfCommand;
 import saga.dto.VehicleOccupancyDTO;
 
-public class ReplicateOccupancyCommand {
-    @TargetAggregateIdentifier
-    private String occupancyAggregateId;
-
+public class OccupancyMainEvent {
     private Long vehicleOccupancyId;
     private Long vehicleId;
     private VehicleOccupancyDTO occupancyDTO;
     private TypeOfCommand typeOfCommand;
 
-    public ReplicateOccupancyCommand() {
+    public OccupancyMainEvent() {
     }
 
-    public ReplicateOccupancyCommand(String occupancyAggregateId, Long vehicleOccupancyId, Long vehicleId, VehicleOccupancyDTO occupancyDTO, TypeOfCommand typeOfCommand) {
-        this.occupancyAggregateId = occupancyAggregateId;
+    public OccupancyMainEvent(Long vehicleOccupancyId, Long vehicleId, VehicleOccupancyDTO occupancyDTO, TypeOfCommand typeOfCommand) {
         this.vehicleOccupancyId = vehicleOccupancyId;
         this.vehicleId = vehicleId;
         this.occupancyDTO = occupancyDTO;
         this.typeOfCommand = typeOfCommand;
-    }
-
-    public String getOccupancyAggregateId() {
-        return occupancyAggregateId;
-    }
-
-    public void setOccupancyAggregateId(String occupancyAggregateId) {
-        this.occupancyAggregateId = occupancyAggregateId;
     }
 
     public Long getVehicleOccupancyId() {

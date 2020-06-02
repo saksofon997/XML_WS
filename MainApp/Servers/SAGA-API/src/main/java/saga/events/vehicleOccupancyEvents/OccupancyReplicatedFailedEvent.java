@@ -1,26 +1,23 @@
-package saga.commands.vehicleOccupancyCommands;
+package saga.events.vehicleOccupancyEvents;
 
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.commands.TypeOfCommand;
-import saga.dto.VehicleOccupancyDTO;
 
-public class ReplicateOccupancyCommand {
-    @TargetAggregateIdentifier
+public class OccupancyReplicatedFailedEvent {
     private String occupancyAggregateId;
 
     private Long vehicleOccupancyId;
     private Long vehicleId;
-    private VehicleOccupancyDTO occupancyDTO;
+    private String reason;
     private TypeOfCommand typeOfCommand;
 
-    public ReplicateOccupancyCommand() {
+    public OccupancyReplicatedFailedEvent() {
     }
 
-    public ReplicateOccupancyCommand(String occupancyAggregateId, Long vehicleOccupancyId, Long vehicleId, VehicleOccupancyDTO occupancyDTO, TypeOfCommand typeOfCommand) {
+    public OccupancyReplicatedFailedEvent(String occupancyAggregateId, Long vehicleOccupancyId, Long vehicleId, String reason, TypeOfCommand typeOfCommand) {
         this.occupancyAggregateId = occupancyAggregateId;
         this.vehicleOccupancyId = vehicleOccupancyId;
         this.vehicleId = vehicleId;
-        this.occupancyDTO = occupancyDTO;
+        this.reason = reason;
         this.typeOfCommand = typeOfCommand;
     }
 
@@ -48,12 +45,12 @@ public class ReplicateOccupancyCommand {
         this.vehicleId = vehicleId;
     }
 
-    public VehicleOccupancyDTO getOccupancyDTO() {
-        return occupancyDTO;
+    public String getReason() {
+        return reason;
     }
 
-    public void setOccupancyDTO(VehicleOccupancyDTO occupancyDTO) {
-        this.occupancyDTO = occupancyDTO;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public TypeOfCommand getTypeOfCommand() {
