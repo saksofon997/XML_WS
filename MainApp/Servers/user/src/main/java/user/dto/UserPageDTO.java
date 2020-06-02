@@ -1,8 +1,6 @@
 package user.dto;
 
 import lombok.Data;
-import org.springframework.data.domain.Page;
-import user.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

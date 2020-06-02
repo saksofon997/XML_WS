@@ -1,10 +1,15 @@
 package search.service;
 
-import search.dto.SearchResultDTO;
+import search.dto.SearchResultPageDTO;
+import search.exceptions.ConversionFailedError;
 
 import java.util.List;
 
 public interface SearchService {
-    List<SearchResultDTO> doSearch(String brand, String category, String fuel,
-                                   String model, String transmission, String location, long time);
+    SearchResultPageDTO doSearch(String brand, String category, String fuel,
+                                       String model, String transmission,
+                                       double loc_lat, double loc_long,
+                                       long startTime, long endTime,
+                                       Integer pageNo, String sortKey) throws ConversionFailedError;
+
 }

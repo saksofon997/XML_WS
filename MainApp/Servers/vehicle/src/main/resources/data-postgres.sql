@@ -56,10 +56,10 @@ INSERT INTO vehicle.pricelist(
     VALUES (nextval('pricelist_id_seq'), 1, 'Mercedes CLA', 220, 1.8, 60, 'Price for Mercedes CLA models', false); /*2*/
 
 INSERT INTO vehicle.vehicle( -- BMW X5
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_longitude, location_latitude, deleted)
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted)
     VALUES (nextval('vehicle_id_seq'), 1, 1, 1, 5, 2, 5, 1, -1, 1, 1, 0, 0, 45.2553823, 19.8317609, false); /*1*/
 INSERT INTO vehicle.vehicle( -- Mercedes CLA 220
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_longitude, location_latitude, deleted)
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted)
     VALUES (nextval('vehicle_id_seq'), 2, 3, 2, 4, 2, 4, 0, -1, 1, 2, 0, 0, 45.2553823, 19.8317609, false); /*2*/
 
 INSERT INTO vehicle.vehicle_occupancy( -- 15.6. 15:00 -> 17.6. 15:00 UTC
