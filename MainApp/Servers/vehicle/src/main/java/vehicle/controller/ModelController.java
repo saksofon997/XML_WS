@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import saga.dto.ModelDTO;
+import vehicle.dto.ModelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -23,9 +24,15 @@ public class ModelController {
 
     @GetMapping(path = "/{brandId}/model",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ModelDTO>> getAll(@PathVariable Long brandId) throws ConversionFailedError, EntityNotFound {
+    public ResponseEntity<ModelPageDTO> getAll(@PathVariable Long brandId,
+                                               @RequestParam(value = "page", required = false) Integer pageNo,
+                                               @RequestParam(value = "sort", required = false) String sort)
+            throws ConversionFailedError, EntityNotFound {
 
-        List<ModelDTO> models = modelService.getAll(brandId);
+        sort = (sort != null) ? sort: "id";
+        pageNo = (pageNo != null) ? pageNo: 0;
+
+        ModelPageDTO models = modelService.getAll(brandId, pageNo, sort);
 
         return new ResponseEntity<>(models, HttpStatus.ACCEPTED);
     }
@@ -56,7 +63,7 @@ public class ModelController {
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ModelDTO> update(@PathVariable Long brandId,
                                            @PathVariable Long id,
-                                           @RequestBody ModelDTO modelDTO) throws EntityNotFound {
+                                           @RequestBody ModelDTO modelDTO) throws EntityNotFound, ConversionFailedError {
 
         ModelDTO updated = modelService.update(brandId, id, modelDTO);
 
