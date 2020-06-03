@@ -8,8 +8,8 @@ import org.axonframework.spring.stereotype.Aggregate;
 import saga.commands.TypeOfCommand;
 import saga.commands.modelCommands.MainModelCommand;
 import saga.commands.modelCommands.RollbackModelCommand;
-import saga.events.BrandRollbackEvent;
 import saga.events.modelEvents.ModelMainEvent;
+import saga.events.modelEvents.ModelRollbackEvent;
 import vehicle.service.ModelService;
 
 import java.util.UUID;
@@ -24,14 +24,14 @@ public class ModelAggregate {
     @CommandHandler
     public ModelAggregate(MainModelCommand mainModelCommand) {
         System.out.println("Creating model main event... ");
-        AggregateLifecycle.apply(new ModelMainEvent(mainModelCommand.getModelId(), mainModelCommand.getModelDTO(), mainModelCommand.getTypeOfCommand()));
+        AggregateLifecycle.apply(new ModelMainEvent(mainModelCommand.getBrandId(), mainModelCommand.getModelId(), mainModelCommand.getModelDTO(), mainModelCommand.getTypeOfCommand()));
     }
 
     @EventSourcingHandler
     public void on(ModelMainEvent modelMainEvent) {
         System.out.println("Setting model aggregate ID...");
         System.out.println(modelMainEvent.getModelId());
-        this.modelId = modelMainEvent.getModelId().toString() + "modelAggregate" + modelMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
+        this.modelId = modelMainEvent.getBrandId() + modelMainEvent.getModelId().toString() + "modelAggregate" + modelMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
     }
 
     @CommandHandler
@@ -49,6 +49,6 @@ public class ModelAggregate {
         } catch (Exception e) {
             System.out.println("Neuspesan rollback..." + e.getMessage());
         }
-        AggregateLifecycle.apply(new BrandRollbackEvent(rollbackModelCommand.getModelId(), rollbackModelCommand.getTypeOfCommand()));
+        AggregateLifecycle.apply(new ModelRollbackEvent(rollbackModelCommand.getBrandId(), rollbackModelCommand.getModelId(), rollbackModelCommand.getTypeOfCommand()));
     }
 }

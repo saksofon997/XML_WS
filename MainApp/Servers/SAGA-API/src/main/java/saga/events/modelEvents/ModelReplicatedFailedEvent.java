@@ -5,6 +5,7 @@ import saga.commands.TypeOfCommand;
 public class ModelReplicatedFailedEvent {
     private String modelAggregateId;
 
+    private Long brandId;
     private Long modelId;
     private String reason;
     private TypeOfCommand typeOfCommand;
@@ -12,8 +13,9 @@ public class ModelReplicatedFailedEvent {
     public ModelReplicatedFailedEvent() {
     }
 
-    public ModelReplicatedFailedEvent(String modelAggregateId, Long modelId, String reason, TypeOfCommand typeOfCommand) {
+    public ModelReplicatedFailedEvent(String modelAggregateId, Long brandId, Long modelId, String reason, TypeOfCommand typeOfCommand) {
         this.modelAggregateId = modelAggregateId;
+        this.brandId = brandId;
         this.modelId = modelId;
         this.reason = reason;
         this.typeOfCommand = typeOfCommand;
@@ -25,6 +27,14 @@ public class ModelReplicatedFailedEvent {
 
     public void setModelAggregateId(String modelAggregateId) {
         this.modelAggregateId = modelAggregateId;
+    }
+
+    public Long getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
     public Long getModelId() {

@@ -96,7 +96,7 @@ public class ModelServiceImpl implements ModelService {
         newModel.setBrand(brand.get());
         Model savedModel = modelRepo.save(newModel);
 
-        commandGateway.send(new MainModelCommand(newModel.getId(), convertToDTO(savedModel), TypeOfCommand.CREATE));
+        commandGateway.send(new MainModelCommand(brandId, newModel.getId(), convertToDTO(savedModel), TypeOfCommand.CREATE));
 
         return modelDTO;
     }
@@ -127,7 +127,7 @@ public class ModelServiceImpl implements ModelService {
 
         Model savedModel = modelRepo.save(change.get());
 
-        commandGateway.send(new MainModelCommand(savedModel.getId(), convertToDTO(savedModel), TypeOfCommand.UPDATE));
+        commandGateway.send(new MainModelCommand(brandId, savedModel.getId(), convertToDTO(savedModel), TypeOfCommand.UPDATE));
 
         return modelDTO;
     }
@@ -145,7 +145,7 @@ public class ModelServiceImpl implements ModelService {
             deleted.get().setDeleted(true);
             modelRepo.save(deleted.get());
 
-            commandGateway.send(new MainModelCommand(deleted.get().getId(), convertToDTO(deleted.get()) , TypeOfCommand.DELETE));
+            commandGateway.send(new MainModelCommand(brandId, deleted.get().getId(), convertToDTO(deleted.get()) , TypeOfCommand.DELETE));
         }
         return convertToDTO(deleted.get());
     }

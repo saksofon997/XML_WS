@@ -4,15 +4,13 @@ public class ModelDTO {
 
     private Long id;
     private String name;
-    private BrandDTO brandDTO;
 
     public ModelDTO() {
     }
 
-    public ModelDTO(Long id, String name, BrandDTO brandDTO) {
+    public ModelDTO(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.brandDTO = brandDTO;
     }
 
     public Long getId() {
@@ -29,13 +27,5 @@ public class ModelDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public BrandDTO getBrandDTO() {
-        return brandDTO;
-    }
-
-    public void setBrandDTO(BrandDTO brandDTO) {
-        this.brandDTO = brandDTO;
     }
 }

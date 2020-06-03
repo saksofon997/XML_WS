@@ -19,21 +19,23 @@ public class ModelAggregate {
         System.out.println("USO SAM U SEARCH");
         try{
             if(replicateModelCommand.getTypeOfCommand() == TypeOfCommand.CREATE){
-                modelService.add(replicateModelCommand.getModelDTO().getBrandDTO().getId(), replicateModelCommand.getModelDTO());
+                modelService.add(replicateModelCommand.getBrandId(), replicateModelCommand.getModelDTO());
                 AggregateLifecycle.apply(new ModelReplicatedEvent(replicateModelCommand.getModelAggregateId(), TypeOfCommand.CREATE));
             } else if (replicateModelCommand.getTypeOfCommand() == TypeOfCommand.UPDATE) {
-                modelService.update(replicateModelCommand.getModelDTO().getBrandDTO().getId(), replicateModelCommand.getModelId(),replicateModelCommand.getModelDTO());
+                modelService.update(replicateModelCommand.getBrandId(), replicateModelCommand.getModelId(),replicateModelCommand.getModelDTO());
                 AggregateLifecycle.apply(new ModelReplicatedEvent(replicateModelCommand.getModelAggregateId(), TypeOfCommand.UPDATE));
             } else {
-                modelService.delete(replicateModelCommand.getModelDTO().getBrandDTO().getId(), replicateModelCommand.getModelId());
+                modelService.delete(replicateModelCommand.getBrandId(), replicateModelCommand.getModelId());
                 AggregateLifecycle.apply(new ModelReplicatedEvent(replicateModelCommand.getModelAggregateId(), TypeOfCommand.DELETE));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             AggregateLifecycle.apply(new ModelReplicatedFailedEvent(replicateModelCommand.getModelAggregateId(),
-                    replicateModelCommand.getModelId(),
-                    e.getMessage(), replicateModelCommand.getTypeOfCommand()));
+                                                                    replicateModelCommand.getBrandId(),
+                                                                    replicateModelCommand.getModelId(),
+                                                                    e.getMessage(),
+                                                                    replicateModelCommand.getTypeOfCommand()));
         }
 
     }

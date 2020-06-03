@@ -6,6 +6,7 @@ import saga.dto.ModelDTO;
 
 public class MainModelCommand {
     @TargetAggregateIdentifier
+    private Long brandId;
     private Long modelId;
     private ModelDTO modelDTO;
     private TypeOfCommand typeOfCommand;
@@ -13,10 +14,19 @@ public class MainModelCommand {
     public MainModelCommand() {
     }
 
-    public MainModelCommand(Long modelId, ModelDTO modelDTO, TypeOfCommand typeOfCommand) {
+    public MainModelCommand(Long brandId, Long modelId, ModelDTO modelDTO, TypeOfCommand typeOfCommand) {
+        this.brandId = brandId;
         this.modelId = modelId;
         this.modelDTO = modelDTO;
         this.typeOfCommand = typeOfCommand;
+    }
+
+    public Long getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
     public Long getModelId() {

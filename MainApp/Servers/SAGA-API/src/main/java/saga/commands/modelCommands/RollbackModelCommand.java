@@ -5,6 +5,8 @@ import saga.commands.TypeOfCommand;
 
 public class RollbackModelCommand {
     @TargetAggregateIdentifier
+
+    private Long brandId;
     private Long modelId;
     private String status;
     private TypeOfCommand typeOfCommand;
@@ -12,10 +14,19 @@ public class RollbackModelCommand {
     public RollbackModelCommand() {
     }
 
-    public RollbackModelCommand(Long modelId, String status, TypeOfCommand typeOfCommand) {
+    public RollbackModelCommand(Long brandId, Long modelId, String status, TypeOfCommand typeOfCommand) {
+        this.brandId = brandId;
         this.modelId = modelId;
         this.status = status;
         this.typeOfCommand = typeOfCommand;
+    }
+
+    public Long getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
     public Long getModelId() {
