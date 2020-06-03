@@ -63,6 +63,8 @@ public class TokenUtils {
                                 .collect(Collectors.toList()))
                 .claim("userId",
                         u.getId())
+                .claim("isAgent",
+                        u.getCompany() != null)
 //        grantedAuthorities.stream()
 //                .map(GrantedAuthority::getAuthority)
 //                .collect(Collectors.toList()))
