@@ -14,7 +14,7 @@ import rental.repository.RentalRepository;
 import rental.service.RentalService;
 import saga.dto.VehicleOccupancyDTO;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RentalServiceImpl implements RentalService {
@@ -81,6 +81,27 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO) {
+        List<Rental> rentals = rentalRepository.findByVehicleAndByStartAndEndTime(vehicleId, occupancyDTO.getStartTime(), occupancyDTO.getEndTime());
+        HashMap<Long, Bundle> bundles = new HashMap<>();
+        for (Rental rental: rentals) {
+            if (rental.getStatus() != RentalStatus.CANCELED){
+                rental.setStatus(RentalStatus.CANCELED);
+                rentalRepository.save(rental);
+            }
 
+            Bundle bundle = rental.getBundle();
+            if (bundle != null) {
+                bundles.put(bundle.getId(), bundle);
+            }
+        }
+
+        for (Bundle bundle: bundles.values()){
+            for (Rental rental: bundle.getRentals()){
+                if (rental.getStatus() != RentalStatus.CANCELED){
+                    rental.setStatus(RentalStatus.CANCELED);
+                    rentalRepository.save(rental);
+                }
+            }
+        }
     }
 }

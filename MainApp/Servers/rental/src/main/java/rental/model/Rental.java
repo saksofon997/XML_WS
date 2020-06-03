@@ -27,7 +27,7 @@ public class Rental {
     @Column(name = "start_time", nullable = false)
     private long startTime;
 
-    @Column(name = "endtime", nullable = false)
+    @Column(name = "end_time", nullable = false)
     private long endTime;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
