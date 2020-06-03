@@ -66,7 +66,7 @@ public class ModelServiceImpl implements ModelService {
         }
 
         Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
-        Page<Model> pagedResult = modelRepo.findByBrand(brand.get());
+        Page<Model> pagedResult = modelRepo.findByBrand(brand.get(), page);
 
         ModelPageDTO pageDTO = new ModelPageDTO();
         pageDTO.setPageNo(pagedResult.getNumber());
