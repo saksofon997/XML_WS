@@ -53,6 +53,12 @@ public class Vehicle {
     @Column(name = "numberOfReviews")
     private int numberOfReviews;
 
+    @Column(name = "location_longitude")
+    private double locationLongitude;
+
+    @Column(name = "location_latitude")
+    private double locationLatitude;
+
     @Column(name = "deleted")
     private boolean deleted = false;
 
