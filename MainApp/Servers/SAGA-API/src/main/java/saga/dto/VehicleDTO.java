@@ -15,6 +15,8 @@ public class VehicleDTO {
     private PricelistDTO pricelist;
     private int numberOfStars;
     private int numberOfReviews;
+    private double locationLongitude;
+    private double locationLatitude;
 
     public VehicleDTO() {
     }
@@ -31,7 +33,9 @@ public class VehicleDTO {
                       long cdw,
                       PricelistDTO pricelist,
                       int numberOfStars,
-                      int numberOfReviews) {
+                      int numberOfReviews,
+                      double locationLongitude,
+                      double locationLatitude) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -45,6 +49,8 @@ public class VehicleDTO {
         this.pricelist = pricelist;
         this.numberOfStars = numberOfStars;
         this.numberOfReviews = numberOfReviews;
+        this.locationLongitude = locationLongitude;
+        this.locationLatitude = locationLatitude;
     }
 
     public Long getId() {
@@ -150,4 +156,12 @@ public class VehicleDTO {
     public void setNumberOfReviews(int numberOfReviews) {
         this.numberOfReviews = numberOfReviews;
     }
+
+    public double getLocationLongitude() { return locationLongitude; }
+
+    public void setLocationLongitude(double locationLongitude) { this.locationLongitude = locationLongitude; }
+
+    public double getLocationLatitude() { return locationLatitude; }
+
+    public void setLocationLatitude(double locationLatitude) { this.locationLatitude = locationLatitude; }
 }

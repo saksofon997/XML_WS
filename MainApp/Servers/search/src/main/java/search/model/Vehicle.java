@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -52,6 +53,15 @@ public class Vehicle {
 
     @Column(name = "numberOfReviews")
     private int numberOfReviews;
+
+    @Column(name = "location_longitude")
+    private double locationLongitude;
+
+    @Column(name = "location_latitude")
+    private double locationLatitude;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<VehicleOccupancy> occupancies;
 
     @Column(name = "deleted")
     private boolean deleted = false;
