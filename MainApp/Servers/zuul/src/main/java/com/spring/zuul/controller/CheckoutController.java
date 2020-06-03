@@ -22,7 +22,7 @@ public class CheckoutController {
     VehicleClient vehicleClient;
 
     @PostMapping("/checkout")
-    public ResponseEntity<?> getOrdersAndRestaurant(@RequestHeader("x-auth") String auth, @RequestBody List<RentalDTO> rentals) {
+    public ResponseEntity<?> rentalCheckout(@RequestHeader("x-auth") String auth, @RequestBody List<RentalDTO> rentals) {
 
         for (RentalDTO rentalDTO: rentals){
             List<VehicleOccupancyDTO> occupancies = vehicleClient.getOccupanciesOfGivenPeriod(rentalDTO.getVehicleId(), rentalDTO.getStartTime(), rentalDTO.getEndTime(), auth);
@@ -47,22 +47,31 @@ public class CheckoutController {
         for (BundleDTO bundle: bundles.values()){
             ResponseEntity response = rentalClient.createNewBundle(bundle, auth);
             if (response.getStatusCode().value() != 201){
+                // Delete created bundles
+                for (BundleDTO toDelete: createdBundles.values()){
+                    rentalClient.deleteBundle(toDelete.getId(), auth);
+                }
+                // Inform user
                 return new ResponseEntity<>("Cant create bundle", HttpStatus.INTERNAL_SERVER_ERROR);
-            } // remove created bundles... maybe?
+            }
             BundleDTO createdBundle = (BundleDTO) response.getBody();
             createdBundles.put(createdBundle.getName(), createdBundle);
         }
 
-        for (RentalDTO rental: rentals){
+        for (int i = 0; i < rentals.size(); i++) {
+            RentalDTO rental = rentals.get(i);
             rental.setBundle(createdBundles.get(rental.getBundle().getName()));
             ResponseEntity response = rentalClient.createNewRental(rental, auth);
             if (response.getStatusCode().value() != 201){
+                // Delete created rentals
+                for (int j = 0; j < i; j++){
+                    rentalClient.deleteRental(rentals.get(j).getId(), auth);
+                }
+                // Inform user
                 return new ResponseEntity<>("Cant create rental", HttpStatus.INTERNAL_SERVER_ERROR);
-            } // remove created rentals... maybe?
+            }
         }
 
-        // if all is well, its a MIRACLE
-        // if not... we probably need some try catches here...
         return new ResponseEntity<>("Checkout complete", HttpStatus.OK);
     }
 }

@@ -48,4 +48,15 @@ public class BundleServiceImpl implements BundleService {
 
         return convertToDTO(saved);
     }
+
+    @Override
+    public void delete(Long id) throws EntityNotFound {
+        Optional<Bundle> bundle = bundleRepository.findById(id);
+        if(!bundle.isPresent()) {
+            throw new EntityNotFound("Bundle not found");
+        }
+
+        bundle.get().setDeleted(true);
+        bundleRepository.save(bundle.get());
+    }
 }

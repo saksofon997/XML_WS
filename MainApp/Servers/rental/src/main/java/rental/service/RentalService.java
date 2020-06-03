@@ -16,6 +16,6 @@ public interface RentalService {
 
     RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError;
 
-    RentalDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+    void delete(Long id) throws EntityNotFound;
 
 }

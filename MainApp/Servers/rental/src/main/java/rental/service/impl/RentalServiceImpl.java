@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rental.dto.RentalDTO;
 import rental.exceptions.ConversionFailedError;
-import rental.exceptions.DuplicateEntity;
 import rental.exceptions.EntityNotFound;
 import rental.model.Bundle;
 import rental.model.Rental;
@@ -15,7 +14,6 @@ import rental.repository.RentalRepository;
 import rental.service.RentalService;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RentalServiceImpl implements RentalService {
@@ -70,7 +68,13 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
-        return null;
+    public void delete(Long id) throws EntityNotFound {
+        Optional<Rental> rental = rentalRepository.findById(id);
+        if(!rental.isPresent()) {
+            throw new EntityNotFound("Rental not found");
+        }
+
+        rental.get().setDeleted(true);
+        rentalRepository.save(rental.get());
     }
 }

@@ -51,10 +51,10 @@ public class RentalController {
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('DELETE_RENTAL_PERMISSION')")
-    public ResponseEntity<RentalDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
+    public ResponseEntity<?> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
-        RentalDTO deleted = rentalService.delete(id);
+        rentalService.delete(id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

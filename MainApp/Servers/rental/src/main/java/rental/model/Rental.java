@@ -35,4 +35,7 @@ public class Rental {
 
     @Enumerated(EnumType.STRING)
     private RentalStatus status;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 }
