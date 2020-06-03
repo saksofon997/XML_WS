@@ -20,7 +20,7 @@ const ELEMENT_DATA: Brand[] = [
 export class BrandTableComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'action'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Brand[];
  
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
  
@@ -33,7 +33,14 @@ export class BrandTableComponent implements OnInit {
   }
 
   getBrands() {
-    this.brandService.get
+    this.brandService.get().subscribe(
+      (data: Brand[]) => {
+        this.dataSource = data;
+      },
+      (error) => {
+        alert(error);
+      }
+    )
   }
  
   openDialog(action,obj) {
