@@ -12,6 +12,7 @@ import rental.model.RentalStatus;
 import rental.repository.BundleRepository;
 import rental.repository.RentalRepository;
 import rental.service.RentalService;
+import saga.dto.VehicleOccupancyDTO;
 
 import java.util.Optional;
 
@@ -76,5 +77,10 @@ public class RentalServiceImpl implements RentalService {
 
         rental.get().setDeleted(true);
         rentalRepository.save(rental.get());
+    }
+
+    @Override
+    public void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO) {
+
     }
 }

@@ -1,8 +1,12 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saga.commands.TypeOfCommand;
+import saga.commands.manualOccupancyCommands.ManualOccupancyCommand;
+import saga.commands.vehiclePartsCommands.MainTransmissionCommand;
 import saga.dto.ReviewDTO;
 import saga.dto.VehicleOccupancyDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -15,6 +19,7 @@ import vehicle.repository.VehicleOccupancyRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.VehicleOccupancyService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +35,9 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
     @Autowired
     VehicleRepo vehicleRepo;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public VehicleOccupancyDTO convertToDTO(VehicleOccupancy vehicleOccupancy) throws ConversionFailedError {
@@ -85,10 +93,13 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         VehicleOccupancy newOccupancy = convertToModel(vehicleOccupancyDTO);
 
         if(checkAvailable(vehicleId, newOccupancy)) {
-            vehicleOccupancyRepo.save(newOccupancy);
+            VehicleOccupancy occupancy = vehicleOccupancyRepo.save(newOccupancy);
             // Todo saga add command here.
+
+
+            commandGateway.send(new ManualOccupancyCommand(occupancy.getId(), convertToDTO(occupancy), vehicleId));
         } else {
-            throw new DuplicateEntity("Item already exists");
+            throw new DuplicateEntity("The vehicle is already reserved at the given ime");
         }
         return vehicleOccupancyDTO;
     }
@@ -96,33 +107,14 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     private boolean checkAvailable(Long vehicleId, VehicleOccupancy newOccupancy) throws EntityNotFound {
 
         Optional<Vehicle> vehicle = vehicleRepo.findById(vehicleId);
-
         if(!vehicle.isPresent()) {
-            throw new EntityNotFound("Items not found");
+            throw new EntityNotFound("Vehicle not found");
         }
+        newOccupancy.setVehicle(vehicle.get());
 
-        List<VehicleOccupancy> vehicleOccupancies = vehicleOccupancyRepo.findByVehicle(vehicle.get());
+        List<VehicleOccupancy> occupancies = vehicleOccupancyRepo.findByVehicleAndByStartAndEndTime(vehicle.get(), newOccupancy.getStartTime(), newOccupancy.getEndTime());
 
-        long startingTimeStamp = newOccupancy.getStartTime();
-        long endingTimeStamp = newOccupancy.getEndTime();
-
-        for (VehicleOccupancy v : vehicleOccupancies) {
-
-            if (startingTimeStamp >= v.getStartTime()
-                    && endingTimeStamp < v.getEndTime()) {
-                return false;
-            }
-            if (v.getStartTime() >= startingTimeStamp
-                    && v.getStartTime() <= endingTimeStamp) {
-                return false;
-            }
-            if (v.getEndTime() > startingTimeStamp
-                    && v.getEndTime() <= endingTimeStamp) {
-                return false;
-            }
-        }
-
-        return true;
+        return occupancies.size() == 0;
     }
 
     @Override
