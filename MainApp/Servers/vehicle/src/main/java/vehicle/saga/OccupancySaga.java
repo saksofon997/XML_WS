@@ -16,6 +16,7 @@ import saga.events.reviewEvents.ReviewRollbackEvent;
 import saga.events.vehicleOccupancyEvents.OccupancyMainEvent;
 import saga.events.vehicleOccupancyEvents.OccupancyReplicatedEvent;
 import saga.events.vehicleOccupancyEvents.OccupancyReplicatedFailedEvent;
+import saga.events.vehicleOccupancyEvents.OccupancyRollbackEvent;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -64,7 +65,7 @@ public class OccupancySaga {
     }
 
     @SagaEventHandler(associationProperty = "vehicleOccupancyId")
-    public void handle(ReviewRollbackEvent reviewRollbackEvent) {
+    public void handle(OccupancyRollbackEvent occupancyRollbackEvent) {
         System.out.println("Saga finishing!");
         SagaLifecycle.end();
     }
