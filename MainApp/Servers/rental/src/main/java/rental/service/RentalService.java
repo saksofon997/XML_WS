@@ -10,7 +10,7 @@ public interface RentalService {
 
     Rental convertToModel(RentalDTO rentalDTO) throws ConversionFailedError;
 
-    RentalDTO add(RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError;
+    RentalDTO add(RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError, EntityNotFound;
 
     RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 

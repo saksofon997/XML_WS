@@ -162,4 +162,21 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         // Todo saga delete command here.
         return convertToDTO(deleted.get());
     }
+
+    @Override
+    public List<VehicleOccupancyDTO> getOccupanciesOfGivenPeriod(Long vehicleId, long start_time, long end_time) throws EntityNotFound, ConversionFailedError {
+        Optional<Vehicle> vehicle = vehicleRepo.findById(vehicleId);
+
+        if(!vehicle.isPresent()) {
+            throw new EntityNotFound("Vehicle not found");
+        }
+
+        List<VehicleOccupancy> occupancies = vehicleOccupancyRepo.findByVehicleAndByStartAndEndTime(vehicle.get(), start_time, end_time);
+        List<VehicleOccupancyDTO> occupanciesDTO = new ArrayList<>();
+        for (VehicleOccupancy occ: occupancies){
+            occupanciesDTO.add(convertToDTO(occ));
+        }
+
+        return occupanciesDTO;
+    }
 }

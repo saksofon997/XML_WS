@@ -20,7 +20,7 @@ public class RentalController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('CREATE_RENTAL_PERMISSION')")
-    public ResponseEntity<RentalDTO> createNew(@RequestBody RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError {
+    public ResponseEntity<RentalDTO> createNew(@RequestBody RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError, EntityNotFound {
 
         RentalDTO added = rentalService.add(rentalDTO);
 

@@ -7,16 +7,23 @@ import rental.dto.RentalDTO;
 import rental.exceptions.ConversionFailedError;
 import rental.exceptions.DuplicateEntity;
 import rental.exceptions.EntityNotFound;
+import rental.model.Bundle;
 import rental.model.Rental;
+import rental.model.RentalStatus;
+import rental.repository.BundleRepository;
 import rental.repository.RentalRepository;
 import rental.service.RentalService;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class RentalServiceImpl implements RentalService {
 
     @Autowired
     RentalRepository rentalRepository;
-
+    @Autowired
+    BundleRepository bundleRepository;
     @Autowired
     DozerBeanMapper mapper;
 
@@ -39,8 +46,17 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO add(RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError {
-        return null;
+    public RentalDTO add(RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError {
+        Rental newRental = convertToModel(rentalDTO);
+        Optional<Bundle> bundle = bundleRepository.findById(rentalDTO.getBundle().getId());
+        if (!bundle.isPresent()) {
+            throw new EntityNotFound("Bundle is not found");
+        }
+        newRental.setBundle(bundle.get());
+        newRental.setStatus(RentalStatus.PENDING);
+        rentalRepository.save(newRental);
+
+        return rentalDTO;
     }
 
     @Override
