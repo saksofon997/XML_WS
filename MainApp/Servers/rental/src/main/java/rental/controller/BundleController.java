@@ -5,13 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rental.dto.BundleDTO;
 import rental.exceptions.ConversionFailedError;
 import rental.exceptions.DuplicateEntity;
+import rental.exceptions.EntityNotFound;
 import rental.service.BundleService;
 
 @RestController
@@ -29,5 +27,15 @@ public class BundleController {
         BundleDTO added = bundleService.add(bundleDTO);
 
         return new ResponseEntity<>(added, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_RENTAL_PERMISSION')")
+    public ResponseEntity<?> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
+
+        bundleService.delete(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -5,7 +5,8 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saga.commands.TypeOfCommand;
-import saga.commands.vehicleOccupancyCommands.MainOccupancyCommand;
+import saga.commands.manualOccupancyCommands.ManualOccupancyCommand;
+import saga.commands.vehiclePartsCommands.MainTransmissionCommand;
 import saga.dto.ReviewDTO;
 import saga.dto.VehicleOccupancyDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -95,8 +96,10 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
             VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
 
             commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.CREATE));
+            commandGateway.send(new ManualOccupancyCommand(saved.getId(), convertToDTO(saved), vehicleId));
+
         } else {
-            throw new DuplicateEntity("Item already exists");
+            throw new DuplicateEntity("The vehicle is already reserved at the given ime");
         }
         return vehicleOccupancyDTO;
     }
@@ -104,33 +107,14 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     private boolean checkAvailable(Long vehicleId, VehicleOccupancy newOccupancy) throws EntityNotFound {
 
         Optional<Vehicle> vehicle = vehicleRepo.findById(vehicleId);
-
         if(!vehicle.isPresent()) {
-            throw new EntityNotFound("Items not found");
+            throw new EntityNotFound("Vehicle not found");
         }
+        newOccupancy.setVehicle(vehicle.get());
 
-        List<VehicleOccupancy> vehicleOccupancies = vehicleOccupancyRepo.findByVehicle(vehicle.get());
+        List<VehicleOccupancy> occupancies = vehicleOccupancyRepo.findByVehicleAndByStartAndEndTime(vehicle.get(), newOccupancy.getStartTime(), newOccupancy.getEndTime());
 
-        long startingTimeStamp = newOccupancy.getStartTime();
-        long endingTimeStamp = newOccupancy.getEndTime();
-
-        for (VehicleOccupancy v : vehicleOccupancies) {
-
-            if (startingTimeStamp >= v.getStartTime()
-                    && endingTimeStamp < v.getEndTime()) {
-                return false;
-            }
-            if (v.getStartTime() >= startingTimeStamp
-                    && v.getStartTime() <= endingTimeStamp) {
-                return false;
-            }
-            if (v.getEndTime() > startingTimeStamp
-                    && v.getEndTime() <= endingTimeStamp) {
-                return false;
-            }
-        }
-
-        return true;
+        return occupancies.size() == 0;
     }
 
     @Override
@@ -172,5 +156,22 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.DELETE));
 
         return convertToDTO(deleted.get());
+    }
+
+    @Override
+    public List<VehicleOccupancyDTO> getOccupanciesOfGivenPeriod(Long vehicleId, long start_time, long end_time) throws EntityNotFound, ConversionFailedError {
+        Optional<Vehicle> vehicle = vehicleRepo.findById(vehicleId);
+
+        if(!vehicle.isPresent()) {
+            throw new EntityNotFound("Vehicle not found");
+        }
+
+        List<VehicleOccupancy> occupancies = vehicleOccupancyRepo.findByVehicleAndByStartAndEndTime(vehicle.get(), start_time, end_time);
+        List<VehicleOccupancyDTO> occupanciesDTO = new ArrayList<>();
+        for (VehicleOccupancy occ: occupancies){
+            occupanciesDTO.add(convertToDTO(occ));
+        }
+
+        return occupanciesDTO;
     }
 }

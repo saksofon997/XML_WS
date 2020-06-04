@@ -64,8 +64,6 @@ public class ModelServiceImpl implements ModelService {
         if (brand.get().getModels().stream().anyMatch(m -> m.getName().equals(newModel.getName()))) {
             throw new DuplicateEntity("Item with name: "+modelDTO.getName()+" already exists");
         }
-        brand.get().getModels().add(newModel);
-        brandRepo.save(brand.get());
         newModel.setBrand(brand.get());
         modelRepo.save(newModel);
 

@@ -5,9 +5,11 @@ import saga.commands.TypeOfCommand;
 import saga.dto.ModelDTO;
 
 public class MainModelCommand {
-    @TargetAggregateIdentifier
     private Long brandId;
+
+    @TargetAggregateIdentifier
     private Long modelId;
+
     private ModelDTO modelDTO;
     private TypeOfCommand typeOfCommand;
 

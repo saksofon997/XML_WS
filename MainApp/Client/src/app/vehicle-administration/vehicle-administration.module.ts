@@ -1,3 +1,5 @@
+import { VehicleDialogBoxComponent } from './vehicle-dialog-box/vehicle-dialog-box.component';
+import { VehicleListingComponent } from './vehicle-listing/vehicle-listing.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -14,13 +16,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { PricelistDialogBoxComponent } from './pricelist-dialog-box/pricelist-dialog-box.component';
-
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 @NgModule({
   declarations: [
     VehicleAdministrationComponent,
     PricelistTableComponent,
     PricelistDialogBoxComponent,
+    VehicleListingComponent,
+    VehicleDialogBoxComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +39,7 @@ import { PricelistDialogBoxComponent } from './pricelist-dialog-box/pricelist-di
     MatSelectModule,
     MatIconModule,
     VehicleAdministrationRoutingModule,
+    MaterialFileInputModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

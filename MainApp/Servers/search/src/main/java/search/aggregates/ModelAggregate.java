@@ -4,12 +4,14 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
+import org.axonframework.spring.stereotype.Aggregate;
 import saga.commands.TypeOfCommand;
 import saga.commands.modelCommands.ReplicateModelCommand;
 import saga.events.modelEvents.ModelReplicatedEvent;
 import saga.events.modelEvents.ModelReplicatedFailedEvent;
 import search.service.ModelService;
 
+@Aggregate
 public class ModelAggregate {
     @AggregateIdentifier
     private String modelAggregateId;

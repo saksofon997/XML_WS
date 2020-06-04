@@ -4,6 +4,7 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
+import org.axonframework.spring.stereotype.Aggregate;
 import saga.commands.TypeOfCommand;
 import saga.commands.vehicleOccupancyCommands.ReplicateOccupancyCommand;
 import saga.events.reviewEvents.ReviewReplicatedEvent;
@@ -12,6 +13,7 @@ import saga.events.vehicleOccupancyEvents.OccupancyReplicatedEvent;
 import saga.events.vehicleOccupancyEvents.OccupancyReplicatedFailedEvent;
 import search.service.VehicleOccupancyService;
 
+@Aggregate
 public class OccupancyAggregate {
     @AggregateIdentifier
     private String occupancyAggregateId;
@@ -22,18 +24,18 @@ public class OccupancyAggregate {
         try{
             if(replicateOccupancyCommand.getTypeOfCommand() == TypeOfCommand.CREATE){
                 occupancyService.add(replicateOccupancyCommand.getVehicleId(),replicateOccupancyCommand.getOccupancyDTO() );
-                AggregateLifecycle.apply(new ReviewReplicatedEvent(replicateOccupancyCommand.getOccupancyAggregateId(), TypeOfCommand.CREATE));
+                AggregateLifecycle.apply(new OccupancyReplicatedEvent(replicateOccupancyCommand.getOccupancyAggregateId(), TypeOfCommand.CREATE));
             } else if (replicateOccupancyCommand.getTypeOfCommand() == TypeOfCommand.UPDATE) {
                 occupancyService.update(replicateOccupancyCommand.getVehicleId(), replicateOccupancyCommand.getVehicleOccupancyId(), replicateOccupancyCommand.getOccupancyDTO());
-                AggregateLifecycle.apply(new ReviewReplicatedEvent(replicateOccupancyCommand.getOccupancyAggregateId(), TypeOfCommand.UPDATE));
+                AggregateLifecycle.apply(new OccupancyReplicatedEvent(replicateOccupancyCommand.getOccupancyAggregateId(), TypeOfCommand.UPDATE));
             } else {
                 occupancyService.delete(replicateOccupancyCommand.getVehicleId(), replicateOccupancyCommand.getVehicleOccupancyId());
-                AggregateLifecycle.apply(new ReviewReplicatedEvent(replicateOccupancyCommand.getOccupancyAggregateId(), TypeOfCommand.DELETE));
+                AggregateLifecycle.apply(new OccupancyReplicatedEvent(replicateOccupancyCommand.getOccupancyAggregateId(), TypeOfCommand.DELETE));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            AggregateLifecycle.apply(new ReviewReplicatedFailedEvent(replicateOccupancyCommand.getOccupancyAggregateId(),
+            AggregateLifecycle.apply(new OccupancyReplicatedFailedEvent(replicateOccupancyCommand.getOccupancyAggregateId(),
                     replicateOccupancyCommand.getVehicleOccupancyId(),
                     replicateOccupancyCommand.getVehicleId(),
                     e.getMessage(), replicateOccupancyCommand.getTypeOfCommand()));

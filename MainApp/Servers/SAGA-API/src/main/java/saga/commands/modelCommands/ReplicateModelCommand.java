@@ -2,7 +2,6 @@ package saga.commands.modelCommands;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.commands.TypeOfCommand;
-import saga.dto.BrandDTO;
 import saga.dto.ModelDTO;
 
 public class ReplicateModelCommand {

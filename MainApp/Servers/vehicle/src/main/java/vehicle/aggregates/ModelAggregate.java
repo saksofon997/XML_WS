@@ -30,8 +30,8 @@ public class ModelAggregate {
     @EventSourcingHandler
     public void on(ModelMainEvent modelMainEvent) {
         System.out.println("Setting model aggregate ID...");
-        System.out.println(modelMainEvent.getModelId());
-        this.modelId = modelMainEvent.getBrandId() + modelMainEvent.getModelId().toString() + "modelAggregate" + modelMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
+        System.out.println(modelMainEvent.getModelDTO());
+        this.modelId = modelMainEvent.getBrandId().toString() + modelMainEvent.getModelId().toString() + "modelAggregate" + modelMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
     }
 
     @CommandHandler

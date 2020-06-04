@@ -4,10 +4,11 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import saga.commands.TypeOfCommand;
 
 public class RollbackModelCommand {
-    @TargetAggregateIdentifier
-
     private Long brandId;
+
+    @TargetAggregateIdentifier
     private Long modelId;
+
     private String status;
     private TypeOfCommand typeOfCommand;
 

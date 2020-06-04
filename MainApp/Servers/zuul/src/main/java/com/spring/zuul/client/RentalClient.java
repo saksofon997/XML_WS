@@ -4,9 +4,7 @@ import com.spring.zuul.dto.BundleDTO;
 import com.spring.zuul.dto.RentalDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "rental")
 public interface RentalClient {
@@ -18,4 +16,12 @@ public interface RentalClient {
     @PostMapping("/bundle")
     ResponseEntity<BundleDTO> createNewBundle(@RequestBody BundleDTO bundleDTO,
                                               @RequestHeader("x-auth") String auth);
+
+    @DeleteMapping("/bundle/{bundleId}")
+    ResponseEntity<?> deleteBundle(@PathVariable Long bundleId,
+                                           @RequestHeader("x-auth") String auth);
+
+    @DeleteMapping("/rental/{rentalId}")
+    ResponseEntity<?> deleteRental(@PathVariable Long rentalId,
+                                   @RequestHeader("x-auth") String auth);
 }
