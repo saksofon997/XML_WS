@@ -1,5 +1,7 @@
 package saga.dto;
 
+import java.util.List;
+
 public class VehicleDTO {
 
     private Long id;
@@ -17,6 +19,7 @@ public class VehicleDTO {
     private int numberOfReviews;
     private double locationLongitude;
     private double locationLatitude;
+    private List<String> images;
 
     public VehicleDTO() {
     }
@@ -59,6 +62,14 @@ public class VehicleDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public BrandDTO getBrand() {
@@ -164,4 +175,6 @@ public class VehicleDTO {
     public double getLocationLatitude() { return locationLatitude; }
 
     public void setLocationLatitude(double locationLatitude) { this.locationLatitude = locationLatitude; }
+
+
 }

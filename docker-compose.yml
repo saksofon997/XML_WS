@@ -95,6 +95,7 @@ services:
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
       AXON_HOST: axon-server
+      PATH_TO_IMAGES: /root/vehicle_images
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -102,6 +103,7 @@ services:
       - axon-server
     volumes: 
       - $USERPROFILE/.m2:/root/.m2
+      - C:\vehicle_images:/root/vehicle_images
 
   location:
     build: ./MainApp/Servers/location
