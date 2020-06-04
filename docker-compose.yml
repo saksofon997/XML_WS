@@ -88,13 +88,14 @@ services:
   vehicle:
     build: ./MainApp/Servers/vehicle
     ports:
-    - "8084:8080"
+    - "8084:8081"
     environment:
       DATABASE_USERNAME: test
       DATABASE_PASSWORD: test
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
       AXON_HOST: axon-server
+      PATH_TO_IMAGES: /root/vehicle_images
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -102,6 +103,7 @@ services:
       - axon-server
     volumes: 
       - $USERPROFILE/.m2:/root/.m2
+      - C:\vehicle_images:/root/vehicle_images
 
   location:
     build: ./MainApp/Servers/location

@@ -67,7 +67,7 @@ export class VehicleDialogBoxComponent{
     this.vehicle_service.addVehicle(vehicle,this.local_data.images.files).subscribe(
       (data: any) => { 
         alert("Vehicle created");
-        this.image_source = "http://localhost:8080/vehicle/image/" + data.images[0];
+        this.image_source = "http://localhost:8084/vehicle/image/" + data.images[0];
         },
       (error) => { alert(error);  }
     );

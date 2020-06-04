@@ -3,6 +3,7 @@ package vehicle.service.impl;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -40,6 +41,10 @@ public class VehicleServiceImpl implements VehicleService {
     VehicleRepo vehicleRepo;
     @Autowired
     DozerBeanMapper mapper;
+
+    @Value("${PATH_TO_IMAGES:C:\\vehicle_images}")
+    private String path_to_images;
+
     @Override
     public VehicleDTO convertToDTO(Vehicle vehicle) throws ConversionFailedError {
         try {
@@ -136,10 +141,11 @@ public class VehicleServiceImpl implements VehicleService {
     public Resource getImage(String fileName, HttpServletRequest request) throws IOException {
         ByteArrayResource resource =null;
         try {
-            String uploadsDir = "/uploads/";
-            String realPathtoUploads = request.getSession().getServletContext().getRealPath("/")+ uploadsDir +fileName;
+            String realPathtoUploads = path_to_images + "/" +fileName;
             File file = new File(realPathtoUploads);
             Path pathToFile = Paths.get(file.getAbsolutePath());
+            System.out.println(realPathtoUploads);
+
             resource = new ByteArrayResource(Files.readAllBytes(pathToFile));
             if(resource.exists()) {
                 return resource;
@@ -158,12 +164,10 @@ public class VehicleServiceImpl implements VehicleService {
             System.out.println("Uso u for");
             if (!file.isEmpty()) {
                 try {
-                    String uploadsDir = "\\uploads\\";
-                    String realPathtoUploads = request.getSession().getServletContext().getRealPath("/")+uploadsDir;
+                    String realPathtoUploads = path_to_images;
                     if (!new File(realPathtoUploads).exists()) {
                         new File(realPathtoUploads).mkdir();
                     }
-                    Path link = Paths.get(request.getSession().getServletContext().getRealPath("/")+uploadsDir); //Symlink
                     System.out.println(realPathtoUploads);
                     System.out.println("Uso u try");
 
