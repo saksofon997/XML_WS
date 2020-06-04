@@ -93,11 +93,11 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         VehicleOccupancy newOccupancy = convertToModel(vehicleOccupancyDTO);
 
         if(checkAvailable(vehicleId, newOccupancy)) {
-            VehicleOccupancy occupancy = vehicleOccupancyRepo.save(newOccupancy);
-            // Todo saga add command here.
+            VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
 
+            commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.CREATE));
+            commandGateway.send(new ManualOccupancyCommand(saved.getId(), convertToDTO(saved), vehicleId));
 
-            commandGateway.send(new ManualOccupancyCommand(occupancy.getId(), convertToDTO(occupancy), vehicleId));
         } else {
             throw new DuplicateEntity("The vehicle is already reserved at the given ime");
         }
@@ -125,8 +125,10 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
         if(checkAvailable(vehicleId, newOccupancy)) {
             vehicleOccupancyRepo.deleteById(id);
-            vehicleOccupancyRepo.save(newOccupancy);
-            // Todo saga update command here.
+            newOccupancy.setId(id);
+            VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
+
+            commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.UPDATE));
         } else {
             throw new DuplicateEntity("Item already exists");
         }
@@ -149,9 +151,10 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
             throw new EntityNotFound("Items not found");
         }
         deleted.get().setDeleted(true);
-        vehicleOccupancyRepo.save(deleted.get());
-        // vehicleOccupancyRepo.deleteById(id);
-        // Todo saga delete command here.
+        VehicleOccupancy saved = vehicleOccupancyRepo.save(deleted.get());
+
+        commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.DELETE));
+
         return convertToDTO(deleted.get());
     }
 

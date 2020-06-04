@@ -13,7 +13,6 @@ import search.exceptions.ConversionFailedError;
 import search.model.Vehicle;
 import search.repository.SearchRepo;
 import search.service.SearchService;
-import search.service.VehicleService;
 
 import java.util.Arrays;
 import java.util.List;

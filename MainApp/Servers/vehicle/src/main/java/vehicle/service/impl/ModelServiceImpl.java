@@ -1,9 +1,17 @@
 package vehicle.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import saga.commands.TypeOfCommand;
+import saga.commands.modelCommands.MainModelCommand;
 import saga.dto.ModelDTO;
+import vehicle.dto.ModelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
@@ -13,8 +21,7 @@ import vehicle.repository.BrandRepo;
 import vehicle.repository.ModelRepo;
 import vehicle.service.ModelService;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 import java.util.Optional;
 
 @Service
@@ -28,6 +35,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     public ModelDTO convertToDTO(Model model) throws ConversionFailedError {
         try {
@@ -47,7 +57,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<ModelDTO> getAll(Long brandId) throws EntityNotFound, ConversionFailedError {
+    public ModelPageDTO getAll(Long brandId, Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError {
 
         Optional<Brand> brand = brandRepo.findById(brandId);
 
@@ -55,19 +65,17 @@ public class ModelServiceImpl implements ModelService {
             throw new EntityNotFound("No item with ID: "+brandId);
         }
 
-        List<Model> models = modelRepo.findByBrand(brand.get());
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Page<Model> pagedResult = modelRepo.findByBrand(brand.get(), page);
 
-        if (models.isEmpty()) {
-            throw new EntityNotFound("Items not found");
+        ModelPageDTO pageDTO = new ModelPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Model model: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(model));
         }
 
-        List<ModelDTO> modelDTOS = new ArrayList<>();
-
-        for (Model m : models) {
-            modelDTOS.add(convertToDTO(m));
-        }
-
-        return modelDTOS;
+        return pageDTO;
     }
 
     @Override
@@ -85,12 +93,11 @@ public class ModelServiceImpl implements ModelService {
             throw new DuplicateEntity("Item with name: "+modelDTO.getName()+" already exists");
         }
 
-        brand.get().getModels().add(newModel);
-
-        brandRepo.save(brand.get());
         newModel.setBrand(brand.get());
-        modelRepo.save(newModel);
-        // Todo saga add command here.
+        Model savedModel = modelRepo.save(newModel);
+
+        commandGateway.send(new MainModelCommand(brandId, newModel.getId(), convertToDTO(savedModel), TypeOfCommand.CREATE));
+
         return modelDTO;
     }
 
@@ -107,17 +114,21 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelDTO update(Long brandId, Long id, ModelDTO modelDTO) throws EntityNotFound {
+    public ModelDTO update(Long brandId, Long id, ModelDTO modelDTO) throws EntityNotFound, ConversionFailedError {
 
         Optional<Model> change = modelRepo.findById(id);
 
-        if (!change.isPresent())
+        Optional<Brand> brand = brandRepo.findById(brandId);
+
+        if (!change.isPresent() || !brand.isPresent())
             throw new EntityNotFound("No item with ID: "+id);
 
         change.get().setName(modelDTO.getName());
 
-        modelRepo.save(change.get());
-        // Todo saga update command here.
+        Model savedModel = modelRepo.save(change.get());
+
+        commandGateway.send(new MainModelCommand(brandId, savedModel.getId(), convertToDTO(savedModel), TypeOfCommand.UPDATE));
+
         return modelDTO;
     }
 
@@ -126,12 +137,15 @@ public class ModelServiceImpl implements ModelService {
 
         Optional<Model> deleted = modelRepo.findById(id);
 
-        if (!deleted.isPresent()){
+        Optional<Brand> changed = brandRepo.findById(brandId);
+
+        if (!deleted.isPresent() ||!changed.isPresent()) {
             throw new EntityNotFound("No item with ID: " + id);
-         } else {
+        } else {
             deleted.get().setDeleted(true);
             modelRepo.save(deleted.get());
-            // Todo saga delete command here.
+
+            commandGateway.send(new MainModelCommand(brandId, deleted.get().getId(), convertToDTO(deleted.get()) , TypeOfCommand.DELETE));
         }
         return convertToDTO(deleted.get());
     }

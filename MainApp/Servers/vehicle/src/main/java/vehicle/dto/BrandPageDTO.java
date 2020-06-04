@@ -16,4 +16,28 @@ public class BrandPageDTO {
     public BrandPageDTO(){
         content = new ArrayList<BrandDTO>();
     }
+
+    public List<BrandDTO> getContent() {
+        return content;
+    }
+
+    public void setContent(List<BrandDTO> content) {
+        this.content = content;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
 }
