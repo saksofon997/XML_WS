@@ -51,7 +51,7 @@ public class LocationApplication {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(LocationApplication.class, args).close();
+		SpringApplication.run(LocationApplication.class, args);
 	}
 
 }

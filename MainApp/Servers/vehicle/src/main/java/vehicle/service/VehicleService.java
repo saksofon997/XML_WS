@@ -3,6 +3,7 @@ package vehicle.service;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import saga.dto.VehicleDTO;
+import vehicle.dto.TokenDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
