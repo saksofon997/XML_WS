@@ -1,12 +1,15 @@
 package rental.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
+@Where(clause="deleted=false")
 public class Bundle {
 
     @Id
@@ -18,5 +21,8 @@ public class Bundle {
     private String name;
 
     @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Rental> rentals;
+    private List<Rental> rentals;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 }
