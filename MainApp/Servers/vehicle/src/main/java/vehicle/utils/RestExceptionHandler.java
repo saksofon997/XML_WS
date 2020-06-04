@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import vehicle.exceptions.ConversionFailedError;
-import vehicle.exceptions.DuplicateEntity;
-import vehicle.exceptions.EntityNotFound;
-import vehicle.exceptions.UnexpectedError;
+import vehicle.exceptions.*;
 import vehicle.model.ApiError;
 
 import static org.springframework.http.HttpStatus.*;
@@ -71,6 +68,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
+    @ExceptionHandler(OperationNotAllowed.class)
+    protected ResponseEntity<Object> handleOperationNotAllowed(
+            OperationNotAllowed ex) {
+        ApiError apiError = new ApiError(NOT_ACCEPTABLE);
+        apiError.setMessage(ex.getMessage());
+        apiError.setEx(ex);
+        return buildResponseEntity(apiError);
+    }
     /*ERROR HANDLING
     * Add new custom exception like ItemNotFound
     * Make methods throw that exception

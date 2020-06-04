@@ -13,4 +13,6 @@ public class ErrorMessages {
     public static String DUPLICATE_ITEM() { return "Duplicate item exists."; }
 
     public static String CONVERSION_FAILED() { return "Data conversion failed."; }
+
+    public static String OPERATION_NOT_ALLOWED() { return "Operation not allowed."; }
 }
