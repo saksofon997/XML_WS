@@ -8,25 +8,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import saga.commands.MainBrandCommand;
 import saga.commands.TypeOfCommand;
 import saga.commands.vehiclePartsCommands.MainCategoryCommand;
-import saga.dto.BrandDTO;
 import saga.dto.CategoryDTO;
 import vehicle.dto.CategoryPageDTO;
-import saga.dto.ModelDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Brand;
 import vehicle.model.Category;
-import vehicle.model.Model;
 import vehicle.repository.CategoryRepo;
 import vehicle.service.CategoryService;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -108,7 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         change.get().setName(categoryDTO.getName());
 
-        Category  savedCategory = categoryRepo.save(change.get());
+        Category savedCategory = categoryRepo.save(change.get());
 
         commandGateway.send(new MainCategoryCommand(savedCategory.getId(), categoryDTO, TypeOfCommand.UPDATE));
 

@@ -21,7 +21,7 @@ public class VehicleAggregate {
 
     @CommandHandler
     public VehicleAggregate(ReplicateVehicleCommand replicateVehicleCommand, VehicleService vehicleService) {
-        System.out.println("USO SAM U SEARCH DODAVANJE VEHICLE-A");
+        System.out.println("USO SAM U SEARCH VEHICLE");
         try{
             if(replicateVehicleCommand.getTypeOfCommand() == TypeOfCommand.CREATE){
                 vehicleService.add(replicateVehicleCommand.getVehicleDTO());

@@ -2,13 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box-edit/dialog-box-edit.component';
-
-export interface UsersData {
-  name: string;
-  id: number;
-}
+import { BrandService } from '../service/brand.service';
+import { Brand } from 'src/app/models/Brand.model';
  
-const ELEMENT_DATA: UsersData[] = [
+const ELEMENT_DATA: Brand[] = [
   {id: 1560608769632, name: 'Mercedes'},
   {id: 1560608796014, name: 'BMW'},
   {id: 1560608787815, name: 'Nissan'},
@@ -27,9 +24,16 @@ export class BrandTableComponent implements OnInit {
  
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
  
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog,
+    private brandService: BrandService) {
+    this.getBrands();
+  }
 
   ngOnInit(): void {
+  }
+
+  getBrands() {
+    this.brandService.get
   }
  
   openDialog(action,obj) {
