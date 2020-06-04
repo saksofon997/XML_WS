@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 import rental.dto.BundleDTO;
 import rental.exceptions.ConversionFailedError;
 import rental.exceptions.DuplicateEntity;
+import rental.exceptions.EntityNotFound;
 import rental.model.Bundle;
+import rental.model.Rental;
 import rental.repository.BundleRepository;
 import rental.service.BundleService;
+
+import java.util.Optional;
 
 @Service
 public class BundleServiceImpl implements BundleService {
@@ -39,6 +43,20 @@ public class BundleServiceImpl implements BundleService {
 
     @Override
     public BundleDTO add(BundleDTO bundleDTO) throws DuplicateEntity, ConversionFailedError {
-        return null;
+        Bundle newBundle = convertToModel(bundleDTO);
+        Bundle saved = bundleRepository.save(newBundle);
+
+        return convertToDTO(saved);
+    }
+
+    @Override
+    public void delete(Long id) throws EntityNotFound {
+        Optional<Bundle> bundle = bundleRepository.findById(id);
+        if(!bundle.isPresent()) {
+            throw new EntityNotFound("Bundle not found");
+        }
+
+        bundle.get().setDeleted(true);
+        bundleRepository.save(bundle.get());
     }
 }

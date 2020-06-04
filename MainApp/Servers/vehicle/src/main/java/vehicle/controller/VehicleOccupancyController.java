@@ -60,4 +60,15 @@ public class VehicleOccupancyController {
 
         return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
+
+    @GetMapping(path = "/vehicle/{vehicleId}/occupancy/start/{start_time}/end/{end_time}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<VehicleOccupancyDTO>> getOccupanciesOfGivenPeriod(@PathVariable Long vehicleId,
+                                                      @PathVariable long start_time,
+                                                      @PathVariable long end_time) throws ConversionFailedError, EntityNotFound {
+
+        List<VehicleOccupancyDTO> occupancies = vehicleOccupancyService.getOccupanciesOfGivenPeriod(vehicleId, start_time, end_time);
+
+        return new ResponseEntity<>(occupancies, HttpStatus.ACCEPTED);
+    }
 }
