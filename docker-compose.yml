@@ -170,6 +170,12 @@ services:
     volumes:
       - $USERPROFILE/.m2:/root/.m2
 
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
 volumes:
   database-data:
   front-storage:

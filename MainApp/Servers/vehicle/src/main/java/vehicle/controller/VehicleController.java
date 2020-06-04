@@ -101,4 +101,12 @@ public class VehicleController {
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         IOUtils.copy(in, response.getOutputStream());
     }
+
+    @GetMapping(value = "/{id}/token")
+    public void getVehicleToken(@PathVariable Long id) {
+
+        TokenDTO token = vehicleService.getToken(id);
+
+        return new ResponseEntity<>(vehicleDTO, HttpStatus.OK);
+    }
 }

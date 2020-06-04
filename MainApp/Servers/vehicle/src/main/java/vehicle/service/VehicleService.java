@@ -31,4 +31,6 @@ public interface VehicleService {
     VehicleDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
 
     Resource getImage(String path, HttpServletRequest request) throws IOException;
+
+    TokenDTO getToken(Long id);
 }
