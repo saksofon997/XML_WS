@@ -53,12 +53,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleDTO add(VehicleDTO vehicleDTO) throws ConversionFailedError, DuplicateEntity {
 
-        Vehicle newBrand = convertToModel(vehicleDTO);
+        Vehicle newVehicle = convertToModel(vehicleDTO);
 
-            Vehicle savedVehicle = vehicleRepo.save(newBrand);
+        Vehicle savedVehicle = vehicleRepo.save(newVehicle);
 
-            System.out.println(savedVehicle.getId());
-            commandGateway.send(new MainVehicleCommand(savedVehicle.getId(),vehicleDTO, TypeOfCommand.CREATE));
+        commandGateway.send(new MainVehicleCommand(savedVehicle.getId(),vehicleDTO, TypeOfCommand.CREATE));
 
         return vehicleDTO;
     }

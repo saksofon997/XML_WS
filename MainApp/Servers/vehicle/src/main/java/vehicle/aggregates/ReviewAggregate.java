@@ -26,7 +26,7 @@ public class ReviewAggregate {
     public ReviewAggregate(MainReviewCommand mainReviewCommand) {
         System.out.println("Creating review main event... ");
         AggregateLifecycle.apply(new ReviewMainEvent(mainReviewCommand.getReviewId(),
-                mainReviewCommand.getReviewId(),
+                mainReviewCommand.getVehicleId(),
                 mainReviewCommand.getReviewDTO(),
                 mainReviewCommand.getTypeOfCommand()));
     }
