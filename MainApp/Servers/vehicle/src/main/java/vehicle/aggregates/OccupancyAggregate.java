@@ -4,18 +4,20 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
+import org.axonframework.spring.stereotype.Aggregate;
 import saga.commands.TypeOfCommand;
 import saga.commands.vehicleOccupancyCommands.MainOccupancyCommand;
 import saga.commands.vehicleOccupancyCommands.RollbackOccupancyCommand;
-import saga.events.reviewEvents.ReviewRollbackEvent;
 import saga.events.vehicleOccupancyEvents.OccupancyMainEvent;
+import saga.events.vehicleOccupancyEvents.OccupancyRollbackEvent;
 import vehicle.service.VehicleOccupancyService;
 
 import java.util.UUID;
 
+@Aggregate
 public class OccupancyAggregate {
     @AggregateIdentifier
-    private String occupancyId;
+    private String vehicleOccupancyId;
 
     public OccupancyAggregate() {}
 
@@ -32,7 +34,7 @@ public class OccupancyAggregate {
     public void on(OccupancyMainEvent occupancyMainEvent) {
         System.out.println("Setting occupancy aggregate ID...");
         System.out.println(occupancyMainEvent.getOccupancyDTO());
-        this.occupancyId = occupancyMainEvent.getVehicleOccupancyId().toString() + "occupancyAggregate" + occupancyMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
+        this.vehicleOccupancyId = occupancyMainEvent.getVehicleOccupancyId().toString() + "occupancyAggregate" + occupancyMainEvent.getTypeOfCommand() + UUID.randomUUID().toString();
     }
 
     @CommandHandler
@@ -50,6 +52,6 @@ public class OccupancyAggregate {
         } catch (Exception e) {
             System.out.println("Neuspesan rollback..." + e.getMessage());
         }
-        AggregateLifecycle.apply(new ReviewRollbackEvent(rollbackOccupancyCommand.getVehicleOccupancyId(), rollbackOccupancyCommand.getVehicleId(), rollbackOccupancyCommand.getTypeOfCommand()));
+        AggregateLifecycle.apply(new OccupancyRollbackEvent(rollbackOccupancyCommand.getVehicleOccupancyId(), rollbackOccupancyCommand.getVehicleId(), rollbackOccupancyCommand.getTypeOfCommand()));
     }
 }
