@@ -2,13 +2,10 @@ package vehicle.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
-import saga.dto.BrandDTO;
 import saga.dto.VehicleDTO;
-import vehicle.dto.FullVehicleDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Brand;
 import vehicle.model.Vehicle;
 
 import javax.servlet.http.HttpServletRequest;
