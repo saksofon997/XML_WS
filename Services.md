@@ -240,6 +240,7 @@ Microservice that handles vehicles, their occupancy, vehicle attributes (brand, 
 - **/vehicle/{id}** GET: Get single vehicle
 - **/vehicle/{id}** PUT: Change single vehicle
 - **/vehicle/{id}** DELETE: Delete single vehicle
+- **/owner/{id}/vehicle** GET: Get owners vehicles
 
 - **/vehicle/{id}/occupancy** GET: Get vehicle occupancy
 - **/vehicle/{id}/occupancy** POST: Add vehicle occupancy (Owner manualy or after rental PAID(SAGA or Gateway))
