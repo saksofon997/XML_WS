@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { FuelService } from './../services/fuel.service';
 import { LocationService } from './location.service';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, ViewEncapsulation } from '@angular/core';
@@ -208,5 +209,10 @@ export class RentalsComponent implements OnInit {
   modelSelectionChanged(selectedModels) {
     console.log(selectedModels.value);
     this.searchParamsObjects.models = selectedModels.value;
+  }
+  moveAdvancedSearch(destination: string){
+    console.log("Pokusaj prependa");
+    var dom = window.document;
+    dom.getElementById(destination).prepend(document.getElementById("tempAdvancedSearch"));
   }
 }
