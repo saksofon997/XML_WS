@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { BundleDialogBoxComponent } from './bundle-dialog-box/bundle-dialog-box.component';
 import { CookieService } from 'ngx-cookie-service';
 import { Bundle } from '../models/Bundle.model';
+import { ShoppingCart } from '../models/ShoppingCart.model';
+import { RentalService } from '../services/rental.service';
 
 // class Bundle {
 //   name: string;
@@ -27,34 +29,21 @@ export class ShoppingCartComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   constructor(public dialog: MatDialog,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private rentalService: RentalService) {
 
     if (this.cookieService.get('shopping-cart')) {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
       this.rentals = cart.rentals;
-    }
+      this.bundles = cart.bundles;
+    } else {
+      let cart = new ShoppingCart();
+      cart.rentals = this.rentals;
+      cart.bundles = this.bundles;
+      this.cookieService.set('shopping-cart', JSON.stringify(cart));
+    } 
 
-    //var review = new Review(4, null, { id: null, name: "" },
-    //  { id: null, name: "" },
-    //  "");
-    //this.rentals.push(new Rental(1, new Car(["https://article.images.consumerreports.org/f_auto/prod/content/dam/CRO%20Images%202018/Cars/November/CR-Cars-InlineHero-2019-Honda-Insight-driving-trees-11-18"],
-    //  "Jaguar", "I dont know", "Diesel", "Automatic", "A", 2, "Unlimited", 1000, 2, review, 1), new Date(1588712400000), new Date(1588782400000)));
-    //this.rentals.push(new Rental(2, new Car(["https://www.testoviautomobila.rs/wp-content/uploads/2015/05/fica-prelepa-slika-840x420.jpg"],
-    //  "Zastava", "500", "Gasoline", "Manual", "A", 15, "Unlimited", 5000, 5, review, 2), new Date(1588712400000), new Date(1588782400000)));
-
-    // var bundle = new Bundle();
-    // bundle.name = "First bundle";
-    // bundle.rentals = new Array<Rental>();
-    // bundle.rentals.push(this.rentals[0]);
-    // this.bundles.push(bundle);
-    // console.log(this.bundles);
-
-    // var bundle = new Bundle();
-    // bundle.name = "Second bundle";
-    // bundle.rentals = new Array<Rental>();
-    // bundle.rentals.push(this.rentals[1]);
-    // this.bundles.push(bundle);
-    // console.log(this.bundles);
+    //this.cookieService.delete('shopping-cart');
   }
 
   ngOnInit() {
@@ -77,11 +66,30 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   createBundle(data) {
-    let bundle = new Bundle();
-    bundle.name = data.name;
-    bundle.rentals = new Array<RentalFront>();
-    //bundle.rentals = new Array<Rental>();
-    this.bundles.push(bundle);
+    if (this.cookieService.get('shopping-cart')) {
+      let cart = JSON.parse(this.cookieService.get('shopping-cart'));
+
+      if (!cart.bundles.some(e => e.name === data.name)) {
+        let bundle = new Bundle();
+        bundle.name = data.name;
+        bundle.rentals = new Array<RentalFront>();
+        cart.bundles.push(bundle);
+        this.bundles.push(bundle);
+      }
+      this.cookieService.set('shopping-cart', JSON.stringify(cart));
+    } else {
+      let cart = new ShoppingCart();
+      cart.rentals = new Array();
+      cart.bundles = new Array();
+
+      let bundle = new Bundle();
+      bundle.name = data.name;
+      bundle.rentals = new Array<RentalFront>();
+      cart.bundles.push(bundle);
+      this.bundles.push(bundle);
+
+      this.cookieService.set('shopping-cart', JSON.stringify(cart));
+    }
   }
 
   deleteBundle(data) {
@@ -96,6 +104,10 @@ export class ShoppingCartComponent implements OnInit {
     this.bundles = this.bundles.filter((value, key) => {
       return value.name !== data.name;
     });
+    let cart = JSON.parse(this.cookieService.get('shopping-cart'));
+    cart.bundles = this.bundles;
+    this.cookieService.set('shopping-cart', JSON.stringify(cart));
+
   }
 
   removeFromBundle(bundle, rental) {
@@ -107,6 +119,42 @@ export class ShoppingCartComponent implements OnInit {
       bundle.owner = null;
     }
     rental.bundle = null;
+  }
+
+  checkout(){
+    let rentals = new Array<RentalBack>();
+
+    var i;
+    for (i = 0; i < this.rentals.length; i++) {
+      let rental = new RentalBack();
+      let rentalFront = this.rentals[i];
+
+      rental.startTime = rentalFront.from;
+      rental.endTime = rentalFront.to;
+      rental.customerId = 1; // TODO: user service
+      rental.vehicleId = rentalFront.car.id;
+      rental.ownerId = 1; // TODO: rentalFront.car.ownerId
+      let bundle = new Bundle();
+      bundle.name = rentalFront.bundle?.name;
+      if (rentalFront.bundle){
+        rental.bundle = bundle;
+      }
+
+      rentals.push(rental);
+    }
+
+    this.rentalService.checkout(rentals).subscribe(
+      (data: any) => {
+        alert("Checkout successfull");
+        this.bundles = new Array();
+        this.rentals = new Array();
+        this.cookieService.delete('shopping-cart');
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+
   }
 
 }

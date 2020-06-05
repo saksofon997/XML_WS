@@ -1,6 +1,6 @@
 <div class="row m-3 shadow-sm  m-1 bg-white rounded">
-  <div class="row">
-    <app-car-teaser-car-info [car]=rental.car></app-car-teaser-car-info>
+  <div class="row" style="width: 100%;">
+    <app-car-teaser-car-info style="width: 100%;" [car]=rental.car></app-car-teaser-car-info>
   </div>
   <div class="row" style="width: 100%;">
     <div class="col-sm-6">
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div *ngIf="rental.bundle !== null">
-            Bundle: <b>{{rental.bundle}}</b>
+            Bundle: <b>{{rental.bundle.name}}</b>
           </div>
 
         </div>

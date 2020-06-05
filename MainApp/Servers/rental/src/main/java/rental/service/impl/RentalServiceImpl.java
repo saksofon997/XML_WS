@@ -47,11 +47,15 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalDTO add(RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError {
         Rental newRental = convertToModel(rentalDTO);
-        Optional<Bundle> bundle = bundleRepository.findById(rentalDTO.getBundle().getId());
-        if (!bundle.isPresent()) {
-            throw new EntityNotFound("Bundle is not found");
+
+        if (rentalDTO.getBundle() != null) {
+            Optional<Bundle> bundle = bundleRepository.findById(rentalDTO.getBundle().getId());
+            if (!bundle.isPresent()) {
+                throw new EntityNotFound("Bundle is not found");
+            }
+            newRental.setBundle(bundle.get());
         }
-        newRental.setBundle(bundle.get());
+
         newRental.setStatus(RentalStatus.PENDING);
         rentalRepository.save(newRental);
 

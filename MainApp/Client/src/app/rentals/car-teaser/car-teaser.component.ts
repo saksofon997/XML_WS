@@ -15,10 +15,8 @@ export class CarTeaserComponent implements OnInit {
 @Input() from: number;
 @Input() to: number;
 API_URL = environment.API_URL;
-inCart = false;
 
   constructor(private cookieService: CookieService) { 
-    
   }
 
   ngOnInit() {
@@ -26,6 +24,18 @@ inCart = false;
 
   checkMileage(mileage){
     return mileage != -1 ? mileage : "Unlimited";
+  }
+
+  inCart() {
+    if (this.cookieService.get('shopping-cart')) {
+      let cart = JSON.parse(this.cookieService.get('shopping-cart'));
+      if (cart.rentals){
+        return cart.rentals.some(e => e.car.id === this.car.id);
+      } else {
+        return false;
+      }
+    }
+    return false;
   }
 
   addToCart($event){
@@ -42,25 +52,24 @@ inCart = false;
     if (this.cookieService.get('shopping-cart')) {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
 
-      if (!cart.rentals.some(e => e.car === this.car)) {
+      if (!cart.rentals.some(e => e.car.id === this.car.id)) {
         let rental = new RentalFront();
         rental.car = this.car;
         rental.from = this.from;
         rental.to = this.to;
         cart.rentals.push(rental);
-        this.inCart = true;
       }
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     } else {
       let cart = new ShoppingCart();
       cart.rentals = new Array();
+      cart.bundles = new Array();
 
       let rental = new RentalFront();
       rental.car = this.car;
       rental.from = this.from;
       rental.to = this.to;
       cart.rentals.push(rental);
-      this.inCart = true;
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     }
     //this.cookieService.delete('shopping-cart');
