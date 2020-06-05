@@ -50,6 +50,7 @@ public class SearchServiceImpl implements SearchService {
         pageDTO.setTotalPages(pagedResult.getTotalPages());
         for (Vehicle vehicle: pagedResult.getContent()){
             pageDTO.getContent().add(convertToDTO(vehicle));
+            System.out.println(vehicle.getImages());
         }
 
         return pageDTO;
@@ -80,7 +81,8 @@ public class SearchServiceImpl implements SearchService {
             vehicleDTO.setCdw(vehicle.getCdw());
             vehicleDTO.setNumberOfStars(vehicle.getNumberOfStars());
             vehicleDTO.setNumberOfReviews(vehicle.getNumberOfReviews());
-
+            vehicleDTO.setImages(vehicle.getImages());
+            vehicleDTO.setOwnerId(vehicle.getOwnerId());
             return vehicleDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");

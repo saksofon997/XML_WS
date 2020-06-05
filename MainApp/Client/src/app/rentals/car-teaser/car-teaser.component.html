@@ -1,9 +1,9 @@
 <div class="row m-2 shadow-sm  m-1 bg-white rounded">
   <div class="col-md-4 col-left">
-    <div *ngIf="car.images">
-      <img class="car-Image shadow-sm bg-white rounded" src="{{car.images[0]}}">
+    <div *ngIf="car.images[0]">
+      <img class="car-Image shadow-sm bg-white rounded" src="{{API_URL+'/vehicle/image/'+car.images[0]}}"/>
     </div>
-    <div *ngIf="!car.images" >
+    <div *ngIf="!car.images[0]" >
       <p style=" text-align: center; line-height: 150px; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
       unselectable="on"
       onselectstart="return false;" 

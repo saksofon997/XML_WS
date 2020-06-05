@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -60,8 +61,13 @@ public class Vehicle {
     @Column(name = "location_latitude")
     private double locationLatitude;
 
-    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<VehicleOccupancy> occupancies;
+    @Column(name = "ownerId")
+    private Long ownerId;
+
+    @ElementCollection
+    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "images")
+    List<String> images;
 
     @Column(name = "deleted")
     private boolean deleted = false;
@@ -81,7 +87,11 @@ public class Vehicle {
                    long cdw,
                    Pricelist pricelist,
                    int numberOfStars,
-                   int numberOfReviews) {
+                   int numberOfReviews,
+                   List<String> images,
+                   double locationLongitude,
+                   double locationLatitude,
+                   Long owner_id) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -95,6 +105,10 @@ public class Vehicle {
         this.pricelist = pricelist;
         this.numberOfStars = numberOfStars;
         this.numberOfReviews = numberOfReviews;
+        this.locationLatitude = locationLatitude;
+        this.locationLongitude = locationLongitude;
+        this.images = images;
+        this.ownerId = owner_id;
     }
 
     public Long getId() {
@@ -207,5 +221,37 @@ public class Vehicle {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public double getLocationLongitude() {
+        return locationLongitude;
+    }
+
+    public void setLocationLongitude(double locationLongitude) {
+        this.locationLongitude = locationLongitude;
+    }
+
+    public double getLocationLatitude() {
+        return locationLatitude;
+    }
+
+    public void setLocationLatitude(double locationLatitude) {
+        this.locationLatitude = locationLatitude;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }
