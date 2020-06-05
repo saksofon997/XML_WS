@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { VehicleDialogBoxComponent } from './vehicle-dialog-box/vehicle-dialog-box.component';
 import { VehicleListingComponent } from './vehicle-listing/vehicle-listing.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -39,7 +40,8 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     MatSelectModule,
     MatIconModule,
     VehicleAdministrationRoutingModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    SharedModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
