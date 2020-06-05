@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import saga.commands.MainBrandCommand;
 import saga.commands.TypeOfCommand;
 import saga.dto.BrandDTO;
@@ -46,7 +47,13 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandDTO convertToDTO(Brand brand) throws ConversionFailedError {
         try {
-            return mapper.map(brand, BrandDTO.class);
+            BrandDTO brandDTO = mapper.map(brand, BrandDTO.class);
+            brandDTO.setModels(new ArrayList<ModelDTO>());
+            for (Model model: brand.getModels()){
+                model.setBrand(null);
+                brandDTO.getModels().add(modelService.convertToDTO(model));
+            }
+            return brandDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
         }
@@ -72,11 +79,10 @@ public class BrandServiceImpl implements BrandService {
             String brandAggregateId = UUID.randomUUID().toString();
             System.out.println(savedBrand.getId());
             commandGateway.send(new MainBrandCommand(savedBrand.getId(),brandDTO, TypeOfCommand.CREATE));
+            return convertToDTO(savedBrand);
         } else {
             throw new DuplicateEntity("Brand with name: "+brandDTO.getName()+" already exists");
         }
-
-        return brandDTO;
     }
 
     @Override
@@ -92,7 +98,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public BrandPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError {
+    public BrandPageDTO getAllPageable(Integer pageNo, String sortKey) throws ConversionFailedError {
         Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
         Page<Brand> pagedResult = brandRepo.findAll(page);
 
@@ -106,6 +112,17 @@ public class BrandServiceImpl implements BrandService {
         return pageDTO;
     }
 
+
+    @Override
+    public List<BrandDTO> getAll() throws ConversionFailedError {
+        List<Brand> brands = brandRepo.findAll();
+        List<BrandDTO> brandDTOS = new ArrayList<>();
+        for (Brand brand: brands){
+            brandDTOS.add(convertToDTO(brand));
+        }
+        return brandDTOS;
+    }
+
     @Override
     public BrandDTO update(Long id, BrandDTO brandDTO) throws EntityNotFound, ConversionFailedError {
 
@@ -116,13 +133,13 @@ public class BrandServiceImpl implements BrandService {
 
         change.get().setName(brandDTO.getName());
 
-        List<Model> newModels = new ArrayList<>();
+//        List<Model> newModels = new ArrayList<>();
 
-        for(ModelDTO m : brandDTO.getModels()) {
-            newModels.add(modelService.convertToModel(m));
-        }
+//        for(ModelDTO m : brandDTO.getModels()) {
+//            newModels.add(modelService.convertToModel(m));
+//        }
 
-        change.get().setModels(newModels);
+//        change.get().setModels(newModels);
         brandDTO.setId(change.get().getId());
         Brand savedBrand = brandRepo.save(change.get());
         commandGateway.send(new MainBrandCommand(savedBrand.getId(), brandDTO, TypeOfCommand.UPDATE));
@@ -131,7 +148,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public BrandDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+    @Transactional
+    public void delete(Long id) throws EntityNotFound, ConversionFailedError {
 
         Optional<Brand> deleted = brandRepo.findById(id);
 
@@ -140,9 +158,7 @@ public class BrandServiceImpl implements BrandService {
         } else {
             brandRepo.deleteById(id);
             commandGateway.send(new MainBrandCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
-
         }
-        return convertToDTO(deleted.get());
     }
 
     @Override

@@ -1,20 +1,20 @@
 <div class="row m-3 shadow-sm  m-1 bg-white rounded">
   <div class="col-md-4 col-left">
-    <img class="car-Image shadow-sm bg-white rounded" src="{{car.src}}">
+    <img class="car-Image shadow-sm bg-white rounded" src="{{car.images[0]}}">
   </div>
   <div class="col-md-6 col-left d-flex justify-content-sm-start justify-content-center mt-3 align-items-center">
     <ul class="vehicle-info mt-1">
       <li>
-        <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon> {{car.brand}} {{car.model}}
+        <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon> {{car.brand.name}} {{car.model.name}}
       </li>
       <li>
-        <mat-icon matTooltip="Fuel type" [matTooltipPosition]="'below'"> local_gas_station</mat-icon> {{car.fuel}}
+        <mat-icon matTooltip="Fuel type" [matTooltipPosition]="'below'"> local_gas_station</mat-icon> {{car.fuel.name}}
       </li>
       <li>
-        <mat-icon matTooltip="Transmission type" [matTooltipPosition]="'below'">open_with</mat-icon> {{car.transmission}}
+        <mat-icon matTooltip="Transmission type" [matTooltipPosition]="'below'">open_with</mat-icon> {{car.transmission.name}}
       </li>
       <li>
-        <mat-icon matTooltip="Vehicle category" [matTooltipPosition]="'below'">commute</mat-icon> {{car.carClass}}
+        <mat-icon matTooltip="Vehicle category" [matTooltipPosition]="'below'">commute</mat-icon> {{car.category.name}}
       </li>
       <li>
         <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
@@ -26,7 +26,7 @@
   </div>
   <div class="col-sm-4 col-md-2 col-left">
     <div class="row mt-3 d-flex justify-content-center align-self-center">
-      <ngb-rating [(rate)]="car.review.stars" readonly=true max=5>
+      <ngb-rating [(rate)]="car.numberOfStars / car.numberOfReviews" readonly=true max=5>
         <ng-template let-fill="fill" let-index="index">
           <span class="star" [class.filled]="fill === 100">&#9733;</span>
         </ng-template>
@@ -38,7 +38,7 @@
         <img class="comment-icon mt-3" src="assets/images/comment.png" alt="">
       </div>
       <div class="col-sm-4 col-md-3 d-flex justify-content-center align-self-center">
-        <span class="badge mt-3">{{car.commentNo}}</span>
+        <!-- <span class="badge mt-3">{{car.commentNo}}</span> -->
       </div>
     </div>
   </div>

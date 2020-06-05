@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import saga.dto.FuelDTO;
 import saga.dto.ModelDTO;
+import vehicle.dto.FuelPageDTO;
 import vehicle.dto.ModelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "brand")
+@CrossOrigin(origins = "*")
 public class ModelController {
 
     @Autowired
@@ -24,17 +27,22 @@ public class ModelController {
 
     @GetMapping(path = "/{brandId}/model",
                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ModelPageDTO> getAll(@PathVariable Long brandId,
-                                               @RequestParam(value = "page", required = false) Integer pageNo,
-                                               @RequestParam(value = "sort", required = false) String sort)
+    public ResponseEntity<?> getAll(@PathVariable Long brandId,
+                                               @RequestHeader(value = "page", required = false) Integer pageNo,
+                                               @RequestHeader(value = "sort", required = false) String sort,
+                                               @RequestHeader(value = "pageable", required = false) Boolean pageable)
             throws ConversionFailedError, EntityNotFound {
 
         sort = (sort != null) ? sort: "id";
         pageNo = (pageNo != null) ? pageNo: 0;
 
-        ModelPageDTO models = modelService.getAll(brandId, pageNo, sort);
-
-        return new ResponseEntity<>(models, HttpStatus.ACCEPTED);
+        if (pageable){
+            ModelPageDTO models = modelService.getAllPageable(brandId, pageNo, sort);
+            return new ResponseEntity<>(models, HttpStatus.OK);
+        } else {
+            List<ModelDTO> allModels = modelService.getAll(brandId);
+            return new ResponseEntity<>(allModels, HttpStatus.OK);
+        }
     }
 
     @PostMapping(path = "/{brandId}/model",
@@ -75,8 +83,8 @@ public class ModelController {
     public ResponseEntity<ModelDTO> delete(@PathVariable Long brandId,
                                            @PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
-        ModelDTO deleted = modelService.delete(brandId, id);
+        modelService.delete(brandId, id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

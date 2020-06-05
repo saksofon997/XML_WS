@@ -156,95 +156,94 @@
         </div>
       </div>
       <div class="col-md-2 ml-2 float-right btn-wrapper">
-        <a class="btn btn-sm btn-outline-danger search-button" href="#">Search</a>
+        <a class="btn btn-sm btn-outline-danger search-button" (click)="getCars(pageNo)">Search</a>
       </div>
     </div>
   </form>
 
 </div>
+<div id="tempAdvancedSearch1">
+  <div class="col-md-3 shadow  mt-2 mb-3 rounded" style="height: 100%; padding: 0;" id="tempAdvancedSearch">
+    <mat-accordion [displayMode]="'flat'" style="margin: 0; padding: 0;">
+      <mat-expansion-panel style="margin: 0; padding: 0;" (opened)="moveAdvancedSearch('advancedSearchAndResults')" (closed)="moveAdvancedSearch('tempAdvancedSearch1')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Advanced search
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <div class="row m-3 ">
+          <hr data-content="FILTERS" class="hr-text">
+        </div> -->
+        <hr class="mb-3">
+        <hr data-content="BRAND" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-select placeholder="Brands" multiple (selectionChange)="brandSelectionChanged($event)"
+            style="padding-top: 0.5em; padding-left: 1em;">
+            <mat-option *ngFor="let brand of brands" [value]="brand">{{brand.name}}</mat-option>
+          </mat-select>
+        </div>
+        <hr data-content="MODEL" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-select placeholder="Models" multiple (selectionChange)="modelSelectionChanged($event)"
+            style="padding-top: 0.5em; padding-left: 1em;">
+            <mat-option *ngFor="let model of models" [value]="model">{{model.name}}</mat-option>
+          </mat-select>
+        </div>
+
+        <hr data-content="CATEGORY" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-list>
+            <mat-list-item *ngFor="let category of categories">
+              <mat-checkbox (change)="addSearchParamsCategory($event, category)">{{category.name}} </mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <hr data-content="FUEL" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-list>
+            <mat-list-item *ngFor="let fuel of fuels">
+              <mat-checkbox (change)="addSearchParamsFuels($event, fuel)">{{fuel.name}}</mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <hr data-content="TRANSMISSION" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-list>
+            <mat-list-item *ngFor="let tranType of transmissions">
+              <mat-checkbox (change)="addSearchParamsTransmissions($event, tranType)">{{tranType.name}}</mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <hr>
+        <div class="row m-3 filter-Button">
+          <a class="btn btn-outline-danger filter-Button btn-block" (click)="getCars(pageNo)">Advanced search</a>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
 
 <div class="container mt-3 ">
-  <div class="row">
-    <div class="col-md-3 shadow  mt-2 rounded" style="height: 100%;">
-      <div class="row m-3 ">
-        <hr data-content="FILTERS" class="hr-text">
+  <div class="row" style="justify-content: center;" id="advancedSearchAndResults">
 
-      </div>
-      <hr>
-      <hr data-content="CATEGORY" class="hr-text mt-3">
-      <div class="row m-3 shadow-sm filters-container rounded">
-
-        <mat-list>
-          <!--
-            <mat-list-item ngFor="let cat of categories">
-              <mat-checkbox >{{cat}}</mat-checkbox>
-            </mat-list-item>
-          -->
-          <mat-list-item>
-            <mat-checkbox>SUV </mat-checkbox>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-checkbox>Hatchback </mat-checkbox>
-          </mat-list-item>
-        </mat-list>
-      </div>
-
-      <hr data-content="FUEL" class="hr-text mt-3">
-      <div class="row m-3 shadow-sm filters-container rounded">
-        <mat-list>
-          <!--
-            <mat-list-item ngFor="let fuel of fuelTypes">
-              <mat-checkbox >{{fuel}}</mat-checkbox>
-            </mat-list-item>
-        -->
-          <mat-list-item>
-            <mat-checkbox>Gasoline </mat-checkbox>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-checkbox>Diesel </mat-checkbox>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-checkbox>Natural gas </mat-checkbox>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <hr data-content="TRANSMISSION" class="hr-text mt-3">
-      <div class="row m-3 shadow-sm filters-container rounded">
-        <mat-list>
-          <!--
-            <mat-list-item ngFor="let tranType of transmitionTypes">
-              <mat-checkbox >{{tranType}}</mat-checkbox>
-            </mat-list-item>
-        -->
-          <mat-list-item>
-            <mat-checkbox>Automatic </mat-checkbox>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-checkbox>Manual </mat-checkbox>
-          </mat-list-item>
-        </mat-list>
-      </div>
-      <hr>
-      <div class="row m-3 filter-Button">
-        <a class="btn btn-outline-danger filter-Button btn-block">Filter</a>
-      </div>
-
-    </div>
-    <div class="col-md-9 " style="height: 100%;">
+    <div class="col-md-9" style="height: 100%;" >
       <!--
           List of cars
       -->
-      <app-car-teaser *ngFor="let car of cars" [car]=car>
-        {{car.src}}
-      </app-car-teaser>
+      <div class="teaser" style="padding: 0.01em;" *ngFor="let car of cars" (click)="showVehicle(car)">
+        <app-car-teaser [car]=car>
+        </app-car-teaser>
+      </div>
+
 
       <div class="row m-3 shadow-sm  m-1 bg-white rounded">
       </div>
 
-      List of vehicles...
       <hr class="dashed">
-      <div class="row m-3 m-1 filter-Button">
-        <a class="btn btn-sm btn-outline-danger filter-Button">Load more</a>
+      <div class="row m-3 m-1 filter-Button" *ngIf="totalPages > pageNo+1">
+        <a class="btn btn-sm btn-outline-danger filter-Button-button" (click)="loadMore(pageNo + 1)">Load more</a>
       </div>
     </div>
   </div>

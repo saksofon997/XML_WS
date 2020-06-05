@@ -13,6 +13,7 @@ import vehicle.dto.TokenDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.exceptions.OperationNotAllowed;
 import vehicle.service.VehicleService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,32 +24,32 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "vehicle")
+@RequestMapping(value = "")
 public class VehicleController {
 
     @Autowired
     VehicleService vehicleService;
-    @Autowired
-    private HttpServletRequest request;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<VehicleDTO>> getAll() {
-
+    @GetMapping(path = "/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<VehicleDTO>> getAll(HttpServletRequest request) {
+        Long isAgent = (Long)request.getAttribute("userId");
+        System.out.println("User ID: ");
+        System.out.println(isAgent);
         List<VehicleDTO> vehicles = vehicleService.getAll();
 
         return new ResponseEntity<>(vehicles, HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "",
+    @PostMapping(path = "/vehicle",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VehicleDTO> createNew(@RequestPart("images") MultipartFile[] images, @RequestPart("vehicle") VehicleDTO vehicleDTO) throws DuplicateEntity, ConversionFailedError {
+    public ResponseEntity<VehicleDTO> createNew(@RequestPart("images") MultipartFile[] images, @RequestPart("vehicle") VehicleDTO vehicleDTO, HttpServletRequest request) throws DuplicateEntity, ConversionFailedError, OperationNotAllowed {
 
-        VehicleDTO added = vehicleService.add(vehicleDTO, images, request);
+        VehicleDTO added = vehicleService.add(vehicleDTO, images, request, false);
         return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/{id}",
+    @GetMapping(path = "/vehicle/{id}",
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
@@ -57,7 +58,16 @@ public class VehicleController {
         return new ResponseEntity<>(vehicleDTO, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/{id}",
+    @GetMapping(path = "/owner/{id}/vehicle",
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<VehicleDTO>> getOwnersVehicles(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
+
+        List<VehicleDTO> vehicleDTOS = vehicleService.getOwnersVehicles(id);
+
+        return new ResponseEntity<>(vehicleDTOS, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/vehicle/{id}",
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> update(@PathVariable Long id,
@@ -68,7 +78,7 @@ public class VehicleController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/{id}",
+    @DeleteMapping(path = "/vehicle/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
@@ -77,7 +87,7 @@ public class VehicleController {
         return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "image/{path}", method = RequestMethod.GET)
+    @RequestMapping(value = "/vehicle/image/{path}", method = RequestMethod.GET)
     public void getImageAsByteArray(@PathVariable String path, HttpServletResponse response, HttpServletRequest request) throws IOException {
         Resource image = null;
         try {

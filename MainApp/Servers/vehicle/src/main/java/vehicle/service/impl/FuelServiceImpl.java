@@ -8,15 +8,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
 import saga.commands.vehiclePartsCommands.MainCategoryCommand;
 import saga.commands.vehiclePartsCommands.MainFuelCommand;
+import saga.dto.BrandDTO;
 import saga.dto.CategoryDTO;
 import saga.dto.FuelDTO;
 import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.model.Brand;
 import vehicle.model.Category;
 import vehicle.model.Fuel;
 import vehicle.repository.FuelRepo;
@@ -57,7 +60,7 @@ public class FuelServiceImpl implements FuelService {
 
 
     @Override
-    public FuelPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError {
+    public FuelPageDTO getAllPageable(Integer pageNo, String sortKey) throws ConversionFailedError {
         Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
         Page<Fuel> pagedResult = fuelRepo.findAll(page);
 
@@ -72,6 +75,16 @@ public class FuelServiceImpl implements FuelService {
     }
 
     @Override
+    public List<FuelDTO> getAll() throws ConversionFailedError {
+        List<Fuel> fuels = fuelRepo.findAll();
+        List<FuelDTO> fuelDTOS = new ArrayList<>();
+        for (Fuel fuel: fuels){
+            fuelDTOS.add(convertToDTO(fuel));
+        }
+        return fuelDTOS;
+    }
+
+    @Override
     public FuelDTO add(FuelDTO fuelDTO) throws ConversionFailedError, DuplicateEntity {
 
         Fuel newFuel = convertToModel(fuelDTO);
@@ -79,11 +92,10 @@ public class FuelServiceImpl implements FuelService {
         if (!fuelRepo.existsByName(fuelDTO.getName())) {
             Fuel savedFuel = fuelRepo.save(newFuel);
             commandGateway.send(new MainFuelCommand(savedFuel.getId(), fuelDTO, TypeOfCommand.CREATE));
-
+            return convertToDTO(savedFuel);
         } else {
             throw new DuplicateEntity("Fuel with name: " + fuelDTO.getName() + " already exists");
         }
-        return fuelDTO;
     }
 
     @Override
@@ -115,7 +127,8 @@ public class FuelServiceImpl implements FuelService {
     }
 
     @Override
-    public FuelDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+    @Transactional
+    public void delete(Long id) throws EntityNotFound, ConversionFailedError {
 
         Optional<Fuel> deleted = fuelRepo.findById(id);
 
@@ -124,8 +137,6 @@ public class FuelServiceImpl implements FuelService {
         }else {
             fuelRepo.deleteById(id);
             commandGateway.send(new MainFuelCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
-
         }
-        return convertToDTO(deleted.get());
     }
 }

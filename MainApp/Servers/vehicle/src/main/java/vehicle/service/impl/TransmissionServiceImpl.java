@@ -4,6 +4,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
 import saga.commands.vehiclePartsCommands.MainFuelCommand;
 import saga.commands.vehiclePartsCommands.MainTransmissionCommand;
@@ -119,7 +120,8 @@ public class TransmissionServiceImpl implements TransmissionService {
     }
 
     @Override
-    public TransmissionDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+    @Transactional
+    public void delete(Long id) throws EntityNotFound, ConversionFailedError {
 
         Optional<Transmission> deleted = transmissionRepo.findById(id);
 
@@ -130,8 +132,6 @@ public class TransmissionServiceImpl implements TransmissionService {
             transmissionRepo.save(deleted.get());
             //transmissionRepo.deleteById(id);
             commandGateway.send(new MainTransmissionCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
-
         }
-        return convertToDTO(deleted.get());
     }
 }

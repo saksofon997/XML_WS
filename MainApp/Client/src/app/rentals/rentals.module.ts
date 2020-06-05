@@ -18,6 +18,7 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     VehiclePageModule,
     NgbRatingModule,
-    SharedModule
+    SharedModule,
+    MatExpansionModule
   ],
   declarations: [RentalsComponent,
     CarTeaserComponent

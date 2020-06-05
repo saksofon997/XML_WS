@@ -17,20 +17,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "brand")
+@CrossOrigin(origins = "*")
 public class BrandController {
 
     @Autowired
     BrandService brandService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BrandPageDTO> getAll(
-            @RequestParam(value = "page", required = false) Integer pageNo,
-            @RequestParam(value = "sort", required = false) String sort) throws ConversionFailedError, EntityNotFound {
+    public ResponseEntity<?> getAll(
+            @RequestHeader(value = "page", required = false) Integer pageNo,
+            @RequestHeader(value = "sort", required = false) String sort,
+            @RequestHeader(value = "pageable", required = false) Boolean pageable) throws ConversionFailedError, EntityNotFound {
 
         sort = (sort != null) ? sort: "id";
         pageNo = (pageNo != null) ? pageNo: 0;
-        BrandPageDTO page = brandService.getAll(pageNo, sort);
-        return new ResponseEntity<>(page, HttpStatus.ACCEPTED);
+        if (pageable){
+            BrandPageDTO page = brandService.getAllPageable(pageNo, sort);
+            return new ResponseEntity<>(page, HttpStatus.OK);
+        } else {
+            List<BrandDTO> allBrands = brandService.getAll();
+            return new ResponseEntity<>(allBrands, HttpStatus.OK);
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -66,8 +73,8 @@ public class BrandController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BrandDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
-        BrandDTO deleted = brandService.delete(id);
+        brandService.delete(id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

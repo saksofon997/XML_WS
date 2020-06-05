@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Model } from 'src/app/models/Model';
+import { Model } from 'src/app/models/Model.model';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';

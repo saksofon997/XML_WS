@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface ModelService {
 
-    ModelPageDTO getAll(Long brandId, Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
+    ModelPageDTO getAllPageable(Long brandId, Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
+
+    List<ModelDTO> getAll(Long brandId) throws EntityNotFound, ConversionFailedError;
 
     ModelDTO add(Long brandId, ModelDTO modelDTO) throws ConversionFailedError, DuplicateEntity, EntityNotFound;
 
@@ -19,7 +21,7 @@ public interface ModelService {
 
     ModelDTO update(Long brandId, Long id, ModelDTO modelDTO) throws EntityNotFound, ConversionFailedError;
 
-    ModelDTO delete(Long brandId, Long id) throws EntityNotFound, ConversionFailedError;
+    void delete(Long brandId, Long id) throws EntityNotFound, ConversionFailedError;
 
     Model convertToModel(ModelDTO m) throws ConversionFailedError;
 

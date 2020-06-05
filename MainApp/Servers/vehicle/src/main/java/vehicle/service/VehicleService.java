@@ -7,6 +7,7 @@ import vehicle.dto.TokenDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.exceptions.OperationNotAllowed;
 import vehicle.model.Vehicle;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,9 @@ public interface VehicleService {
 
     List<VehicleDTO> getAll();
 
-    VehicleDTO add(VehicleDTO vehicleDTO, MultipartFile[] images, HttpServletRequest request) throws ConversionFailedError, DuplicateEntity;
+    List<VehicleDTO> getOwnersVehicles(Long id) throws ConversionFailedError;
+
+    VehicleDTO add(VehicleDTO vehicleDTO, MultipartFile[] images, HttpServletRequest request, Boolean isAgent) throws ConversionFailedError, DuplicateEntity, OperationNotAllowed;
 
     VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
