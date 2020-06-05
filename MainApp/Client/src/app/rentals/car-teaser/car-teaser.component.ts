@@ -1,6 +1,7 @@
 import { ReviewComponent } from './../../shared/review/review.component';
 import { Component, OnInit, Input } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
+import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { ShoppingCart } from 'src/app/models/ShoppingCart.model';
 import { RentalFront } from 'src/app/models/Rental.model';
@@ -10,9 +11,10 @@ import { RentalFront } from 'src/app/models/Rental.model';
   styleUrls: ['./car-teaser.component.css']
 })
 export class CarTeaserComponent implements OnInit {
-  @Input() car: Car;
-  @Input() from: number;
-  @Input() to: number;
+@Input() car: Car;
+@Input() from: number;
+@Input() to: number;
+API_URL = environment.API_URL;
 
   constructor(private cookieService: CookieService) { }
 

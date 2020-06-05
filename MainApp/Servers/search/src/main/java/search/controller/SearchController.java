@@ -42,7 +42,7 @@ public class SearchController {
         SearchResultPageDTO vehicles = searchService.doSearch(brand, category, fuel, model,
                                                                 transmission, loc_lat, loc_long,
                                                                 startTime, endTime, pageNo, sort);
-
+        System.out.println(vehicles.getContent().get(0).getImages());
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 }
