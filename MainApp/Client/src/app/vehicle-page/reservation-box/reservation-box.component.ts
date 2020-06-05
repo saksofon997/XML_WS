@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-reservation-box',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reservation-box.component.css']
 })
 export class ReservationBoxComponent implements OnInit {
+@Input() priceAndReservation:any;
 
   constructor() { }
 

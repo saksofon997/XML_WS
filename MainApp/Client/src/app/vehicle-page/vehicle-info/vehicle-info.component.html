@@ -4,7 +4,7 @@
       <p class="feature-name">Brand</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">T</p>
+      <p class="feature">{{vehicle?.brand.name}}</p>
     </div>
     <div class="w-100"></div>
 
@@ -12,7 +12,7 @@
       <p class="feature-name">Model</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">34</p>
+      <p class="feature">{{vehicle?.model.name}}</p>
     </div>
     <div class="w-100"></div>
 
@@ -20,7 +20,7 @@
       <p class="feature-name">Category</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">Medium tank</p>
+      <p class="feature">{{vehicle?.category.name}}</p>
     </div>
     <div class="w-100"></div>
 
@@ -28,7 +28,7 @@
       <p class="feature-name">Fuel type</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">Diesel</p>
+      <p class="feature">{{vehicle?.fuel.name}}</p>
     </div>
     <div class="w-100"></div>
 
@@ -36,7 +36,7 @@
       <p class="feature-name">Transmission type</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">Manual</p>
+      <p class="feature">{{vehicle?.transmission.name}}</p>
     </div>
     <div class="w-100"></div>
 
@@ -44,7 +44,7 @@
       <p class="feature-name">Mileage</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">Moscow - Berlin (1.830 km)</p>
+      <p class="feature">{{checkMileage(vehicle?.mileage)}}</p>
     </div>
     <div class="w-200"></div>
 
@@ -52,7 +52,7 @@
       <p class="feature-name">Seats</p>
     </div>
     <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-      <p class="feature">4</p>
+      <p class="feature">{{vehicle?.seats}}</p>
     </div>
     <div class="w-100"></div>
   </div>

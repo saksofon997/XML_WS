@@ -48,7 +48,11 @@ public class BrandServiceImpl implements BrandService {
     public BrandDTO convertToDTO(Brand brand) throws ConversionFailedError {
         try {
             BrandDTO brandDTO = mapper.map(brand, BrandDTO.class);
-            brandDTO.setModels(null);
+            brandDTO.setModels(new ArrayList<ModelDTO>());
+            for (Model model: brand.getModels()){
+                model.setBrand(null);
+                brandDTO.getModels().add(modelService.convertToDTO(model));
+            }
             return brandDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");

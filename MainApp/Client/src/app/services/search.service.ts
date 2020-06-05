@@ -26,11 +26,11 @@ export class SearchService {
     });
     let searchParamsString = '';
     for (var key in searchParams) {
-      if (searchParams.hasOwnProperty(key)) {
+      if (searchParams.hasOwnProperty(key) && searchParams[key]!=null) {
         searchParamsString += `${key}=${searchParams[key]}&`
       }
     }
-
+    console.log(searchParamsString);
     return this.http.get(`${API_URL}/search?${searchParamsString}`, { headers, observe: 'response' })
       .pipe(
         map(response => {
