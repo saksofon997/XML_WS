@@ -6,6 +6,7 @@ import { BrandService } from '../../services/brand.service';
 import { Brand } from 'src/app/models/Brand.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -24,7 +25,9 @@ export class BrandTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public dialog: MatDialog,
-              private brandService: BrandService) {
+              private brandService: BrandService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
     this.pageNo = 0;
     this.getBrands(this.pageNo);
   }
@@ -69,6 +72,14 @@ export class BrandTableComponent implements AfterViewInit, OnInit {
         this.deleteRowData(result.data);
       }
     });
+  }
+
+  viewModels(brand) {
+    if (this.router.url.indexOf('brands') === -1){
+			this.router.navigate([`/brands/${brand.id}/models`], {  relativeTo: this.activatedRoute });
+		} else {
+			this.router.navigate([`../brands/${brand.id}/models`], {  relativeTo: this.activatedRoute });
+		}
   }
 
   addRowData(brand) {

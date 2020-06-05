@@ -2,18 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box-edit/dialog-box-edit.component';
-
-export interface UsersData {
-  name: string;
-  id: number;
-}
- 
-const ELEMENT_DATA: UsersData[] = [
-  {id: 1560608769632, name: 'Automatic'},
-  {id: 1560608796014, name: 'Manual 4 speed'},
-  {id: 1560608787815, name: 'Manual 5 speed'},
-  {id: 1560608805101, name: 'Manual 6 speed'}
-];
+import { Transmission } from 'src/app/models/Transmission.model';
+import { TransmissionService } from 'src/app/services/transmission.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-transmission-table',
@@ -22,53 +14,96 @@ const ELEMENT_DATA: UsersData[] = [
 })
 export class TransmissionTableComponent implements OnInit {
   displayedColumns: string[] = ['name', 'action'];
-  dataSource = ELEMENT_DATA;
- 
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
- 
-  constructor(public dialog: MatDialog) {}
+  dataSource: Transmission[];
+  pageNo: number;
+  totalPages: number;
+
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(public dialog: MatDialog,
+    private transmissionService: TransmissionService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+    this.pageNo = 0;
+    this.getTransmissions(this.pageNo);
+  }
 
   ngOnInit(): void {
   }
- 
-  openDialog(action,obj) {
+
+  getTransmissions(pageNo: number) {
+    // this.transmissionService.getPageable(pageNo).subscribe(
+    //   (data: any) => {
+    //     this.dataSource = data.content;
+    //     this.pageNo = data.pageNo;
+    //     this.totalPages = data.totalPages;
+    //   },
+    //   (error) => {
+    //     alert(error);
+    //   }
+    // );
+    this.transmissionService.getAll().subscribe(
+      (data: any) => {
+        this.dataSource = data;
+      },
+      (error) => {
+        alert(error);
+      }
+    )
+  }
+
+  openDialog(action, obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '300px',
-      data:obj
+      data: obj
     });
- 
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event == 'Add'){
+      if (result.event == 'Add') {
         this.addRowData(result.data);
-      }else if(result.event == 'Update'){
+      } else if (result.event == 'Update') {
         this.updateRowData(result.data);
-      }else if(result.event == 'Delete'){
+      } else if (result.event == 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
- 
-  addRowData(row_obj){
-    var d = new Date();
-    this.dataSource.push({
-      id:d.getTime(),
-      name:row_obj.name
-    });
-    this.table.renderRows();
-    
-  }
-  updateRowData(row_obj){
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      if(value.id == row_obj.id){
-        value.name = row_obj.name;
+
+  addRowData(transmission) {
+    this.transmissionService.add(transmission).subscribe(
+      (data: Transmission) => {
+        this.getTransmissions(this.pageNo);
+      },
+      (error) => {
+        alert(error);
       }
-      return true;
-    });
+    );
   }
-  deleteRowData(row_obj){
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      return value.id != row_obj.id;
-    });
+  updateRowData(transmission) {
+    this.transmissionService.edit(transmission.id, transmission).subscribe(
+      (data: Transmission) => {
+        this.dataSource = this.dataSource.filter((value, key) => {
+          if (value.id === transmission.id) {
+            value.name = transmission.name;
+          }
+          return true;
+        });
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+  deleteRowData(transmission) {
+    this.transmissionService.delete(transmission.id).subscribe(
+      (data: Transmission) => {
+        this.getTransmissions(this.pageNo);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 }
