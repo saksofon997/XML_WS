@@ -1,16 +1,19 @@
-from amqpstorm import Connection
-from amqpstorm import Message
+import pika
+import sys
+import json
 
-connection = Connection('127.0.0.1', 'guest', 'guest')
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', port='5672'))
 channel = connection.channel()
 
-# Message Properties.
-properties = {
-    'content_type': 'text/plain',
-    'headers': {'key': 'value'}
-}
+channel.queue_declare(queue='location', durable=False)
 
-# Create the message.
-message = Message.create(channel=channel, body='Hello World!', properties=properties)
+message = {"vehicleId": 12345,
+           "message": "neki tekst"}
 
-message.publish(routing_key='location.vehicleId')
+channel.basic_publish(exchange='location-exchange',
+                      routing_key='location.baz',
+                      body=json.dumps(message))
+
+print(f"Message sent: {message}")
+
+connection.close()

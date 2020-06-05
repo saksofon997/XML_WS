@@ -1,15 +1,13 @@
 package location.mq;
 
-import org.springframework.amqp.core.Message;
+import location.model.LocationMessage;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 public class Receiver {
 
-    public void receiveMessage(Message message) {
-        System.out.println("Received <" + Arrays.toString(message.getBody()) + ">");
+    public void receiveMessage(LocationMessage message) {
+        System.out.println("Received <" + message.getMessage() + ">");
     }
 
 }
