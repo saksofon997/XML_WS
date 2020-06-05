@@ -21,6 +21,7 @@ import { SharedModule } from '../shared/shared.module';
 import { VehicleAdministrationComponent } from './vehicle-administration/vehicle-administration.component';
 import { OccupancyViewComponent } from './occupancy-view/occupancy-view.component';
 import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-dialog-box.component';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { OccupancyDialogBoxComponent } from './occupancy-dialog-box/occupancy-di
     MatTableModule,
     MatDialogModule,
     MatFormFieldModule,
-
+    MaterialFileInputModule,
+    
     NgImageSliderModule,
     AngularYandexMapsModule.forRoot("73d3c687-6c0b-4a6a-9d44-865e790fb034"),
 

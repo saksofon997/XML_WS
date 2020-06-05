@@ -37,6 +37,21 @@ export class VehicleService {
       );
   }
 
+  getByOwner(ownerID: number) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'pageable': `true`
+    });
+    return this.http.get(`${API_URL}/owner/${ownerID}/vehicle`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error);
+        })
+      );
+  }
   getOne(vehicleID) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',

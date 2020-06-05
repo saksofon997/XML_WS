@@ -65,6 +65,10 @@ zuul:
       path: /review/**
       stripPrefix: false
       serviceId: vehicle
+    vehicle7:
+      path: /owner/{id}/vehicle
+      stripPrefix: false
+      serviceId: vehicle
 
     # ----- SEARCH -----
     search:
