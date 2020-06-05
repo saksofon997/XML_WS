@@ -12,9 +12,9 @@ import { RentalFront } from 'src/app/models/Rental.model';
 })
 export class CarTeaserComponent implements OnInit {
 @Input() car: Car;
-API_URL = environment.API_URL;
 @Input() from: number;
 @Input() to: number;
+API_URL = environment.API_URL;
 
   constructor(private cookieService: CookieService) { }
 
