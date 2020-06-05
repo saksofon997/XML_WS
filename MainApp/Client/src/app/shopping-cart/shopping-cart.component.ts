@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Car } from '../models/Car.model';
 import { Review } from '../models/Review.model';
-import { Rental } from '../models/Rental.model';
+import { RentalFront } from '../models/Rental.model';
+import { RentalBack } from '../models/Rental.model';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { BundleDialogBoxComponent } from './bundle-dialog-box/bundle-dialog-box.component';
 
 class Bundle {
   name: string;
-  rentals?: Array<Rental>;
+  rentals?: Array<RentalBack>;
   owner: Number;
 }
 
@@ -20,7 +21,7 @@ class Bundle {
 export class ShoppingCartComponent implements OnInit {
 
   bundles = new Array<any>();
-  rentals = new Array<Rental>();
+  rentals = new Array<RentalBack>();
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
@@ -70,7 +71,7 @@ export class ShoppingCartComponent implements OnInit {
   createBundle(data) {
     let bundle = new Bundle();
     bundle.name = data.name;
-    bundle.rentals = new Array<Rental>();
+    bundle.rentals = new Array<RentalBack>();
     this.bundles.push(bundle);
   }
 

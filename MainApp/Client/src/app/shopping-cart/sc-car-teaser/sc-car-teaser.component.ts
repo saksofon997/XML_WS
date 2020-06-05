@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
-import { Rental } from 'src/app/models/Rental.model';
-
+import { RentalFront } from 'src/app/models/Rental.model';
+import { RentalBack } from 'src/app/models/Rental.model';
 @Component({
   selector: 'app-sc-car-teaser',
   templateUrl: './sc-car-teaser.component.html',
@@ -10,7 +10,7 @@ import { Rental } from 'src/app/models/Rental.model';
 export class ScCarTeaserComponent implements OnInit {
 
   @Input() bundles: any;
-  @Input() rental: Rental;
+  @Input() rental: RentalFront;
 
   constructor() { }
 
