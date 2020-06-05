@@ -13,4 +13,12 @@ export class CarTeaserComponent implements OnInit {
   ngOnInit() {
   }
 
+  checkMileage(mileage){
+    return mileage != -1 ? mileage : "Unlimited";
+  }
+
+  addToCart($event){
+    $event.stopPropagation();
+    console.log("Added to cart");
+  }
 }

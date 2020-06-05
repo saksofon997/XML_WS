@@ -1,6 +1,7 @@
+import { FuelService } from './../services/fuel.service';
 import { LocationService } from './location.service';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, ViewEncapsulation } from '@angular/core';
-import {AngularYandexMapsModule} from 'angular8-yandex-maps';
+import { AngularYandexMapsModule } from 'angular8-yandex-maps';
 import { Car } from '../models/Car.model';
 import { Review } from '../models/Review.model';
 import { SearchService } from '../services/search.service';
@@ -11,6 +12,7 @@ import { Fuel } from '../models/Fuel.model';
 import { Transmission } from '../models/Transmission.model';
 import { BrandService } from '../services/brand.service';
 import { CategoryService } from '../services/category.service';
+import { TransmissionService } from '../services/transmission.service';
 
 export class SearchParams {
   loc_lat: number;
@@ -55,9 +57,11 @@ export class RentalsComponent implements OnInit {
   totalPages: number;
 
   constructor(private locationService: LocationService,
-              private searchService: SearchService,
-              private brandService: BrandService,
-              private categoryService: CategoryService) {
+    private searchService: SearchService,
+    private brandService: BrandService,
+    private categoryService: CategoryService,
+    private fuelService: FuelService,
+    private trannsmissionService: TransmissionService) {
 
     this.initializeData();
     this.pageNo = 0;
@@ -73,7 +77,7 @@ export class RentalsComponent implements OnInit {
 
   }
 
-  initializeData(){
+  initializeData() {
     this.searchParamsObjects = new SearchParams();
     this.searchParamsObjects.categories = new Array();
     this.searchParamsObjects.brands = new Array();
@@ -97,46 +101,60 @@ export class RentalsComponent implements OnInit {
         alert(error);
       }
     );
+    this.fuelService.getAll().subscribe(
+      (data: any) => {
+        this.fuels = data;
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+    this.trannsmissionService.getAll().subscribe(
+      (data: any) => {
+        this.transmissions = data;
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
-  searchDataChanged(event){
+  searchDataChanged(event) {
     console.log(event);
-    if (this.searchText == ''){
+    if (this.searchText == '') {
       return;
     }
 
     const promise = new Promise((resolve, reject) => {
-    this.locationService.getPossiblePlaces(this.searchText).subscribe(
-      (data) => {
-        this.response = data;
-        this.response = this.response.response.GeoObjectCollection.featureMember;
-        console.log(this.response); resolve(); },
-      (error) => { alert(error); reject(); }
-    );
+      this.locationService.getPossiblePlaces(this.searchText).subscribe(
+        (data) => {
+          this.response = data;
+          this.response = this.response.response.GeoObjectCollection.featureMember;
+          console.log(this.response); resolve();
+        },
+        (error) => { alert(error); reject(); }
+      );
     });
     return promise;
   }
 
-  selectionChanged(event){
+  selectionChanged(event) {
 
   }
 
   getCars(pageNo: number) {
-    // let searchParams;
-    // searchParams.brand = this.searchParamsObjects.brands.map(x => x.name);
-    // searchParams.category = this.searchParamsObjects.categories.map(x => x.name);
-    // searchParams.fuel = this.searchParamsObjects.fuels.map(x => x.name);
-    // searchParams.model = this.searchParamsObjects.models.map(x => x.name);
-    // searchParams.transmission = this.searchParamsObjects.transmissions.map(x => x.name);
-
     const searchParams = {
       loc_lat: 45.2605774,
       loc_long: 19.8009594,
-      start : 1592838000,
+      start: 1592838000,
       end: 1592838300,
-      brand: 'BMW,Mercedes'
+      brand: this.searchParamsObjects.brands.length > 0 ? this.searchParamsObjects.brands.map(x => x.name) : null,
+      model: this.searchParamsObjects.models.length > 0 ? this.searchParamsObjects.models.map(x => x.name) : null,
+      category: this.searchParamsObjects.categories.length > 0 ? this.searchParamsObjects.categories.map(x => x.name) : null,
+      fuel: this.searchParamsObjects.fuels.length > 0 ? this.searchParamsObjects.fuels.map(x => x.name) : null,
+      transmission: this.searchParamsObjects.transmissions.length > 0 ? this.searchParamsObjects.transmissions.map(x => x.name) : null,
     };
-
+    console.log(this.searchParamsObjects.brands.map(x => x.name));
     this.searchService.search(pageNo, searchParams).subscribe(
       (data: any) => {
         this.cars = data.content;
@@ -149,11 +167,46 @@ export class RentalsComponent implements OnInit {
     );
   }
 
-  addSearchParamsCategory(event, category: Category){
-    if (event.checked){
+  addSearchParamsCategory(event, category: Category) {
+    if (event.checked) {
       this.searchParamsObjects.categories.push(category);
     } else {
       this.searchParamsObjects.categories.splice(this.categories.indexOf(category), 1);
     }
+  }
+  addSearchParamsFuels(event, fuel: Fuel) {
+    if (event.checked) {
+      this.searchParamsObjects.fuels.push(fuel);
+    } else {
+      this.searchParamsObjects.fuels.splice(this.categories.indexOf(fuel), 1);
+    }
+  }
+  addSearchParamsTransmissions(event, transmission: Transmission) {
+    if (event.checked) {
+      this.searchParamsObjects.transmissions.push(transmission);
+    } else {
+      this.searchParamsObjects.transmissions.splice(this.categories.indexOf(transmission), 1);
+    }
+  }
+
+  showVehicle(car) {
+    console.log("Show vehicle");
+    // todo in F-S-2
+  }
+  loadMore(pageNo: number){
+    this.pageNo = pageNo;
+    this.getCars(pageNo);
+  }
+  brandSelectionChanged(selectedBrands) {
+    console.log(selectedBrands.value);
+    this.searchParamsObjects.brands = selectedBrands.value;
+    this.models = [];
+    selectedBrands.value.forEach(brand => {
+      this.models.push(...brand.models);
+    });
+  }
+  modelSelectionChanged(selectedModels) {
+    console.log(selectedModels.value);
+    this.searchParamsObjects.models = selectedModels.value;
   }
 }

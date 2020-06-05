@@ -1,4 +1,4 @@
-<div class="row m-3 shadow-sm  m-1 bg-white rounded">
+<div class="row m-2 shadow-sm  m-1 bg-white rounded">
   <div class="col-md-4 col-left">
     <div *ngIf="car.images">
       <img class="car-Image shadow-sm bg-white rounded" src="{{car.images[0]}}">
@@ -34,7 +34,7 @@
         <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{car.mileage}}
+        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{checkMileage((car.mileage))}}
       </li>
     </ul>
   </div>
@@ -68,7 +68,7 @@
       </div>
     </div>
     <div class="row mt-3 ml-3 mb-3" style="margin-bottom: 0; margin-right: 0;">
-      <a class="btn btn-sm btn-outline-danger add-to-cart-button">Add to
+      <a class="btn btn-sm btn-outline-danger add-to-cart-button" (click)="addToCart($event)">Add to
         cart</a>
     </div>
   </div>
