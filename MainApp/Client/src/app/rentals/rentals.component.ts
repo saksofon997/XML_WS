@@ -56,10 +56,10 @@ export class RentalsComponent implements OnInit {
   cars: Car[];
   pageNo: number;
   totalPages: number;
-  tripStartDate: string;
-  tripEndDate: string;
-  tripStartTime: string;
-  tripEndTime: string;
+  tripStartDate: Date;
+  tripEndDate: Date;
+  tripStartTime: number;
+  tripEndTime: number;
 
   constructor(private locationService: LocationService,
     private searchService: SearchService,
@@ -147,7 +147,25 @@ export class RentalsComponent implements OnInit {
 
   }
 
+  startTimeChange(value) {
+    this.tripStartTime = value;
+  }
+
+  endTimeChange(value) {
+    this.tripEndTime = value;
+  }
+
+  from() {
+    return Number(this.tripStartDate?.getTime()) / 1000 + this.tripStartTime * 60;
+  }
+
+  to() {
+    return Number(this.tripEndDate?.getTime())  / 1000 + this.tripEndTime * 60 ;
+  }
+
   getCars(pageNo: number) {
+    console.log(this.tripStartDate?.getTime() / 1000 );
+    console.log(this.tripEndTime);
     const searchParams = {
       loc_lat: 45.2605774,
       loc_long: 19.8009594,

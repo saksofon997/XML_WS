@@ -100,7 +100,7 @@ export class VehiclePageComponent implements OnInit {
         }
         this.vehicle.images.forEach(imageName => {
           this.images.push({
-            image: this.API_URL + "/" + imageName,
+            image: this.API_URL + "/vehicle/image/" + imageName,
             thumbImage: this.API_URL + "/vehicle/image/" + imageName
           })
         });
