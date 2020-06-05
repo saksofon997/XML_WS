@@ -20,11 +20,13 @@ public interface BrandService {
 
     BrandDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    BrandPageDTO getAll(Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
+    BrandPageDTO getAllPageable(Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
+
+    List<BrandDTO> getAll() throws ConversionFailedError;
 
     BrandDTO update(Long id, BrandDTO brandDTO) throws UnexpectedError, EntityNotFound, ConversionFailedError;
 
-    BrandDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+    void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
     BrandDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
 }

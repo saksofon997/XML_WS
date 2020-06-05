@@ -12,13 +12,13 @@ import { Review } from '../models/Review.model';
 export class RentalsComponent implements OnInit {
 
   constructor(private locationService: LocationService) { 
-    var review = new Review(4,null,{id:null,name:""},
-    {id:null,name: ""},
-    "");
-    this.cars.push(new Car(["https://article.images.consumerreports.org/f_auto/prod/content/dam/CRO%20Images%202018/Cars/November/CR-Cars-InlineHero-2019-Honda-Insight-driving-trees-11-18"],
-    "Jaguar","I dont know","Diesel","Automatic", "A",2,"Unlimited",1000,2,review,1));
-    this.cars.push(new Car(["https://www.testoviautomobila.rs/wp-content/uploads/2015/05/fica-prelepa-slika-840x420.jpg"],
-    "Zastava","500","Gasoline","Manual", "A",15,"Unlimited",5000,5,review,2));
+    //var review = new Review(4,null,{id:null,name:""},
+    //{id:null,name: ""},
+    //"");
+    //this.cars.push(new Car(["https://article.images.consumerreports.org/f_auto/prod/content/dam/CRO%20Images%202018/Cars/November/CR-Cars-InlineHero-2019-Honda-Insight-driving-trees-11-18"],
+    //"Jaguar","I dont know","Diesel","Automatic", "A",2,"Unlimited",1000,2,review,1));
+    //this.cars.push(new Car(["https://www.testoviautomobila.rs/wp-content/uploads/2015/05/fica-prelepa-slika-840x420.jpg"],
+    //"Zastava","500","Gasoline","Manual", "A",15,"Unlimited",5000,5,review,2));
     
   }
   latitude: number;

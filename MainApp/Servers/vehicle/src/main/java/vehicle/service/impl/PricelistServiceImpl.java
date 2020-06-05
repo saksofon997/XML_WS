@@ -4,6 +4,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
 import saga.commands.priceListCommands.MainPriceListCommand;
 import saga.dto.ModelDTO;
@@ -64,11 +65,10 @@ public class PricelistServiceImpl implements PricelistService {
             pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId())) {
             Pricelist savedPriceList = pricelistRepo.save(newPricelist);
             commandGateway.send(new MainPriceListCommand(savedPriceList.getId(), pricelistDTO, TypeOfCommand.CREATE));
-
+            return convertToDTO(savedPriceList);
         } else {
             throw new DuplicateEntity("Item already exists");
         }
-        return pricelistDTO;
     }
 
     @Override
@@ -104,6 +104,7 @@ public class PricelistServiceImpl implements PricelistService {
     }
 
     @Override
+    @Transactional
     public PricelistDTO delete(Long id) throws EntityNotFound, DuplicateEntity, ConversionFailedError {
 
         Optional<Pricelist> deleted = pricelistRepo.findById(id);

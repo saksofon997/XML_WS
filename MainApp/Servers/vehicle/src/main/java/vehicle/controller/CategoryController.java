@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import saga.dto.BrandDTO;
 import saga.dto.CategoryDTO;
 import vehicle.dto.CategoryPageDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -23,14 +24,19 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryPageDTO> getAll(@RequestParam(value = "page", required = false) Integer pageNo,
-                                                  @RequestParam(value = "sort", required = false) String sort)
+    public ResponseEntity<?> getAll(@RequestHeader(value = "page", required = false) Integer pageNo,
+                                                  @RequestHeader(value = "sort", required = false) String sort,
+                                                  @RequestHeader(value = "pageable", required = false) Boolean pageable)
             throws ConversionFailedError, EntityNotFound {
         sort = (sort != null) ? sort: "id";
         pageNo = (pageNo != null) ? pageNo: 0;
-        CategoryPageDTO categories = categoryService.getAll(pageNo, sort);
-
-        return new ResponseEntity<>(categories, HttpStatus.ACCEPTED);
+        if (pageable){
+            CategoryPageDTO categories = categoryService.getAllPageable(pageNo, sort);
+            return new ResponseEntity<>(categories, HttpStatus.OK);
+        } else {
+            List<CategoryDTO> allCategories = categoryService.getAll();
+            return new ResponseEntity<>(allCategories, HttpStatus.OK);
+        }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -55,7 +61,7 @@ public class CategoryController {
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id,
-                                         @RequestBody CategoryDTO categoryDTO) throws EntityNotFound {
+                                         @RequestBody CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError {
 
         CategoryDTO updated = categoryService.update(id, categoryDTO);
 
@@ -66,8 +72,8 @@ public class CategoryController {
                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
-        CategoryDTO deleted = categoryService.delete(id);
+        categoryService.delete(id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -6,8 +6,12 @@ import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 
+import java.util.List;
+
 public interface FuelService {
-    FuelPageDTO getAll(Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
+    FuelPageDTO getAllPageable(Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError;
+
+    List<FuelDTO> getAll() throws ConversionFailedError;
 
     FuelDTO add(FuelDTO fuelDTO) throws ConversionFailedError, DuplicateEntity;
 
@@ -15,5 +19,5 @@ public interface FuelService {
 
     FuelDTO update(Long id, FuelDTO fuelDTO) throws EntityNotFound;
 
-    FuelDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+    void delete(Long id) throws EntityNotFound, ConversionFailedError;
 }

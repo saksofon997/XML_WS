@@ -17,7 +17,7 @@ public interface TransmissionService {
 
     TransmissionDTO update(Long id, TransmissionDTO transmissionDTO) throws EntityNotFound, ConversionFailedError;
 
-    TransmissionDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
+    void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
     public TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError;
 

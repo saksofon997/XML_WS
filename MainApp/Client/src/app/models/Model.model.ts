@@ -1,4 +1,4 @@
-export class Brand {
+export class Model {
   id: number;
   name: string;
 

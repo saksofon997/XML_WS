@@ -1,4 +1,4 @@
-export class Brand {
+export class Transmission {
   id: number;
   name: string;
 

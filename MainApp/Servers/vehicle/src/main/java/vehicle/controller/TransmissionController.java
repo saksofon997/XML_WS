@@ -61,8 +61,8 @@ public class TransmissionController {
                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TransmissionDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
-        TransmissionDTO deleted = transmissionService.delete(id);
+        transmissionService.delete(id);
 
-        return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
