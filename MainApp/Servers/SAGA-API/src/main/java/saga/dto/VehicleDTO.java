@@ -20,6 +20,7 @@ public class VehicleDTO {
     private double locationLongitude;
     private double locationLatitude;
     private List<String> images;
+    private Long ownerId;
 
     public VehicleDTO() {
     }
@@ -38,7 +39,7 @@ public class VehicleDTO {
                       int numberOfStars,
                       int numberOfReviews,
                       double locationLongitude,
-                      double locationLatitude) {
+                      double locationLatitude, Long owner_id) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -54,6 +55,7 @@ public class VehicleDTO {
         this.numberOfReviews = numberOfReviews;
         this.locationLongitude = locationLongitude;
         this.locationLatitude = locationLatitude;
+        this.ownerId = owner_id;
     }
 
     public Long getId() {
@@ -176,5 +178,11 @@ public class VehicleDTO {
 
     public void setLocationLatitude(double locationLatitude) { this.locationLatitude = locationLatitude; }
 
+    public Long getOwnerId() {
+        return ownerId;
+    }
 
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
 }

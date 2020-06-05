@@ -40,16 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers()
                 .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"))
                 .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin","http://localhost:4200"));
-
-        //http.cors().configurationSource(corsConfigurationSource());
         http.csrf().disable();
     }
 
     @Override
     public void configure(WebSecurity web) {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-        //web.ignoring().antMatchers(HttpMethod.POST, "/vehicle");
-        web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
+        web.ignoring().antMatchers(HttpMethod.GET, "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html",
                 "/**/*.css", "/**/*.js","/assets/images/**");
     }
 //    @Bean

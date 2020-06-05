@@ -61,6 +61,9 @@ public class Vehicle {
     @Column(name = "location_latitude")
     private double locationLatitude;
 
+    @Column(name = "ownerId")
+    private Long ownerId;
+
     @ElementCollection
     @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "images")
@@ -87,7 +90,8 @@ public class Vehicle {
                    int numberOfReviews,
                    List<String> images,
                    double locationLongitude,
-                   double locationLatitude) {
+                   double locationLatitude,
+                   Long owner_id) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -104,6 +108,7 @@ public class Vehicle {
         this.locationLatitude = locationLatitude;
         this.locationLongitude = locationLongitude;
         this.images = images;
+        this.ownerId = owner_id;
     }
 
     public Long getId() {
@@ -240,5 +245,13 @@ public class Vehicle {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

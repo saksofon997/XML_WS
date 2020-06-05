@@ -60,7 +60,8 @@ export class VehicleDialogBoxComponent{
         numberOfStars: 0,
         numberOfReviews: 0,
         locationLongitude: 0,
-        locationLatitude: 0
+        locationLatitude: 0, 
+        ownerId: 1
     }
 
     console.log(this.local_data.images.files);

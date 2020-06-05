@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saga.commands.TypeOfCommand;
 import saga.commands.manualOccupancyCommands.ManualOccupancyCommand;
+import saga.commands.vehicleOccupancyCommands.MainOccupancyCommand;
 import saga.commands.vehiclePartsCommands.MainTransmissionCommand;
 import saga.dto.ReviewDTO;
 import saga.dto.VehicleOccupancyDTO;
