@@ -8,8 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
 import saga.commands.modelCommands.MainModelCommand;
+import saga.dto.BrandDTO;
 import saga.dto.ModelDTO;
 import vehicle.dto.ModelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -22,6 +24,8 @@ import vehicle.repository.ModelRepo;
 import vehicle.service.ModelService;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,7 +61,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelPageDTO getAll(Long brandId, Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError {
+    public ModelPageDTO getAllPageable(Long brandId, Integer pageNo, String sortKey) throws EntityNotFound, ConversionFailedError {
 
         Optional<Brand> brand = brandRepo.findById(brandId);
 
@@ -76,6 +80,21 @@ public class ModelServiceImpl implements ModelService {
         }
 
         return pageDTO;
+    }
+
+    @Override
+    public List<ModelDTO> getAll(Long brandId) throws ConversionFailedError, EntityNotFound {
+        Optional<Brand> brand = brandRepo.findById(brandId);
+        if (!brand.isPresent()) {
+            throw new EntityNotFound("No item with ID: "+brandId);
+        }
+
+        List<Model> models = brand.get().getModels();
+        List<ModelDTO> modelDTOS = new ArrayList<>();
+        for (Model model: models){
+            modelDTOS.add(convertToDTO(model));
+        }
+        return modelDTOS;
     }
 
     @Override
@@ -98,7 +117,7 @@ public class ModelServiceImpl implements ModelService {
 
         commandGateway.send(new MainModelCommand(brandId, newModel.getId(), convertToDTO(savedModel), TypeOfCommand.CREATE));
 
-        return modelDTO;
+        return convertToDTO(savedModel);
     }
 
     @Override
@@ -133,7 +152,8 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ModelDTO delete(Long brandId, Long id) throws EntityNotFound, ConversionFailedError {
+    @Transactional
+    public void delete(Long brandId, Long id) throws EntityNotFound, ConversionFailedError {
 
         Optional<Model> deleted = modelRepo.findById(id);
 
@@ -147,7 +167,6 @@ public class ModelServiceImpl implements ModelService {
 
             commandGateway.send(new MainModelCommand(brandId, deleted.get().getId(), convertToDTO(deleted.get()) , TypeOfCommand.DELETE));
         }
-        return convertToDTO(deleted.get());
     }
 
     // For saga rollback

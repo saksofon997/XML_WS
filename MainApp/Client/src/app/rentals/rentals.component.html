@@ -175,16 +175,8 @@
       <div class="row m-3 shadow-sm filters-container rounded">
 
         <mat-list>
-          <!--
-            <mat-list-item ngFor="let cat of categories">
-              <mat-checkbox >{{cat}}</mat-checkbox>
-            </mat-list-item>
-          -->
-          <mat-list-item>
-            <mat-checkbox>SUV </mat-checkbox>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-checkbox>Hatchback </mat-checkbox>
+          <mat-list-item *ngFor="let category of categories">
+            <mat-checkbox (change)="addSearchParamsCategory($event, category)">{{category.name}} </mat-checkbox>
           </mat-list-item>
         </mat-list>
       </div>
@@ -244,7 +236,7 @@
       List of vehicles...
       <hr class="dashed">
       <div class="row m-3 m-1 filter-Button">
-        <a class="btn btn-sm btn-outline-danger filter-Button">Load more</a>
+        <a class="btn btn-sm btn-outline-danger filter-Button-button">Load more</a>
       </div>
     </div>
   </div>

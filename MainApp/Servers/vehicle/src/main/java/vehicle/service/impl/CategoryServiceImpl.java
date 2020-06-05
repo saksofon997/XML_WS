@@ -8,18 +8,23 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
 import saga.commands.vehiclePartsCommands.MainCategoryCommand;
+import saga.dto.BrandDTO;
 import saga.dto.CategoryDTO;
 import vehicle.dto.CategoryPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.model.Brand;
 import vehicle.model.Category;
 import vehicle.repository.CategoryRepo;
 import vehicle.service.CategoryService;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryPageDTO getAll(Integer pageNo, String sortKey) throws ConversionFailedError{
+    public CategoryPageDTO getAllPageable(Integer pageNo, String sortKey) throws ConversionFailedError{
         Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
         Page<Category> pagedResult = categoryRepo.findAll(page);
 
@@ -66,6 +71,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<CategoryDTO> getAll() throws ConversionFailedError {
+        List<Category> categories = categoryRepo.findAll();
+        List<CategoryDTO> categoryDTOS = new ArrayList<>();
+        for (Category category: categories){
+            categoryDTOS.add(convertToDTO(category));
+        }
+        return categoryDTOS;
+    }
+
+
+    @Override
     public CategoryDTO add(CategoryDTO categoryDTO) throws ConversionFailedError, DuplicateEntity {
 
         Category newCat = convertToModel(categoryDTO);
@@ -73,10 +89,10 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepo.existsByName(categoryDTO.getName())) {
             Category savedCategory = categoryRepo.save(newCat);
             commandGateway.send(new MainCategoryCommand(savedCategory.getId(), categoryDTO, TypeOfCommand.CREATE));
+            return convertToDTO(savedCategory);
         } else {
             throw new DuplicateEntity("Category with name: " + categoryDTO.getName() + " already exists");
         }
-        return categoryDTO;
     }
 
     @Override
@@ -92,7 +108,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO update(Long id, CategoryDTO categoryDTO) throws EntityNotFound {
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError {
 
         Optional<Category> change = categoryRepo.findById(id);
 
@@ -105,11 +121,12 @@ public class CategoryServiceImpl implements CategoryService {
 
         commandGateway.send(new MainCategoryCommand(savedCategory.getId(), categoryDTO, TypeOfCommand.UPDATE));
 
-        return categoryDTO;
+        return convertToDTO(savedCategory);
     }
 
     @Override
-    public CategoryDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+    @Transactional
+    public void delete(Long id) throws EntityNotFound, ConversionFailedError {
 
         Optional<Category> deleted = categoryRepo.findById(id);
 
@@ -119,7 +136,5 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepo.deleteById(id);
             commandGateway.send(new MainCategoryCommand(deleted.get().getId(), convertToDTO(deleted.get()), TypeOfCommand.DELETE));
         }
-
-        return convertToDTO(deleted.get());
     }
 }
