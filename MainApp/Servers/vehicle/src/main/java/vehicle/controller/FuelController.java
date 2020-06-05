@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "fuel")
+@CrossOrigin(origins = "*")
 public class FuelController {
 
     @Autowired

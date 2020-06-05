@@ -11,16 +11,20 @@
     color: #000000;
     margin-bottom: 0.5em;
     font-size: large;
+    text-decoration: #E81831;
 }
 
 .list-group-item:hover {
     cursor: pointer;
     outline-style: solid;
     outline-color: #E81831;
+    border-color: #E81831;
 }
 
 .active {
     margin-bottom: 0.5em;
     background-color: #E81831;
     color: #eeeeee;
+    outline-color: #E81831;
+    border-color: #E81831;
   }

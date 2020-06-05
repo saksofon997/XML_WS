@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "transmission")
+@CrossOrigin(origins = "*")
 public class TransmissionController {
 
     @Autowired

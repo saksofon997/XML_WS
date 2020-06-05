@@ -5,28 +5,28 @@ import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-import { Brand } from 'src/app/models/Brand.model';
 import { environment } from '../../environments/environment';
+import { Category } from '../models/Category.model';
 
 const API_URL = environment.API_URL;
 
 @Injectable({
   providedIn: 'root'
 })
-export class BrandService {
+export class CategoryService {
 
   constructor(private cookieService: CookieService,
     // private userService: UserService,
     private http: HttpClient,
     private router: Router) { }
 
-  getPageable(pageNo: number) {
+  getPageable(pageNo: Number) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'pageable': `true`,
       'page': pageNo.toString()
     });
-    return this.http.get(`${API_URL}/brand`, { headers, observe: 'response' })
+    return this.http.get(`${API_URL}/category`, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -42,7 +42,7 @@ export class BrandService {
       'Content-Type': 'application/json',
       'pageable': `false`,
     });
-    return this.http.get(`${API_URL}/brand`, { headers, observe: 'response' })
+    return this.http.get(`${API_URL}/category`, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -53,11 +53,11 @@ export class BrandService {
       );
   }
 
-  add(brand: Brand) {
+  add(category: Category) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post(`${API_URL}/brand`, brand, { headers, observe: 'response' })
+    return this.http.post(`${API_URL}/category`, category, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -68,11 +68,11 @@ export class BrandService {
       );
   }
 
-  edit(brandId: number, brand: Brand) {
+  edit(categoryId: number, category: Category) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.put(`${API_URL}/brand/${brandId}`, brand, { headers, observe: 'response' })
+    return this.http.put(`${API_URL}/category/${categoryId}`, category, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -83,11 +83,11 @@ export class BrandService {
       );
   }
 
-  delete(brandId: number) {
+  delete(categoryId: number) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.delete(`${API_URL}/brand/${brandId}`, { headers, observe: 'response' })
+    return this.http.delete(`${API_URL}/category/${categoryId}`, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;

@@ -1,30 +1,27 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box-edit/dialog-box-edit.component';
 import { BrandService } from '../../services/brand.service';
 import { Brand } from 'src/app/models/Brand.model';
- 
-const ELEMENT_DATA: Brand[] = [
-  {id: 1560608769632, name: 'Mercedes'},
-  {id: 1560608796014, name: 'BMW'},
-  {id: 1560608787815, name: 'Nissan'},
-  {id: 1560608805101, name: 'Toyota'}
-];
+import { MatPaginator } from '@angular/material/paginator';
+import { tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'admin-brand-table',
   templateUrl: './brand-table.component.html',
   styleUrls: ['./brand-table.component.css']
 })
-export class BrandTableComponent implements OnInit {
+export class BrandTableComponent implements AfterViewInit, OnInit {
 
   displayedColumns: string[] = ['name', 'action'];
   dataSource: Brand[];
-  pageNo: Number;
-  totalPages: Number;
+  pageNo: number;
+  totalPages: number;
 
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public dialog: MatDialog,
               private brandService: BrandService) {
@@ -35,7 +32,15 @@ export class BrandTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getBrands(pageNo: Number) {
+  ngAfterViewInit() {
+    this.paginator.page
+      .pipe(
+        tap(() => this.getBrands(this.paginator.pageIndex))
+      )
+      .subscribe();
+  }
+
+  getBrands(pageNo: number) {
     this.brandService.getPageable(pageNo).subscribe(
       (data: any) => {
         this.dataSource = data.content;
@@ -48,40 +53,39 @@ export class BrandTableComponent implements OnInit {
     );
   }
 
-  openDialog(action,obj) {
+  openDialog(action, obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '300px',
-      data:obj
+      data: obj
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result.event === 'Add'){
+      if (result.event === 'Add') {
         this.addRowData(result.data);
-      }else if (result.event === 'Update'){
+      } else if (result.event === 'Update') {
         this.updateRowData(result.data);
-      }else if (result.event === 'Delete'){
+      } else if (result.event === 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
 
-  addRowData(brand){
+  addRowData(brand) {
     this.brandService.add(brand).subscribe(
       (data: Brand) => {
-        this.dataSource.push(data);
-        this.table.renderRows();
+        this.getBrands(this.pageNo);
       },
       (error) => {
         alert(error);
       }
     );
   }
-  updateRowData(brand){
+  updateRowData(brand) {
     this.brandService.edit(brand.id, brand).subscribe(
       (data: Brand) => {
         this.dataSource = this.dataSource.filter((value, key) => {
-          if (value.id === brand.id){
+          if (value.id === brand.id) {
             value.name = brand.name;
           }
           return true;
@@ -92,7 +96,7 @@ export class BrandTableComponent implements OnInit {
       }
     );
   }
-  deleteRowData(brand){
+  deleteRowData(brand) {
     this.brandService.delete(brand.id).subscribe(
       (data: Brand) => {
         this.getBrands(this.pageNo);
@@ -101,6 +105,5 @@ export class BrandTableComponent implements OnInit {
         alert(error);
       }
     );
-
   }
 }
