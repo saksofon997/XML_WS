@@ -17,3 +17,9 @@ label {
     margin-left: 0.5rem;
     cursor: help;
   }
+.btn-outline-danger:hover {
+  background-color: #E81831;
+}
+a:hover {
+  color: white;
+}

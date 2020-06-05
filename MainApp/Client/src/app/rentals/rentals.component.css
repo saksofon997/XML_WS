@@ -105,6 +105,15 @@
   font-weight: bold;
 }
 
-::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+.filter-Button-button:hover {
+  color: white;
+}
+
+.mat-list {
+  overflow: auto;
+  max-height: 40vh;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
   background-color: #E81831;
 }
