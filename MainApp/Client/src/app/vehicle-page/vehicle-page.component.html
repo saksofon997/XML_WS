@@ -46,10 +46,10 @@
   <div>
     <div class="row ">
       <div class="col-sm-8" style="margin-top: 3.5vh;">
-        <app-vehicle-info></app-vehicle-info>
+        <app-vehicle-info [vehicle]="vehicle"></app-vehicle-info>
       </div>
       <div class="col-sm-4">
-        <app-reservation-box></app-reservation-box>
+        <app-reservation-box [priceAndReservation]="reservationInfo"></app-reservation-box>
       </div>
     </div>
   </div>

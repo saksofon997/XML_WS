@@ -11,7 +11,6 @@ public class PricelistDTO {
     private long pricePerKm;
     private long cdw;
     private String description;
-    private ArrayList<VehicleDTO> vehicles;
 
     public PricelistDTO() {
     }
@@ -30,24 +29,6 @@ public class PricelistDTO {
         this.pricePerKm = pricePerKm;
         this.cdw = cdw;
         this.description = description;
-    }
-
-    public PricelistDTO(Long id,
-                        Long ownerId,
-                        String name,
-                        long pricePerDay,
-                        long pricePerKm,
-                        long cdw,
-                        String description,
-                        ArrayList<VehicleDTO> vehicles) {
-        this.id = id;
-        this.ownerId = ownerId;
-        this.name = name;
-        this.pricePerDay = pricePerDay;
-        this.pricePerKm = pricePerKm;
-        this.cdw = cdw;
-        this.description = description;
-        this.vehicles = vehicles;
     }
 
     public Long getId() {
@@ -106,11 +87,5 @@ public class PricelistDTO {
         this.description = description;
     }
 
-    public ArrayList<VehicleDTO> getVehicles() {
-        return vehicles;
-    }
 
-    public void setVehicles(ArrayList<VehicleDTO> vehicles) {
-        this.vehicles = vehicles;
-    }
 }

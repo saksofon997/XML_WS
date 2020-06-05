@@ -56,6 +56,10 @@ export class RentalsComponent implements OnInit {
   cars: Car[];
   pageNo: number;
   totalPages: number;
+  tripStartDate: string;
+  tripEndDate: string;
+  tripStartTime: string;
+  tripEndTime: string;
 
   constructor(private locationService: LocationService,
     private searchService: SearchService,
@@ -190,8 +194,13 @@ export class RentalsComponent implements OnInit {
     }
   }
 
-  showVehicle(car) {
+  showVehicle(car: Car) {
     console.log("Show vehicle");
+    let params = "?vehicleID=" + car.id + "&startDate=" + this.tripStartDate 
+    + "&endDate=" + this.tripEndDate
+    + "&startTime=" + this.tripStartTime
+    + "&endTime=" + this.tripEndTime;
+    window.open("/vehicle"+params,"_blank");
     // todo in F-S-2
   }
   loadMore(pageNo: number){

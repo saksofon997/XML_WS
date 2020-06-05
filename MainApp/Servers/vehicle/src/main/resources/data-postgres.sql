@@ -71,3 +71,10 @@ INSERT INTO vehicle.vehicle_occupancy( -- 19.6. 15:00 -> 22.6. 15:00 UTC
 INSERT INTO vehicle.vehicle_occupancy( -- 19.6. 15:00 -> 22.6. 15:00 UTC
     id, start_time, end_time, type, vehicle_id, deleted)
     VALUES (nextval('vehicle_occupancy_id_seq'), 1592578800, 1592838000, 'MANUAL', 2, false); /*3*/
+
+INSERT INTO vehicle.images(
+    id, images)
+    VALUES (1, 'bmwX5.jpg'); /*1*/
+INSERT INTO vehicle.images(
+    id, images)
+    VALUES (1, 'bmwX51.jpg'); /*1*/
