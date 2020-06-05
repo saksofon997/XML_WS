@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
-import { Rental } from 'src/app/models/Rental.model';
+import { RentalFront } from 'src/app/models/Rental.model';
 
 @Component({
   selector: 'app-sc-car-teaser',
@@ -10,7 +10,7 @@ import { Rental } from 'src/app/models/Rental.model';
 export class ScCarTeaserComponent implements OnInit {
 
   @Input() bundles: any;
-  @Input() rental: Rental;
+  @Input() rental: RentalFront;
 
   constructor() { }
 
@@ -26,6 +26,16 @@ export class ScCarTeaserComponent implements OnInit {
     bundle.owner = this.rental.car.ownerId;
     bundle.rentals.push(this.rental);
     this.rental.bundle = bundle.name;
+  }
+
+  fromLocaleString() {
+    let date = new Date(this.rental.from * 1000);
+    return date.toLocaleString();
+  }
+
+  toLocaleString() {
+    let date = new Date(this.rental.to * 1000);
+    return date.toLocaleString();
   }
 
 }

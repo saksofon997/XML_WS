@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Car } from 'src/app/models/Car.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-car-teaser-car-info',
@@ -9,10 +10,15 @@ import { Car } from 'src/app/models/Car.model';
 export class CarTeaserCarInfoComponent implements OnInit {
 
   @Input() car: Car;
+  API_URL = environment.API_URL;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  checkMileage(mileage){
+    return mileage != -1 ? mileage : "Unlimited";
   }
 
 }

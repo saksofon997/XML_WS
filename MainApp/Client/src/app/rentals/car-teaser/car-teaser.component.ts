@@ -15,8 +15,11 @@ export class CarTeaserComponent implements OnInit {
 @Input() from: number;
 @Input() to: number;
 API_URL = environment.API_URL;
+inCart = false;
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService) { 
+    
+  }
 
   ngOnInit() {
   }
@@ -29,7 +32,10 @@ API_URL = environment.API_URL;
     $event.stopPropagation();
     console.log("Added to cart");
 
-    //let cart = JSON.parse(this.cookieService.get('shopping-cart'));
+    //temp
+    this.from = 1592406000;
+    this.to = 1592578800;
+
 
     console.log(this.from);
     console.log(this.to);
@@ -42,10 +48,8 @@ API_URL = environment.API_URL;
         rental.from = this.from;
         rental.to = this.to;
         cart.rentals.push(rental);
+        this.inCart = true;
       }
-      
-
-      console.log(cart);
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     } else {
       let cart = new ShoppingCart();
@@ -56,9 +60,7 @@ API_URL = environment.API_URL;
       rental.from = this.from;
       rental.to = this.to;
       cart.rentals.push(rental);
-
-      console.log(cart);
-
+      this.inCart = true;
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     }
     //this.cookieService.delete('shopping-cart');

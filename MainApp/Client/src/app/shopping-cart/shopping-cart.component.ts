@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Car } from '../models/Car.model';
 import { Review } from '../models/Review.model';
-import { Rental } from '../models/Rental.model';
+import { RentalBack, RentalFront } from '../models/Rental.model';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { BundleDialogBoxComponent } from './bundle-dialog-box/bundle-dialog-box.component';
+import { CookieService } from 'ngx-cookie-service';
+import { Bundle } from '../models/Bundle.model';
 
-class Bundle {
-  name: string;
-  rentals?: Array<Rental>;
-  owner: Number;
-}
+// class Bundle {
+//   name: string;
+//   rentals?: Array<RentalFront>;
+//   owner: Number;
+// }
 
 @Component({
   selector: 'app-shopping-cart',
@@ -19,12 +21,19 @@ class Bundle {
 })
 export class ShoppingCartComponent implements OnInit {
 
-  bundles = new Array<any>();
-  rentals = new Array<Rental>();
+  bundles = new Array<Bundle>();
+  rentals = new Array<RentalFront>();
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog,
+              private cookieService: CookieService) {
+
+    if (this.cookieService.get('shopping-cart')) {
+      let cart = JSON.parse(this.cookieService.get('shopping-cart'));
+      this.rentals = cart.rentals;
+    }
+
     //var review = new Review(4, null, { id: null, name: "" },
     //  { id: null, name: "" },
     //  "");
@@ -70,7 +79,8 @@ export class ShoppingCartComponent implements OnInit {
   createBundle(data) {
     let bundle = new Bundle();
     bundle.name = data.name;
-    bundle.rentals = new Array<Rental>();
+    bundle.rentals = new Array<RentalFront>();
+    //bundle.rentals = new Array<Rental>();
     this.bundles.push(bundle);
   }
 

@@ -1,6 +1,14 @@
 <div class="row m-3 shadow-sm  m-1 bg-white rounded">
   <div class="col-md-4 col-left">
-    <img class="car-Image shadow-sm bg-white rounded" src="{{car.images[0]}}">
+    <div *ngIf="car.images[0]">
+      <img class="car-Image shadow-sm bg-white rounded" src="{{API_URL+'/vehicle/image/'+car.images[0]}}"/>
+    </div>
+    <div *ngIf="!car.images[0]" >
+      <p style=" text-align: center; line-height: 150px; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
+      unselectable="on"
+      onselectstart="return false;" 
+      onmousedown="return false;">No images provided</p>
+    </div>
   </div>
   <div class="col-md-6 col-left d-flex justify-content-sm-start justify-content-center mt-3 align-items-center">
     <ul class="vehicle-info mt-1">
@@ -20,7 +28,7 @@
         <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{car.mileage}}
+        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{checkMileage((car.mileage))}}
       </li>
     </ul>
   </div>

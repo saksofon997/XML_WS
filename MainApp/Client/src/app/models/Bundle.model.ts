@@ -1,4 +1,7 @@
+import { RentalFront } from './Rental.model';
+
 export class Bundle {
-  id: number;
   name: string;
+  rentals?: Array<RentalFront>;
+  owner: Number;
 }

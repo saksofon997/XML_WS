@@ -68,7 +68,7 @@
       </div>
     </div>
     <div class="row mt-3 ml-3 mb-3" style="margin-bottom: 0; margin-right: 0;">
-      <a class="btn btn-sm btn-outline-danger add-to-cart-button" (click)="addToCart($event)">Add to
+      <a *ngIf="!inCart" class="btn btn-sm btn-outline-danger add-to-cart-button" (click)="addToCart($event)">Add to
         cart</a>
     </div>
   </div>
