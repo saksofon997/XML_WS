@@ -1,15 +1,20 @@
 import { Car } from './Car.model';
+import { Bundle } from './Bundle.model';
 
-export class Rental {
+export class RentalFront {
   id: number;
   car: Car;
-  from: Date;
-  to: Date;
+  from: number;
+  to: number;
   bundle: string = null;
-  constructor(id: number, car: Car, from: Date, to: Date){
-    this.id = id;
-    this.car = car;
-    this.from = from;
-    this.to = to;
-  }
+}
+
+export class RentalBack {
+  id: number;
+  vehicleId: number;
+  customerId: number;
+  ownerId: number;
+  startTime: Date;
+  endTime: Date;
+  bundle: Bundle = null;
 }
