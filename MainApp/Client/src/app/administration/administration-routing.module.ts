@@ -14,7 +14,7 @@ const routes: Routes = [
     canActivate: [],
     children: [
       { path: 'brands', component: BrandTableComponent },
-      { path: 'models', component: ModelTableComponent },
+      { path: 'brands/:brandId/models', component: ModelTableComponent },
       { path: 'categories', component: CategoriesTableComponent },
       { path: 'fuel', component: FuelTableComponent },
       { path: 'transmission', component: TransmissionTableComponent },

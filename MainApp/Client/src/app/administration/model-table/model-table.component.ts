@@ -2,18 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box-edit/dialog-box-edit.component';
-
-export interface UsersData {
-  name: string;
-  id: number;
-}
- 
-const ELEMENT_DATA: UsersData[] = [
-  {id: 1560608769632, name: 'R8'},
-  {id: 1560608796014, name: 'M3'},
-  {id: 1560608787815, name: 'Supra'},
-  {id: 1560608805101, name: 'T30'}
-];
+import { Model } from 'src/app/models/Model.model';
+import { ModelService } from 'src/app/services/model.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { tap } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-model-table',
@@ -22,53 +15,111 @@ const ELEMENT_DATA: UsersData[] = [
 })
 export class ModelTableComponent implements OnInit {
   displayedColumns: string[] = ['name', 'action'];
-  dataSource = ELEMENT_DATA;
- 
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
- 
-  constructor(public dialog: MatDialog) {}
+  dataSource: Model[];
+  pageNo: number;
+  totalPages: number;
+
+  brandId: number;
+
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(public dialog: MatDialog,
+    private modelService: ModelService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+    this.pageNo = 0;
+    this.getModels(this.pageNo);
+  }
 
   ngOnInit(): void {
   }
- 
-  openDialog(action,obj) {
+
+  ngAfterViewInit() {
+    this.paginator.page
+      .pipe(
+        tap(() => this.getModels(this.paginator.pageIndex))
+      )
+      .subscribe();
+  }
+
+  getModels(pageNo: number) {
+    this.activatedRoute.params.subscribe(params => {
+      this.brandId = +params['brandId'];
+    });
+
+    this.modelService.getAll(this.brandId).subscribe(
+      (data: any) => {
+        this.dataSource = data;
+      },
+      (error) => {
+        alert(error);
+      }
+    )
+
+    // this.modelService.getPageable(this.brandId, pageNo).subscribe(
+    //   (data: any) => {
+    //     this.dataSource = data.content;
+    //     this.pageNo = data.pageNo;
+    //     this.totalPages = data.totalPages;
+    //   },
+    //   (error) => {
+    //     alert(error);
+    //   }
+    // );
+  }
+
+  openDialog(action, obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '300px',
-      data:obj
+      data: obj
     });
- 
+
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event == 'Add'){
+      if (result.event == 'Add') {
         this.addRowData(result.data);
-      }else if(result.event == 'Update'){
+      } else if (result.event == 'Update') {
         this.updateRowData(result.data);
-      }else if(result.event == 'Delete'){
+      } else if (result.event == 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
- 
-  addRowData(row_obj){
-    var d = new Date();
-    this.dataSource.push({
-      id:d.getTime(),
-      name:row_obj.name
-    });
-    this.table.renderRows();
-    
-  }
-  updateRowData(row_obj){
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      if(value.id == row_obj.id){
-        value.name = row_obj.name;
+
+  addRowData(model) {
+    this.modelService.add(this.brandId, model).subscribe(
+      (data: Model) => {
+        this.getModels(this.pageNo);
+      },
+      (error) => {
+        alert(error);
       }
-      return true;
-    });
+    );
   }
-  deleteRowData(row_obj){
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      return value.id != row_obj.id;
-    });
+  updateRowData(model) {
+    this.modelService.edit(this.brandId, model.id, model).subscribe(
+      (data: Model) => {
+        this.dataSource = this.dataSource.filter((value, key) => {
+          if (value.id === model.id) {
+            value.name = model.name;
+          }
+          return true;
+        });
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+  deleteRowData(model) {
+    this.modelService.delete(this.brandId, model.id).subscribe(
+      (data: Model) => {
+        this.getModels(this.pageNo);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 }

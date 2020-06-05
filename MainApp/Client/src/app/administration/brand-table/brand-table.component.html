@@ -32,6 +32,7 @@
                       <mat-icon>settings</mat-icon>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" style="cursor: pointer;" (click)="viewModels(element)">View models</a>
               <a class="dropdown-item" style="cursor: pointer;" (click)="openDialog('Update',element)">Edit</a> 
               <a class="dropdown-item" style="cursor: pointer;" (click)="openDialog('Delete',element)">Delete</a>
             </div>
