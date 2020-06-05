@@ -21,3 +21,19 @@
   cursor: pointer;
   float: right;
 }
+
+#checkout-div {
+  padding-top: 10vh;
+  align-items: center;
+  justify-content: center;
+}
+
+#checkout {
+  width: 80%;
+  background-color: #E81831;
+  color: white;
+} 
+
+#checkout:hover {
+  color: white;
+} 

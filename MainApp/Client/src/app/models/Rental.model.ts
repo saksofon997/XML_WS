@@ -6,7 +6,7 @@ export class RentalFront {
   car: Car;
   from: number;
   to: number;
-  bundle: string = null;
+  bundle: Bundle = null;
 }
 
 export class RentalBack {
@@ -14,7 +14,7 @@ export class RentalBack {
   vehicleId: number;
   customerId: number;
   ownerId: number;
-  startTime: Date;
-  endTime: Date;
+  startTime: number;
+  endTime: number;
   bundle: Bundle = null;
 }

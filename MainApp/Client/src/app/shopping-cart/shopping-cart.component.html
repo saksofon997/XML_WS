@@ -27,7 +27,7 @@
 
                 </li>
                 <li class="list-group-item" *ngFor="let rental of bundle.rentals">
-                  {{rental.car.model}}
+                  {{rental.car.brand.name + " " + rental.car.model.name}}
                   <mat-icon matTooltip="Remove from bundle" [matTooltipPosition]="'below'"
                     (click)="removeFromBundle(bundle, rental)">close</mat-icon>
 
@@ -38,6 +38,12 @@
             </div>
           </div>
         </div>
+      </div>
+
+
+      <div class="row m-3" id="checkout-div">
+        <a class="btn btn-danger" id="checkout" (click)="checkout()">Checkout</a>
+
       </div>
     </div>
   </div>

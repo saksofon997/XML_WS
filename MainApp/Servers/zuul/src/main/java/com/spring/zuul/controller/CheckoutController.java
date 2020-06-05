@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class CheckoutController {
 
     @Autowired
@@ -33,6 +34,7 @@ public class CheckoutController {
         HashMap<String, BundleDTO> bundles = new HashMap<String, BundleDTO>();
         for (RentalDTO rentalDTO: rentals){
             BundleDTO bundle = rentalDTO.getBundle();
+            System.out.println(bundle);
             if (bundle == null){
                 continue;
             }
@@ -60,7 +62,9 @@ public class CheckoutController {
 
         for (int i = 0; i < rentals.size(); i++) {
             RentalDTO rental = rentals.get(i);
-            rental.setBundle(createdBundles.get(rental.getBundle().getName()));
+            if (rental.getBundle() != null) {
+                rental.setBundle(createdBundles.get(rental.getBundle().getName()));
+            }
             ResponseEntity response = rentalClient.createNewRental(rental, auth);
             if (response.getStatusCode().value() != 201){
                 // Delete created rentals
@@ -72,6 +76,6 @@ public class CheckoutController {
             }
         }
 
-        return new ResponseEntity<>("Checkout complete", HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 }
