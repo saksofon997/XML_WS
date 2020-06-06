@@ -37,8 +37,8 @@
   <div #overview>
     <a class="anchor" id="overview"></a>
     <div class="row images-container">
-      <div class="col">
-        <ng-image-slider [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider> <!-- property -->
+      <div class="col" *ngIf="images.length>0">
+        <ng-image-slider  [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider> <!-- property -->
       </div>
     </div>
 
