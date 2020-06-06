@@ -12,20 +12,20 @@ import { environment } from 'src/environments/environment';
 export class VehiclePageComponent implements OnInit {
 
   imageSize: Object = {width: '400px', height: '300px', space: 4}
-  images: Array<object> = [
-  {
-    image: 'https://i.ytimg.com/vi/H19PR3N8QI0/hqdefault.jpg',
-    thumbImage: 'https://i.ytimg.com/vi/H19PR3N8QI0/hqdefault.jpg'
-  },
-  {
-    image: 'https://previews.123rf.com/images/jarino47/jarino471708/jarino47170800397/84205780-soviet-tank-t-34-in-valley-of-death-dukla-paas-from-world-war-ii-in-svidnik-slovakia.jpg',
-    thumbImage: 'https://previews.123rf.com/images/jarino47/jarino471708/jarino47170800397/84205780-soviet-tank-t-34-in-valley-of-death-dukla-paas-from-world-war-ii-in-svidnik-slovakia.jpg'
-  },
-  {
-    image: 'https://i2.wp.com/asiatimes.com/wp-content/uploads/2019/01/T-34-in-snow.jpg?fit=1600%2C1067&ssl=1',
-    thumbImage: 'https://i2.wp.com/asiatimes.com/wp-content/uploads/2019/01/T-34-in-snow.jpg?fit=1600%2C1067&ssl=1'
-  }
-  ];
+  images: Array<Object>; // = [
+  // {
+  //   image: 'https://i.ytimg.com/vi/H19PR3N8QI0/hqdefault.jpg',
+  //   thumbImage: 'https://i.ytimg.com/vi/H19PR3N8QI0/hqdefault.jpg'
+  // },
+  // {
+  //   image: 'https://previews.123rf.com/images/jarino47/jarino471708/jarino47170800397/84205780-soviet-tank-t-34-in-valley-of-death-dukla-paas-from-world-war-ii-in-svidnik-slovakia.jpg',
+  //   thumbImage: 'https://previews.123rf.com/images/jarino47/jarino471708/jarino47170800397/84205780-soviet-tank-t-34-in-valley-of-death-dukla-paas-from-world-war-ii-in-svidnik-slovakia.jpg'
+  // },
+  // {
+  //   image: 'https://i2.wp.com/asiatimes.com/wp-content/uploads/2019/01/T-34-in-snow.jpg?fit=1600%2C1067&ssl=1',
+  //   thumbImage: 'https://i2.wp.com/asiatimes.com/wp-content/uploads/2019/01/T-34-in-snow.jpg?fit=1600%2C1067&ssl=1'
+  // }
+  //];
   //location: Number[] = [37.587874, 55.73367];
   vehicleID: string;
   tripStartDate: string;
@@ -43,7 +43,8 @@ export class VehiclePageComponent implements OnInit {
           this.tripEndDate = params['endDate'];
           this.tripStartTime = params['startTime'];
           this.tripEndTime = params['endTime'];
-          console.log(this.vehicleID); 
+          console.log(this.vehicleID);
+          this.images = new Array();
           this.getVehicle(this.vehicleID);
       });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box-edit/dialog-box-edit.component';
@@ -12,7 +12,7 @@ import { tap } from 'rxjs/operators';
   templateUrl: './fuel-table.component.html',
   styleUrls: ['./fuel-table.component.css']
 })
-export class FuelTableComponent implements OnInit {
+export class FuelTableComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['name', 'action'];
   dataSource: Fuel[];
   pageNo: number;
@@ -39,24 +39,24 @@ export class FuelTableComponent implements OnInit {
   }
 
   getFuels(pageNo: number) {
-    // this.fuelService.getPageable(pageNo).subscribe(
-    //   (data: any) => {
-    //     this.dataSource = data.content;
-    //     this.pageNo = data.pageNo;
-    //     this.totalPages = data.totalPages;
-    //   },
-    //   (error) => {
-    //     alert(error);
-    //   }
-    // );
-    this.fuelService.getAll().subscribe(
+    this.fuelService.getPageable(pageNo).subscribe(
       (data: any) => {
-        this.dataSource = data;
+        this.dataSource = data.content;
+        this.pageNo = data.pageNo;
+        this.totalPages = data.totalPages;
       },
       (error) => {
         alert(error);
       }
-    )
+    );
+    // this.fuelService.getAll().subscribe(
+    //   (data: any) => {
+    //     this.dataSource = data;
+    //   },
+    //   (error) => {
+    //     alert(error);
+    //   }
+    // )
   }
 
   openDialog(action, obj) {

@@ -94,7 +94,7 @@ export class UserService {
 					return this.user;
 				}),
 				catchError((response) => {
-					return throwError(response.error);
+					return throwError(response.error.message);
 				})
 			);
 	}
@@ -114,7 +114,7 @@ export class UserService {
 					return this.user;
 				}),
 				catchError((response) => {
-					return throwError(response.error);
+					return throwError(response.error.message);
 				})
 			);
 	}
@@ -137,7 +137,7 @@ export class UserService {
 					this.passwordChanged = true;
 				}),
 				catchError((response) => {
-					return throwError(response.error);
+					return throwError(response.error.message);
 				})
 			);
 	}
@@ -163,7 +163,7 @@ export class UserService {
 						this.removeUser();
 						this.removeToken();
 						this.router.navigate(['/login']);
-						return throwError(response.error);
+						return throwError(response.error.message);
 					})
 				);
 		} else {

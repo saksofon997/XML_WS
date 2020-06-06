@@ -50,7 +50,9 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleDTO convertToDTO(Vehicle vehicle) throws ConversionFailedError {
         try {
-            return mapper.map(vehicle, VehicleDTO.class);
+            VehicleDTO vehicleDTO = mapper.map(vehicle, VehicleDTO.class);
+            vehicleDTO.getBrand().setModels(null);
+            return vehicleDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
         }

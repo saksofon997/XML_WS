@@ -45,14 +45,15 @@ public class BrandServiceImpl implements BrandService {
     private transient CommandGateway commandGateway;
 
     @Override
+    @Transactional
     public BrandDTO convertToDTO(Brand brand) throws ConversionFailedError {
         try {
             BrandDTO brandDTO = mapper.map(brand, BrandDTO.class);
             brandDTO.setModels(new ArrayList<ModelDTO>());
             for (Model model: brand.getModels()){
-                model.setBrand(null);
                 brandDTO.getModels().add(modelService.convertToDTO(model));
             }
+
             return brandDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
@@ -74,6 +75,7 @@ public class BrandServiceImpl implements BrandService {
         Brand newBrand = convertToModel(brandDTO);
 
         if (!brandRepo.existsByName(brandDTO.getName())){
+            newBrand.setModels(new ArrayList<>());
             Brand savedBrand = brandRepo.save(newBrand);
 
             String brandAggregateId = UUID.randomUUID().toString();

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box-edit/dialog-box-edit.component';
@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './model-table.component.html',
   styleUrls: ['./model-table.component.css']
 })
-export class ModelTableComponent implements OnInit {
+export class ModelTableComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['name', 'action'];
   dataSource: Model[];
   pageNo: number;
@@ -48,25 +48,25 @@ export class ModelTableComponent implements OnInit {
       this.brandId = +params['brandId'];
     });
 
-    this.modelService.getAll(this.brandId).subscribe(
-      (data: any) => {
-        this.dataSource = data;
-      },
-      (error) => {
-        alert(error);
-      }
-    )
-
-    // this.modelService.getPageable(this.brandId, pageNo).subscribe(
+    // this.modelService.getAll(this.brandId).subscribe(
     //   (data: any) => {
-    //     this.dataSource = data.content;
-    //     this.pageNo = data.pageNo;
-    //     this.totalPages = data.totalPages;
+    //     this.dataSource = data;
     //   },
     //   (error) => {
     //     alert(error);
     //   }
-    // );
+    // )
+
+    this.modelService.getPageable(this.brandId, pageNo).subscribe(
+      (data: any) => {
+        this.dataSource = data.content;
+        this.pageNo = data.pageNo;
+        this.totalPages = data.totalPages;
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
   openDialog(action, obj) {

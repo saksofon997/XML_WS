@@ -33,7 +33,7 @@ constructor(private http: HttpClient,
 				return response.body;
 			}),
 			catchError((response) => {
-				return throwError(response.error);
+				return throwError(response.error.message);
 			})
 		);
 	}
