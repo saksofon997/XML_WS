@@ -4,27 +4,27 @@
   <ul class="sticky">
     <li>
       <div class="link">
-        <a routerLink="./" [fragment]="'overview'" [ngClass]="{'active': currentActive === 1}">Overview</a>
+        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'overview'" [ngClass]="{'active': currentActive === 1}">Overview</a>
         <div [ngClass]="{'underline-active': currentActive === 1}" class="underline"></div>
       </div>
     </li>
     <li>
       <div class="link">
-        <a routerLink="./" [fragment]="'features'" [ngClass]="{'active': currentActive === 2}">Features</a>
+        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'features'" [ngClass]="{'active': currentActive === 2}">Features</a>
         <div [ngClass]="{'underline-active': currentActive === 2}" class="underline"></div>
 
       </div>
     </li>
     <li>
       <div class="link">
-        <a routerLink="./" [fragment]="'reviews'" [ngClass]="{'active': currentActive === 3}">Reviews</a>
+        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'reviews'" [ngClass]="{'active': currentActive === 3}">Reviews</a>
         <div [ngClass]="{'underline-active': currentActive === 3}" class="underline"></div>
 
       </div>
     </li>
     <li>
       <div class="link">
-        <a routerLink="./" [fragment]="'location'" [ngClass]="{'active': currentActive === 4}">Location</a>
+        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'location'" [ngClass]="{'active': currentActive === 4}">Location</a>
         <div [ngClass]="{'underline-active': currentActive === 4}" class="underline"></div>
 
       </div>

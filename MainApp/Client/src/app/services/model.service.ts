@@ -32,7 +32,7 @@ export class ModelService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -48,7 +48,7 @@ export class ModelService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -57,13 +57,13 @@ export class ModelService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.get(`/brand/${brandId}/model`, { headers: headers, observe: 'response' })
+    return this.http.get(`${API_URL}/brand/${brandId}/model`, { headers: headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -72,12 +72,13 @@ export class ModelService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post(`/brand/${brandId}/model`, model, { headers: headers, observe: 'response' }).pipe(
+    return this.http.post(`${API_URL}/brand/${brandId}/model`, model, { headers: headers, observe: 'response' }).pipe(
       map(response => {
         return response.body;
       }),
       catchError((response) => {
-        return throwError(response.error);
+        console.log(response);
+        return throwError(response.error.message);
       })
     );
   }
@@ -86,12 +87,12 @@ export class ModelService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.put(`/brand/${brandId}/model/${modelId}`, model, { headers: headers, observe: 'response' }).pipe(
+    return this.http.put(`${API_URL}/brand/${brandId}/model/${modelId}`, model, { headers: headers, observe: 'response' }).pipe(
       map(response => {
         return response.body;
       }),
       catchError((response) => {
-        return throwError(response.error);
+        return throwError(response.error.message);
       })
     );
   }
@@ -100,12 +101,12 @@ export class ModelService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.delete(`/brand/${brandId}/model/${modelId}`, { headers: headers, observe: 'response' }).pipe(
+    return this.http.delete(`${API_URL}/brand/${brandId}/model/${modelId}`, { headers: headers, observe: 'response' }).pipe(
       map(response => {
         return response.body;
       }),
       catchError((response) => {
-        return throwError(response.error);
+        return throwError(response.error.message);
       })
     );
   }

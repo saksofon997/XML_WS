@@ -12,7 +12,8 @@ import { environment } from 'src/environments/environment';
 export class VehiclePageComponent implements OnInit {
 
   imageSize: Object = {width: '400px', height: '300px', space: 4}
-  images: Array<object> = [];
+  images: Array<Object>;
+
   //location: Number[] = [37.587874, 55.73367];
   vehicleID: string;
   tripStartDate: string;
@@ -30,9 +31,9 @@ export class VehiclePageComponent implements OnInit {
           this.tripEndDate = params['endDate'];
           this.tripStartTime = params['startTime'];
           this.tripEndTime = params['endTime'];
-          console.log(this.vehicleID); 
+          console.log(this.vehicleID);
+          this.images = new Array();
           this.getVehicle(this.vehicleID);
-          console.log(this.images); 
       });
   }
 
@@ -77,7 +78,7 @@ export class VehiclePageComponent implements OnInit {
   }
   getVehicle(vehicleID: string){
     this.vehicleService.getOne(vehicleID).subscribe(
-      (data: any) => { 
+      (data: any) => {
         this.vehicle = data;
         this.reservationInfo = {
           tripStartDate: this.tripStartDate,

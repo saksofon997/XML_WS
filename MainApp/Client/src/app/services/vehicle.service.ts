@@ -32,7 +32,7 @@ export class VehicleService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -48,7 +48,7 @@ export class VehicleService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -62,7 +62,7 @@ export class VehicleService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -86,7 +86,7 @@ export class VehicleService {
 				return response.body;
 			}),
 			catchError((response) => {
-				return throwError(response.error);
+				return throwError(response.error.message);
 			})
 		);
 	}
@@ -101,7 +101,7 @@ export class VehicleService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
@@ -116,7 +116,7 @@ export class VehicleService {
           return response.body;
         }),
         catchError((response) => {
-          return throwError(response.error);
+          return throwError(response.error.message);
         })
       );
   }
