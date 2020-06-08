@@ -9,8 +9,6 @@ import search.dto.SearchResultPageDTO;
 import search.exceptions.ConversionFailedError;
 import search.service.SearchService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "search")
 @CrossOrigin(origins = "*")

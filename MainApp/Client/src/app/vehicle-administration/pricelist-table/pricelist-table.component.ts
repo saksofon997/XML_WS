@@ -2,21 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { PricelistDialogBoxComponent } from '../pricelist-dialog-box/pricelist-dialog-box.component';
+import { Pricelist } from 'src/app/models/Pricelist.model';
 
-export interface Pricing {
-  id: number;
-  name: string;
-  pricePerDay: number;
-  cdw: number;
-  pricePerKm: number;
-  description: string
-}
-
-const ELEMENT_DATA: Pricing[] = [
-  { id: 1560608769632, name: 'Basic Plan', pricePerDay: 50, cdw: 5000, pricePerKm: 5, description: 'Custom description here' },
-  { id: 1560608796014, name: 'Premium Plan', pricePerDay: 70, cdw: 7700, pricePerKm: 7, description: 'Custom description here' },
-  { id: 1560608787815, name: 'Family Plan', pricePerDay: 40, cdw: 6000, pricePerKm: 6, description: 'Custom description here' },
-  { id: 1560608805101, name: 'Adventure Plan', pricePerDay: 30, cdw: 15000, pricePerKm: 10, description: 'Custom description here' }
+const ELEMENT_DATA: Pricelist[] = [
+  { id: 1560608769632, ownerId: 1, name: 'Basic Plan', pricePerDay: 50, cdw: 5000, pricePerKm: 5, description: 'Custom description here' },
+  { id: 1560608796014, ownerId: 1, name: 'Premium Plan', pricePerDay: 70, cdw: 7700, pricePerKm: 7, description: 'Custom description here' },
+  { id: 1560608787815, ownerId: 1, name: 'Family Plan', pricePerDay: 40, cdw: 6000, pricePerKm: 6, description: 'Custom description here' },
+  { id: 1560608805101, ownerId: 1, name: 'Adventure Plan', pricePerDay: 30, cdw: 15000, pricePerKm: 10, description: 'Custom description here' }
 ];
 
 @Component({
@@ -57,6 +49,7 @@ export class PricelistTableComponent implements OnInit {
     var d = new Date();
     this.dataSource.push({
       id: d.getTime(),
+      ownerId: row_obj.ownerId,
       name: row_obj.name,
       pricePerDay: row_obj.pricePerDay,
       cdw: row_obj.cdw,

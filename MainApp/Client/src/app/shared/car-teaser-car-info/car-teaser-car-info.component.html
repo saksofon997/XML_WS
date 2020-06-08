@@ -1,25 +1,25 @@
 <div class="row m-3 shadow-sm  m-1 bg-white rounded">
   <div class="col-md-4 col-left">
     <div *ngIf="car.images[0]">
-      <img class="car-Image shadow-sm bg-white rounded" src="{{API_URL+'/vehicle/image/'+car.images[0]}}"/>
+      <img class="car-Image shadow-sm bg-white rounded" src="{{API_URL+'/vehicle/image/'+car.images[0]}}" />
     </div>
-    <div *ngIf="!car.images[0]" >
-      <p style=" text-align: center; line-height: 150px; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;" 
-      unselectable="on"
-      onselectstart="return false;" 
-      onmousedown="return false;">No images provided</p>
+    <div *ngIf="!car.images[0]">
+      <p style=" text-align: center; line-height: 150px; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"
+        unselectable="on" onselectstart="return false;" onmousedown="return false;">No images provided</p>
     </div>
   </div>
   <div class="col-md-6 col-left d-flex justify-content-sm-start justify-content-center mt-3 align-items-center">
     <ul class="vehicle-info mt-1">
       <li>
-        <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon> {{car.brand.name}} {{car.model.name}}
+        <mat-icon matTooltip="Vehicle brand and model" [matTooltipPosition]="'below'"> directions_car</mat-icon>
+        {{car.brand.name}} {{car.model.name}}
       </li>
       <li>
         <mat-icon matTooltip="Fuel type" [matTooltipPosition]="'below'"> local_gas_station</mat-icon> {{car.fuel.name}}
       </li>
       <li>
-        <mat-icon matTooltip="Transmission type" [matTooltipPosition]="'below'">open_with</mat-icon> {{car.transmission.name}}
+        <mat-icon matTooltip="Transmission type" [matTooltipPosition]="'below'">open_with</mat-icon>
+        {{car.transmission.name}}
       </li>
       <li>
         <mat-icon matTooltip="Vehicle category" [matTooltipPosition]="'below'">commute</mat-icon> {{car.category.name}}
@@ -28,7 +28,8 @@
         <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon> {{checkMileage((car.mileage))}}
+        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon>
+        {{checkMileage((car.mileage))}}
       </li>
     </ul>
   </div>
@@ -47,6 +48,16 @@
       </div>
       <div class="col-sm-4 col-md-3 d-flex justify-content-center align-self-center">
         <!-- <span class="badge mt-3">{{car.commentNo}}</span> -->
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" mat-button aria-haspopup="true"
+        aria-expanded="false">
+        <mat-icon>settings</mat-icon>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" style="cursor: pointer;" (click)="openDialog('Update',car)">Edit</a>
+        <a class="dropdown-item" style="cursor: pointer;" (click)="openDialog('Delete',car)">Delete</a>
       </div>
     </div>
   </div>

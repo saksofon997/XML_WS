@@ -23,8 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "")
+@CrossOrigin(origins = "*")
 public class VehicleController {
 
     @Autowired

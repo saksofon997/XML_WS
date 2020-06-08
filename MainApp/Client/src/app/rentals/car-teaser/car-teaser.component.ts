@@ -5,31 +5,32 @@ import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { ShoppingCart } from 'src/app/models/ShoppingCart.model';
 import { RentalFront } from 'src/app/models/Rental.model';
+
 @Component({
   selector: 'app-car-teaser',
   templateUrl: './car-teaser.component.html',
   styleUrls: ['./car-teaser.component.css']
 })
 export class CarTeaserComponent implements OnInit {
-@Input() car: Car;
-@Input() from: number;
-@Input() to: number;
-API_URL = environment.API_URL;
+  @Input() car: Car;
+  @Input() from: number;
+  @Input() to: number;
+  API_URL = environment.API_URL;
 
-  constructor(private cookieService: CookieService) { 
+  constructor(private cookieService: CookieService) {
   }
 
   ngOnInit() {
   }
 
-  checkMileage(mileage){
+  checkMileage(mileage) {
     return mileage != -1 ? mileage : "Unlimited";
   }
 
   inCart() {
     if (this.cookieService.get('shopping-cart')) {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
-      if (cart.rentals){
+      if (cart.rentals) {
         return cart.rentals.some(e => e.car.id === this.car.id);
       } else {
         return false;
@@ -38,37 +39,25 @@ API_URL = environment.API_URL;
     return false;
   }
 
-  addToCart($event){
+  addToCart($event) {
     $event.stopPropagation();
-    console.log("Added to cart");
 
-    //temp
+    //TODO start - end time
     this.from = 1592406000;
     this.to = 1592578800;
 
-
-    console.log(this.from);
-    console.log(this.to);
     if (this.cookieService.get('shopping-cart')) {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
 
       if (!cart.rentals.some(e => e.car.id === this.car.id)) {
-        let rental = new RentalFront();
-        rental.car = this.car;
-        rental.from = this.from;
-        rental.to = this.to;
+        let rental = new RentalFront(null, this.car, this.from, this.to, null);
         cart.rentals.push(rental);
       }
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     } else {
-      let cart = new ShoppingCart();
-      cart.rentals = new Array();
-      cart.bundles = new Array();
+      let cart = new ShoppingCart(new Array(), new Array());
 
-      let rental = new RentalFront();
-      rental.car = this.car;
-      rental.from = this.from;
-      rental.to = this.to;
+      let rental = new RentalFront(null, this.car, this.from, this.to, null);
       cart.rentals.push(rental);
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     }

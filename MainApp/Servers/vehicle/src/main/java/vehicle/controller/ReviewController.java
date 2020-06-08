@@ -14,7 +14,7 @@ import vehicle.service.ReviewService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "")
+@CrossOrigin(origins = "*")
 public class ReviewController {
 
     @Autowired

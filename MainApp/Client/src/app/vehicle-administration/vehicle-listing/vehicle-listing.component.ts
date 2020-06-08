@@ -22,7 +22,6 @@ export class VehicleListingComponent implements OnInit {
     this.vehicleService.getByOwner(1).subscribe(
       (data: any) => {
         this.dataSource = data;
-        console.log(this.dataSource);
       },
       (error) => {
         alert(error);
