@@ -43,6 +43,7 @@ public class Vehicle {
     @Column(name = "mileage")
     private long mileage;
 
+    //TODO boolean cdw
     @Column(name = "cdw")
     private long cdw;
 
