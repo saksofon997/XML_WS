@@ -65,7 +65,7 @@ public class SearchServiceImpl implements SearchService {
             FuelDTO fuelDTO = new FuelDTO(vehicle.getFuel().getId(), vehicle.getFuel().getName());
             PricelistDTO pricelistDTO = new PricelistDTO(vehicle.getPricelist().getId(), vehicle.getPricelist().getOwnerId(), vehicle.getPricelist().getName(),
                     vehicle.getPricelist().getPricePerDay(), vehicle.getPricelist().getPricePerKm(),
-                    vehicle.getPricelist().getCdw(), vehicle.getPricelist().getDescription());
+                    vehicle.getPricelist().isCdw(), vehicle.getPricelist().getDescription());
 
             VehicleDTO vehicleDTO = new VehicleDTO();
             vehicleDTO.setId(vehicle.getId());
@@ -78,7 +78,7 @@ public class SearchServiceImpl implements SearchService {
             vehicleDTO.setSeats(vehicle.getSeats());
             vehicleDTO.setChildSeats(vehicle.getChildSeats());
             vehicleDTO.setMileage(vehicle.getMileage());
-            vehicleDTO.setCdw(vehicle.getCdw());
+            vehicleDTO.setCdw(vehicle.isCdw());
             vehicleDTO.setNumberOfStars(vehicle.getNumberOfStars());
             vehicleDTO.setNumberOfReviews(vehicle.getNumberOfReviews());
             vehicleDTO.setImages(vehicle.getImages());

@@ -9,7 +9,7 @@ public class PricelistDTO {
     private String name;
     private long pricePerDay;
     private long pricePerKm;
-    private long cdw;
+    private boolean cdw;
     private String description;
 
     public PricelistDTO() {
@@ -20,7 +20,7 @@ public class PricelistDTO {
                         String name,
                         long pricePerDay,
                         long pricePerKm,
-                        long cdw,
+                        boolean cdw,
                         String description) {
         this.id = id;
         this.ownerId = ownerId;
@@ -71,14 +71,6 @@ public class PricelistDTO {
         this.pricePerKm = pricePerKm;
     }
 
-    public long getCdw() {
-        return cdw;
-    }
-
-    public void setCdw(long cdw) {
-        this.cdw = cdw;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -87,5 +79,11 @@ public class PricelistDTO {
         this.description = description;
     }
 
+    public boolean isCdw() {
+        return cdw;
+    }
 
+    public void setCdw(boolean cdw) {
+        this.cdw = cdw;
+    }
 }

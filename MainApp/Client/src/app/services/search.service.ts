@@ -30,6 +30,7 @@ export class SearchService {
         searchParamsString += `${key}=${searchParams[key]}&`
       }
     }
+    
     return this.http.get(`${API_URL}/search?${searchParamsString}`, { headers, observe: 'response' })
       .pipe(
         map(response => {

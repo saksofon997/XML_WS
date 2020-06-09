@@ -3,13 +3,8 @@ import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { PricelistDialogBoxComponent } from '../pricelist-dialog-box/pricelist-dialog-box.component';
 import { Pricelist } from 'src/app/models/Pricelist.model';
-
-const ELEMENT_DATA: Pricelist[] = [
-  { id: 1560608769632, ownerId: 1, name: 'Basic Plan', pricePerDay: 50, cdw: 5000, pricePerKm: 5, description: 'Custom description here' },
-  { id: 1560608796014, ownerId: 1, name: 'Premium Plan', pricePerDay: 70, cdw: 7700, pricePerKm: 7, description: 'Custom description here' },
-  { id: 1560608787815, ownerId: 1, name: 'Family Plan', pricePerDay: 40, cdw: 6000, pricePerKm: 6, description: 'Custom description here' },
-  { id: 1560608805101, ownerId: 1, name: 'Adventure Plan', pricePerDay: 30, cdw: 15000, pricePerKm: 10, description: 'Custom description here' }
-];
+import { PricelistService } from 'src/app/services/pricelist.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pricelist-table',
@@ -18,13 +13,24 @@ const ELEMENT_DATA: Pricelist[] = [
 })
 export class PricelistTableComponent implements OnInit {
   displayedColumns: string[] = ['name', 'pricePerDay', 'cdw', 'pricePerKm', 'action'];
-  dataSource = ELEMENT_DATA;
+  dataSource: Pricelist[];
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,
+    private pricelistService: PricelistService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.pricelistService.getByOwner(1).subscribe(
+      (data: any) => {
+        console.log(data)
+        this.dataSource = data;
+      },
+      (error) => {
+        alert(error);
+      });
   }
 
   openDialog(action, obj) {

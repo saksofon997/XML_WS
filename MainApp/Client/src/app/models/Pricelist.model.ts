@@ -4,11 +4,11 @@ export class Pricelist {
   name: string;
   pricePerDay: number;
   pricePerKm: number;
-  cdw: number;
+  cdw: boolean;
   description: string;
 
   constructor(id: number, ownerId: number, name: string, pricePerDay: number,
-    pricePerKm: number, cdw: number, description: string) {
+    pricePerKm: number, cdw: boolean, description: string) {
     this.id = id;
     this.ownerId = ownerId;
     this.name = name;

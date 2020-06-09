@@ -21,6 +21,7 @@ export class VehicleListingComponent implements OnInit {
   ngOnInit(): void {
     this.vehicleService.getByOwner(1).subscribe(
       (data: any) => {
+        console.log(data)
         this.dataSource = data;
       },
       (error) => {

@@ -11,7 +11,7 @@ import search.service.SearchService;
 
 @RestController
 @RequestMapping(value = "search")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class SearchController {
 
     @Autowired
