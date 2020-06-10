@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import saga.dto.PricelistDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -23,6 +24,7 @@ public class PricelistController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_PRICELIST_PERMISSION')")
     public ResponseEntity<PricelistDTO> createNew(@RequestBody PricelistDTO pricelistDTO)
             throws ConversionFailedError, DuplicateEntity {
 
@@ -44,6 +46,7 @@ public class PricelistController {
     @PutMapping(path = "/{id}",
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_PRICELIST_PERMISSION')")
     public ResponseEntity<PricelistDTO> update(@PathVariable Long id,
                                                @RequestBody PricelistDTO pricelistDTO)
             throws ConversionFailedError, EntityNotFound, DuplicateEntity {
@@ -55,6 +58,7 @@ public class PricelistController {
 
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_PRICELIST_PERMISSION')")
     public ResponseEntity<PricelistDTO> delete(@PathVariable Long id)
             throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
@@ -65,6 +69,7 @@ public class PricelistController {
 
     @GetMapping(path = "/owner/{ownerId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('VIEW_PRICELIST_PERMISSION')")
     public ResponseEntity<List<PricelistDTO>> get(@PathVariable Long ownerId)
             throws ConversionFailedError, EntityNotFound {
 

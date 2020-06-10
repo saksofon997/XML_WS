@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import saga.dto.ReviewDTO;
-import saga.dto.VehicleDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.service.ReviewService;
@@ -22,6 +22,7 @@ public class ReviewController {
 
     @GetMapping(path = "/review",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_REVIEW_PERMISSION')")
     public ResponseEntity<List<ReviewDTO>> getPending() throws ConversionFailedError, EntityNotFound {
 
         List<ReviewDTO> pending = reviewService.getPending();
@@ -30,7 +31,7 @@ public class ReviewController {
     }
 
     @GetMapping(path = "/vehicle/{vehicleId}/review",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ReviewDTO>> get(@PathVariable Long vehicleId) throws ConversionFailedError, EntityNotFound {
 
         List<ReviewDTO> reviews = reviewService.getByVehicle(vehicleId);
@@ -39,8 +40,9 @@ public class ReviewController {
     }
 
     @PostMapping(path = "/vehicle/{vehicleId}/review",
-                 consumes = MediaType.APPLICATION_JSON_VALUE,
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_REVIEW_PERMISSION')")
     public ResponseEntity<ReviewDTO> createNew(@PathVariable Long vehicleId,
                                                @RequestBody ReviewDTO reviewDTO) throws ConversionFailedError {
 
@@ -60,8 +62,9 @@ public class ReviewController {
     }
 
     @PutMapping(path = "/vehicle/{vehicleId}/review/{id}",
-                consumes = MediaType.APPLICATION_JSON_VALUE,
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_REVIEW_PERMISSION') or hasAuthority('APPROVE_REVIEW_PERMISSION')")
     public ResponseEntity<ReviewDTO> update(@PathVariable Long vehicleId,
                                             @PathVariable Long id,
                                             @RequestBody ReviewDTO reviewDTO) throws ConversionFailedError, EntityNotFound {
@@ -73,6 +76,7 @@ public class ReviewController {
 
     @DeleteMapping(path = "/vehicle/{vehicleId}/review/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_REVIEW_PERMISSION')")
     public ResponseEntity<ReviewDTO> delete(@PathVariable Long vehicleId,
                                             @PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
@@ -80,4 +84,6 @@ public class ReviewController {
 
         return new ResponseEntity<>(deleted, HttpStatus.ACCEPTED);
     }
+
+    //TODO Add patch mapping for approving reviews?
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import saga.dto.BrandDTO;
 import vehicle.dto.BrandPageDTO;
@@ -29,9 +30,9 @@ public class BrandController {
             @RequestHeader(value = "sort", required = false) String sort,
             @RequestHeader(value = "pageable", required = false) Boolean pageable) throws ConversionFailedError, EntityNotFound {
 
-        sort = (sort != null) ? sort: "id";
-        pageNo = (pageNo != null) ? pageNo: 0;
-        if (pageable){
+        sort = (sort != null) ? sort : "id";
+        pageNo = (pageNo != null) ? pageNo : 0;
+        if (pageable) {
             BrandPageDTO page = brandService.getAllPageable(pageNo, sort);
             return new ResponseEntity<>(page, HttpStatus.OK);
         } else {
@@ -41,7 +42,8 @@ public class BrandController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_VEHICLE_PART_PERMISSION')")
     public ResponseEntity<BrandDTO> createNew(@RequestBody BrandDTO brandDTO) throws DuplicateEntity, ConversionFailedError {
 
         BrandDTO added = brandService.add(brandDTO);
@@ -61,6 +63,7 @@ public class BrandController {
     @PutMapping(path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_VEHICLE_PART_PERMISSION')")
     public ResponseEntity<BrandDTO> update(@PathVariable Long id,
                                            @RequestBody BrandDTO brandDTO) throws UnexpectedError, ConversionFailedError, EntityNotFound {
 
@@ -71,6 +74,7 @@ public class BrandController {
 
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_VEHICLE_PART_PERMISSION')")
     public ResponseEntity<BrandDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
         brandService.delete(id);
