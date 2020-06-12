@@ -1,23 +1,23 @@
 
 export class Review {
-    stars: Number;
-    date: Number;
-    user : {
-      id: Number,
-      name: String
-    };
-    vehicle: {
-      id: String,
-      name:String
-    };
-    text: String;
+  stars: number;
+  date: number;
+  user: {
+    id: number,
+    name: string
+  };
+  vehicle: {
+    id: string,
+    name: string
+  };
+  text: string;
 
-	constructor(stars: Number, date: Number,user: any,vehicle: any,text: String ) {
-        this.stars = stars;
-        this.date = date;
-        this.user = user;
-        this.vehicle = vehicle;
-        this. text = text;
-	}
+  constructor(stars: number, date: number, user: any, vehicle: any, text: string) {
+    this.stars = stars;
+    this.date = date;
+    this.user = user;
+    this.vehicle = vehicle;
+    this.text = text;
+  }
 
 }

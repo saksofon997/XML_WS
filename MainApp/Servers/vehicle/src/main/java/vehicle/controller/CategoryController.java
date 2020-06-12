@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import saga.dto.BrandDTO;
 import saga.dto.CategoryDTO;
 import vehicle.dto.CategoryPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Category;
 import vehicle.service.CategoryService;
 
 import java.util.List;
@@ -26,12 +25,12 @@ public class CategoryController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAll(@RequestHeader(value = "page", required = false) Integer pageNo,
-                                                  @RequestHeader(value = "sort", required = false) String sort,
-                                                  @RequestHeader(value = "pageable", required = false) Boolean pageable)
+                                    @RequestHeader(value = "sort", required = false) String sort,
+                                    @RequestHeader(value = "pageable", required = false) Boolean pageable)
             throws ConversionFailedError, EntityNotFound {
-        sort = (sort != null) ? sort: "id";
-        pageNo = (pageNo != null) ? pageNo: 0;
-        if (pageable){
+        sort = (sort != null) ? sort : "id";
+        pageNo = (pageNo != null) ? pageNo : 0;
+        if (pageable) {
             CategoryPageDTO categories = categoryService.getAllPageable(pageNo, sort);
             return new ResponseEntity<>(categories, HttpStatus.OK);
         } else {
@@ -41,7 +40,8 @@ public class CategoryController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_VEHICLE_PART_PERMISSION')")
     public ResponseEntity<CategoryDTO> createNew(@RequestBody CategoryDTO categoryDTO) throws ConversionFailedError, DuplicateEntity {
 
         CategoryDTO added = categoryService.add(categoryDTO);
@@ -50,7 +50,7 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{id}",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         CategoryDTO categoryDTO = categoryService.getOne(id);
@@ -59,10 +59,11 @@ public class CategoryController {
     }
 
     @PutMapping(path = "/{id}",
-                consumes = MediaType.APPLICATION_JSON_VALUE,
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_VEHICLE_PART_PERMISSION')")
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id,
-                                         @RequestBody CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError {
+                                              @RequestBody CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError {
 
         CategoryDTO updated = categoryService.update(id, categoryDTO);
 
@@ -70,7 +71,8 @@ public class CategoryController {
     }
 
     @DeleteMapping(path = "/{id}",
-                   produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_VEHICLE_PART_PERMISSION')")
     public ResponseEntity<CategoryDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         categoryService.delete(id);

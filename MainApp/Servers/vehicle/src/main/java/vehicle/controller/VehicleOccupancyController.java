@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import saga.dto.VehicleOccupancyDTO;
 import vehicle.exceptions.ConversionFailedError;
@@ -14,7 +15,6 @@ import vehicle.service.VehicleOccupancyService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "")
 @CrossOrigin(origins = "*")
 public class VehicleOccupancyController {
 
@@ -31,8 +31,9 @@ public class VehicleOccupancyController {
     }
 
     @PostMapping(path = "/vehicle/{vehicleId}/occupancy",
-                 consumes = MediaType.APPLICATION_JSON_VALUE,
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_VEHICLE_OCCUPANCY')")
     public ResponseEntity<VehicleOccupancyDTO> createNew(@PathVariable Long vehicleId,
                                                          @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
@@ -42,7 +43,8 @@ public class VehicleOccupancyController {
     }
 
     @PutMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_VEHICLE_OCCUPANCY')")
     public ResponseEntity<VehicleOccupancyDTO> update(@PathVariable Long vehicleId,
                                                       @PathVariable Long id,
                                                       @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, EntityNotFound, DuplicateEntity {
@@ -54,6 +56,7 @@ public class VehicleOccupancyController {
 
     @DeleteMapping(path = "/vehicle/{vehicleId}/occupancy/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_VEHICLE_OCCUPANCY')")
     public ResponseEntity<VehicleOccupancyDTO> delete(@PathVariable Long vehicleId,
                                                       @PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
@@ -65,8 +68,8 @@ public class VehicleOccupancyController {
     @GetMapping(path = "/vehicle/{vehicleId}/occupancy/start/{start_time}/end/{end_time}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VehicleOccupancyDTO>> getOccupanciesOfGivenPeriod(@PathVariable Long vehicleId,
-                                                      @PathVariable long start_time,
-                                                      @PathVariable long end_time) throws ConversionFailedError, EntityNotFound {
+                                                                                 @PathVariable long start_time,
+                                                                                 @PathVariable long end_time) throws ConversionFailedError, EntityNotFound {
 
         List<VehicleOccupancyDTO> occupancies = vehicleOccupancyService.getOccupanciesOfGivenPeriod(vehicleId, start_time, end_time);
 

@@ -13,7 +13,7 @@ public class VehicleDTO {
     private int seats;
     private int childSeats;
     private long mileage;
-    private long cdw;
+    private boolean cdw;
     private PricelistDTO pricelist;
     private int numberOfStars;
     private int numberOfReviews;
@@ -25,21 +25,11 @@ public class VehicleDTO {
     public VehicleDTO() {
     }
 
-    public VehicleDTO(Long id,
-                      BrandDTO brand,
-                      ModelDTO model,
-                      CategoryDTO category,
-                      TransmissionDTO transmission,
-                      FuelDTO fuel,
-                      int seats,
-                      int childSeats,
-                      long mileage,
-                      long cdw,
-                      PricelistDTO pricelist,
-                      int numberOfStars,
-                      int numberOfReviews,
-                      double locationLongitude,
-                      double locationLatitude, Long owner_id) {
+    public VehicleDTO(Long id, BrandDTO brand, ModelDTO model, CategoryDTO category,
+                      TransmissionDTO transmission, FuelDTO fuel, int seats, int childSeats,
+                      long mileage, boolean cdw, PricelistDTO pricelist, int numberOfStars,
+                      int numberOfReviews, double locationLongitude, double locationLatitude,
+                      List<String> images, Long ownerId) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -55,7 +45,8 @@ public class VehicleDTO {
         this.numberOfReviews = numberOfReviews;
         this.locationLongitude = locationLongitude;
         this.locationLatitude = locationLatitude;
-        this.ownerId = owner_id;
+        this.images = images;
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -138,14 +129,6 @@ public class VehicleDTO {
         this.mileage = mileage;
     }
 
-    public long getCdw() {
-        return cdw;
-    }
-
-    public void setCdw(long cdw) {
-        this.cdw = cdw;
-    }
-
     public PricelistDTO getPricelist() {
         return pricelist;
     }
@@ -170,13 +153,21 @@ public class VehicleDTO {
         this.numberOfReviews = numberOfReviews;
     }
 
-    public double getLocationLongitude() { return locationLongitude; }
+    public double getLocationLongitude() {
+        return locationLongitude;
+    }
 
-    public void setLocationLongitude(double locationLongitude) { this.locationLongitude = locationLongitude; }
+    public void setLocationLongitude(double locationLongitude) {
+        this.locationLongitude = locationLongitude;
+    }
 
-    public double getLocationLatitude() { return locationLatitude; }
+    public double getLocationLatitude() {
+        return locationLatitude;
+    }
 
-    public void setLocationLatitude(double locationLatitude) { this.locationLatitude = locationLatitude; }
+    public void setLocationLatitude(double locationLatitude) {
+        this.locationLatitude = locationLatitude;
+    }
 
     public Long getOwnerId() {
         return ownerId;
@@ -184,5 +175,13 @@ public class VehicleDTO {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public boolean isCdw() {
+        return cdw;
+    }
+
+    public void setCdw(boolean cdw) {
+        this.cdw = cdw;
     }
 }

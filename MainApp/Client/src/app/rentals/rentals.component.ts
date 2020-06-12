@@ -1,10 +1,7 @@
-import { element } from 'protractor';
 import { FuelService } from './../services/fuel.service';
 import { LocationService } from './location.service';
-import { Component, OnInit, ViewChild, ElementRef, NgZone, ViewEncapsulation } from '@angular/core';
-import { AngularYandexMapsModule } from 'angular8-yandex-maps';
+import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { Car } from '../models/Car.model';
-import { Review } from '../models/Review.model';
 import { SearchService } from '../services/search.service';
 import { Category } from '../models/Category.model';
 import { Brand } from '../models/Brand.model';
@@ -41,7 +38,6 @@ export class RentalsComponent implements OnInit {
   zoom: number;
   address: string;
   searchText: string;
-  private geoCoder;
   response: any;
   rating: Number;
 
@@ -125,7 +121,6 @@ export class RentalsComponent implements OnInit {
   }
 
   searchDataChanged(event) {
-    console.log(event);
     if (this.searchText == '') {
       return;
     }
@@ -135,7 +130,7 @@ export class RentalsComponent implements OnInit {
         (data) => {
           this.response = data;
           this.response = this.response.response.GeoObjectCollection.featureMember;
-          console.log(this.response); resolve();
+          resolve();
         },
         (error) => { alert(error); reject(); }
       );
@@ -143,7 +138,7 @@ export class RentalsComponent implements OnInit {
     return promise;
   }
 
-  selectionChanged(event) {
+  selectionChanged() {
 
   }
 
@@ -160,12 +155,10 @@ export class RentalsComponent implements OnInit {
   }
 
   to() {
-    return Number(this.tripEndDate?.getTime())  / 1000 + this.tripEndTime * 60 ;
+    return Number(this.tripEndDate?.getTime()) / 1000 + this.tripEndTime * 60;
   }
 
   getCars(pageNo: number) {
-    console.log(this.tripStartDate?.getTime() / 1000 );
-    console.log(this.tripEndTime);
     const searchParams = {
       loc_lat: 45.2605774,
       loc_long: 19.8009594,
@@ -177,7 +170,6 @@ export class RentalsComponent implements OnInit {
       fuel: this.searchParamsObjects.fuels.length > 0 ? this.searchParamsObjects.fuels.map(x => x.name) : null,
       transmission: this.searchParamsObjects.transmissions.length > 0 ? this.searchParamsObjects.transmissions.map(x => x.name) : null,
     };
-    console.log(this.searchParamsObjects.brands.map(x => x.name));
     this.searchService.search(pageNo, searchParams).subscribe(
       (data: any) => {
         this.cars = data.content;
@@ -213,20 +205,18 @@ export class RentalsComponent implements OnInit {
   }
 
   showVehicle(car: Car) {
-    console.log("Show vehicle");
-    let params = "?vehicleID=" + car.id + "&startDate=" + this.tripStartDate 
-    + "&endDate=" + this.tripEndDate
-    + "&startTime=" + this.tripStartTime
-    + "&endTime=" + this.tripEndTime;
-    window.open("/vehicle"+params,"_blank");
+    let params = "?vehicleID=" + car.id + "&startDate=" + this.tripStartDate
+      + "&endDate=" + this.tripEndDate
+      + "&startTime=" + this.tripStartTime
+      + "&endTime=" + this.tripEndTime;
+    window.open("/vehicle" + params, "_blank");
     // todo in F-S-2
   }
-  loadMore(pageNo: number){
+  loadMore(pageNo: number) {
     this.pageNo = pageNo;
     this.getCars(pageNo);
   }
   brandSelectionChanged(selectedBrands) {
-    console.log(selectedBrands.value);
     this.searchParamsObjects.brands = selectedBrands.value;
     this.models = [];
     selectedBrands.value.forEach(brand => {
@@ -234,11 +224,9 @@ export class RentalsComponent implements OnInit {
     });
   }
   modelSelectionChanged(selectedModels) {
-    console.log(selectedModels.value);
     this.searchParamsObjects.models = selectedModels.value;
   }
-  moveAdvancedSearch(destination: string){
-    console.log("Pokusaj prependa");
+  moveAdvancedSearch(destination: string) {
     var dom = window.document;
     dom.getElementById(destination).prepend(document.getElementById("tempAdvancedSearch"));
   }

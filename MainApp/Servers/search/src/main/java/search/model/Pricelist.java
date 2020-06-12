@@ -32,7 +32,7 @@ public class Pricelist implements Serializable {
     private long pricePerKm;
 
     @Column(name = "cdw")
-    private long cdw;
+    private boolean cdw;
 
     @Column(name = "description")
     private String description;
@@ -51,7 +51,7 @@ public class Pricelist implements Serializable {
                      String name,
                      long pricePerDay,
                      long pricePerKm,
-                     long cdw,
+                     boolean cdw,
                      String description) {
         this.id = id;
         this.ownerId = ownerId;
@@ -67,7 +67,7 @@ public class Pricelist implements Serializable {
                      String name,
                      long pricePerDay,
                      long pricePerKm,
-                     long cdw,
+                     boolean cdw,
                      String description,
                      List<Vehicle> vehicles) {
         this.id = id;
@@ -120,14 +120,6 @@ public class Pricelist implements Serializable {
         this.pricePerKm = pricePerKm;
     }
 
-    public long getCdw() {
-        return cdw;
-    }
-
-    public void setCdw(long cdw) {
-        this.cdw = cdw;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -150,5 +142,13 @@ public class Pricelist implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isCdw() {
+        return cdw;
+    }
+
+    public void setCdw(boolean cdw) {
+        this.cdw = cdw;
     }
 }

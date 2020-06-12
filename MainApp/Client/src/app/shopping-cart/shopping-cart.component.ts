@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Car } from '../models/Car.model';
-import { Review } from '../models/Review.model';
 import { RentalBack, RentalFront } from '../models/Rental.model';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,12 +7,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { Bundle } from '../models/Bundle.model';
 import { ShoppingCart } from '../models/ShoppingCart.model';
 import { RentalService } from '../services/rental.service';
-
-// class Bundle {
-//   name: string;
-//   rentals?: Array<RentalFront>;
-//   owner: Number;
-// }
 
 @Component({
   selector: 'app-shopping-cart',
@@ -29,19 +21,17 @@ export class ShoppingCartComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   constructor(public dialog: MatDialog,
-              private cookieService: CookieService,
-              private rentalService: RentalService) {
+    private cookieService: CookieService,
+    private rentalService: RentalService) {
 
     if (this.cookieService.get('shopping-cart')) {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
       this.rentals = cart.rentals;
       this.bundles = cart.bundles;
     } else {
-      let cart = new ShoppingCart();
-      cart.rentals = this.rentals;
-      cart.bundles = this.bundles;
+      let cart = new ShoppingCart(this.rentals, this.bundles);
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
-    } 
+    }
 
     //this.cookieService.delete('shopping-cart');
   }
@@ -70,21 +60,16 @@ export class ShoppingCartComponent implements OnInit {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
 
       if (!cart.bundles.some(e => e.name === data.name)) {
-        let bundle = new Bundle();
-        bundle.name = data.name;
-        bundle.rentals = new Array<RentalFront>();
+        let bundle = new Bundle(data.name, new Array<RentalFront>(), null);
         cart.bundles.push(bundle);
         this.bundles.push(bundle);
       }
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     } else {
-      let cart = new ShoppingCart();
-      cart.rentals = new Array();
-      cart.bundles = new Array();
+      let cart = new ShoppingCart(new Array(), new Array());
 
-      let bundle = new Bundle();
-      bundle.name = data.name;
-      bundle.rentals = new Array<RentalFront>();
+      let bundle = new Bundle(data.name, new Array<RentalFront>(), null);
+
       cart.bundles.push(bundle);
       this.bundles.push(bundle);
 
@@ -97,11 +82,11 @@ export class ShoppingCartComponent implements OnInit {
       return b.name === data.name;
     });
 
-    for (var rental of result.rentals){
+    for (var rental of result.rentals) {
       rental.bundle = null;
     }
 
-    this.bundles = this.bundles.filter((value, key) => {
+    this.bundles = this.bundles.filter((value) => {
       return value.name !== data.name;
     });
     let cart = JSON.parse(this.cookieService.get('shopping-cart'));
@@ -111,32 +96,29 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   removeFromBundle(bundle, rental) {
-    bundle.rentals = bundle.rentals.filter((value, key) => {
+    bundle.rentals = bundle.rentals.filter((value) => {
       return value.id !== rental.id;
     });
 
-    if (bundle.rentals.length === 0){
+    if (bundle.rentals.length === 0) {
       bundle.owner = null;
     }
     rental.bundle = null;
   }
 
-  checkout(){
+  checkout() {
     let rentals = new Array<RentalBack>();
 
     var i;
     for (i = 0; i < this.rentals.length; i++) {
-      let rental = new RentalBack();
       let rentalFront = this.rentals[i];
+      let rental = new RentalBack(null, rentalFront.car.id, 1, 1, rentalFront.from, rentalFront.to, null);
 
-      rental.startTime = rentalFront.from;
-      rental.endTime = rentalFront.to;
-      rental.customerId = 1; // TODO: user service
-      rental.vehicleId = rentalFront.car.id;
-      rental.ownerId = 1; // TODO: rentalFront.car.ownerId
-      let bundle = new Bundle();
-      bundle.name = rentalFront.bundle?.name;
-      if (rentalFront.bundle){
+      // TODO: user service - customerId
+      // TODO: rentalFront.car.ownerId - ownerId
+      let bundle = new Bundle(rentalFront.bundle?.name, null, null);
+
+      if (rentalFront.bundle) {
         rental.bundle = bundle;
       }
 
@@ -144,7 +126,7 @@ export class ShoppingCartComponent implements OnInit {
     }
 
     this.rentalService.checkout(rentals).subscribe(
-      (data: any) => {
+      () => {
         alert("Checkout successfull");
         this.bundles = new Array();
         this.rentals = new Array();

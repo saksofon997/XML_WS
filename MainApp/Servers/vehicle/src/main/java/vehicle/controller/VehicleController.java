@@ -3,10 +3,10 @@ package vehicle.controller;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import saga.dto.VehicleDTO;
@@ -23,8 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "")
+@CrossOrigin(origins = "*")
 public class VehicleController {
 
     @Autowired
@@ -32,7 +31,7 @@ public class VehicleController {
 
     @GetMapping(path = "/vehicle", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VehicleDTO>> getAll(HttpServletRequest request) {
-        Long isAgent = (Long)request.getAttribute("userId");
+        Long isAgent = (Long) request.getAttribute("userId");
         System.out.println("User ID: ");
         System.out.println(isAgent);
         List<VehicleDTO> vehicles = vehicleService.getAll();
@@ -42,7 +41,8 @@ public class VehicleController {
 
     @PostMapping(path = "/vehicle",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
-                 produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_RENTAL_PERMISSION')")
     public ResponseEntity<VehicleDTO> createNew(@RequestPart("images") MultipartFile[] images, @RequestPart("vehicle") VehicleDTO vehicleDTO, HttpServletRequest request) throws DuplicateEntity, ConversionFailedError, OperationNotAllowed {
 
         VehicleDTO added = vehicleService.add(vehicleDTO, images, request, false);
@@ -50,7 +50,7 @@ public class VehicleController {
     }
 
     @GetMapping(path = "/vehicle/{id}",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<VehicleDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         VehicleDTO vehicleDTO = vehicleService.getOne(id);
@@ -59,7 +59,7 @@ public class VehicleController {
     }
 
     @GetMapping(path = "/owner/{id}/vehicle",
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VehicleDTO>> getOwnersVehicles(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         List<VehicleDTO> vehicleDTOS = vehicleService.getOwnersVehicles(id);
@@ -68,8 +68,9 @@ public class VehicleController {
     }
 
     @PutMapping(path = "/vehicle/{id}",
-                consumes = MediaType.APPLICATION_JSON_VALUE,
-                produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CHANGE_RENTAL_PERMISSION')")
     public ResponseEntity<VehicleDTO> update(@PathVariable Long id,
                                              @RequestBody VehicleDTO vehicleDTO) throws ConversionFailedError, EntityNotFound {
 
@@ -80,6 +81,7 @@ public class VehicleController {
 
     @DeleteMapping(path = "/vehicle/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DELETE_RENTAL_PERMISSION')")
     public ResponseEntity<VehicleDTO> delete(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         VehicleDTO deleted = vehicleService.delete(id);
@@ -104,7 +106,7 @@ public class VehicleController {
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
         InputStream in = image.getInputStream();

@@ -44,7 +44,7 @@ public class Vehicle {
     private long mileage;
 
     @Column(name = "cdw")
-    private long cdw;
+    private boolean cdw;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Pricelist pricelist;
@@ -84,7 +84,7 @@ public class Vehicle {
                    int seats,
                    int childSeats,
                    long mileage,
-                   long cdw,
+                   boolean cdw,
                    Pricelist pricelist,
                    int numberOfStars,
                    int numberOfReviews,
@@ -183,14 +183,6 @@ public class Vehicle {
         this.mileage = mileage;
     }
 
-    public long getCdw() {
-        return cdw;
-    }
-
-    public void setCdw(long cdw) {
-        this.cdw = cdw;
-    }
-
     public Pricelist getPricelist() {
         return pricelist;
     }
@@ -253,5 +245,13 @@ public class Vehicle {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public boolean isCdw() {
+        return cdw;
+    }
+
+    public void setCdw(boolean cdw) {
+        this.cdw = cdw;
     }
 }
