@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface ReviewRepo extends JpaRepository<Review, Long> {
     List<Review> findByStatusEquals(ReviewStatus pending);
 
+    List<Review> findByVehicleAndStatusEquals(Vehicle vehicle, ReviewStatus published);
+
     List<Review> findByVehicle(Vehicle vehicle);
 
     Optional<Review> findByIdAndVehicle(Long id, Vehicle vehicle);

@@ -163,21 +163,21 @@ INSERT INTO search.vehicle_occupancy( -- 19.6. 15:00 -> 22.6. 15:00 UTC
     id, start_time, end_time, type, vehicle_id, deleted)
     VALUES (nextval('vehicle_occupancy_id_seq'), 1592578800, 1592838000, 'MANUAL', 2, false); /*3*/
 
+INSERT INTO search.review(
+	id, customer_id, deleted, stars, status, text, vehicle_id, customer_name, date)
+	VALUES (nextval('review_id_seq'), 1, false, 5, 'PENDING', 'Pohvala za vlasnika', 8, 'Vladimir', 1592233200);
+INSERT INTO search.review(
+	id, customer_id, deleted, stars, status, text, vehicle_id, customer_name, date)
+	VALUES (nextval('review_id_seq'), 2, false, 5, 'PUBLISHED', 'Ma auto je strava', 8, 'Petko', 1592233200);
+/*INSERT INTO vehicle.review(
+	id, customer_id, deleted, stars, status, text, vehicle_id, customer_name, date)
+	VALUES (nextval('review_id_seq'), 3, false, 3, 'PENDING', 'Ma auto je onako', 8, 'Pavle', 1592233200);
 INSERT INTO vehicle.review(
-	id, customer_id, deleted, stars, status, text, vehicle_id)
-	VALUES (nextval('pricelist_id_seq'), 2, false, 5, 'PUBLISHED', 'Ma auto je strava', 8);
+	id, customer_id, deleted, stars, status, text, vehicle_id, customer_name, date)
+	VALUES (nextval('review_id_seq'), 4, false, 1, 'PUBLISHED', 'Ne valja usluga', 8, 'Petar', 1592233200);
 INSERT INTO vehicle.review(
-	id, customer_id, deleted, stars, status, text, vehicle_id)
-	VALUES (nextval('pricelist_id_seq'), 2, false, 3, 'PENDING', 'Ma auto je onako', 8);
-INSERT INTO vehicle.review(
-	id, customer_id, deleted, stars, status, text, vehicle_id)
-	VALUES (nextval('pricelist_id_seq'), 2, false, 1, 'PUBLISHED', 'Ne valja usluga', 8);
-INSERT INTO vehicle.review(
-	id, customer_id, deleted, stars, status, text, vehicle_id)
-	VALUES (nextval('pricelist_id_seq'), 2, false, 5, 'PENDING', 'Pohvala za vlasnika', 8);
-INSERT INTO vehicle.review(
-	id, customer_id, deleted, stars, status, text, vehicle_id)
-	VALUES (nextval('pricelist_id_seq'), 2, false, 2, 'PUBLISHED', 'Ma auto je bezveze', 8);
+	id, customer_id, deleted, stars, status, text, vehicle_id, customer_name, date)
+	VALUES (nextval('review_id_seq'), 5, false, 2, 'PUBLISHED', 'Ma auto je bezveze', 8, 'Mihajlo', 1592233200);*/
 
 INSERT INTO search.images(
     id, images)

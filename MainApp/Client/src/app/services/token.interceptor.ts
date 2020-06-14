@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (request.url.search(login) === -1 && request.url.search(yandex) === -1 && request.url.search(register) === -1) {
             request = request.clone({
                 setHeaders: {
-                    'x-auth': `Bearer ${this.userService.getToken()}`  //`Bearer ${this.userService.getToken()}`
+                    'x-auth': `Bearer ${this.userService.getToken()}`
                 }
             });
         }

@@ -4,27 +4,35 @@
   <ul class="sticky">
     <li>
       <div class="link">
-        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'overview'" [ngClass]="{'active': currentActive === 1}">Overview</a>
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'overview'" [ngClass]="{'active': currentActive === 1}">Overview</a>
         <div [ngClass]="{'underline-active': currentActive === 1}" class="underline"></div>
       </div>
     </li>
     <li>
       <div class="link">
-        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'features'" [ngClass]="{'active': currentActive === 2}">Features</a>
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'features'" [ngClass]="{'active': currentActive === 2}">Features</a>
         <div [ngClass]="{'underline-active': currentActive === 2}" class="underline"></div>
 
       </div>
     </li>
     <li>
       <div class="link">
-        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'reviews'" [ngClass]="{'active': currentActive === 3}">Reviews</a>
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'reviews'" [ngClass]="{'active': currentActive === 3}">Reviews</a>
         <div [ngClass]="{'underline-active': currentActive === 3}" class="underline"></div>
 
       </div>
     </li>
     <li>
       <div class="link">
-        <a routerLink="./" [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}" [fragment]="'location'" [ngClass]="{'active': currentActive === 4}">Location</a>
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'location'" [ngClass]="{'active': currentActive === 4}">Location</a>
         <div [ngClass]="{'underline-active': currentActive === 4}" class="underline"></div>
 
       </div>
@@ -38,7 +46,7 @@
     <a class="anchor" id="overview"></a>
     <div class="row images-container">
       <div class="col" *ngIf="images.length>0">
-        <ng-image-slider  [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider> <!-- property -->
+        <ng-image-slider [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider> <!-- property -->
       </div>
     </div>
 
@@ -98,55 +106,49 @@
       </div>
       <div class="col">
         <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-          <p style="font-size: 2.5rem; font-weight: 900;">4.5</p> <!-- property -->
+          <p style="font-size: 2.5rem; font-weight: 900;">{{vehicle?.numberOfStars / vehicle?.numberOfReviews}}</p>
+          <!-- property -->
         </div>
         <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
-          <p style=" font-size: 1rem; font-weight: 200;">20 reviews</p> <!-- property -->
+          <p style=" font-size: 1rem; font-weight: 200;">{{vehicle?.numberOfReviews}}</p> <!-- property -->
         </div>
       </div>
 
 
       <div class="w-100"></div>
     </div>
+    <table>
+      <tbody>
+        <tr *ngFor='let review of reviews'>
+          <app-review [review]=review></app-review>
+        </tr>
+      </tbody>
+    </table>
 
-    <div class="row ">
-      <!-- NgFor ... -->
-
-      <div class="col-sm-2 col-md-2">
-      </div>
-
-      <div class="col-sm-8">
-        <div class="row ">
-          <app-review></app-review>
-
-        </div>
-        <div class="row ">
-          <app-review></app-review>
-
-        </div>
-        <div class="row ">
-          <app-review></app-review>
-
-        </div>
-        <div class="row m-3 m-1" id="load-more-div" >
-          <a class="btn btn-sm btn-outline-danger" id="load-more">Load more</a>
-        </div>
-      </div>
-
+    <div class="col-sm-2 col-md-2">
     </div>
 
-    <div #location style="margin-top: 9vh;">
-      <a class="anchor" id="location" style="top: -75px;"></a>
-      <div class="row ">
+    <div class="col-sm-8">
+      <div class="row m-3 m-1" id="load-more-div">
+        <a class="btn btn-sm btn-outline-danger" id="load-more">Load more</a>
+      </div>
+    </div>
 
-        <div class="col">
-          <div style="height: 30em; width: 100%;">
+  </div>
 
-            <angular-yandex-map [center]="[55.751952, 37.600739]" [zoom]="12">
-              <angular-yandex-placemark [geometry]="[55.751952, 37.600739]"></angular-yandex-placemark>
-            </angular-yandex-map>
-          </div>
+  <div #location style="margin-top: 9vh;">
+    <a class="anchor" id="location" style="top: -75px;"></a>
+    <div class="row ">
+
+      <div class="col">
+        <div style="height: 30em; width: 100%;">
+
+          <angular-yandex-map [center]="[55.751952, 37.600739]" [zoom]="12">
+            <angular-yandex-placemark [geometry]="[55.751952, 37.600739]"></angular-yandex-placemark>
+          </angular-yandex-map>
         </div>
       </div>
     </div>
   </div>
+
+</div>

@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 
 import { Brand } from 'src/app/models/Brand.model';
 import { environment } from '../../environments/environment';
+import { Car } from '../models/Car.model';
 
 const API_URL = environment.API_URL;
 
@@ -89,11 +90,11 @@ export class VehicleService {
     );
   }
 
-  edit(brandId: number, brand: Brand) {
+  edit(vehicleId: number, vehicle: Car) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.put(`${API_URL}/brand/${brandId}`, brand, { headers, observe: 'response' })
+    return this.http.put(`${API_URL}/vehicle/${vehicleId}`, vehicle, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;
@@ -104,11 +105,11 @@ export class VehicleService {
       );
   }
 
-  delete(brandId: number) {
+  delete(vehicleId: number) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.delete(`${API_URL}/brand/${brandId}`, { headers, observe: 'response' })
+    return this.http.delete(`${API_URL}/vehicle/${vehicleId}`, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;

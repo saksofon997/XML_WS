@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DateTime } from "luxon";
 import { Review } from 'src/app/models/Review.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-review',
@@ -14,14 +15,11 @@ export class ReviewComponent implements OnInit {
   @Input() review: Review;
   formatedDate: any;
 
-  constructor() { 
-    if(!this.review){
-      this.review = new Review(4,1588712400000,{id:2,name:"Petar Basic"},
-      {id:4,name: "Bla bla"},
-      "Curabitur nulla dui, condimentum placerat dolor a, cursus hendrerit nisl."+
-      "Vestibulum venenatis ac diam vel accumsan." +
-      "Nulla nec accumsan felis, faucibus feugiat libero.");
+  constructor() {
+    if(!this.review) {
+    this.review = new Review(1, 2, "Test", null, 4, "text: string", 1592233200);
     }
+    console.log(this.review);
   }
 
   ngOnInit() {

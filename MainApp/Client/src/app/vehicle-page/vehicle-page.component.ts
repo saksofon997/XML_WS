@@ -3,6 +3,8 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { Car } from '../models/Car.model';
 import { environment } from 'src/environments/environment';
+import { Review } from '../models/Review.model';
+import { ReviewService } from '../services/review.service';
 
 @Component({
   selector: 'app-vehicle-page',
@@ -11,30 +13,36 @@ import { environment } from 'src/environments/environment';
 })
 export class VehiclePageComponent implements OnInit {
 
-  imageSize: Object = {width: '400px', height: '300px', space: 4}
+  imageSize: Object = { width: '400px', height: '300px', space: 4 }
   images: Array<Object>;
 
   //location: Number[] = [37.587874, 55.73367];
-  vehicleID: string;
+  vehicleID: number;
   tripStartDate: string;
   tripEndDate: string;
   tripStartTime: string;
   tripEndTime: string;
   vehicle: Car;
-  reservationInfo:any;
+  reservationInfo: any;
+
+  reviews: any;
 
   constructor(private activatedRoute: ActivatedRoute,
-    private vehicleService: VehicleService) {
+    private vehicleService: VehicleService,
+    private reviewService: ReviewService) {
+
     this.activatedRoute.queryParams.subscribe(params => {
-          this.vehicleID = params['vehicleID'];
-          this.tripStartDate = params['startDate'];
-          this.tripEndDate = params['endDate'];
-          this.tripStartTime = params['startTime'];
-          this.tripEndTime = params['endTime'];
-          console.log(this.vehicleID);
-          this.images = new Array();
-          this.getVehicle(this.vehicleID);
-      });
+      this.vehicleID = +params['vehicleID'];
+      this.tripStartDate = params['startDate'];
+      this.tripEndDate = params['endDate'];
+      this.tripStartTime = params['startTime'];
+      this.tripEndTime = params['endTime'];
+
+      this.images = new Array();
+    });
+
+
+    this.loadData();
   }
 
   ngOnInit() {
@@ -58,6 +66,18 @@ export class VehiclePageComponent implements OnInit {
     this.locationOffset = this.locationElement.nativeElement.offsetTop - 100;
   }
 
+  loadData() {
+    let promise = new Promise((resolve, reject) => {
+      this.getVehicle(this.vehicleID).then(() => {
+        this.getVehicleReviews(this.vehicleID).then(() => {
+          resolve();
+        }, () => reject());
+      }, () => reject());
+
+    });
+    return promise;
+  }
+
   scrollToElement(test) {
     // scrollToElement Code :)
   }
@@ -76,26 +96,49 @@ export class VehiclePageComponent implements OnInit {
       this.currentActive = 0;
     }
   }
-  getVehicle(vehicleID: string){
-    this.vehicleService.getOne(vehicleID).subscribe(
-      (data: any) => {
-        this.vehicle = data;
-        this.reservationInfo = {
-          tripStartDate: this.tripStartDate,
-          tripEndDate: this.tripEndDate,
-          tripStartTime: this.tripStartTime,
-          tripEndTime: this.tripEndTime,
-          price: this.vehicle.pricelist.pricePerDay
-        }
-        this.vehicle.images.forEach(imageName => {
-          this.images.push({
-            image: this.API_URL + "/vehicle/image/" + imageName,
-            thumbImage: this.API_URL + "/vehicle/image/" + imageName
-          })
-        });
+
+  getVehicleReviews(vehicleId: number) {
+    let promise = new Promise((resolve, reject) => {
+      this.reviewService.getByVehicle(vehicleId).subscribe(
+        (data: any) => {
+          this.reviews = data;
+          resolve();
         },
-      (error) => { alert(error.message);
-      console.log(error)  }
-    )
+        (error) => {
+          console.log(error);
+          reject();
+        }
+      );
+    });
+    return promise;
+  }
+
+  getVehicle(vehicleID: number) {
+    let promise = new Promise((resolve, reject) => {
+      this.vehicleService.getOne(vehicleID).subscribe(
+        (data: any) => {
+          this.vehicle = data;
+          this.reservationInfo = {
+            tripStartDate: this.tripStartDate,
+            tripEndDate: this.tripEndDate,
+            tripStartTime: this.tripStartTime,
+            tripEndTime: this.tripEndTime,
+            price: this.vehicle.pricelist.pricePerDay
+          }
+          this.vehicle.images.forEach(imageName => {
+            this.images.push({
+              image: this.API_URL + "/vehicle/image/" + imageName,
+              thumbImage: this.API_URL + "/vehicle/image/" + imageName
+            })
+          });
+          resolve();
+        },
+        (error) => {
+          console.log(error);
+          reject();
+        }
+      )
+    });
+    return promise;
   }
 }

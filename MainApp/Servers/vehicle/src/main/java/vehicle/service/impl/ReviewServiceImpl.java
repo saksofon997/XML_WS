@@ -75,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new EntityNotFound("Items not found");
         }
 
-        List<Review> reviews = reviewRepo.findByVehicle(vehicle.get());
+        List<Review> reviews = reviewRepo.findByVehicleAndStatusEquals(vehicle.get(), ReviewStatus.PUBLISHED);
 
         return getReviewDTOS(reviews);
     }
