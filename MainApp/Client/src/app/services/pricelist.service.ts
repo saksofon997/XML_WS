@@ -49,4 +49,49 @@ export class PricelistService {
         })
       );
   }
+
+  add(pricelist: Pricelist) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${API_URL}/pricelist`, pricelist, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
+  edit(pricelistId: number, pricelist: Pricelist) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+      });
+    return this.http.put(`${API_URL}/pricelist/${pricelistId}`, pricelist, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
+  delete(pricelistId: number) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.delete(`${API_URL}/pricelist/${pricelistId}`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
 }

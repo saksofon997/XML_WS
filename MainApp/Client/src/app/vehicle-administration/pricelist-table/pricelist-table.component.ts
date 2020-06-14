@@ -14,6 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class PricelistTableComponent implements OnInit {
   displayedColumns: string[] = ['name', 'pricePerDay', 'cdw', 'pricePerKm', 'action'];
   dataSource: Pricelist[];
+  userId = 1;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
@@ -23,7 +24,11 @@ export class PricelistTableComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.pricelistService.getByOwner(1).subscribe(
+    this.getPricelists(this.userId); //TODO users
+  }
+
+  getPricelists(userId: number) {
+    this.pricelistService.getByOwner(userId).subscribe(
       (data: any) => {
         this.dataSource = data;
       },
@@ -50,35 +55,51 @@ export class PricelistTableComponent implements OnInit {
     });
   }
 
-  addRowData(row_obj) {
-    var d = new Date();
-    this.dataSource.push({
-      id: d.getTime(),
-      ownerId: row_obj.ownerId,
-      name: row_obj.name,
-      pricePerDay: row_obj.pricePerDay,
-      cdw: row_obj.cdw,
-      pricePerKm: row_obj.pricePerKm,
-      description: row_obj.description
-    });
-    this.table.renderRows();
-
-  }
-  updateRowData(row_obj) {
-    this.dataSource = this.dataSource.filter((value, key) => {
-      if (value.id == row_obj.id) {
-        value.name = row_obj.name;
-        value.pricePerDay = row_obj.pricePerDay;
-        value.cdw = row_obj.cdw;
-        value.pricePerKm = row_obj.pricePerKm;
-        value.description = row_obj.description;
+  addRowData(pricelist) {
+    this.pricelistService.add(pricelist).subscribe(
+      (data: Pricelist) => {
+        this.pricelistService.getByOwner(1).subscribe(
+          (data: any) => {
+            this.dataSource = data;
+          },
+          (error) => {
+            alert(error);
+          });
+      },
+      (error) => {
+        alert(error);
       }
-      return true;
-    });
+    );
   }
-  deleteRowData(row_obj) {
-    this.dataSource = this.dataSource.filter((value, key) => {
-      return value.id != row_obj.id;
-    });
+
+  updateRowData(pricelist) {
+    this.pricelistService.edit(pricelist.id, pricelist).subscribe(
+      (data: Pricelist) => {
+        this.dataSource = this.dataSource.filter((value, key) => {
+          if (value.id === pricelist.id) {
+            value.name = pricelist.name;
+            value.pricePerDay = pricelist.pricePerDay;
+            value.cdw = pricelist.cdw;
+            value.pricePerKm = pricelist.pricePerKm;
+            value.description = pricelist.description;
+          }
+          return true;
+        });
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+
+  deleteRowData(pricelist) {
+    this.pricelistService.delete(pricelist.id).subscribe(
+      (data: Pricelist) => {
+        this.getPricelists(this.userId);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 }

@@ -9,21 +9,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from './shared/shared.module';
+import { TokenInterceptor } from './services/token.interceptor';
+import { LoginComponent } from './login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
    declarations: [
       AppComponent,
       HeaderComponent,
       routingComponents,
-      FooterComponent
+      FooterComponent,
+      LoginComponent
    ],
    imports: [
-      //Import modules, except those that are lazy loaded (AdministrationModule)
-      BrowserModule,
+      //Importmodules except lazy loaded
       AppRoutingModule,
       BrowserAnimationsModule,
       SharedModule,
@@ -32,9 +35,16 @@ import { SharedModule } from './shared/shared.module';
       HttpModule,
       SelectDropDownModule,
       MatIconModule,
+      FormsModule,
+      ReactiveFormsModule
    ],
    providers: [
-      CookieService
+      CookieService,
+      {
+         provide: HTTP_INTERCEPTORS,
+         useClass: TokenInterceptor,
+         multi: true
+      }
    ],
    schemas: [
       CUSTOM_ELEMENTS_SCHEMA

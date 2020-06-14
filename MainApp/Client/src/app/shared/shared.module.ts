@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ReviewComponent } from './review/review.component';
 import { CarTeaserCarInfoComponent } from './car-teaser-car-info/car-teaser-car-info.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // import this module in all others which use these shared components and modules
 @NgModule({
@@ -20,6 +21,8 @@ import { CarTeaserCarInfoComponent } from './car-teaser-car-info/car-teaser-car-
     NgbRatingModule,
     MatIconModule,
     MatTooltipModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     // export all of the above

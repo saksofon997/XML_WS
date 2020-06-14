@@ -29,6 +29,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
 
     @Autowired
