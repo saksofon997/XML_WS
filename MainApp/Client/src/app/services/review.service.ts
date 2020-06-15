@@ -35,11 +35,59 @@ export class ReviewService {
       );
   }
 
+  getPageablePending(pageNo: number) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'pageable': `true`,
+      'page': pageNo.toString()
+    });
+    return this.http.get(`${API_URL}/review`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
+  getAllPending() {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'pageable': `false`,
+    });
+    return this.http.get(`${API_URL}/review`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
   getOne(vehicleId: number, reviewId: number) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
     return this.http.get(`${API_URL}/vehicle/${vehicleId}/review/${reviewId}`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
+  add(vehicleId: number, review: Review) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(`${API_URL}/vehicle/${vehicleId}/review`, review, { headers, observe: 'response' })
       .pipe(
         map(response => {
           return response.body;

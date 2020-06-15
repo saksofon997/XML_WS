@@ -6,6 +6,7 @@ import { ModelTableComponent } from './model-table/model-table.component';
 import { CategoriesTableComponent } from './categories-table/categories-table.component';
 import { FuelTableComponent } from './fuel-table/fuel-table.component';
 import { TransmissionTableComponent } from './transmission-table/transmission-table.component';
+import { PendingReviewsComponent } from './pending-reviews/pending-reviews.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,8 @@ const routes: Routes = [
       { path: 'categories', component: CategoriesTableComponent },
       { path: 'fuel', component: FuelTableComponent },
       { path: 'transmission', component: TransmissionTableComponent },
+      { path: 'pending-reviews', component: PendingReviewsComponent },
+      //{ path: 'users', component: Users },
     ]
   },
   { path: '**', redirectTo: '' }
@@ -28,4 +31,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AdministrationRoutingModule { }
-export const routingComponents = [BrandTableComponent, ModelTableComponent, CategoriesTableComponent, FuelTableComponent, TransmissionTableComponent]
+export const routingComponents = [BrandTableComponent, ModelTableComponent, CategoriesTableComponent, FuelTableComponent, TransmissionTableComponent, PendingReviewsComponent]
