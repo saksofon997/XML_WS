@@ -46,10 +46,10 @@ export class PendingReviewsComponent implements OnInit {
     this.reviewService.getPageablePending(pageNo).subscribe(
       (data: any) => {
         this.dataSource = data.content;
-        for (var i = 0; this.dataSource.length; i++) {
-          let review = this.dataSource[0]
-          review.date = DateTime.fromMillis(review.date).toLocaleString();
-        }
+        // for (var i = 0; this.dataSource.length; i++) {
+        //   let review = this.dataSource[0]
+        //   review.date = DateTime.fromMillis(review.date).toLocaleString();
+        // }
         this.pageNo = data.pageNo;
         this.totalPages = data.totalPages;
       },
@@ -58,22 +58,6 @@ export class PendingReviewsComponent implements OnInit {
       }
     );
   }
-
-  // openDialog(action, obj) {
-  //   obj.action = action;
-  //   const dialogRef = this.dialog.open(DialogBoxComponent, {
-  //     width: '300px',
-  //     data: obj
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result.event == 'Approve') {
-  //       this.updateRowData(result.data);
-  //     } else if (result.event == 'Delete') {
-  //       this.deleteRowData(result.data);
-  //     }
-  //   });
-  // }
 
   updateRowData(review) {
     this.reviewService.edit(review.vehicle.id, review.id, review).subscribe(

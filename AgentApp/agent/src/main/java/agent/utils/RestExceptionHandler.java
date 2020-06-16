@@ -76,6 +76,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setEx(ex);
         return buildResponseEntity(apiError);
     }
+
+    @ExceptionHandler(InvalidEmailOrPasswordError.class)
+    protected ResponseEntity<Object> handleInvalidEmailorPasswordError(
+            InvalidEmailOrPasswordError ex) {
+        ApiError apiError = new ApiError(INTERNAL_SERVER_ERROR);
+        apiError.setMessage(ex.getMessage());
+        apiError.setEx(ex);
+        return buildResponseEntity(apiError);
+    }
     /*ERROR HANDLING
      * Add new custom exception like ItemNotFound
      * Make methods throw that exception
