@@ -1,0 +1,154 @@
+<span id="i">
+  <div class="links-border-top"></div>
+
+  <ul class="sticky">
+    <li>
+      <div class="link">
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'overview'" [ngClass]="{'active': currentActive === 1}">Overview</a>
+        <div [ngClass]="{'underline-active': currentActive === 1}" class="underline"></div>
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'features'" [ngClass]="{'active': currentActive === 2}">Features</a>
+        <div [ngClass]="{'underline-active': currentActive === 2}" class="underline"></div>
+
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'reviews'" [ngClass]="{'active': currentActive === 3}">Reviews</a>
+        <div [ngClass]="{'underline-active': currentActive === 3}" class="underline"></div>
+
+      </div>
+    </li>
+    <li>
+      <div class="link">
+        <a routerLink="./"
+          [queryParams]="{vehicleID: vehicleID, startDate: tripStartDate, endDate: tripEndDate, startTime: tripStartTime, endTime: tripEndTime}"
+          [fragment]="'location'" [ngClass]="{'active': currentActive === 4}">Location</a>
+        <div [ngClass]="{'underline-active': currentActive === 4}" class="underline"></div>
+
+      </div>
+    </li>
+  </ul>
+  <!-- <div class="links-border-bottom"></div> -->
+</span>
+
+<div class="container" style="margin-top: 20px;">
+  <div #overview>
+    <a class="anchor" id="overview"></a>
+    <div class="row images-container">
+      <div class="col" *ngIf="images.length>0">
+        <ng-image-slider [infinite]=true [imageSize]=imageSize [images]="images"></ng-image-slider> <!-- property -->
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <div class="row ">
+      <div class="col-sm-8" style="margin-top: 3.5vh;">
+        <app-vehicle-info [vehicle]="vehicle"></app-vehicle-info>
+      </div>
+      <div class="col-sm-4">
+        <app-reservation-box [priceAndReservation]="reservationInfo"></app-reservation-box>
+      </div>
+    </div>
+  </div>
+
+  <div #features>
+    <a class="anchor" id="features"></a>
+    <div class="row ">
+
+      <div class="col">
+        <br />
+        <br />
+        <h1>Features</h1>
+        <p>This are new from us</p>
+        <p>
+          Using this tool can be excellent practice for students studying English as
+          a second language because it gives the literal meaning of each phrase.
+          This allows them to see the phrase and its meaning at the same time. While
+          there are long idiom lists available online, trying to navigate through
+          them all on a single page can be daunting. Being able to create the exact
+          number of random idioms which best suits your learning needs is a
+          advantage this tool has over standard phrase list. In this way, this tool
+          provides an excellent way for those learning English to practice their
+          knowledge of English idioms and to learn new ones in the process.
+        </p>
+        <p>
+          Using this tool can be excellent practice for students studying English as
+          a second language because it gives the literal meaning of each phrase.
+          This allows them to see the phrase and its meaning at the same time. While
+          there are long idiom lists available online, trying to navigate through
+          them all on a single page can be daunting. Being able to create the exact
+          number of random idioms which best suits your learning needs is a
+          advantage this tool has over standard phrase list. In this way, this tool
+          provides an excellent way for those learning English to practice their
+          knowledge of English idioms and to learn new ones in the process.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div #reviews style="margin-top: 9vh;">
+    <a class="anchor" id="reviews" style="top: -75px;"></a>
+    <div class="row ">
+      <div class="col-sm-4 col-md-2 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p style="font-size: 1.3rem; font-weight: 500;">Reviews</p>
+      </div>
+      <div class="col">
+        <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+          <p style="font-size: 2.5rem; font-weight: 900;">{{vehicle?.numberOfStars / vehicle?.numberOfReviews}}</p>
+          <!-- property -->
+        </div>
+        <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+          <p style=" font-size: 1rem; font-weight: 200;">{{vehicle?.numberOfReviews}}</p> <!-- property -->
+        </div>
+      </div>
+
+
+      <div class="w-100"></div>
+    </div>
+    <table>
+      <tbody>
+        <tr *ngFor='let review of reviews'>
+          <app-review [review]=review></app-review>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="col-sm-2 col-md-2">
+    </div>
+
+    <div class="col-sm-8">
+      <div class="row m-3 m-1" id="load-more-div">
+        <a class="btn btn-sm btn-outline-danger" id="load-more">Load more</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div #location style="margin-top: 9vh;">
+    <a class="anchor" id="location" style="top: -75px;"></a>
+    <div class="row ">
+
+      <div class="col">
+        <div style="height: 30em; width: 100%;">
+
+          <angular-yandex-map [center]="[55.751952, 37.600739]" [zoom]="12">
+            <angular-yandex-placemark [geometry]="[55.751952, 37.600739]"></angular-yandex-placemark>
+          </angular-yandex-map>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

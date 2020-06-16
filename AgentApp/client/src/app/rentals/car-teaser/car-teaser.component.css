@@ -1,0 +1,25 @@
+label {
+    font-family: RlBasisGrotesque,  Avenir,  Helvetica Neue,  Helvetica,  sans-serif;
+    text-transform: none;
+    margin-right: 0.4em;
+    font-weight: bold;
+  }
+.star {
+    font-size: 1.5rem;
+    margin-top: 5em;
+  }
+.mat-icon {
+    font-size: 17px;
+    width: 17px;
+    font-family: 'Material Icons' !important;
+    vertical-align: middle;
+    margin-right: 1rem; 
+    margin-left: 0.5rem;
+    cursor: help;
+  }
+.btn-outline-danger:hover {
+  background-color: #E81831;
+}
+a:hover {
+  color: white;
+}

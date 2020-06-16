@@ -1,0 +1,29 @@
+.container {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #b0c4de;
+}
+
+.filled { 
+  color: #E81831;
+}
+
+.text {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.date {
+  padding-left: 1rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+}

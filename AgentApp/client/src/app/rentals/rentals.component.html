@@ -1,0 +1,251 @@
+<div class="container shadow  mb-1 bg-white rounded search-form" style="margin-top: 0em; padding-top: 0em;">
+
+  <form class="">
+    <div class="row no-gutters ">
+      <div class="col-md-3 col-lg-3 ml-2 mr-3 form-field-wrapper">
+        <label class="date-title mt-3" for="search">Where</label>
+        <div class="col-md-9  form-field-wrapper">
+          <mat-form-field>
+            <input type="text" name="search" [(ngModel)]="searchText" (ngModelChange)="searchDataChanged($event)"
+              matInput [matAutocomplete]="auto" placeholder="Search Nearest Location" autocorrect="off"
+              autocapitalize="off" spellcheck="off">
+          </mat-form-field>
+
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of response" [value]="option['GeoObject'].name">
+              {{option['GeoObject'].name + ', ' + option['GeoObject'].description}}</mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="col-md-3 mr-3 ml-3 form-field-wrapper">
+        <label class="date-title mt-3" for="picker">Start</label>
+
+
+        <div class="col-md-6  form-field-wrapper ">
+          <mat-form-field class="form-field">
+            <input matInput [matDatepicker]="picker" placeholder="Date" name="tripStartDate" [(ngModel)]="tripStartDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-5">
+          <mat-form-field class="form-field">
+            <mat-label>Time</mat-label>
+            <mat-select (selectionChange)="startTimeChange($event.value)">
+              <input matInput type="text"/>
+              <mat-option value="0">Midnight</mat-option>
+              <mat-option value="30">12:30 AM</mat-option>
+              <mat-option value="60">1:00 AM</mat-option>
+              <mat-option value="90">1:30 AM</mat-option>
+              <mat-option value="120">2:00 AM</mat-option>
+              <mat-option value="150">2:30 AM</mat-option>
+              <mat-option value="180">3:00 AM</mat-option>
+              <mat-option value="210">3:30 AM</mat-option>
+              <mat-option value="240">4:00 AM</mat-option>
+              <mat-option value="270">4:30 AM</mat-option>
+              <mat-option value="300">5:00 AM</mat-option>
+              <mat-option value="330">5:30 AM</mat-option>
+              <mat-option value="360">6:00 AM</mat-option>
+              <mat-option value="390">6:30 AM</mat-option>
+              <mat-option value="420">7:00 AM</mat-option>
+              <mat-option value="450">7:30 AM</mat-option>
+              <mat-option value="480">8:00 AM</mat-option>
+              <mat-option value="510">8:30 AM</mat-option>
+              <mat-option value="540">9:00 AM</mat-option>
+              <mat-option value="570">9:30 AM</mat-option>
+              <mat-option value="600">10:00 AM</mat-option>
+              <mat-option value="630">10:30 AM</mat-option>
+              <mat-option value="660">11:00 AM</mat-option>
+              <mat-option value="690">11:30 AM</mat-option>
+              <mat-option value="720">Noon</mat-option>
+              <mat-option value="750">12:30 PM</mat-option>
+              <mat-option value="780">1:00 PM</mat-option>
+              <mat-option value="810">1:30 PM</mat-option>
+              <mat-option value="840">2:00 PM</mat-option>
+              <mat-option value="870">2:30 PM</mat-option>
+              <mat-option value="900">3:00 PM</mat-option>
+              <mat-option value="930">3:30 PM</mat-option>
+              <mat-option value="960">4:00 PM</mat-option>
+              <mat-option value="990">4:30 PM</mat-option>
+              <mat-option value="1020">5:00 PM</mat-option>
+              <mat-option value="1050">5:30 PM</mat-option>
+              <mat-option value="1080">6:00 PM</mat-option>
+              <mat-option value="1110">6:30 PM</mat-option>
+              <mat-option value="1140">7:00 PM</mat-option>
+              <mat-option value="1170">7:30 PM</mat-option>
+              <mat-option value="1200">8:00 PM</mat-option>
+              <mat-option value="1230">8:30 PM</mat-option>
+              <mat-option value="1260">9:00 PM</mat-option>
+              <mat-option value="1290">9:30 PM</mat-option>
+              <mat-option value="1320">10:00 PM</mat-option>
+              <mat-option value="1350">10:30 PM</mat-option>
+              <mat-option value="1380">11:00 PM</mat-option>
+              <mat-option value="1410">11:30 PM</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+      <div class="col-md-3 ml-2 form-field-wrapper">
+        <label class="date-title mt-3" for="picker2">End</label>
+        <div class="col-md-6">
+          <mat-form-field class="form-field">
+            <input matInput [matDatepicker]="picker2" placeholder="Date" name="tripEndDate" [(ngModel)]="tripEndDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-5">
+          <mat-form-field class="form-field">
+            <mat-label>Time</mat-label>
+            <mat-select (selectionChange)="endTimeChange($event.value)">
+              <input matInput type="text" />
+              <mat-option value="0">Midnight</mat-option>
+              <mat-option value="30">12:30 AM</mat-option>
+              <mat-option value="60">1:00 AM</mat-option>
+              <mat-option value="90">1:30 AM</mat-option>
+              <mat-option value="120">2:00 AM</mat-option>
+              <mat-option value="150">2:30 AM</mat-option>
+              <mat-option value="180">3:00 AM</mat-option>
+              <mat-option value="210">3:30 AM</mat-option>
+              <mat-option value="240">4:00 AM</mat-option>
+              <mat-option value="270">4:30 AM</mat-option>
+              <mat-option value="300">5:00 AM</mat-option>
+              <mat-option value="330">5:30 AM</mat-option>
+              <mat-option value="360">6:00 AM</mat-option>
+              <mat-option value="390">6:30 AM</mat-option>
+              <mat-option value="420">7:00 AM</mat-option>
+              <mat-option value="450">7:30 AM</mat-option>
+              <mat-option value="480">8:00 AM</mat-option>
+              <mat-option value="510">8:30 AM</mat-option>
+              <mat-option value="540">9:00 AM</mat-option>
+              <mat-option value="570">9:30 AM</mat-option>
+              <mat-option value="600">10:00 AM</mat-option>
+              <mat-option value="630">10:30 AM</mat-option>
+              <mat-option value="660">11:00 AM</mat-option>
+              <mat-option value="690">11:30 AM</mat-option>
+              <mat-option value="720">Noon</mat-option>
+              <mat-option value="750">12:30 PM</mat-option>
+              <mat-option value="780">1:00 PM</mat-option>
+              <mat-option value="810">1:30 PM</mat-option>
+              <mat-option value="840">2:00 PM</mat-option>
+              <mat-option value="870">2:30 PM</mat-option>
+              <mat-option value="900">3:00 PM</mat-option>
+              <mat-option value="930">3:30 PM</mat-option>
+              <mat-option value="960">4:00 PM</mat-option>
+              <mat-option value="990">4:30 PM</mat-option>
+              <mat-option value="1020">5:00 PM</mat-option>
+              <mat-option value="1050">5:30 PM</mat-option>
+              <mat-option value="1080">6:00 PM</mat-option>
+              <mat-option value="1110">6:30 PM</mat-option>
+              <mat-option value="1140">7:00 PM</mat-option>
+              <mat-option value="1170">7:30 PM</mat-option>
+              <mat-option value="1200">8:00 PM</mat-option>
+              <mat-option value="1230">8:30 PM</mat-option>
+              <mat-option value="1260">9:00 PM</mat-option>
+              <mat-option value="1290">9:30 PM</mat-option>
+              <mat-option value="1320">10:00 PM</mat-option>
+              <mat-option value="1350">10:30 PM</mat-option>
+              <mat-option value="1380">11:00 PM</mat-option>
+              <mat-option value="1410">11:30 PM</mat-option>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-2 ml-2 float-right btn-wrapper">
+        <a class="btn btn-sm btn-outline-danger search-button" (click)="getCars(pageNo)">Search</a>
+      </div>
+    </div>
+  </form>
+
+</div>
+<div id="tempAdvancedSearch1">
+  <div class="col-md-3 shadow  mt-2 mb-3 rounded" style="height: 100%; padding: 0;" id="tempAdvancedSearch">
+    <mat-accordion [displayMode]="'flat'" style="margin: 0; padding: 0;">
+      <mat-expansion-panel style="margin: 0; padding: 0;" (opened)="moveAdvancedSearch('advancedSearchAndResults')" (closed)="moveAdvancedSearch('tempAdvancedSearch1')">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Advanced search
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <div class="row m-3 ">
+          <hr data-content="FILTERS" class="hr-text">
+        </div> -->
+        <hr class="mb-3">
+        <hr data-content="BRAND" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-select placeholder="Brands" multiple (selectionChange)="brandSelectionChanged($event)"
+            style="padding-top: 0.5em; padding-left: 1em;">
+            <mat-option *ngFor="let brand of brands" [value]="brand">{{brand.name}}</mat-option>
+          </mat-select>
+        </div>
+        <hr data-content="MODEL" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-select placeholder="Models" multiple (selectionChange)="modelSelectionChanged($event)"
+            style="padding-top: 0.5em; padding-left: 1em;">
+            <mat-option *ngFor="let model of models" [value]="model">{{model.name}}</mat-option>
+          </mat-select>
+        </div>
+
+        <hr data-content="CATEGORY" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-list>
+            <mat-list-item *ngFor="let category of categories">
+              <mat-checkbox (change)="addSearchParamsCategory($event, category)">{{category.name}} </mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <hr data-content="FUEL" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-list>
+            <mat-list-item *ngFor="let fuel of fuels">
+              <mat-checkbox (change)="addSearchParamsFuels($event, fuel)">{{fuel.name}}</mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+        </div>
+
+        <hr data-content="TRANSMISSION" class="hr-text mt-3">
+        <div class="row m-3 shadow-sm filters-container rounded">
+          <mat-list>
+            <mat-list-item *ngFor="let tranType of transmissions">
+              <mat-checkbox (change)="addSearchParamsTransmissions($event, tranType)">{{tranType.name}}</mat-checkbox>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <hr>
+        <div class="row m-3 filter-Button">
+          <a class="btn btn-outline-danger filter-Button btn-block" (click)="getCars(pageNo)">Advanced search</a>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div class="container mt-3 ">
+  <div class="row" style="justify-content: center;" id="advancedSearchAndResults">
+
+    <div class="col-md-9" style="height: 100%;" >
+      <!--
+          List of cars
+      -->
+      <div class="teaser" style="padding: 0.01em;" *ngFor="let car of cars" (click)="showVehicle(car)">
+        <app-car-teaser [car]=car [from]="from()" [to]="to()">
+        </app-car-teaser>
+      </div>
+
+
+      <div class="row m-3 shadow-sm  m-1 bg-white rounded">
+      </div>
+
+      <hr class="dashed">
+      <div class="row m-3 m-1 filter-Button" *ngIf="totalPages > pageNo+1">
+        <a class="btn btn-sm btn-outline-danger filter-Button-button" (click)="loadMore(pageNo + 1)">Load more</a>
+      </div>
+    </div>
+  </div>
+
+</div>

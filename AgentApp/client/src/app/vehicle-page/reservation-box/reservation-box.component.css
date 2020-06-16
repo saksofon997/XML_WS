@@ -1,0 +1,50 @@
+.container {
+  margin-top: 5vh;
+  width:100%
+}
+
+.price-container {
+  padding-top: 3vh;
+  display: table;
+  margin: 0 auto;
+}
+
+.price-p {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 16px;
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+.price-type {
+  display: inline;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  font-weight: 100;
+}
+
+.reservationBox-section {
+  display: block;
+  width: 100%;
+}
+
+.dates-container {
+  margin-top: 2vh;
+  text-align: center
+}
+
+.date-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.btn-danger {
+  width: 80%;
+  margin-top: 2em;
+  color: white;
+  background-color: #E81831;
+}

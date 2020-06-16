@@ -1,0 +1,23 @@
+table{
+  width: 100%;
+  table-layout: fixed;
+
+}
+
+th, td {
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+button {
+  background-color: #E81831;
+  color: white;
+}
+
+a {
+  cursor: pointer;
+}
+
