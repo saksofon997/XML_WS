@@ -22,10 +22,10 @@ export class UserService {
   constructor(private cookieService: CookieService,
     private http: HttpClient,
     private injector: Injector) {
-    interval(120000)
-      .pipe(
-        flatMap(() => this.checkLoggedIn())
-      ).subscribe(() => { });
+    // interval(120000)
+    //   .pipe(
+    //     flatMap(() => this.checkLoggedIn())
+    //   ).subscribe(() => { });
   }
 
   /*

@@ -35,7 +35,7 @@
         <a *ngIf="status==='PENDING'" class="btn btn-sm btn-outline-danger" (click)="approveRental($event)">Approve</a>
         <a *ngIf="status==='PENDING'" class="btn btn-sm btn-outline-danger" style="margin-left: 3px;" (click)="rejectRental($event)">Reject</a>
 
-        <a *ngIf="status==='FINISHED'" class="btn btn-sm btn-outline-danger" (click)="newReport($event)">Rental report</a>
+        <a *ngIf="status==='FINISHED' && rental.report === null" class="btn btn-sm btn-outline-danger" (click)="newReport($event)">Rental report</a>
         <a *ngIf="status==='RESERVED'" class="btn btn-sm btn-outline-danger" (click)="sendMessage($event)">Send a message to owner</a>
       </div>
     </div>

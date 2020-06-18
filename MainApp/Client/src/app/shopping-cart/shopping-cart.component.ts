@@ -112,7 +112,7 @@ export class ShoppingCartComponent implements OnInit {
     var i;
     for (i = 0; i < this.rentals.length; i++) {
       let rentalFront = this.rentals[i];
-      let rental = new RentalBack(null, rentalFront.car.id, 1, 1, rentalFront.from, rentalFront.to, null);
+      let rental = new RentalBack(null, rentalFront.car.id, 1, 1, rentalFront.from, rentalFront.to, null, null);
 
       // TODO: user service - customerId
       // TODO: rentalFront.car.ownerId - ownerId

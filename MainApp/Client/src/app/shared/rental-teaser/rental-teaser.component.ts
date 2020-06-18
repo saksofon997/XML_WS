@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { RentalFront } from 'src/app/models/Rental.model';
+import { RentalFront, RentalBack } from 'src/app/models/Rental.model';
 import { CookieService } from 'ngx-cookie-service';
 import { Review } from 'src/app/models/Review.model';
 import { NewReviewDialogboxComponent } from '../new-review-dialogbox/new-review-dialogbox.component';
@@ -7,6 +7,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import { Car } from 'src/app/models/Car.model';
 import { ReviewService } from 'src/app/services/review.service';
+import { NewRentalReportDialogboxComponent } from '../new-rental-report-dialogbox/new-rental-report-dialogbox.component';
+import { RentalReport } from 'src/app/models/RentalReport.model';
+import { RentalReportService } from 'src/app/services/rental-report.service';
 
 @Component({
   selector: 'app-rental-teaser',
@@ -20,6 +23,7 @@ export class RentalTeaserComponent implements OnInit {
   @Input() customer: boolean;
 
   constructor(private userService: UserService,
+    private rentalReportService: RentalReportService,
     private reviewService: ReviewService,
     public dialog: MatDialog,) { }
 
@@ -87,6 +91,30 @@ export class RentalTeaserComponent implements OnInit {
 
   newReport($event) {
     $event.stopPropagation();
-    // TODO
+
+    const dialogRef = this.dialog.open(NewRentalReportDialogboxComponent, {
+      width: '500px',
+      data: new RentalReport()
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.event === 'Cancel') {
+        return;
+      }
+      const report = new RentalReport();
+      report.description = result.data.description;
+      report.mileage = result.data.mileage;
+      report.rentalId = this.rental.id;
+
+      console.log(report);
+      this.rentalReportService.add(report).subscribe(
+        (data: any) => {
+          this.rental.report = new RentalReport();
+        },
+        (error) => {
+          alert(error);
+        }
+      );
+    });
   }
 }

@@ -66,9 +66,9 @@ public class RentalServiceImpl implements RentalService {
         }
 
         newRental.setStatus(RentalStatus.PENDING);
-        rentalRepository.save(newRental);
+        Rental saved = rentalRepository.save(newRental);
 
-        return rentalDTO;
+        return convertToDTO(saved);
     }
 
     @Override

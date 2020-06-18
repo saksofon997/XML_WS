@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import rental.dto.RentalPageDTO;
 import rental.exceptions.*;
 import rental.service.RentalService;
-import saga.dto.ReviewDTO;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
