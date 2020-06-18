@@ -1,7 +1,12 @@
 .star {
   font-size: 1.5rem;
   margin-top: 5em;
+  color: #585858;
 }
+.filled {
+  color: #E81831;
+}
+
 .car-Image {
   width:100%;
   height:100%;

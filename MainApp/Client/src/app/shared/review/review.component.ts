@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { DateTime } from "luxon";
 import { Review } from 'src/app/models/Review.model';
 import { CookieService } from 'ngx-cookie-service';
@@ -16,14 +16,10 @@ export class ReviewComponent implements OnInit {
   formatedDate: any;
 
   constructor() {
-    if(!this.review) {
-    this.review = new Review(1, 2, "Test", null, 4, "text: string", 1592233200);
-    }
-    console.log(this.review);
   }
 
   ngOnInit() {
-    this.formatedDate = DateTime.fromMillis(this.review.date).toLocaleString();
+    this.formatedDate = DateTime.fromMillis(this.review.date * 1000).toLocaleString();
   }
 
 }

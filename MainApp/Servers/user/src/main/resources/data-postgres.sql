@@ -194,9 +194,22 @@ INSERT INTO users.users(
 	VALUES (nextval('users_id_seq'), 'Vladimira Iljica Lenjina 1917', 'Moskva', 'user@car2go.rs', 'Marko', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Petrovic', true, false);
 
 
+/* LENJIN JE BOG */
 INSERT INTO users.user_role(
     user_id, role_id)
     VALUES (1, 1);
+INSERT INTO users.user_role(
+    user_id, role_id)
+    VALUES (1, 2);
+INSERT INTO users.user_role(
+    user_id, role_id)
+    VALUES (1, 3);
+INSERT INTO users.user_role(
+    user_id, role_id)
+    VALUES (1, 4);
+INSERT INTO users.user_role(
+    user_id, role_id)
+    VALUES (1, 5);
 
 INSERT INTO users.user_role(
     user_id, role_id)

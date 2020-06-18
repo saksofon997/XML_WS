@@ -50,14 +50,14 @@ export class CarTeaserComponent implements OnInit {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
 
       if (!cart.rentals.some(e => e.car.id === this.car.id)) {
-        let rental = new RentalFront(null, this.car, this.from, this.to, null);
+        let rental = new RentalFront(null, this.car, this.from, this.to, null, null);
         cart.rentals.push(rental);
       }
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     } else {
       let cart = new ShoppingCart(new Array(), new Array());
 
-      let rental = new RentalFront(null, this.car, this.from, this.to, null);
+      let rental = new RentalFront(null, this.car, this.from, this.to, null, null);
       cart.rentals.push(rental);
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     }

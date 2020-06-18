@@ -24,15 +24,15 @@ zuul:
       stripPrefix: false
       serviceId: rental
     rental2:
-      path: /customer/**/rental
+      path: /customer/**/rental/**
       stripPrefix: false
       serviceId: rental
     rental3:
-      path: /vehicle/**/rental
+      path: /vehicle/**/rental/**
       stripPrefix: false
       serviceId: rental
     rental4:
-      path: /owner/**/rental
+      path: /owner/**/rental/**
       stripPrefix: false
       serviceId: rental
 

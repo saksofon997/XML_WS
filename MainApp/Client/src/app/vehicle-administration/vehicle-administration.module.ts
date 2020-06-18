@@ -18,6 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { PricelistDialogBoxComponent } from './pricelist-dialog-box/pricelist-dialog-box.component';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { OwnerRentalsComponent } from './owner-rentals/owner-rentals.component';
+import { OwnerRentalsListingComponent } from './owner-rentals-listing/owner-rentals-listing.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     PricelistTableComponent,
     PricelistDialogBoxComponent,
     VehicleListingComponent,
-    VehicleDialogBoxComponent
+    VehicleDialogBoxComponent,
+    OwnerRentalsComponent,
+    OwnerRentalsListingComponent
   ],
   imports: [
     CommonModule,

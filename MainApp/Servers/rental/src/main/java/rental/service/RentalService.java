@@ -1,6 +1,7 @@
 package rental.service;
 
 import rental.dto.RentalDTO;
+import rental.dto.RentalPageDTO;
 import rental.exceptions.*;
 import rental.model.Rental;
 import saga.dto.VehicleOccupancyDTO;
@@ -20,4 +21,8 @@ public interface RentalService {
     void delete(Long id) throws EntityNotFound;
 
     void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO);
+
+    RentalPageDTO getByCustomerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
+
+    RentalPageDTO getByOwnerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
 }
