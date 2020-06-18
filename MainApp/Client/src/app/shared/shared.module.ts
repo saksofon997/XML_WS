@@ -18,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { RentalTeaserComponent } from './rental-teaser/rental-teaser.component';
+import { NewReviewDialogboxComponent } from './new-review-dialogbox/new-review-dialogbox.component';
 
 // import this module in all others which use these shared components and modules
 @NgModule({
@@ -25,6 +26,7 @@ import { RentalTeaserComponent } from './rental-teaser/rental-teaser.component';
     ReviewComponent,
     CarTeaserCarInfoComponent,
     RentalTeaserComponent,
+    NewReviewDialogboxComponent,
     // declare components to export them to other modules e.g. AlertComponent
   ],
   imports: [

@@ -1,6 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RentalFront } from 'src/app/models/Rental.model';
 import { CookieService } from 'ngx-cookie-service';
+import { Review } from 'src/app/models/Review.model';
+import { NewReviewDialogboxComponent } from '../new-review-dialogbox/new-review-dialogbox.component';
+import { MatDialog } from '@angular/material/dialog';
+import { UserService } from 'src/app/services/user.service';
+import { Car } from 'src/app/models/Car.model';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-rental-teaser',
@@ -13,7 +19,9 @@ export class RentalTeaserComponent implements OnInit {
   @Input() status: string;
   @Input() customer: boolean;
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private userService: UserService,
+    private reviewService: ReviewService,
+    public dialog: MatDialog,) { }
 
   ngOnInit() {
   }
@@ -36,7 +44,35 @@ export class RentalTeaserComponent implements OnInit {
 
   newReview($event) {
     $event.stopPropagation();
-    // TODO
+    const dialogRef = this.dialog.open(NewReviewDialogboxComponent, {
+      width: '500px',
+      data: new Review()
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.event === 'Cancel') {
+        return;
+      }
+      const review = new Review();
+      review.text = result.data.text;
+      review.stars = result.data.stars;
+      let car = new Car();
+      car.id = this.rental.car.id;
+      review.vehicle = car;
+      review.customerId = this.userService.getUser().id;
+      review.customerName = this.userService.getUser().name;
+      review.date = Date.now() / 1000;
+
+      console.log(review);
+      this.reviewService.add(review.vehicle.id, review).subscribe(
+        (data: any) => {
+
+        },
+        (error) => {
+          alert(error);
+        }
+      );
+    });
   }
 
   approveRental($event) {

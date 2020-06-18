@@ -14,9 +14,25 @@ body {
 
 .mat-tab-group.mat-primary .mat-ink-bar,
 .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background: #E81831;
+  background: #E81831 !important;
 }
 
 .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate{
-  background-color: #E81831;
+  background-color: #E81831 !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-subscript-wrapper {
+  background-color: #E81831 !important;   /* replace this color with your accent color hex code */
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #E81831 !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-underline {
+  color: #E81831 !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #E81831 !important;
 }

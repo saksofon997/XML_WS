@@ -103,6 +103,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDTO add(Long vehicleId, ReviewDTO reviewDTO) throws ConversionFailedError {
 
         Review newReview = convertToModel(reviewDTO);
+        newReview.setStatus(ReviewStatus.PENDING);
 
         Review savedReview = reviewRepo.save(newReview);
         commandGateway.send(new MainReviewCommand(savedReview.getId(),vehicleId, reviewDTO, TypeOfCommand.CREATE));
@@ -143,10 +144,9 @@ public class ReviewServiceImpl implements ReviewService {
             throw new EntityNotFound("Items not found");
         }
 
-        Review updated = convertToModel(reviewDTO);
-        updated.setId(id);
+        review.get().setStatus(ReviewStatus.PUBLISHED);
 
-        Review savedReview = reviewRepo.save(updated);
+        Review savedReview = reviewRepo.save(review.get());
         commandGateway.send(new MainReviewCommand(savedReview.getId(),vehicleId, reviewDTO, TypeOfCommand.UPDATE));
 
         return reviewDTO;

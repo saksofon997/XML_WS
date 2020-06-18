@@ -1,0 +1,19 @@
+.do-button {
+  background-color: #E81831;
+  color: white;
+}
+
+.star {
+  font-size: 3rem;
+  margin-top: 5em;
+  color: #585858;
+}
+
+.filled {
+  color: #E81831;
+}
+
+span, ngb-rating, ng-template  {
+  outline: none;
+}
+
