@@ -33,7 +33,7 @@ public class Rental {
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Bundle bundle;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private RentalStatus status;
 
     @Column(name = "deleted")
