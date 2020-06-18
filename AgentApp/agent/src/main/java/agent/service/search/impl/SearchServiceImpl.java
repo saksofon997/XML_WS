@@ -29,7 +29,8 @@ public class SearchServiceImpl implements SearchService {
     public SearchResultPageDTO doSearch(String brand, String category, String fuel, String model,
                                         String transmission, double loc_lat, double loc_long,
                                         long startTime, long endTime,
-                                        Integer pageNo, String sortKey) throws ConversionFailedError {
+                                        Integer pageNo, String sortKey, Boolean cdw, Long mileage,
+                                        Long priceFrom, Long priceTo, Integer childSeats) throws ConversionFailedError {
 
         Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
 
@@ -38,11 +39,11 @@ public class SearchServiceImpl implements SearchService {
         List<String> fuels = fuel == null ? null : Arrays.asList(fuel.split(","));
         List<String> models = model == null ? null : Arrays.asList(model.split(","));
         List<String> transmissions = transmission == null ? null : Arrays.asList(transmission.split(","));
-
         Page<Vehicle> pagedResult = searchRepo.getBySearchParams(brands, categories, fuels,
                 models, transmissions,
                 loc_lat, loc_long,
-                startTime, endTime,
+                startTime, endTime, cdw,
+                mileage, priceFrom, priceTo, childSeats,
                 page);
 
         SearchResultPageDTO pageDTO = new SearchResultPageDTO();

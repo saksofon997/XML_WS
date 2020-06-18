@@ -9,6 +9,7 @@ public interface SearchService {
                                  String model, String transmission,
                                  double loc_lat, double loc_long,
                                  long startTime, long endTime,
-                                 Integer pageNo, String sortKey) throws ConversionFailedError;
+                                 Integer pageNo, String sortKey, Boolean cdw,
+                                 Long mileage, Long priceFrom, Long priceTo, Integer childSeats) throws ConversionFailedError;
 
 }

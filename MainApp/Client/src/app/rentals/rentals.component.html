@@ -190,6 +190,18 @@
           </mat-select>
         </div>
 
+        <hr data-content="PRICE" class="hr-text mt-3">
+        <div class="row m-4 rounded">
+          <div class="col-md-5 shadow-sm filters-container mr-2 p-1">
+            <input type="number" matInput placeholder="From" [(ngModel)]="searchParamsObjects.minPrice" min=0
+              max="{{searchParamsObjects.maxPrice}}" (keyup)="checkPrice($event)">
+          </div>
+          <div class="col-md-5 shadow-sm filters-container ml-3 p-1">
+            <input type="number" matInput placeholder="To" [(ngModel)]="searchParamsObjects.maxPrice"
+              min="{{searchParamsObjects.minPrice}}" (keyup)="checkPrice($event)">
+          </div>
+        </div>
+        
         <hr data-content="CATEGORY" class="hr-text mt-3">
         <div class="row m-3 shadow-sm filters-container rounded">
           <mat-list>
@@ -215,6 +227,45 @@
               <mat-checkbox (change)="addSearchParamsTransmissions($event, tranType)">{{tranType.name}}</mat-checkbox>
             </mat-list-item>
           </mat-list>
+        </div>
+        <hr data-content="KM ON CLOCK" class="hr-text mt-3">
+        <div class="row m-3 p-3 ">
+          <div class="col d-flex justify-content-center shadow-sm filters-container rounded">
+          <input class="m-1 p-1 " type="number" matInput placeholder="max km on clock"
+            [(ngModel)]="searchParamsObjects.mileage" min=0>
+          </div>
+        </div>
+        <hr data-content="ALLOWED KM" class="hr-text mt-3">
+        <div class="row mt-3 p-2 ">
+          <div class="col d-flex justify-content-center mt-2">
+            <div class="shadow-sm ml-1 filters-container rounded" *ngIf="searchParamsObjects.allowedMileage != -1 || searchParamsObjects.allowedMileage == undefined"
+              [@inOutAnimation]>
+              <mat-form-field class="ml-2 example-full-width" style="width: 90%;">
+                <input class="" [(ngModel)]="searchParamsObjects.allowedMileage" placeholder="Allowed km to travel" matInput
+                  type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row rounded mr-3 justify-content-center">
+          <div class="feature">
+            <mat-checkbox (change)="unlimitedMileage($event)"> &nbsp; Unlimited
+            </mat-checkbox>
+          </div>
+        </div>
+        <hr data-content="CDW" class="hr-text mt-3">
+        <div class="row m-3 p-3 ">
+          <div class="col d-flex justify-content-center shadow-sm filters-container rounded pt-2">
+            <mat-checkbox [(ngModel)]="searchParamsObjects.cdw"> &nbsp; Collision damage waver
+            </mat-checkbox>
+          </div>
+        </div>
+        <hr data-content="KIDS SEATS" class="hr-text mt-3">
+        <div class="row m-3 p-3 ">
+          <div class="col d-flex justify-content-center shadow-sm filters-container rounded">
+            <input class="m-1 p-1 " type="number" matInput placeholder="Min number of kids seats"
+              [(ngModel)]="searchParamsObjects.kidsSeatsNo" min=0>
+            </div>
         </div>
         <hr>
         <div class="row m-3 filter-Button">

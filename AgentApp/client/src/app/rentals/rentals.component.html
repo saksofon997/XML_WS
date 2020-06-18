@@ -23,7 +23,8 @@
 
         <div class="col-md-6  form-field-wrapper ">
           <mat-form-field class="form-field">
-            <input matInput [matDatepicker]="picker" placeholder="Date" name="tripStartDate" [(ngModel)]="tripStartDate">
+            <input matInput [matDatepicker]="picker" placeholder="Date" name="tripStartDate"
+              [(ngModel)]="tripStartDate">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -32,7 +33,7 @@
           <mat-form-field class="form-field">
             <mat-label>Time</mat-label>
             <mat-select (selectionChange)="startTimeChange($event.value)">
-              <input matInput type="text"/>
+              <input matInput type="text" />
               <mat-option value="0">Midnight</mat-option>
               <mat-option value="30">12:30 AM</mat-option>
               <mat-option value="60">1:00 AM</mat-option>
@@ -165,7 +166,8 @@
 <div id="tempAdvancedSearch1">
   <div class="col-md-3 shadow  mt-2 mb-3 rounded" style="height: 100%; padding: 0;" id="tempAdvancedSearch">
     <mat-accordion [displayMode]="'flat'" style="margin: 0; padding: 0;">
-      <mat-expansion-panel style="margin: 0; padding: 0;" (opened)="moveAdvancedSearch('advancedSearchAndResults')" (closed)="moveAdvancedSearch('tempAdvancedSearch1')">
+      <mat-expansion-panel style="margin: 0; padding: 0;" (opened)="moveAdvancedSearch('advancedSearchAndResults')"
+        (closed)="moveAdvancedSearch('tempAdvancedSearch1')">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Advanced search
@@ -188,6 +190,18 @@
             style="padding-top: 0.5em; padding-left: 1em;">
             <mat-option *ngFor="let model of models" [value]="model">{{model.name}}</mat-option>
           </mat-select>
+        </div>
+
+        <hr data-content="PRICE" class="hr-text mt-3">
+        <div class="row m-4 rounded">
+          <div class="col-md-5 shadow-sm filters-container mr-2 p-1">
+            <input type="number" matInput placeholder="From" [(ngModel)]="searchParamsObjects.minPrice" min=0
+              max="{{searchParamsObjects.maxPrice}}" (keyup)="checkPrice($event)">
+          </div>
+          <div class="col-md-5 shadow-sm filters-container ml-3 p-1">
+            <input type="number" matInput placeholder="To" [(ngModel)]="searchParamsObjects.maxPrice"
+              min="{{searchParamsObjects.minPrice}}" (keyup)="checkPrice($event)">
+          </div>
         </div>
 
         <hr data-content="CATEGORY" class="hr-text mt-3">
@@ -216,6 +230,45 @@
             </mat-list-item>
           </mat-list>
         </div>
+        <hr data-content="KM ON CLOCK" class="hr-text mt-3">
+        <div class="row m-3 p-3 ">
+          <div class="col d-flex justify-content-center shadow-sm filters-container rounded">
+          <input class="m-1 p-1 " type="number" matInput placeholder="max km on clock"
+            [(ngModel)]="searchParamsObjects.mileage" min=0>
+          </div>
+        </div>
+        <hr data-content="ALLOWED KM" class="hr-text mt-3">
+        <div class="row mt-3 p-2 ">
+          <div class="col d-flex justify-content-center mt-2">
+            <div class="shadow-sm ml-1 filters-container rounded" *ngIf="searchParamsObjects.allowedMileage != -1 || searchParamsObjects.allowedMileage == undefined"
+              [@inOutAnimation]>
+              <mat-form-field class="ml-2 example-full-width" style="width: 90%;">
+                <input class="" [(ngModel)]="searchParamsObjects.allowedMileage" placeholder="Allowed km to travel" matInput
+                  type="number">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row rounded mr-3 justify-content-center">
+          <div class="feature">
+            <mat-checkbox (change)="unlimitedMileage($event)"> &nbsp; Unlimited
+            </mat-checkbox>
+          </div>
+        </div>
+        <hr data-content="CDW" class="hr-text mt-3">
+        <div class="row m-3 p-3 ">
+          <div class="col d-flex justify-content-center shadow-sm filters-container rounded pt-2">
+            <mat-checkbox [(ngModel)]="searchParamsObjects.cdw"> &nbsp; Collision damage waver
+            </mat-checkbox>
+          </div>
+        </div>
+        <hr data-content="KIDS SEATS" class="hr-text mt-3">
+        <div class="row m-3 p-3 ">
+          <div class="col d-flex justify-content-center shadow-sm filters-container rounded">
+            <input class="m-1 p-1 " type="number" matInput placeholder="Min number of kids seats"
+              [(ngModel)]="searchParamsObjects.kidsSeatsNo" min=0>
+            </div>
+        </div>
         <hr>
         <div class="row m-3 filter-Button">
           <a class="btn btn-outline-danger filter-Button btn-block" (click)="getCars(pageNo)">Advanced search</a>
@@ -228,7 +281,7 @@
 <div class="container mt-3 ">
   <div class="row" style="justify-content: center;" id="advancedSearchAndResults">
 
-    <div class="col-md-9" style="height: 100%;" >
+    <div class="col-md-9" style="height: 100%;">
       <!--
           List of cars
       -->
