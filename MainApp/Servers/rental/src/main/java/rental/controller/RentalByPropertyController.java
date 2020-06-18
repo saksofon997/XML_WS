@@ -1,25 +1,45 @@
 package rental.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import rental.dto.RentalPageDTO;
 import rental.exceptions.*;
+import rental.service.RentalService;
+import saga.dto.ReviewDTO;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "")
+@CrossOrigin(origins = "*")
 // No inspiration for better name... Might not need it /rental/customer/{id} (?)
 public class RentalByPropertyController {
 
+    @Autowired
+    RentalService rentalService;
 
-    @GetMapping(path = "/customer/{id}/rental",
+    @GetMapping(path = "/customer/{id}/rental/status/{status}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getRentalsOfCustomer(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
+    public ResponseEntity<?> getRentalsOfCustomer(@PathVariable Long id,
+                                                  @PathVariable String status,
+                                                  @RequestHeader(value = "page", required = false) Integer pageNo,
+                                                  @RequestHeader(value = "sort", required = false) String sort,
+                                                  @RequestHeader(value = "pageable", required = false) Boolean pageable,
+                                                  @RequestAttribute("userId") Long customerId) throws EntityNotFound, ConversionFailedError {
 
-        return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+        if (id != customerId) {
+            throw new EntityNotFound("Invalid customer request");
+        }
+
+        sort = (sort != null) ? sort : "id";
+        pageNo = (pageNo != null) ? pageNo : 0;
+        //if (pageable) {
+        RentalPageDTO page = rentalService.getByCustomerAndByStatusPageable(pageNo, sort, id, status);
+        return new ResponseEntity<>(page, HttpStatus.OK);
+        //}
     }
 
     @GetMapping(path = "/vehicle/{id}/rental",

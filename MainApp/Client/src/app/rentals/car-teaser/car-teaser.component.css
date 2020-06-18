@@ -4,9 +4,13 @@ label {
     margin-right: 0.4em;
     font-weight: bold;
   }
-.star {
+  .star {
     font-size: 1.5rem;
     margin-top: 5em;
+    color: #585858;
+  }
+  .filled {
+    color: #E81831;
   }
 .mat-icon {
     font-size: 17px;

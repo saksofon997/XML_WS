@@ -1,0 +1,13 @@
+<div class="container mt-3 ">
+  <div class="row" style="justify-content: center;">
+    <div class="col-9">
+      <div class="teaser" style="padding: 0.01em;" *ngFor="let rental of rentals">
+        <app-rental-teaser [rental]="rental" [status]="status" [customer]="true"></app-rental-teaser>
+      </div>
+      <hr class="dashed" *ngIf="totalPages > pageNo+1">
+      <div class="row m-3 m-1 more-button-div" *ngIf="totalPages > pageNo+1">
+        <a class="btn btn-sm btn-outline-danger more-button-button" (click)="getCustomerRentals(pageNo + 1)">Load more</a>
+      </div>
+    </div>
+  </div>
+</div>        

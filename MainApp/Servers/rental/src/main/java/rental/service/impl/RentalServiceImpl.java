@@ -2,8 +2,13 @@ package rental.service.impl;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import rental.dto.RentalDTO;
+import rental.dto.RentalPageDTO;
 import rental.exceptions.ConversionFailedError;
 import rental.exceptions.EntityNotFound;
 import rental.model.Bundle;
@@ -29,7 +34,11 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalDTO convertToDTO(Rental rental) throws ConversionFailedError {
         try {
-            return mapper.map(rental, RentalDTO.class);
+            RentalDTO rentalDTO = mapper.map(rental, RentalDTO.class);
+            if (rentalDTO.getBundle() != null) {
+                rentalDTO.getBundle().setRentals(new HashSet<>());
+            }
+            return rentalDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
         }
@@ -107,5 +116,24 @@ public class RentalServiceImpl implements RentalService {
                 }
             }
         }
+    }
+
+    @Override
+    public RentalPageDTO getByCustomerAndByStatusPageable(Integer pageNo, String sortKey, Long customerId, String statusName) throws ConversionFailedError, EntityNotFound {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        RentalStatus status = RentalStatus.findByName(statusName);
+        if (status == null) {
+            throw new EntityNotFound("Invalid status");
+        }
+        Page<Rental> pagedResult = rentalRepository.findByCustomerIdAndStatus(customerId, status, page);
+
+        RentalPageDTO pageDTO = new RentalPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Rental rental: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(rental));
+        }
+
+        return pageDTO;
     }
 }

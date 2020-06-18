@@ -13,8 +13,9 @@ export class TokenInterceptor implements HttpInterceptor {
     constructor(public userService: UserService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const login = /login/gi;
-        const yandex = /apikey/gi; 
+        const yandex = /apikey/gi;
         const register = /register/gi;
+
         if (request.url.search(login) === -1 && request.url.search(yandex) === -1 && request.url.search(register) === -1) {
             request = request.clone({
                 setHeaders: {
