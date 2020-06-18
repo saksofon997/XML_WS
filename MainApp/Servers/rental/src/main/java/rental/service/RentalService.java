@@ -23,4 +23,6 @@ public interface RentalService {
     void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO);
 
     RentalPageDTO getByCustomerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
+
+    RentalPageDTO getByOwnerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
 }

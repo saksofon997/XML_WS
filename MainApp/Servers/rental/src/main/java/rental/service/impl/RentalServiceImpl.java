@@ -136,4 +136,23 @@ public class RentalServiceImpl implements RentalService {
 
         return pageDTO;
     }
+
+    @Override
+    public RentalPageDTO getByOwnerAndByStatusPageable(Integer pageNo, String sortKey, Long customerId, String statusName) throws ConversionFailedError, EntityNotFound {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        RentalStatus status = RentalStatus.findByName(statusName);
+        if (status == null) {
+            throw new EntityNotFound("Invalid status");
+        }
+        Page<Rental> pagedResult = rentalRepository.findByOwnerIdAndStatus(customerId, status, page);
+
+        RentalPageDTO pageDTO = new RentalPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Rental rental: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(rental));
+        }
+
+        return pageDTO;
+    }
 }

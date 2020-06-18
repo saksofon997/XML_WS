@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { RentalFront } from 'src/app/models/Rental.model';
+import { Car } from 'src/app/models/Car.model';
 import { UserService } from 'src/app/services/user.service';
 import { RentalService } from 'src/app/services/rental.service';
-import { RentalFront } from 'src/app/models/Rental.model';
 import { VehicleService } from 'src/app/services/vehicle.service';
-import { Car } from 'src/app/models/Car.model';
 
 @Component({
-  selector: 'app-customer-rentals-listing',
-  templateUrl: './customer-rentals-listing.component.html',
-  styleUrls: ['./customer-rentals-listing.component.css']
+  selector: 'app-owner-rentals-listing',
+  templateUrl: './owner-rentals-listing.component.html',
+  styleUrls: ['./owner-rentals-listing.component.css']
 })
-export class CustomerRentalsListingComponent implements OnInit, OnChanges {
+export class OwnerRentalsListingComponent implements OnInit, OnChanges {
 
   @Input() status: string;
   rentals = new Array<RentalFront>();
@@ -18,20 +18,20 @@ export class CustomerRentalsListingComponent implements OnInit, OnChanges {
   totalPages: number;
 
   constructor(private userService: UserService,
-              private rentalService: RentalService,
-              private vehicleService: VehicleService) { }
+    private rentalService: RentalService,
+    private vehicleService: VehicleService) { }
 
   ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.rentals = new Array<RentalFront>();
-    this.getCustomerRentals(0);
+    this.getOwnerRentals(0);
   }
 
-  getCustomerRentals(pageNo: number) {
-    const customerId = this.userService.getUser()?.id;
-    this.rentalService.getCustomerRentals(customerId, this.status, pageNo).subscribe(
+  getOwnerRentals(pageNo: number) {
+    const ownerId = this.userService.getUser()?.id;
+    this.rentalService.getOwnerRentals(ownerId, this.status, pageNo).subscribe(
       (data: any) => {
         data.content.forEach(rentalBack => {
           this.getVehicle(rentalBack.vehicleId).then((vehicle: Car) => {
@@ -69,5 +69,4 @@ export class CustomerRentalsListingComponent implements OnInit, OnChanges {
     const params = '?vehicleID=' + id;
     window.open('/vehicle' + params, '_blank');
   }
-
 }

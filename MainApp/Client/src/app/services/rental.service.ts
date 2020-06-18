@@ -53,4 +53,22 @@ export class RentalService {
         })
       );
   }
+
+  getOwnerRentals(ownerId: number, status: string, pageNo: number) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'pageable': `true`,
+      'page': pageNo.toString()
+    });
+    return this.http.get(`${API_URL}/owner/${ownerId}/rental/status/${status}`,
+      { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
 }

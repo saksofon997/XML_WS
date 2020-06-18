@@ -29,6 +29,12 @@
   background-color: #E81831;
   color: #eeeeee;
 }
+
+.btn-outline-danger {
+  display: inline-flex;
+  align-items: center;
+}
+
 .btn-outline-danger:hover {
   background-color: #E81831;
 }

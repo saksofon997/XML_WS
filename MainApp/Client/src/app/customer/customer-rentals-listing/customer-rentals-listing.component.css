@@ -17,3 +17,7 @@
 .btn-outline-danger:hover {
   background-color: #E81831;
 }
+
+.teaser:hover {
+  cursor: pointer;
+}

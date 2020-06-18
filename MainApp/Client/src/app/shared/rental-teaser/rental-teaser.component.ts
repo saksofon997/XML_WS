@@ -29,11 +29,28 @@ export class RentalTeaserComponent implements OnInit {
     return date.toLocaleString();
   }
 
-  sendMessage() {
-
+  sendMessage($event) {
+    $event.stopPropagation();
+    // TODO
   }
 
-  newReview() {
+  newReview($event) {
+    $event.stopPropagation();
+    // TODO
+  }
 
+  approveRental($event) {
+    $event.stopPropagation();
+    // TODO
+  }
+
+  rejectRental($event) {
+    $event.stopPropagation();
+    // TODO
+  }
+
+  newReport($event) {
+    $event.stopPropagation();
+    // TODO
   }
 }

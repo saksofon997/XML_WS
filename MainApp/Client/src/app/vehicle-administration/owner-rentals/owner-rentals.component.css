@@ -1,0 +1,31 @@
+.separator {
+  background-color: #c4c4c4;
+  height: 1em;
+}
+
+.container-bg {
+  background-color: #c4c4c4;
+}
+
+.list-group-item {
+  color: #000000;
+  margin-bottom: 0.5em;
+  font-size: large;
+  text-decoration: #E81831;
+}
+
+.list-group-item:hover {
+  cursor: pointer;
+  outline-style: solid;
+  outline-color: #E81831;
+  border-color: #E81831;
+  border-radius: 2%;
+}
+
+.active {
+  margin-bottom: 0.5em;
+  background-color: #E81831;
+  color: #eeeeee;
+  outline-color: #E81831;
+  border-color: #E81831;
+}
