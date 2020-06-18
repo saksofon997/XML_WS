@@ -39,8 +39,11 @@ public class Vehicle {
     @Column(name = "childSeats")
     private int childSeats;
 
-    @Column(name = "mileage")
+    @Column(name = "mileage") //how much the vehicle has traveled
     private long mileage;
+
+    @Column(name = "available_mileage") //-1 for unlimited
+    private long available_mileage;
 
     @Column(name = "cdw")
     private boolean cdw;
