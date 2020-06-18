@@ -3,19 +3,22 @@ package vehicle.service.impl;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import saga.commands.TypeOfCommand;
 import saga.commands.priceListCommands.MainPriceListCommand;
 import saga.commands.reviewCommands.MainReviewCommand;
 import saga.dto.PricelistDTO;
 import saga.dto.ReviewDTO;
+import vehicle.dto.BrandPageDTO;
+import vehicle.dto.ReviewPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Pricelist;
-import vehicle.model.Review;
-import vehicle.model.ReviewStatus;
-import vehicle.model.Vehicle;
+import vehicle.model.*;
 import vehicle.repository.ReviewRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.ReviewService;
@@ -59,6 +62,21 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public ReviewPageDTO getAllPageable(Integer pageNo, String sort) throws ConversionFailedError {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sort));
+        Page<Review> pagedResult = reviewRepo.findAllByStatusEquals(page, ReviewStatus.PENDING);
+
+        ReviewPageDTO pageDTO = new ReviewPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Review review: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(review));
+        }
+
+        return pageDTO;
+    }
+
+    @Override
     public List<ReviewDTO> getPending() throws EntityNotFound, ConversionFailedError {
 
         List<Review> reviews = reviewRepo.findByStatusEquals(ReviewStatus.PENDING);
@@ -75,7 +93,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new EntityNotFound("Items not found");
         }
 
-        List<Review> reviews = reviewRepo.findByVehicle(vehicle.get());
+        List<Review> reviews = reviewRepo.findByVehicleAndStatusEquals(vehicle.get(), ReviewStatus.PUBLISHED);
 
         return getReviewDTOS(reviews);
     }

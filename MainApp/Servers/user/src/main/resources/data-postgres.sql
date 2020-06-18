@@ -197,12 +197,6 @@ INSERT INTO users.users(
 INSERT INTO users.user_role(
     user_id, role_id)
     VALUES (1, 1);
-INSERT INTO users.user_role(
-    user_id, role_id)
-    VALUES (1, 2);
-INSERT INTO users.user_role(
-    user_id, role_id)
-    VALUES (1, 3);
 
 INSERT INTO users.user_role(
     user_id, role_id)

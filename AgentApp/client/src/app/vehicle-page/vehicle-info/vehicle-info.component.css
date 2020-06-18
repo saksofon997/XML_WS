@@ -1,0 +1,15 @@
+.container {
+  margin-top: 5vh;
+  width:100%
+}
+  
+.feature-name {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.feature {
+  padding-top: 0.1rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+}

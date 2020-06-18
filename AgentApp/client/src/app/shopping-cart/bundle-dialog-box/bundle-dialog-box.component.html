@@ -1,0 +1,13 @@
+<h1 mat-dialog-title><strong>{{action}} bundle</strong></h1>
+<div mat-dialog-content>
+  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+    <input placeholder="Name" matInput [(ngModel)]="local_data.name">
+  </mat-form-field>
+  <ng-template #elseTemplate>
+    Delete <b>{{local_data.name}}</b> bundle?
+  </ng-template>
+</div>
+<div mat-dialog-actions style="margin-top: 10px;">
+  <button class="do-button" mat-button (click)="doAction()">{{action}}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button>Cancel</button>
+</div>

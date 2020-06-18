@@ -6,7 +6,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import saga.dto.BrandDTO;
 import saga.dto.ReviewDTO;
+import vehicle.dto.BrandPageDTO;
+import vehicle.dto.ReviewPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.service.ReviewService;
@@ -22,12 +25,22 @@ public class ReviewController {
 
     @GetMapping(path = "/review",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('CHANGE_REVIEW_PERMISSION')")
-    public ResponseEntity<List<ReviewDTO>> getPending() throws ConversionFailedError, EntityNotFound {
+    @PreAuthorize("hasAuthority('APPROVE_REVIEW_PERMISSION')")
+    public ResponseEntity<?> getPending(
+            @RequestHeader(value = "page", required = false) Integer pageNo,
+            @RequestHeader(value = "sort", required = false) String sort,
+            @RequestHeader(value = "pageable", required = false) Boolean pageable
+    ) throws ConversionFailedError, EntityNotFound {
 
-        List<ReviewDTO> pending = reviewService.getPending();
-
-        return new ResponseEntity<>(pending, HttpStatus.ACCEPTED);
+        sort = (sort != null) ? sort : "id";
+        pageNo = (pageNo != null) ? pageNo : 0;
+        if (pageable) {
+            ReviewPageDTO page = reviewService.getAllPageable(pageNo, sort);
+            return new ResponseEntity<>(page, HttpStatus.OK);
+        } else {
+            List<ReviewDTO> pending = reviewService.getPending();
+            return new ResponseEntity<>(pending, HttpStatus.OK);
+        }
     }
 
     @GetMapping(path = "/vehicle/{vehicleId}/review",

@@ -1,6 +1,7 @@
 package vehicle.service;
 
 import saga.dto.ReviewDTO;
+import vehicle.dto.ReviewPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Review;
@@ -23,4 +24,6 @@ public interface ReviewService {
     public ReviewDTO convertToDTO(Review review) throws ConversionFailedError;
 
     public Review convertToModel(ReviewDTO reviewDTO) throws ConversionFailedError;
+
+    ReviewPageDTO getAllPageable(Integer pageNo, String sort) throws ConversionFailedError;
 }

@@ -6,14 +6,14 @@ import { interval, throwError, Observable } from 'rxjs';
 import { flatMap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class UserService {
 	private user: any = null;
 	private token: any = null;
 	passwordChanged = true;
-  private get router() { return this.injector.get(Router); }
-  
+	private get router() { return this.injector.get(Router); }
+
 	constructor(private cookieService: CookieService,
 		private http: HttpClient,
 		private injector: Injector) {
@@ -47,7 +47,7 @@ export class UserService {
 	}
 
 	getToken() {
-		return JSON.parse(this.cookieService.get('token')).accessToken;
+		return JSON.parse(this.cookieService.get('token'));
 	}
 
 	getUser() {
@@ -84,13 +84,13 @@ export class UserService {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		});
-		return this.http.post('/auth/login', user, { headers, observe: 'response' })
+		return this.http.post('http://localhost:8087/auth/login', user, { headers, observe: 'response' })
 			.pipe(
 				map((response) => {
 					const userState = response.body;
 					this.setUser(userState['user']);
 					this.setToken(userState['token']);
-					this.router.navigate(['/']);
+					this.router.navigate(['/rentals']);
 					return this.user;
 				}),
 				catchError((response) => {

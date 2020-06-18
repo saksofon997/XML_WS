@@ -1,0 +1,71 @@
+<div class="row m-3 shadow-sm  m-1 bg-white rounded">
+  <div class="row" style="width: 100%;">
+    <app-car-teaser-car-info style="width: 100%;" [car]=rental.car></app-car-teaser-car-info>
+  </div>
+  <div class="row" style="width: 100%;">
+    <div class="col-sm-6">
+      <div class="row ml-1">
+        <div class="col-sm-2 d-flex justify-content-sm-end justify-content-center">
+          <p class="label">From</p>
+        </div>
+        <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center">
+          <p class="text">{{ fromLocaleString() }}</p>
+        </div>
+        <div class="w-100"></div>
+      </div>
+
+
+      <div class="row ml-1">
+        <div class="col-sm-2 d-flex justify-content-sm-end justify-content-center">
+          <p class="label">To</p>
+        </div>
+        <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center">
+          <p class="text">{{ toLocaleString() }}</p>
+        </div>
+        <div class="w-100"></div>
+      </div>
+    </div>
+
+    <div class="col-sm-3">
+      <div class="row ">
+        <div class="col-sm-12 d-flex justify-content-center align-self-center">
+          <p class="label">Collision Damage Waiver</p>
+          <div class="d-flex align-self-center">
+            <mat-checkbox [labelPosition]="'after'" style="padding-left: 0.8rem;">
+            </mat-checkbox>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-3">
+      <div class="row ">
+        <div class="col-sm-12 d-flex justify-content-center align-self-center">
+          <p class="label">Total price</p>
+        </div>
+        <div class="col-sm-12 d-flex justify-content-center align-self-center">
+          <p class="">500$</p>
+        </div>
+        <div class="col-sm-12 d-flex justify-content-center align-self-center">
+          <div class="dropdown" *ngIf="rental.bundle === null">
+            <button class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" mat-button
+              aria-haspopup="true" aria-expanded="false">
+              <span style="padding-bottom: 7px; padding-right: 7px;">Add to bundle</span>
+              <mat-icon style="cursor: pointer; font-size: 24px; margin-left: 0px; margin-right: 0px;
+                      width: 24px;">add</mat-icon>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" *ngFor="let bundle of bundles" style="cursor: pointer;"
+                (click)="addToBundle(bundle)">{{bundle.name}}</a>
+            </div>
+          </div>
+          <div *ngIf="rental.bundle !== null">
+            Bundle: <b>{{rental.bundle.name}}</b>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
