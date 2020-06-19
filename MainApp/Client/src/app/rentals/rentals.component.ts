@@ -11,12 +11,19 @@ import { Transmission } from '../models/Transmission.model';
 import { BrandService } from '../services/brand.service';
 import { CategoryService } from '../services/category.service';
 import { TransmissionService } from '../services/transmission.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 export class SearchParams {
   loc_lat: number;
   loc_long: number;
   start: number;
   end: number;
+  minPrice: number;
+  maxPrice: number;
+  mileage: number;
+  allowedMileage: number;
+  cdw: boolean;
+  kidsSeatsNo: number;
 
   categories: Category[];
   brands: Brand[];
@@ -29,7 +36,30 @@ export class SearchParams {
   selector: 'app-rentals',
   templateUrl: './rentals.component.html',
   styleUrls: ['./rentals.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger(
+      'inOutAnimation', 
+      [
+        transition(
+          ':enter', 
+          [
+            style({ opacity: 0 }),
+            animate('1s ease-out', 
+                    style({opacity: 1 }))
+          ]
+        ),
+        transition(
+          ':leave', 
+          [
+            style({ opacity: 1 }),
+            animate('1s ease-in', 
+                    style({  opacity: 0 }))
+          ]
+        )
+      ]
+    )
+  ]
 })
 export class RentalsComponent implements OnInit {
 
@@ -169,6 +199,11 @@ export class RentalsComponent implements OnInit {
       category: this.searchParamsObjects.categories.length > 0 ? this.searchParamsObjects.categories.map(x => x.name) : null,
       fuel: this.searchParamsObjects.fuels.length > 0 ? this.searchParamsObjects.fuels.map(x => x.name) : null,
       transmission: this.searchParamsObjects.transmissions.length > 0 ? this.searchParamsObjects.transmissions.map(x => x.name) : null,
+      cdw: this.searchParamsObjects.cdw ? this.searchParamsObjects.cdw : null,
+      mileage: this.searchParamsObjects.mileage ? this.searchParamsObjects.mileage : null,
+      priceFrom: this.searchParamsObjects.minPrice ? this.searchParamsObjects.minPrice : 0,
+      priceTo: this.searchParamsObjects.maxPrice ? this.searchParamsObjects.maxPrice : null,
+      childSeats: this.searchParamsObjects.kidsSeatsNo ? this.searchParamsObjects.kidsSeatsNo : null
     };
     this.searchService.search(pageNo, searchParams).subscribe(
       (data: any) => {
@@ -229,5 +264,17 @@ export class RentalsComponent implements OnInit {
   moveAdvancedSearch(destination: string) {
     var dom = window.document;
     dom.getElementById(destination).prepend(document.getElementById("tempAdvancedSearch"));
+  }
+  checkPrice(event){
+    if(this.searchParamsObjects.minPrice >= this.searchParamsObjects.maxPrice){
+      this.searchParamsObjects.minPrice = this.searchParamsObjects.maxPrice
+    }
+  }
+  unlimitedMileage(event){
+    if (event.checked) {
+    this.searchParamsObjects.allowedMileage = -1;
+    }else{
+      this.searchParamsObjects.allowedMileage = 0;
+    }
   }
 }

@@ -31,15 +31,20 @@ public class SearchController {
             @RequestParam("end") long endTime,
 
             @RequestParam(value = "page", required = false) Integer pageNo,
-            @RequestParam(value = "sort", required = false) String sort
+            @RequestParam(value = "sort", required = false) String sort,
+
+            @RequestParam(value = "cdw", required = false) Boolean cdw,
+            @RequestParam(value = "mileage", required = false) Long mileage,
+            @RequestParam(value = "priceFrom", required = false) Long priceFrom,
+            @RequestParam(value = "priceTo", required = false) Long priceTo,
+            @RequestParam(value = "childSeats", required = false) Integer childSeats
     ) throws ConversionFailedError {
 
         sort = (sort != null) ? sort : "id";
         pageNo = (pageNo != null) ? pageNo : 0;
-
         SearchResultPageDTO vehicles = searchService.doSearch(brand, category, fuel, model,
                 transmission, loc_lat, loc_long,
-                startTime, endTime, pageNo, sort);
+                startTime, endTime, pageNo, sort, cdw, mileage, priceFrom, priceTo, childSeats);
 
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
