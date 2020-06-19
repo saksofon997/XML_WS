@@ -9,6 +9,9 @@ import { BrandService } from 'src/app/services/brand.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { FuelService } from 'src/app/services/fuel.service';
 import { TransmissionService } from 'src/app/services/transmission.service';
+import { PricelistService } from 'src/app/services/pricelist.service';
+import { OccupancyService } from 'src/app/services/occupancy.service';
+import { VehicleOccupancy } from 'src/app/models/VehicleOccupancy.model';
 
 @Component({
   selector: 'app-vehicle-administration',
@@ -16,22 +19,22 @@ import { TransmissionService } from 'src/app/services/transmission.service';
   styleUrls: ['./vehicle-administration.component.css'],
   animations: [
     trigger(
-      'inOutAnimation', 
+      'inOutAnimation',
       [
         transition(
-          ':enter', 
+          ':enter',
           [
             style({ opacity: 0 }),
-            animate('1s ease-out', 
-                    style({opacity: 1 }))
+            animate('1s ease-out',
+              style({ opacity: 1 }))
           ]
         ),
         transition(
-          ':leave', 
+          ':leave',
           [
             style({ opacity: 1 }),
-            animate('1s ease-in', 
-                    style({  opacity: 0 }))
+            animate('1s ease-in',
+              style({ opacity: 0 }))
           ]
         )
       ]
@@ -70,6 +73,12 @@ export class VehicleAdministrationComponent implements OnInit {
     { id: 1560608787815, name: 'Manual 5 speed' },
     { id: 1560608805101, name: 'Manual 6 speed' }
   ];
+  pricelists: Array<any> = [
+    { id: 1560608769632, name: 'Automatic' },
+    { id: 1560608796014, name: 'Manual 4 speed' },
+    { id: 1560608787815, name: 'Manual 5 speed' },
+    { id: 1560608805101, name: 'Manual 6 speed' }
+  ];
 
   vehicle: Object = null;
   vehicleCancelBackup: Object = null;
@@ -88,14 +97,15 @@ export class VehicleAdministrationComponent implements OnInit {
     private categoryService: CategoryService,
     private fuelService: FuelService,
     private trannsmissionService: TransmissionService,
-    private vehicleService: VehicleService) {
-
+    private vehicleService: VehicleService,
+    private pricelistService: PricelistService,
+    private occupancyService: OccupancyService) {
 
   }
 
   ngOnInit() {
     this.sub = this.activatedRoute.params.subscribe((params) => {
-      
+
       //var vehicle_id = params.id;
 
       //change form with vehicle
@@ -120,11 +130,17 @@ export class VehicleAdministrationComponent implements OnInit {
       fuel: ['', [Validators.required]],
       mileage: ['', [Validators.required]],
       seats: ['', [Validators.required]],
+      childSeats: ['', [Validators.required]],
+
       alwaysAvailable: [false],
-      availableFrom: [''],
-      availableUntil: [''],
+      occupiedFrom: [''],
+      occupiedTo: [''],
+
       unlimitedMileage: [false],
-      alowedMileage: [''],
+      availableMileage: [''],
+
+      pricelist: ['', [Validators.required]],
+
       cdw: [false],
     });
     this.brandService.getAll().subscribe(
@@ -159,6 +175,14 @@ export class VehicleAdministrationComponent implements OnInit {
         alert(error);
       }
     );
+    this.pricelistService.getByOwner(1).subscribe( //TODO USER ID
+      (data: any) => {
+        this.pricelists = data;
+      },
+      (error) => {
+        alert(error);
+      }
+    );
 
   }
 
@@ -170,67 +194,83 @@ export class VehicleAdministrationComponent implements OnInit {
     this.models = selectedBrands.value.models;
   }
 
+  addVehicle(vehicle, images) {
+    this.vehicleService.addVehicle(vehicle, images).subscribe(
+      (data: any) => {
+        alert("Vehicle created");
+
+        if (!this.form.controls.alwaysAvailable.value) {
+          let occupancy = new VehicleOccupancy(null, Number(this.form.controls.occupiedFrom.value) / 1000, Number(this.form.controls.occupiedTo.value) / 1000, "MANUAL", null);
+          this.addOccupancy(data.id, occupancy)
+        }
+        else {
+          this.ngOnInit();
+        }
+      },
+      (error) => { alert(error); }
+    );
+  }
+
+  addOccupancy(vehicleId, occupancy) {
+    let promise = new Promise((resolve, reject) => {
+      this.occupancyService.add(vehicleId, occupancy).subscribe(
+        (data: any) => {
+          alert("Occupancy added");
+          this.ngOnInit();
+        },
+        (error) => { alert(error); }
+      );
+    });
+    return promise;
+  }
+
   onSubmit(data) {
-    console.log(this.form.controls);
-    var vehicle1 = {
-      brand:this.form.controls.brand.value,
-      model: this.form.controls.model.value,
-      category: this.form.controls.category.value,
-      seats: 5,
-      transmission: this.form.controls.transmission.value,
-      fuel: this.form.controls.fuel.value,
-      pricelist: null,
-      childSeats: 2,
-      mileage: 200,
-      cdw: 10,
+    var vehicle = {
+      brand: {
+        id: this.form.controls.brand.value.id,
+        name: this.form.controls.brand.value.name
+      },
+      model: {
+        id: this.form.controls.model.value.id,
+        name: this.form.controls.model.value.name
+      },
+      category: {
+        id: this.form.controls.category.value.id,
+        name: this.form.controls.category.value.name
+      },
+      seats: this.form.controls.seats.value,
+      transmission: {
+        id: this.form.controls.transmission.value.id,
+        name: this.form.controls.transmission.value.name
+      },
+      fuel: {
+        id: this.form.controls.fuel.value.id,
+        name: this.form.controls.fuel.value.name
+      },
+      pricelist: {
+        id: this.form.controls.pricelist.value.id,
+        ownerId: this.form.controls.pricelist.value.ownerId,
+        name: this.form.controls.pricelist.value.name,
+        pricePerDay: this.form.controls.pricelist.value.pricePerDay,
+        pricePerKm: this.form.controls.pricelist.value.pricePerKm,
+        cdw: this.form.controls.pricelist.value.cdw,
+        description: this.form.controls.pricelist.value.description
+      },
+      childSeats: this.form.controls.childSeats.value,
+      mileage: this.form.controls.mileage.value,
+      availableMileage: this.form.controls.unlimitedMileage.value ? -1 : this.form.controls.availableMileage.value,
+      cdw: this.form.controls.cdw.value,
       numberOfStars: 0,
       numberOfReviews: 0,
       locationLongitude: 0,
-      locationLatitude: 0, 
-      ownerId: 1
+      locationLatitude: 0,
+      ownerId: 5 //TODO USER ID
+    }
+
+    this.addVehicle(vehicle, this.images.files);
+
   }
-  var vehicle = {
-    brand: {
-      id: this.form.controls.brand.value.id,
-      name: this.form.controls.brand.value.name
-    },
-    model: {
-      id: this.form.controls.model.value.id,
-      name: this.form.controls.model.value.name
-    },
-    category: {
-      id: this.form.controls.category.value.id,
-      name: this.form.controls.category.value.name
-    },
-    seats: this.form.controls.seats.value,
-    transmission:{
-      id: this.form.controls.transmission.value.id,
-      name: this.form.controls.transmission.value.name
-    },
-    fuel: {
-      id: this.form.controls.fuel.value.id,
-      name: this.form.controls.fuel.value.name
-    },
-    pricelist: null,
-    childSeats: 2,
-    mileage: 200,
-    cdw: 10,
-    numberOfStars: 0,
-    numberOfReviews: 0,
-    locationLongitude: 0,
-    locationLatitude: 0, 
-    ownerId: 1
-}
-console.log(vehicle);
-    this.vehicleService.addVehicle(vehicle,this.images.files).subscribe(
-      (data: any) => { 
-        alert("Vehicle created");
-        this.ngOnInit();
-        },
-      (error) => { alert(error);  }
-    );
-  }
-  doAction(){
+  doAction() {
     // this.dialogRef.close({event:this.action,data:this.local_data});
   }
 }

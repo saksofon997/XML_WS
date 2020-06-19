@@ -100,6 +100,19 @@
       </div>
       <div class="w-200"></div>
 
+      <!-- <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Available mileage</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field class="example-full-width">
+          <input formControlName="availableMileage" matInput type="number">
+          <mat-error *ngIf="!form.get('availableMileage').valid || form.get('availableMileage').touched">
+            Available mileage is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-200"></div> -->
+
       <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
         <p class="feature-name">Seats</p>
       </div>
@@ -111,7 +124,19 @@
           </mat-error>
         </mat-form-field>
       </div>
+      <div class="w-200"></div>
 
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Child seats</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field class="example-full-width">
+          <input formControlName="childSeats" matInput type="number">
+          <mat-error *ngIf="!form.get('childSeats').valid || form.get('childSeats').touched">
+            Number of child seats is required
+          </mat-error>
+        </mat-form-field>
+      </div>
       <div class="w-200"></div>
 
       <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
@@ -119,7 +144,8 @@
       </div>
       <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
         <mat-form-field class="example-full-width">
-          <ngx-mat-file-input matInput [multiple]="true" [(ngModel)]="images" [ngModelOptions]="{standalone: true}"></ngx-mat-file-input>
+          <ngx-mat-file-input matInput [multiple]="true" [(ngModel)]="images" [ngModelOptions]="{standalone: true}">
+          </ngx-mat-file-input>
         </mat-form-field>
       </div>
 
@@ -132,10 +158,6 @@
       <div class="w-100"></div>
 
 
-
-
-
-
       <div class="col-sm-12 d-flex  justify-content-center mt-2">
         <!-- <p class="feature-name">Always available</p> -->
         <mat-checkbox class="feature-name" [labelPosition]="'before'" formControlName="alwaysAvailable"> Always
@@ -146,12 +168,12 @@
 
       <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
         class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
-        <p class="feature-name">Available from</p>
+        <p class="feature-name">Occupied from</p>
       </div>
       <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
         class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
         <mat-form-field>
-          <input [disabled]="true" formControlName="availableFrom" matInput [matDatepicker]="picker" [min]="now">
+          <input [disabled]="true" formControlName="occupiedFrom" matInput [matDatepicker]="picker" [min]="now">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker disabled="false" #picker></mat-datepicker>
         </mat-form-field>
@@ -160,13 +182,13 @@
 
       <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
         class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
-        <p class="feature-name">Until</p>
+        <p class="feature-name">To</p>
       </div>
       <div *ngIf="!form.get('alwaysAvailable').value" [@inOutAnimation]
         class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
         <mat-form-field>
-          <input [disabled]="true" formControlName="availableUntil" matInput [matDatepicker]="picker2"
-            [min]="form.get('availableFrom').value">
+          <input [disabled]="true" formControlName="occupiedTo" matInput [matDatepicker]="picker2"
+            [min]="form.get('occupiedFrom').value">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker disabled="false" #picker2></mat-datepicker>
         </mat-form-field>
@@ -183,17 +205,17 @@
       <div class="w-100"></div>
 
       <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2 align-items-center">
-        <p class="feature-name ">Allowed mileage</p>
+        <p class="feature-name ">Available mileage</p>
       </div>
 
       <div class="col-sm-8">
         <div class="col d-flex justify-content-sm-start justify-content-center mt-2">
           <div class="" *ngIf="!form.get('unlimitedMileage').value" [@inOutAnimation]>
             <mat-form-field class="example-full-width" style="width: 90%;">
-              <input formControlName="alowedMileage" matInput type="number">
-              <!-- <mat-error *ngIf="!form.get('mileage').valid || form.get('mileage').touched">
-              Mileage is required
-            </mat-error> -->
+              <input formControlName="availableMileage" matInput type="number">
+              <mat-error *ngIf="!form.get('availableMileage').valid || form.get('availableMileage').touched">
+              Available mileage is required
+            </mat-error>
             </mat-form-field>
           </div>
           <div class="feature">
@@ -202,6 +224,23 @@
           </div>
         </div>
       </div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Pricelist</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-form-field>
+          <mat-select formControlName="pricelist" name="pricelist">
+            <mat-option *ngFor="let price of pricelists" [value]="price">
+              {{price.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="!form.get('pricelist').valid || form.get('pricelist').touched">
+            Pricelist is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="w-100"></div>
 
       <div class="w-100"></div>
 
@@ -220,9 +259,9 @@
     <hr style=" width: 60%;">
     <div class="w-100"></div>
 
-    <div class="col-sm-12 d-flex justify-content-center  mt-2">
+    <!-- <div class="col-sm-12 d-flex justify-content-center  mt-2">
       <app-occupancy-view></app-occupancy-view>
-    </div>
+    </div> -->
 
 
     <div class="col-sm-12 d-flex justify-content-center  mt-2">
