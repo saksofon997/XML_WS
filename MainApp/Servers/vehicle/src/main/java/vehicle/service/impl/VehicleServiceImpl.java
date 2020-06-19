@@ -78,6 +78,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         List<VehicleDTO> vehicleDTOS = new ArrayList<VehicleDTO>();
         for (Vehicle vehicle: vehicles) {
+            System.out.println(vehicle.getAvailableMileage());
             vehicleDTOS.add(convertToDTO(vehicle));
         }
 

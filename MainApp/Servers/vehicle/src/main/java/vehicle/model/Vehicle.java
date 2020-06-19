@@ -43,7 +43,7 @@ public class Vehicle {
     private long mileage;
 
     @Column(name = "available_mileage") //-1 for unlimited
-    private long available_mileage;
+    private long availableMileage;
 
     @Column(name = "cdw")
     private boolean cdw;
@@ -93,7 +93,8 @@ public class Vehicle {
                    List<String> images,
                    double locationLongitude,
                    double locationLatitude,
-                   Long owner_id) {
+                   Long owner_id,
+                   long availableMileage) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -111,6 +112,7 @@ public class Vehicle {
         this.locationLongitude = locationLongitude;
         this.images = images;
         this.ownerId = owner_id;
+        this.availableMileage = availableMileage;
     }
 
     public Long getId() {
@@ -255,5 +257,13 @@ public class Vehicle {
 
     public void setCdw(boolean cdw) {
         this.cdw = cdw;
+    }
+
+    public long getAvailableMileage() {
+        return availableMileage;
+    }
+
+    public void setAvailableMileage(long availableMileage) {
+        this.availableMileage = availableMileage;
     }
 }

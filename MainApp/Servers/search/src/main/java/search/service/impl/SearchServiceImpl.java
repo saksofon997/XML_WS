@@ -45,6 +45,7 @@ public class SearchServiceImpl implements SearchService {
                 loc_lat, loc_long,
                 startTime, endTime, cdw,
                 mileage, priceFrom, priceTo, childSeats,
+                //mileage, available_mileage,
                 page);
 
         SearchResultPageDTO pageDTO = new SearchResultPageDTO();
@@ -85,6 +86,7 @@ public class SearchServiceImpl implements SearchService {
             vehicleDTO.setNumberOfReviews(vehicle.getNumberOfReviews());
             vehicleDTO.setImages(vehicle.getImages());
             vehicleDTO.setOwnerId(vehicle.getOwnerId());
+            vehicleDTO.setAvailableMileage(vehicle.getAvailableMileage());
             return vehicleDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
