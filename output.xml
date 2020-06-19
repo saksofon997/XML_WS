@@ -1,0 +1,1 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header/><SOAP-ENV:Body><ns3:getBrandName xmlns:ns3="http://www.vehicle.com/fuel"><id>1</id><name>5-speed manual</name></ns3:getBrandName></SOAP-ENV:Body></SOAP-ENV:Envelope>
