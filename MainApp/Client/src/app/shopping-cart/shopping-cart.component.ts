@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Bundle } from '../models/Bundle.model';
 import { ShoppingCart } from '../models/ShoppingCart.model';
 import { RentalService } from '../services/rental.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -21,6 +22,7 @@ export class ShoppingCartComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   constructor(public dialog: MatDialog,
+    private userService: UserService,
     private cookieService: CookieService,
     private rentalService: RentalService) {
 
@@ -112,10 +114,12 @@ export class ShoppingCartComponent implements OnInit {
     var i;
     for (i = 0; i < this.rentals.length; i++) {
       let rentalFront = this.rentals[i];
-      let rental = new RentalBack(null, rentalFront.car.id, 1, 1, rentalFront.from, rentalFront.to, null, null);
 
-      // TODO: user service - customerId
-      // TODO: rentalFront.car.ownerId - ownerId
+      let rental = new RentalBack(rentalFront.id, rentalFront.car.id, null,
+        rentalFront.ownerId, rentalFront.from, rentalFront.to, null, null, null);
+
+      rental.customerId = this.userService.getUser().id;
+
       let bundle = new Bundle(rentalFront.bundle?.name, null, null);
 
       if (rentalFront.bundle) {

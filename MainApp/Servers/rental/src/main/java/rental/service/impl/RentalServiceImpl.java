@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import rental.dto.RentalDTO;
 import rental.dto.RentalPageDTO;
+import rental.exceptions.ConflictException;
 import rental.exceptions.ConversionFailedError;
 import rental.exceptions.EntityNotFound;
 import rental.model.Bundle;
@@ -77,8 +78,31 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError {
-        return null;
+    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException {
+        Optional<Rental> rental = rentalRepository.findById(id);
+
+        if (!rental.isPresent())
+            throw new EntityNotFound("Invalid rental id");
+
+        if (rentalDTO.getStatus().equals(RentalStatus.RESERVED) &&
+                rental.get().getStatus().equals(RentalStatus.CANCELED)) {
+            throw new ConflictException("Rental request has already been canceled");
+        }
+
+        rental.get().setStatus(rentalDTO.getStatus());
+        Rental saved = rentalRepository.save(rental.get());
+        System.out.println(saved.getStatus());
+
+        if (saved.getStatus().equals(RentalStatus.RESERVED)) {
+            VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
+            occupied.setStartTime(saved.getStartTime());
+            occupied.setEndTime(saved.getEndTime());
+            this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
+            // TODO: remove other rental requests for same vehicle in this period
+            //commandGateway.send(new MainBrandCommand(savedBrand.getId(), brandDTO, TypeOfCommand.UPDATE));
+        }
+
+        return convertToDTO(saved);
     }
 
     @Override
@@ -93,8 +117,8 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO) {
-        List<Rental> rentals = rentalRepository.findByVehicleAndByStartAndEndTime(vehicleId, occupancyDTO.getStartTime(), occupancyDTO.getEndTime());
+    public void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO, Long excludeId) {
+        List<Rental> rentals = rentalRepository.findByVehicleAndByStartAndEndTimeExceptSingleRental(vehicleId, occupancyDTO.getStartTime(), occupancyDTO.getEndTime(), excludeId);
         HashMap<Long, Bundle> bundles = new HashMap<>();
         for (Rental rental: rentals) {
             if (rental.getStatus() != RentalStatus.CANCELED){

@@ -16,6 +16,7 @@ import { SharedModule } from './shared/shared.module';
 import { TokenInterceptor } from './services/token.interceptor';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 @NgModule({
    declarations: [
@@ -36,7 +37,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       SelectDropDownModule,
       MatIconModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      NgHttpLoaderModule.forRoot(),
    ],
    providers: [
       CookieService,

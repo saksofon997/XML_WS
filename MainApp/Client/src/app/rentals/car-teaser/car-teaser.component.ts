@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { ShoppingCart } from 'src/app/models/ShoppingCart.model';
 import { RentalFront } from 'src/app/models/Rental.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-car-teaser',
@@ -17,7 +18,8 @@ export class CarTeaserComponent implements OnInit {
   @Input() to: number;
   API_URL = environment.API_URL;
 
-  constructor(private cookieService: CookieService) {
+  constructor(private cookieService: CookieService,
+    private userService: UserService,) {
   }
 
   ngOnInit() {
@@ -50,14 +52,18 @@ export class CarTeaserComponent implements OnInit {
       let cart = JSON.parse(this.cookieService.get('shopping-cart'));
 
       if (!cart.rentals.some(e => e.car.id === this.car.id)) {
-        let rental = new RentalFront(null, this.car, this.from, this.to, null, null);
+        let rental = new RentalFront(null, this.car, this.from, this.to, null, null, null, this.car.ownerId);
+        rental.customerId = this.userService.getUser().id;
+
         cart.rentals.push(rental);
       }
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     } else {
       let cart = new ShoppingCart(new Array(), new Array());
 
-      let rental = new RentalFront(null, this.car, this.from, this.to, null, null);
+      let rental = new RentalFront(null, this.car, this.from, this.to, null, null, null, this.car.ownerId);
+      rental.customerId = this.userService.getUser().id;
+
       cart.rentals.push(rental);
       this.cookieService.set('shopping-cart', JSON.stringify(cart));
     }

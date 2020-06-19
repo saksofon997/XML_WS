@@ -67,6 +67,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
+    @ExceptionHandler(ConflictException.class)
+    protected ResponseEntity<Object> handleConflictException(
+            ConflictException ex) {
+        ApiError apiError = new ApiError(CONFLICT);
+        apiError.setMessage(ex.getMessage());
+        apiError.setEx(ex);
+        return buildResponseEntity(apiError);
+    }
+
     /*ERROR HANDLING
     * Add new custom exception like ItemNotFound
     * Make methods throw that exception

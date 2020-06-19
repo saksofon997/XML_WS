@@ -36,7 +36,7 @@ export class OwnerRentalsListingComponent implements OnInit, OnChanges {
         data.content.forEach(rentalBack => {
           this.getVehicle(rentalBack.vehicleId).then((vehicle: Car) => {
             const rental = new RentalFront(rentalBack.id, vehicle, rentalBack.startTime,
-               rentalBack.endTime, rentalBack.bundle, rentalBack.report);
+               rentalBack.endTime, rentalBack.bundle, rentalBack.report, rentalBack.customerId, rentalBack.ownerId);
             this.rentals.push(rental);
           });
         });
@@ -69,5 +69,9 @@ export class OwnerRentalsListingComponent implements OnInit, OnChanges {
   showVehicle(id: number) {
     const params = '?vehicleID=' + id;
     window.open('/vehicle' + params, '_blank');
+  }
+
+  deleteRental($event) {
+    this.rentals = this.rentals.filter(x => x.id !== $event.id);
   }
 }

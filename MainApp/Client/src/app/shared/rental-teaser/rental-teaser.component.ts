@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RentalFront, RentalBack } from 'src/app/models/Rental.model';
 import { CookieService } from 'ngx-cookie-service';
 import { Review } from 'src/app/models/Review.model';
@@ -10,6 +10,7 @@ import { ReviewService } from 'src/app/services/review.service';
 import { NewRentalReportDialogboxComponent } from '../new-rental-report-dialogbox/new-rental-report-dialogbox.component';
 import { RentalReport } from 'src/app/models/RentalReport.model';
 import { RentalReportService } from 'src/app/services/rental-report.service';
+import { RentalService } from 'src/app/services/rental.service';
 
 @Component({
   selector: 'app-rental-teaser',
@@ -21,10 +22,12 @@ export class RentalTeaserComponent implements OnInit {
   @Input() rental: RentalFront;
   @Input() status: string;
   @Input() customer: boolean;
+  @Output() delete: EventEmitter<RentalFront> = new EventEmitter();
 
   constructor(private userService: UserService,
     private rentalReportService: RentalReportService,
     private reviewService: ReviewService,
+    private rentalService: RentalService,
     public dialog: MatDialog,) { }
 
   ngOnInit() {
@@ -60,7 +63,7 @@ export class RentalTeaserComponent implements OnInit {
       const review = new Review();
       review.text = result.data.text;
       review.stars = result.data.stars;
-      let car = new Car();
+      const car = new Car();
       car.id = this.rental.car.id;
       review.vehicle = car;
       review.customerId = this.userService.getUser().id;
@@ -81,12 +84,52 @@ export class RentalTeaserComponent implements OnInit {
 
   approveRental($event) {
     $event.stopPropagation();
-    // TODO
+
+    const rental = new RentalBack(this.rental.id, this.rental.car.id, this.rental.customerId,
+      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'RESERVED');
+    this.rentalService.edit(this.rental.id, rental).subscribe(
+      (data: any) => {
+        this.delete.emit(this.rental);
+      },
+      (error) => {
+        alert(error.message);
+        if (error.status === 'CONFLICT') {
+          this.delete.emit(this.rental);
+        }
+      }
+    );
   }
 
   rejectRental($event) {
     $event.stopPropagation();
-    // TODO
+
+    const rental = new RentalBack(this.rental.id, this.rental.car.id, this.rental.customerId,
+      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'CANCELED');
+
+    this.rentalService.edit(this.rental.id, rental).subscribe(
+      (data: any) => {
+        this.delete.emit(this.rental);
+      },
+      (error) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  finishRental($event) {
+    $event.stopPropagation();
+
+    const rental = new RentalBack(this.rental.id, this.rental.car.id, this.rental.customerId,
+      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'FINISHED');
+
+    this.rentalService.edit(this.rental.id, rental).subscribe(
+      (data: any) => {
+        this.delete.emit(this.rental);
+      },
+      (error) => {
+        alert(error.message);
+      }
+    );
   }
 
   newReport($event) {
@@ -106,7 +149,6 @@ export class RentalTeaserComponent implements OnInit {
       report.mileage = result.data.mileage;
       report.rentalId = this.rental.id;
 
-      console.log(report);
       this.rentalReportService.add(report).subscribe(
         (data: any) => {
           this.rental.report = new RentalReport();
