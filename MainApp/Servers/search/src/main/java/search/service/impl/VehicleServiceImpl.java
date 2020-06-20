@@ -28,7 +28,9 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleDTO convertToDTO(Vehicle vehicle) throws ConversionFailedError {
         try {
-            return mapper.map(vehicle, VehicleDTO.class);
+            VehicleDTO vehicleDTO = mapper.map(vehicle, VehicleDTO.class);
+            vehicleDTO.getBrand().setModels(null);
+            return vehicleDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
         }
@@ -53,9 +55,9 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle newBrand = convertToModel(vehicleDTO);
 
-            Vehicle savedVehicle = vehicleRepo.save(newBrand);
+        Vehicle savedVehicle = vehicleRepo.save(newBrand);
 
-            System.out.println(savedVehicle.getId());
+        System.out.println(savedVehicle.getId());
 
         return vehicleDTO;
     }
@@ -64,8 +66,8 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Vehicle> vehicle = vehicleRepo.findById(id);
 
-        if (!vehicle.isPresent()){
-            throw new EntityNotFound("No item with ID: "+id);
+        if (!vehicle.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
         } else {
             return convertToDTO(vehicle.get());
         }
@@ -90,8 +92,8 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Vehicle> deleted = vehicleRepo.findById(id);
 
-        if (!deleted.isPresent()){
-            throw new EntityNotFound("No item with ID: "+id);
+        if (!deleted.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + id);
         }
         Vehicle vehicle = deleted.get();
         vehicle.setDeleted(true);
