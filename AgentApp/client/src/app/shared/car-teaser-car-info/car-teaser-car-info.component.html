@@ -28,8 +28,8 @@
         <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon>
-        {{checkMileage((car.mileage))}}
+        <mat-icon matTooltip="Available mileage" [matTooltipPosition]="'below'">trending_up</mat-icon>
+        {{checkMileage((car.availableMileage))}} km
       </li>
     </ul>
   </div>
