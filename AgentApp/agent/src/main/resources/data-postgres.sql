@@ -314,44 +314,44 @@ INSERT INTO agent.pricelist(
     VALUES (nextval('pricelist_id_seq'), 1, 'Modern sedans', 160, 1.5, true, 'Price for modern sedans', false); /*5*/
 
 INSERT INTO agent.vehicle( -- BMW X5 1
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 1, 1, 1, 5, 2, 5, 1, -1, true, 1, 4, 1, 45.2553823, 19.8317609, false, 1); /*1*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 1, 1, 1, 5, 2, 5, 1, 100000, true, 1, 4, 8, 45.2553823, 19.8317609, false, 1, -1); /*1*/
 INSERT INTO agent.vehicle( -- Mercedes CLA 220 2
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 2, 4, 3, 4, 2, 4, 0, -1, false, 2, 3, 1, 44.766226, 20.443431, false, 2); /*2*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 2, 4, 3, 4, 2, 4, 0, 130000, false, 2, 3, 7, 44.766226, 20.443431, false, 2, 200); /*2*/
 INSERT INTO agent.vehicle( -- BMW Z8 3
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 1, 3, 3, 1, 2, 2, 0, -1, false, 3, 5, 1, 44.766226, 20.443431, false, 1); /*3*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 1, 3, 3, 1, 2, 2, 0, 90000, false, 3, 5, 3, 44.766226, 20.443431, false, 1, 700); /*3*/
 INSERT INTO agent.vehicle( -- Mercedes SL 450 4
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 2, 5, 3, 2, 1, 2, 0, -1, true, 5, 2, 1, 44.766226, 20.443431, false, 2); /*4*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 2, 5, 3, 2, 1, 2, 0, 250000, true, 5, 2, 15, 44.766226, 20.443431, false, 2, -1); /*4*/
 INSERT INTO agent.vehicle( -- Mercedes GLS 550 5
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 2, 6, 1, 4, 2, 5, 0, -1, false, 2, 3, 1, 45.2553823, 19.8317609, false, 1); /*5*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 2, 6, 1, 4, 2, 5, 0, 120000, false, 2, 3, 4, 45.2553823, 19.8317609, false, 1, 400); /*5*/
 INSERT INTO agent.vehicle( -- Alfa Romeo Giulia 6
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 3, 7, 3, 2, 2, 4, 0, -1, true, 5, 4, 1, 45.2553823, 19.8317609, false, 2); /*6*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 3, 7, 3, 2, 2, 4, 0, 135000, true, 5, 4, 3, 45.2553823, 19.8317609, false, 2, 900); /*6*/
 INSERT INTO agent.vehicle( -- Alfa Romeo Stelvio 7
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 3, 8, 1, 4, 2, 5, 1, -1, true, 5, 4, 1, 45.2553823, 19.8317609, false, 1); /*7*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 3, 8, 1, 4, 2, 5, 1, 190000, true, 5, 4, 2, 45.2553823, 19.8317609, false, 1, 1000); /*7*/
 INSERT INTO agent.vehicle( -- Mazda MX-5 8
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 4, 9, 3, 1, 1, 2, 0, -1, false, 3, 5, 1, 45.2553823, 19.8317609, false, 2); /*8*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 4, 9, 3, 1, 1, 2, 0, 200000, false, 3, 5, 11, 45.2553823, 19.8317609, false, 2, -1); /*8*/
 INSERT INTO agent.vehicle( -- Mazda CX-5 9
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 4, 10, 1, 4, 2, 5, 1, -1, true, 5, 3, 1, 45.2553823, 19.8317609, false, 1); /*9*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 4, 10, 1, 4, 2, 5, 1, 250000, true, 5, 3, 4, 45.2553823, 19.8317609, false, 1, -1); /*9*/
 INSERT INTO agent.vehicle( -- Toyota Prius 10
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 5, 11, 2, 3, 3, 5, 1, -1, false, 4, 5, 1, 45.2553823, 19.8317609, false, 2); /*10*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 5, 11, 2, 3, 3, 5, 1, 68000, false, 4, 5, 6, 45.2553823, 19.8317609, false, 2, 1500); /*10*/
 INSERT INTO agent.vehicle( -- Toyota RAV-4 11
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 5, 12, 1, 4, 1, 5, 0, -1, true, 5, 4, 1, 45.2553823, 19.8317609, false, 1); /*11*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 5, 12, 1, 4, 1, 5, 0, 156000, true, 5, 4, 5, 45.2553823, 19.8317609, false, 1, 150); /*11*/
 INSERT INTO agent.vehicle( -- Toyota Yaris 12
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 5, 13, 2, 1, 1, 4, 1, -1, false, 4, 5, 1, 45.2553823, 19.8317609, false, 2); /*12*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 5, 13, 2, 1, 1, 4, 1, 270000, false, 4, 5, 1, 45.2553823, 19.8317609, false, 2, -1); /*12*/
 INSERT INTO agent.vehicle( -- Tesla Model S 13
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id)
-    VALUES (nextval('vehicle_id_seq'), 6, 14, 3, 4, 3, 4, 0, -1, true, 5, 4, 1, 45.2553823, 19.8317609, false, 1); /*13*/
+    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+    VALUES (nextval('vehicle_id_seq'), 6, 14, 3, 4, 3, 4, 0, 87000, true, 5, 4, 2, 45.2553823, 19.8317609, false, 1, 1100); /*13*/
 
 
 INSERT INTO agent.vehicle_occupancy( -- 15.6. 15:00 -> 17.6. 15:00 UTC

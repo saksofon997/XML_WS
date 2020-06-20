@@ -16,11 +16,18 @@ export class VehicleStatisticsComponent implements OnInit {
     responsive: true,
   };
   VehicleLabels: Label[] = [];
-  VehicleType: ChartType = 'bar';
+  VehicleType: ChartType = 'horizontalBar';
   VehicleLegend = true;
   VehiclePlugins = [];
   VehicleColors: Color[]=[{
-    backgroundColor:"#E81831",
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(255, 206, 86, 0.2)',
+      'rgba(0, 255, 0, 0.2)',
+      'rgba(102, 0, 204, 0.2)',
+      'rgba(255, 128, 0, 0.2)'
+    ],
     hoverBackgroundColor:"#EEEEEE",
     borderColor:"#585858",
     hoverBorderColor:"#585858"
