@@ -16,11 +16,11 @@ public interface RentalService {
 
     RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError;
+    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException;
 
     void delete(Long id) throws EntityNotFound;
 
-    void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO);
+    void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO, Long excludeId);
 
     RentalPageDTO getByCustomerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
 

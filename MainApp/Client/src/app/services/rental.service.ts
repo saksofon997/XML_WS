@@ -71,4 +71,18 @@ export class RentalService {
         })
       );
   }
+
+  edit( rentalId: number, rental: RentalBack) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.put(`${API_URL}/rental/${rentalId}`, rental, { headers, observe: 'response' }).pipe(
+      map(response => {
+        return response.body;
+      }),
+      catchError((response) => {
+        return throwError(response.error);
+      })
+    );
+  }
 }
