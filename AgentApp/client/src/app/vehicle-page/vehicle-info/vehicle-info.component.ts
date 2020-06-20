@@ -13,7 +13,7 @@ export class VehicleInfoComponent implements OnInit {
 
   ngOnInit() {
   }
-  checkMileage(mileage){
+  checkAvailableMileage(mileage){
     return mileage != -1 ? mileage : "Unlimited";
   }
 }

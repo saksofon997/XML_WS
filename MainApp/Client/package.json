@@ -33,9 +33,11 @@
     "ngx-cookie-service": "^3.0.4",
     "ngx-material-file-input": "^2.1.1",
     "ngx-select-dropdown": "^1.4.2",
+    "ng2-charts": "^2.3.2",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
+    "chart.js": "^2.9.3",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
