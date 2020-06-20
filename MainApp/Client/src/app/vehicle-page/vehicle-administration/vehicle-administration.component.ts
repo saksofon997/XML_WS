@@ -12,6 +12,7 @@ import { TransmissionService } from 'src/app/services/transmission.service';
 import { PricelistService } from 'src/app/services/pricelist.service';
 import { OccupancyService } from 'src/app/services/occupancy.service';
 import { VehicleOccupancy } from 'src/app/models/VehicleOccupancy.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-vehicle-administration',
@@ -74,10 +75,7 @@ export class VehicleAdministrationComponent implements OnInit {
     { id: 1560608805101, name: 'Manual 6 speed' }
   ];
   pricelists: Array<any> = [
-    { id: 1560608769632, name: 'Automatic' },
-    { id: 1560608796014, name: 'Manual 4 speed' },
-    { id: 1560608787815, name: 'Manual 5 speed' },
-    { id: 1560608805101, name: 'Manual 6 speed' }
+    { id: 1560608769632, name: 'Empty' }
   ];
 
   vehicle: Object = null;
@@ -99,7 +97,8 @@ export class VehicleAdministrationComponent implements OnInit {
     private trannsmissionService: TransmissionService,
     private vehicleService: VehicleService,
     private pricelistService: PricelistService,
-    private occupancyService: OccupancyService) {
+    private occupancyService: OccupancyService,
+    private userService: UserService) {
 
   }
 
@@ -175,12 +174,15 @@ export class VehicleAdministrationComponent implements OnInit {
         alert(error);
       }
     );
-    this.pricelistService.getByOwner(1).subscribe( //TODO USER ID
+
+    let userId = this.userService.getUser().id;
+
+    this.pricelistService.getByOwner(userId).subscribe(
       (data: any) => {
         this.pricelists = data;
       },
       (error) => {
-        alert(error);
+        alert("Error getting pricelists, maybe you need to create a pricelist first?");
       }
     );
 
@@ -264,7 +266,8 @@ export class VehicleAdministrationComponent implements OnInit {
       numberOfReviews: 0,
       locationLongitude: 0,
       locationLatitude: 0,
-      ownerId: 5 //TODO USER ID
+
+      ownerId: this.userService.getUser().id
     }
 
     this.addVehicle(vehicle, this.images.files);

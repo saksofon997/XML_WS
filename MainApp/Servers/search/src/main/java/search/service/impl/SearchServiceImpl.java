@@ -29,8 +29,8 @@ public class SearchServiceImpl implements SearchService {
     public SearchResultPageDTO doSearch(String brand, String category, String fuel, String model,
                                         String transmission, double loc_lat, double loc_long,
                                         long startTime, long endTime,
-                                        Integer pageNo, String sortKey,  Boolean cdw, Long mileage,
-                                        Long priceFrom, Long priceTo, Integer childSeats) throws ConversionFailedError {
+                                        Integer pageNo, String sortKey, Boolean cdw, Long mileage,
+                                        Long priceFrom, Long priceTo, Integer childSeats, Long availableMileage) throws ConversionFailedError {
 
         Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
 
@@ -45,13 +45,13 @@ public class SearchServiceImpl implements SearchService {
                 loc_lat, loc_long,
                 startTime, endTime, cdw,
                 mileage, priceFrom, priceTo, childSeats,
-                //mileage, available_mileage,
+                availableMileage,
                 page);
 
         SearchResultPageDTO pageDTO = new SearchResultPageDTO();
         pageDTO.setPageNo(pagedResult.getNumber());
         pageDTO.setTotalPages(pagedResult.getTotalPages());
-        for (Vehicle vehicle: pagedResult.getContent()){
+        for (Vehicle vehicle : pagedResult.getContent()) {
             pageDTO.getContent().add(convertToDTO(vehicle));
             System.out.println(vehicle.getImages());
         }
