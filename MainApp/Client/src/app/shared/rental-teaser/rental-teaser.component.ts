@@ -60,8 +60,7 @@ export class RentalTeaserComponent implements OnInit {
       const review = new Review();
       review.text = result.data.text;
       review.stars = result.data.stars;
-      let car = new Car();
-      car.id = this.rental.car.id;
+      let car = new Car(this.rental.car.id, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
       review.vehicle = car;
       review.customerId = this.userService.getUser().id;
       review.customerName = this.userService.getUser().name;

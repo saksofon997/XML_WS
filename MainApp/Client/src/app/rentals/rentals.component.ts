@@ -201,6 +201,7 @@ export class RentalsComponent implements OnInit {
       transmission: this.searchParamsObjects.transmissions.length > 0 ? this.searchParamsObjects.transmissions.map(x => x.name) : null,
       cdw: this.searchParamsObjects.cdw ? this.searchParamsObjects.cdw : null,
       mileage: this.searchParamsObjects.mileage ? this.searchParamsObjects.mileage : null,
+      availableMileage: this.searchParamsObjects.allowedMileage ? this.searchParamsObjects.allowedMileage : null,
       priceFrom: this.searchParamsObjects.minPrice ? this.searchParamsObjects.minPrice : 0,
       priceTo: this.searchParamsObjects.maxPrice ? this.searchParamsObjects.maxPrice : null,
       childSeats: this.searchParamsObjects.kidsSeatsNo ? this.searchParamsObjects.kidsSeatsNo : null
