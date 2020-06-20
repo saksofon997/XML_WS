@@ -7,12 +7,12 @@ export class RentalFront {
   car: Car;
   from: number;
   to: number;
-  bundle: Bundle = null;
+  bundle: string;
   report: RentalReport;
   customerId: number;
   ownerId: number;
 
-  constructor(id: number, car: Car, from: number, to: number, bundle: Bundle, report: RentalReport, customerId: number, ownerId: number) {
+  constructor(id: number, car: Car, from: number, to: number, bundle: string, report: RentalReport, customerId: number, ownerId: number) {
     this.id = id;
     this.car = car;
     this.from = from;

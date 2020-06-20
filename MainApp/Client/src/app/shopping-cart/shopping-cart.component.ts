@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { RentalBack, RentalFront } from '../models/Rental.model';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { Bundle } from '../models/Bundle.model';
 import { ShoppingCart } from '../models/ShoppingCart.model';
 import { RentalService } from '../services/rental.service';
 import { UserService } from '../services/user.service';
+import { ShoppingCartService } from '../services/shopping-cart.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -22,23 +23,15 @@ export class ShoppingCartComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   constructor(public dialog: MatDialog,
+    private shoppingCartService: ShoppingCartService,
     private userService: UserService,
     private cookieService: CookieService,
     private rentalService: RentalService) {
-
-    if (this.cookieService.get('shopping-cart')) {
-      let cart = JSON.parse(this.cookieService.get('shopping-cart'));
-      this.rentals = cart.rentals;
-      this.bundles = cart.bundles;
-    } else {
-      let cart = new ShoppingCart(this.rentals, this.bundles);
-      this.cookieService.set('shopping-cart', JSON.stringify(cart));
-    }
-
-    //this.cookieService.delete('shopping-cart');
   }
 
   ngOnInit() {
+    this.rentals = this.shoppingCartService.getRentals();
+    this.bundles = this.shoppingCartService.getBundles();
   }
 
   openDialog(action, obj) {
@@ -58,58 +51,26 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   createBundle(data) {
-    if (this.cookieService.get('shopping-cart')) {
-      let cart = JSON.parse(this.cookieService.get('shopping-cart'));
-
-      if (!cart.bundles.some(e => e.name === data.name)) {
-        let bundle = new Bundle(data.name, new Array<RentalFront>(), null);
-        cart.bundles.push(bundle);
-        this.bundles.push(bundle);
-      }
-      this.cookieService.set('shopping-cart', JSON.stringify(cart));
-    } else {
-      let cart = new ShoppingCart(new Array(), new Array());
-
-      let bundle = new Bundle(data.name, new Array<RentalFront>(), null);
-
-      cart.bundles.push(bundle);
-      this.bundles.push(bundle);
-
-      this.cookieService.set('shopping-cart', JSON.stringify(cart));
-    }
+    this.shoppingCartService.addBundleToCart(data);
+    this.cartUpdated('create');
   }
 
   deleteBundle(data) {
-    var result = this.bundles.find(b => {
-      return b.name === data.name;
-    });
-
-    for (var rental of result.rentals) {
-      rental.bundle = null;
-    }
-
-    this.bundles = this.bundles.filter((value) => {
-      return value.name !== data.name;
-    });
-    let cart = JSON.parse(this.cookieService.get('shopping-cart'));
-    cart.bundles = this.bundles;
-    this.cookieService.set('shopping-cart', JSON.stringify(cart));
-
+    this.shoppingCartService.removeBundleFromCart(data);
+    this.cartUpdated('delete');
   }
 
   removeFromBundle(bundle, rental) {
-    bundle.rentals = bundle.rentals.filter((value) => {
-      return value.id !== rental.id;
-    });
-
-    if (bundle.rentals.length === 0) {
-      bundle.owner = null;
-    }
-    rental.bundle = null;
+    this.shoppingCartService.removeFromBundle(bundle, rental);
+    this.cartUpdated('remove');
   }
 
   checkout() {
     let rentals = new Array<RentalBack>();
+
+    if (this.rentals.length === 0) {
+      return;
+    }
 
     var i;
     for (i = 0; i < this.rentals.length; i++) {
@@ -120,9 +81,9 @@ export class ShoppingCartComponent implements OnInit {
 
       rental.customerId = this.userService.getUser().id;
 
-      let bundle = new Bundle(rentalFront.bundle?.name, null, null);
-
       if (rentalFront.bundle) {
+        let bundle = new Bundle(rentalFront.bundle, null, null);
+
         rental.bundle = bundle;
       }
 
@@ -132,9 +93,11 @@ export class ShoppingCartComponent implements OnInit {
     this.rentalService.checkout(rentals).subscribe(
       () => {
         alert("Checkout successfull");
-        this.bundles = new Array();
-        this.rentals = new Array();
-        this.cookieService.delete('shopping-cart');
+        //this.bundles = new Array();
+        //this.rentals = new Array();
+        //this.cookieService.delete('shopping-cart');
+        this.shoppingCartService.clearCart();
+        this.cartUpdated('delete');
       },
       (error) => {
         alert(error);
@@ -143,4 +106,12 @@ export class ShoppingCartComponent implements OnInit {
 
   }
 
+  deleteRental($event) {
+    this.rentals = this.rentals.filter(x => !(x.car.id === $event.car.id && x.to === $event.to && x.from === $event.from));
+  }
+
+  cartUpdated($event) {
+    this.bundles = this.shoppingCartService.getBundles();
+    this.rentals = this.shoppingCartService.getRentals();
+  }
 }
