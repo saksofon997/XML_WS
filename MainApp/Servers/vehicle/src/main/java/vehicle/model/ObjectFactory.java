@@ -1,8 +1,6 @@
 package vehicle.model;
 
-import saga.dto.TransmissionDTO;
-import vehicle.soap.ErrorResponse;
-import vehicle.soap.FuelEndpoint;
+import vehicle.soap.VehicleEndpoint;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
@@ -12,47 +10,36 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
     private interface QNames {
-        QName getFuelNameRequest = new QName(FuelEndpoint.NAMESPACE_URI, "getFuelNameRequest");
-        QName getFuelNameResponse = new QName(FuelEndpoint.NAMESPACE_URI, "getFuelNameResponse");
-        QName createNewVehicleRequest = new QName(FuelEndpoint.NAMESPACE_URI, "createNewVehicleRequest");
-        QName createNewVehicleResponse = new QName(FuelEndpoint.NAMESPACE_URI, "createNewVehicleResponse");
-//        QName getBrandName = new QName(FuelEndpoint.NAMESPACE_URI, "getBrandName");
+        QName getFuelsRequest = new QName(VehicleEndpoint.NAMESPACE_URI, "getFuelsRequest");
+        QName getFuelsResponse = new QName(VehicleEndpoint.NAMESPACE_URI, "getFuelsResponse");
+        QName createNewVehicleRequest = new QName(VehicleEndpoint.NAMESPACE_URI, "createNewVehicleRequest");
+        QName createNewVehicleResponse = new QName(VehicleEndpoint.NAMESPACE_URI, "createNewVehicleResponse");
 
-//        QName getUserResponse = new QName(FuelEndpoint.NAMESPACE_URI, "getUserResponse");
-        QName commonFault = new QName(FuelEndpoint.NAMESPACE_URI, "commonFault");
+        QName commonFault = new QName(VehicleEndpoint.NAMESPACE_URI, "commonFault");
     }
 
-    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "getFuelNameRequest")
-    public JAXBElement<String> createGetFuelRequest(String value) {
-        return new JAXBElement<>(QNames.getFuelNameRequest, String.class, null, value);
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "getFuelsRequest")
+    public JAXBElement<String> createGetFuelsRequest(String value) {
+        return new JAXBElement<>(QNames.getFuelsRequest, String.class, null, value);
     }
 
-    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "getFuelNameResponse")
-    public JAXBElement<Fuel> createGetFuelResponse(Fuel value) {
-        return new JAXBElement<>(QNames.getFuelNameResponse, Fuel.class, null, value);
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "getFuelsResponse")
+    public JAXBElement<FuelArray> createGetFuelsResponse(FuelArray value) {
+        return new JAXBElement<>(QNames.getFuelsResponse, FuelArray.class, null, value);
     }
 
 
-    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "createNewVehicleRequest")
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createNewVehicleRequest")
     public JAXBElement<Vehicle> createNewVehicleRequest(Vehicle value) {
         return new JAXBElement<>(QNames.createNewVehicleRequest, Vehicle.class, null, value);
     }
 
-    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "createNewVehicleResponse")
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createNewVehicleResponse")
     public JAXBElement<Long> createNewVehicleResponse(Long value) {
         return new JAXBElement<>(QNames.createNewVehicleResponse, Long.class, null, value);
     }
-//    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "getTransmissionResponse")
-//    public JAXBElement<TransmissionDTO> createGetTransmissionResponse(TransmissionDTO value) {
-//        return new JAXBElement<>(QNames.getBrandName, TransmissionDTO.class, null, value);
-//    }
 
-//    @XmlElementDecl(namespace = WSEndpoint.NAMESPACE_URI, name = "getUserResponse")
-//    public JAXBElement<Fuel> createGetUserResponse(User value) {
-//        return new JAXBElement<>(QNames.getUserResponse, User.class, null, value);
-//    }
-//
-    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "commonFault")
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "commonFault")
     public JAXBElement<ErrorResponse> createCommonFault(ErrorResponse value) {
         return new JAXBElement<>(QNames.commonFault, ErrorResponse.class, null, value);
     }

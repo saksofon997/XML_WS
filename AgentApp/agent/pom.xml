@@ -158,11 +158,11 @@
 				</executions>
 				<configuration>
 					<schemaLanguage>WSDL</schemaLanguage>
-					<generateDirectory>${project.basedir}/src/main/java/agent/soap</generateDirectory>
-					<generatePackage>gen</generatePackage>
+					<generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+					<generatePackage>agent.soap.gen</generatePackage>
 					<schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
 					<schemaIncludes>
-						<include>fuel.wsdl</include>
+						<include>vehicle.wsdl</include>
 					</schemaIncludes>
 				</configuration>
 			</plugin>

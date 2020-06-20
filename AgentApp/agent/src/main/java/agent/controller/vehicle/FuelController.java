@@ -7,6 +7,7 @@ import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.service.vehicle.FuelService;
 import agent.soap.VehicleClient;
+import agent.soap.gen.Fuel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,8 +56,11 @@ public class FuelController {
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FuelDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
+        vehicleClient.getFuels();
+//        for (Fuel fuel: vehicleClient.getFuels().getValue()) {
+//            System.out.println(fuel.getName());
+//        }
 
-        System.out.println(vehicleClient.getFuelName().getValue().getName());
         FuelDTO fuelDTO = fuelService.getOne(id);
 
         return new ResponseEntity<>(fuelDTO, HttpStatus.ACCEPTED);

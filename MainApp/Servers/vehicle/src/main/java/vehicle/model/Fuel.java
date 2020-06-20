@@ -2,10 +2,8 @@ package vehicle.model;
 
 import lombok.Data;
 import org.hibernate.annotations.Where;
-import vehicle.soap.FuelEndpoint;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
 @Entity

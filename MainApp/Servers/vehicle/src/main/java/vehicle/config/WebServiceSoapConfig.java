@@ -13,10 +13,8 @@ import org.springframework.ws.soap.server.endpoint.SoapFaultDefinition;
 import org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
-import org.springframework.xml.validation.XmlValidator;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
-import org.springframework.xml.xsd.XsdSchemaCollection;
 
 import javax.xml.bind.JAXBException;
 import java.util.Properties;
@@ -29,16 +27,16 @@ public class WebServiceSoapConfig extends WsConfigurerAdapter {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, "/ws/*");
+        return new ServletRegistrationBean<>(servlet, "/vehicle/ws/*");
     }
 
-    @Bean(name = "fuel")
-    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema fuelSchema) {
+    @Bean(name = "vehicle")
+    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema vehicleSchema) {
         DefaultWsdl11Definition wsdl11Definition = new ReflectionWsdl11Definition();
-        wsdl11Definition.setPortTypeName("Fuel");
-        wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://www.vehicle.com/fuel");
-        wsdl11Definition.setSchema(fuelSchema);
+        wsdl11Definition.setPortTypeName("Vehicle");
+        wsdl11Definition.setLocationUri("/vehicle/ws");
+        wsdl11Definition.setTargetNamespace("http://www.vehicle.com/vehicle");
+        wsdl11Definition.setSchema(vehicleSchema);
         wsdl11Definition.setRequestSuffix("Request");
         wsdl11Definition.setResponseSuffix("Response");
         wsdl11Definition.setFaultSuffix("commonFault");
@@ -46,8 +44,8 @@ public class WebServiceSoapConfig extends WsConfigurerAdapter {
     }
 
     @Bean
-    public XsdSchema fuelSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("fuel.xsd"));
+    public XsdSchema vehicleSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("vehicle.xsd"));
     }
 
     @Bean

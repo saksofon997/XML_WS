@@ -1,4 +1,4 @@
-package vehicle.soap;
+package vehicle.model;
 
 import javax.xml.bind.annotation.*;
 import java.util.Date;
