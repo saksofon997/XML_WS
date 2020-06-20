@@ -57,26 +57,24 @@ VehicleData: ChartDataSets[] = [
       this.dataSource.forEach((car) => {
         this.VehicleLabels.push(car.brand.name + ' ' + car.model.name);
         this.VehicleData[0].data.push(car.mileage);
-        this.VehicleData[0].label = 'Mileage';
       })
+      this.VehicleData[0].label = 'Mileage';
     }else if(sortType == 'reviews'){
       this.status = 'REVIEWS'
       this.dataSource.sort((a,b) => (a.numberOfReviews > b.numberOfReviews) ? 1 : ((b.numberOfReviews > a.numberOfReviews) ? -1 : 0));
       this.dataSource.forEach((car) => {
         this.VehicleLabels.push(car.brand.name + ' ' + car.model.name);
         this.VehicleData[0].data.push(car.numberOfReviews);
-        console.log(car.numberOfReviews);
-        this.VehicleData[0].label = 'Number of reviews';
       })
+      this.VehicleData[0].label = 'Number of reviews';
     } else if(sortType == 'stars'){
       this.status = 'STARS'
       this.dataSource.sort((a,b) => (a.numberOfStars > b.numberOfStars) ? 1 : ((b.numberOfStars > a.numberOfStars) ? -1 : 0));
       this.dataSource.forEach((car) => {
         this.VehicleLabels.push(car.brand.name + ' ' + car.model.name);
         this.VehicleData[0].data.push(car.numberOfStars);
-        console.log(car.numberOfStars);
-        this.VehicleData[0].label = 'Rating';
       })
+      this.VehicleData[0].label = 'Rating';
     }
      
   }
