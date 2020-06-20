@@ -19,6 +19,7 @@ export class VehicleListingComponent implements OnInit {
     private vehicleService: VehicleService) { }
 
   ngOnInit(): void {
+    // To do: set current user ID :D 
     this.vehicleService.getByOwner(1).subscribe(
       (data: any) => {
         this.dataSource = data;
