@@ -42,6 +42,9 @@ export class ShoppingCartComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
       if (result.event === 'Create') {
         this.createBundle(result.data);
       } else if (result.event === 'Delete') {
