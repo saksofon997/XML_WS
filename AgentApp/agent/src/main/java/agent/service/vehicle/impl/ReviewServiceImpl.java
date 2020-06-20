@@ -94,7 +94,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDTO add(Long vehicleId, ReviewDTO reviewDTO) throws ConversionFailedError {
 
         Review newReview = convertToModel(reviewDTO);
-
+        newReview.setStatus(ReviewStatus.PENDING);
         Review savedReview = reviewRepo.save(newReview);
 
         return reviewDTO;
@@ -133,10 +133,8 @@ public class ReviewServiceImpl implements ReviewService {
             throw new EntityNotFound("Items not found");
         }
 
-        Review updated = convertToModel(reviewDTO);
-        updated.setId(id);
-
-        Review savedReview = reviewRepo.save(updated);
+        review.get().setStatus(ReviewStatus.PUBLISHED);
+        Review savedReview = reviewRepo.save(review.get());
 
         return reviewDTO;
     }

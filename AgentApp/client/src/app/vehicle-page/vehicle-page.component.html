@@ -117,22 +117,22 @@
 
       <div class="w-100"></div>
     </div>
-    <table>
-      <tbody>
-        <tr *ngFor='let review of reviews'>
-          <app-review [review]=review></app-review>
-        </tr>
-      </tbody>
-    </table>
 
-    <div class="col-sm-2 col-md-2">
-    </div>
+    <div class="row ">
+      <!-- NgFor ... -->
+      <div class="col-sm-2 col-md-2">
+      </div>
+      <div class="col-sm-8">
+        <div class="row " *ngFor="let review of reviewsList">
+          <app-review [review]=review style="width: 100%;"></app-review>
+        </div>
 
-    <div class="col-sm-8">
-      <div class="row m-3 m-1" id="load-more-div">
-        <a class="btn btn-sm btn-outline-danger" id="load-more">Load more</a>
+        <div class="row m-3 m-1" id="load-more-div">
+          <a class="btn btn-sm btn-outline-danger" id="load-more">Load more</a>
+        </div>
       </div>
     </div>
+
 
   </div>
 

@@ -1,0 +1,23 @@
+.more-button-div {
+  align-items: center;
+  justify-content: center;
+
+}
+
+.more-button-button:hover {
+  color: white;
+}
+
+.btn-outline-danger {
+  margin-top: 0.25em;
+  line-height: 6vh;
+  outline-color: #E81831;
+}
+
+.btn-outline-danger:hover {
+  background-color: #E81831;
+}
+
+.teaser:hover {
+  cursor: pointer;
+}

@@ -7,6 +7,10 @@ label {
 .star {
     font-size: 1.5rem;
     margin-top: 5em;
+    color: #585858;
+  }
+  .filled {
+    color: #665cff;
   }
 .mat-icon {
     font-size: 17px;

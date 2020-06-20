@@ -1,7 +1,10 @@
 <div class="row m-3 shadow-sm  m-1 bg-white rounded">
-  <div class="col-md-4 col-left">
+  <div class="col-md-4 col-left d-flex">
     <div *ngIf="car.images[0]">
-      <img class="car-Image shadow-sm bg-white rounded" src="{{API_URL+'/vehicle/image/'+car.images[0]}}" />
+      <div class="row justify-content-center align-self-center ml-1">
+        <img class="car-Image shadow-sm bg-white rounded" src="{{API_URL+'/vehicle/image/'+car.images[0]}}" />
+      </div>
+
     </div>
     <div *ngIf="!car.images[0]">
       <p style=" text-align: center; line-height: 150px; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;"
@@ -28,14 +31,14 @@
         <mat-icon matTooltip="Seats" [matTooltipPosition]="'below'">airline_seat_recline_extra</mat-icon> {{car.seats}}
       </li>
       <li>
-        <mat-icon matTooltip="Available mileage" [matTooltipPosition]="'below'">trending_up</mat-icon>
-        {{checkMileage((car.availableMileage))}} km
+        <mat-icon matTooltip="Mileage" [matTooltipPosition]="'below'">trending_up</mat-icon>
+        {{checkMileage((car.mileage))}} km
       </li>
     </ul>
   </div>
   <div class="col-sm-4 col-md-2 col-left">
     <div class="row mt-3 d-flex justify-content-center align-self-center">
-      <ngb-rating [(rate)]="car.numberOfStars / car.numberOfReviews" readonly=true max=5>
+      <ngb-rating [(rate)]="car.numberOfStars/car.numberOfReviews" readonly=true max=5>
         <ng-template let-fill="fill" let-index="index">
           <span class="star" [class.filled]="fill === 100">&#9733;</span>
         </ng-template>
@@ -50,7 +53,7 @@
         <!-- <span class="badge mt-3">{{car.commentNo}}</span> -->
       </div>
     </div>
-    <div class="dropdown">
+    <div class="dropdown" *ngIf="admin">
       <button class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" mat-button aria-haspopup="true"
         aria-expanded="false">
         <mat-icon>settings</mat-icon>

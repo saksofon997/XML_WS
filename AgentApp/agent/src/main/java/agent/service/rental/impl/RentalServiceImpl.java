@@ -1,7 +1,9 @@
 package agent.service.rental.impl;
 
 import agent.dto.rental.RentalDTO;
+import agent.dto.rental.RentalPageDTO;
 import agent.dto.shared.VehicleOccupancyDTO;
+import agent.exceptions.ConflictException;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.EntityNotFound;
 import agent.model.rental.Bundle;
@@ -12,9 +14,14 @@ import agent.repository.rental.RentalRepository;
 import agent.service.rental.RentalService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +38,11 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalDTO convertToDTO(Rental rental) throws ConversionFailedError {
         try {
-            return mapper.map(rental, RentalDTO.class);
+            RentalDTO rentalDTO = mapper.map(rental, RentalDTO.class);
+            if (rentalDTO.getBundle() != null) {
+                rentalDTO.getBundle().setRentals(new HashSet<>());
+            }
+            return rentalDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");
         }
@@ -59,9 +70,9 @@ public class RentalServiceImpl implements RentalService {
         }
 
         newRental.setStatus(RentalStatus.PENDING);
-        rentalRepository.save(newRental);
+        Rental saved = rentalRepository.save(newRental);
 
-        return rentalDTO;
+        return convertToDTO(saved);
     }
 
     @Override
@@ -70,8 +81,31 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError {
-        return null;
+    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException {
+        Optional<Rental> rental = rentalRepository.findById(id);
+
+        if (!rental.isPresent())
+            throw new EntityNotFound("Invalid rental id");
+
+        if (rentalDTO.getStatus().equals(RentalStatus.RESERVED) &&
+                rental.get().getStatus().equals(RentalStatus.CANCELED)) {
+            throw new ConflictException("Rental request has already been canceled");
+        }
+
+        rental.get().setStatus(rentalDTO.getStatus());
+        Rental saved = rentalRepository.save(rental.get());
+        System.out.println(saved.getStatus());
+
+        if (saved.getStatus().equals(RentalStatus.RESERVED)) {
+            VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
+            occupied.setStartTime(saved.getStartTime());
+            occupied.setEndTime(saved.getEndTime());
+            this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
+            // TODO: remove other rental requests for same vehicle in this period
+            //commandGateway.send(new MainBrandCommand(savedBrand.getId(), brandDTO, TypeOfCommand.UPDATE));
+        }
+
+        return convertToDTO(saved);
     }
 
     @Override
@@ -86,8 +120,8 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO) {
-        List<Rental> rentals = rentalRepository.findByVehicleAndByStartAndEndTime(vehicleId, occupancyDTO.getStartTime(), occupancyDTO.getEndTime());
+    public void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO, Long excludeId) {
+        List<Rental> rentals = rentalRepository.findByVehicleAndByStartAndEndTimeExceptSingleRental(vehicleId, occupancyDTO.getStartTime(), occupancyDTO.getEndTime(), excludeId);
         HashMap<Long, Bundle> bundles = new HashMap<>();
         for (Rental rental: rentals) {
             if (rental.getStatus() != RentalStatus.CANCELED){
@@ -109,5 +143,43 @@ public class RentalServiceImpl implements RentalService {
                 }
             }
         }
+    }
+
+    @Override
+    public RentalPageDTO getByCustomerAndByStatusPageable(Integer pageNo, String sortKey, Long customerId, String statusName) throws ConversionFailedError, EntityNotFound {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        RentalStatus status = RentalStatus.findByName(statusName);
+        if (status == null) {
+            throw new EntityNotFound("Invalid status");
+        }
+        Page<Rental> pagedResult = rentalRepository.findByCustomerIdAndStatus(customerId, status, page);
+
+        RentalPageDTO pageDTO = new RentalPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Rental rental: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(rental));
+        }
+
+        return pageDTO;
+    }
+
+    @Override
+    public RentalPageDTO getByOwnerAndByStatusPageable(Integer pageNo, String sortKey, Long customerId, String statusName) throws ConversionFailedError, EntityNotFound {
+        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        RentalStatus status = RentalStatus.findByName(statusName);
+        if (status == null) {
+            throw new EntityNotFound("Invalid status");
+        }
+        Page<Rental> pagedResult = rentalRepository.findByOwnerIdAndStatus(customerId, status, page);
+
+        RentalPageDTO pageDTO = new RentalPageDTO();
+        pageDTO.setPageNo(pagedResult.getNumber());
+        pageDTO.setTotalPages(pagedResult.getTotalPages());
+        for (Rental rental: pagedResult.getContent()){
+            pageDTO.getContent().add(convertToDTO(rental));
+        }
+
+        return pageDTO;
     }
 }

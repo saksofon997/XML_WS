@@ -29,3 +29,19 @@ a:active,
 a:focus {
   background-color: transparent;
 }
+
+
+.active {
+  background-color: #6442f8;
+  color: #eeeeee;
+}
+
+.btn-outline-danger {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-outline-danger:hover {
+  background-color: #6442f8;
+  color: white;
+}

@@ -43,6 +43,10 @@ export class ScCarTeaserComponent implements OnInit {
   }
 
   removeFromCart(rental){
+    if (rental.bundle) {
+      var bundleTemp = new Bundle(rental.bundle, null, null);
+      this.shoppingCartService.removeFromBundle(bundleTemp, rental);
+    }
     this.cartUpdated.emit(this.rental);
     this.shoppingCartService.removeRentalFromCart(rental);
     this.delete.emit(this.rental);

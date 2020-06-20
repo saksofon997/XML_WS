@@ -11,8 +11,8 @@
               autocapitalize="off" spellcheck="off">
           </mat-form-field>
 
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of response" [value]="option['GeoObject'].name">
+          <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option *ngFor="let option of response" [value]="option['GeoObject'].name" (click)="selectedLocation(option['GeoObject'])">
               {{option['GeoObject'].name + ', ' + option['GeoObject'].description}}</mat-option>
           </mat-autocomplete>
         </div>
