@@ -159,7 +159,7 @@
 				<configuration>
 					<schemaLanguage>WSDL</schemaLanguage>
 					<generateDirectory>${project.basedir}/src/main/java/agent/soap</generateDirectory>
-					<generatePackage>agent.soap.gen</generatePackage>
+					<generatePackage>gen</generatePackage>
 					<schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
 					<schemaIncludes>
 						<include>fuel.wsdl</include>

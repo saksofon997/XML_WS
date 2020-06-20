@@ -14,6 +14,8 @@ public class ObjectFactory {
     private interface QNames {
         QName getFuelNameRequest = new QName(FuelEndpoint.NAMESPACE_URI, "getFuelNameRequest");
         QName getFuelNameResponse = new QName(FuelEndpoint.NAMESPACE_URI, "getFuelNameResponse");
+        QName createNewVehicleRequest = new QName(FuelEndpoint.NAMESPACE_URI, "createNewVehicleRequest");
+        QName createNewVehicleResponse = new QName(FuelEndpoint.NAMESPACE_URI, "createNewVehicleResponse");
 //        QName getBrandName = new QName(FuelEndpoint.NAMESPACE_URI, "getBrandName");
 
 //        QName getUserResponse = new QName(FuelEndpoint.NAMESPACE_URI, "getUserResponse");
@@ -30,6 +32,16 @@ public class ObjectFactory {
         return new JAXBElement<>(QNames.getFuelNameResponse, Fuel.class, null, value);
     }
 
+
+    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "createNewVehicleRequest")
+    public JAXBElement<Vehicle> createNewVehicleRequest(Vehicle value) {
+        return new JAXBElement<>(QNames.createNewVehicleRequest, Vehicle.class, null, value);
+    }
+
+    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "createNewVehicleResponse")
+    public JAXBElement<Long> createNewVehicleResponse(Long value) {
+        return new JAXBElement<>(QNames.createNewVehicleResponse, Long.class, null, value);
+    }
 //    @XmlElementDecl(namespace = FuelEndpoint.NAMESPACE_URI, name = "getTransmissionResponse")
 //    public JAXBElement<TransmissionDTO> createGetTransmissionResponse(TransmissionDTO value) {
 //        return new JAXBElement<>(QNames.getBrandName, TransmissionDTO.class, null, value);

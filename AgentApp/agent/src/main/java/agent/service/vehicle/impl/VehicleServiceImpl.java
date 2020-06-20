@@ -6,8 +6,11 @@ import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.exceptions.OperationNotAllowed;
 import agent.model.vehicle.Vehicle;
+import agent.model.vehicle.VehicleMapping;
+import agent.repository.vehicle.VehicleMappingRepo;
 import agent.repository.vehicle.VehicleRepo;
 import agent.service.vehicle.VehicleService;
+import agent.soap.VehicleClient;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +37,12 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Autowired
+    VehicleClient vehicleClient;
+
+    @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
 
     @Value("${PATH_TO_IMAGES:C:\\vehicle_images}")
     private String path_to_images;
@@ -94,7 +103,19 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle newVehicle = convertToModel(vehicleDTO);
 
         Vehicle savedVehicle = vehicleRepo.save(newVehicle);
+        agent.soap.gen.Vehicle vehicleSOAP = mapper.map(savedVehicle, agent.soap.gen.Vehicle.class);
 
+        Long savedId = vehicleClient.createNewVehicle(vehicleSOAP);
+        System.out.println("Saved Id in MS backend: " + savedId);
+        System.out.println(savedId);
+        if (savedId != 0){
+            VehicleMapping vehicleMapping = new VehicleMapping();
+            vehicleMapping.setVehicleAgentId(savedVehicle);
+            vehicleMapping.setVehicleBackId(savedId);
+            vehicleMappingRepo.save(vehicleMapping);
+        }else{
+
+        }
         return convertToDTO(savedVehicle);
     }
 

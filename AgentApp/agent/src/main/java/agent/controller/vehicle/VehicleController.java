@@ -45,7 +45,7 @@ public class VehicleController {
     @PreAuthorize("hasAuthority('CREATE_RENTAL_PERMISSION')")
     public ResponseEntity<VehicleDTO> createNew(@RequestPart("images") MultipartFile[] images, @RequestPart("vehicle") VehicleDTO vehicleDTO, HttpServletRequest request) throws DuplicateEntity, ConversionFailedError, OperationNotAllowed {
 
-        VehicleDTO added = vehicleService.add(vehicleDTO, images, request, false);
+        VehicleDTO added = vehicleService.add(vehicleDTO, images, request, true);
         return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
     }
 

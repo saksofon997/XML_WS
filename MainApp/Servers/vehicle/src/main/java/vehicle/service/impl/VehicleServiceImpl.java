@@ -110,6 +110,16 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public Long addViaSoap(Vehicle vehicle) throws ConversionFailedError {
+
+        Vehicle savedVehicle = vehicleRepo.save(vehicle);
+        VehicleDTO vehicleDTO = convertToDTO(savedVehicle);
+        System.out.println(savedVehicle.getId());
+        commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.CREATE));
+
+        return savedVehicle.getId();
+    }
+    @Override
     public VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Vehicle> vehicle = vehicleRepo.findById(id);
         if (!vehicle.isPresent()) {
