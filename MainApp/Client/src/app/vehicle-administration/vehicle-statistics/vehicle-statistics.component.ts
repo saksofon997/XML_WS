@@ -19,10 +19,10 @@ export class VehicleStatisticsComponent implements OnInit {
   VehicleLegend = true;
   VehiclePlugins = [];
   VehicleColors: Color[]=[{
-    backgroundColor:"#0000FF",
-    hoverBackgroundColor:"#FF0",
-    borderColor:"#F0FF68",
-    hoverBorderColor:"#00F"
+    backgroundColor:"#E81831",
+    hoverBackgroundColor:"#EEEEEE",
+    borderColor:"#585858",
+    hoverBorderColor:"#585858"
 }];
 VehicleData: ChartDataSets[] = [
     { data: [], label: 'Locations' }
@@ -42,6 +42,7 @@ VehicleData: ChartDataSets[] = [
 
   sortVehicles(sortType: string){
     this.VehicleLabels = [];
+    this.VehicleData[0].data= [];
     if(sortType == 'mileage'){
       this.dataSource.sort((a,b) => (a.mileage > b.mileage) ? 1 : ((b.mileage > a.mileage) ? -1 : 0));
       this.dataSource.forEach((car) => {
@@ -54,7 +55,16 @@ VehicleData: ChartDataSets[] = [
       this.dataSource.forEach((car) => {
         this.VehicleLabels.push(car.brand.name + ' ' + car.model.name);
         this.VehicleData[0].data.push(car.numberOfReviews);
+        console.log(car.numberOfReviews);
         this.VehicleData[0].label = 'Number of reviews';
+      })
+    } else if(sortType == 'stars'){
+      this.dataSource.sort((a,b) => (a.numberOfStars > b.numberOfStars) ? 1 : ((b.numberOfStars > a.numberOfStars) ? -1 : 0));
+      this.dataSource.forEach((car) => {
+        this.VehicleLabels.push(car.brand.name + ' ' + car.model.name);
+        this.VehicleData[0].data.push(car.numberOfStars);
+        console.log(car.numberOfStars);
+        this.VehicleData[0].label = 'Rating';
       })
     }
      

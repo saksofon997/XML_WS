@@ -1,12 +1,32 @@
 
-<div class="chart-wrapper mb-3">
-  <canvas baseChart 
-  [datasets]="VehicleData"
-  [labels]="VehicleLabels"
-  [options]="VehicleOptions"
-  [plugins]="VehiclePlugins"
-  [legend]="VehicleLegend"
-  [chartType]="VehicleType"
-  [colors]="VehicleColors" >
-</canvas>
+<div class="container-fluid">
+  <div class="row mt-4">
+    <div class="col-md-3 mt-2">
+      <div class="container col container-bg pb-2 rounded mt-4">
+        <hr data-content="STATISTICS" class="hr-text mt-3">
+        <nav class="list-group">
+          <li class="list-group-item" [ngClass]="{'active': status==='PENDING'}" (click)="sortVehicles('mileage')">Mileage</li>
+          <li class="list-group-item" [ngClass]="{'active': status==='RESERVED'}" (click)="sortVehicles('reviews')">Reviews</li>
+          <li class="list-group-item" [ngClass]="{'active': status==='FINISHED'}" (click)="sortVehicles('stars')">Rating</li>
+        </nav>
+      </div>
+
+    </div>
+
+    <div class="col-md-9">
+      
+            <canvas baseChart 
+            [datasets]="VehicleData"
+            [labels]="VehicleLabels"
+            [options]="VehicleOptions"
+            [plugins]="VehiclePlugins"
+            [legend]="VehicleLegend"
+            [chartType]="VehicleType"
+            [colors]="VehicleColors" >
+          </canvas>
+      
+    </div>
+  </div>
+
 </div>
+
