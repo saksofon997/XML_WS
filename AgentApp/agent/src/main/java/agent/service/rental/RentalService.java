@@ -2,7 +2,9 @@ package agent.service.rental;
 
 
 import agent.dto.rental.RentalDTO;
+import agent.dto.rental.RentalPageDTO;
 import agent.dto.shared.VehicleOccupancyDTO;
+import agent.exceptions.ConflictException;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
@@ -18,9 +20,13 @@ public interface RentalService {
 
     RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError;
+    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException;
 
     void delete(Long id) throws EntityNotFound;
 
-    void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO);
+    void rejectRentalsFromTo(Long vehicleId, VehicleOccupancyDTO occupancyDTO, Long excludeId);
+
+    RentalPageDTO getByCustomerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
+
+    RentalPageDTO getByOwnerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
 }

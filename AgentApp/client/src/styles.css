@@ -3,3 +3,28 @@
 @import "../src/palette.css";
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background: #6442f8 !important;
+}
+
+.mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate{
+  background-color: #6442f8 !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-subscript-wrapper {
+  background-color: #6442f8 !important;   /* replace this color with your accent color hex code */
+}
+
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #6442f8 !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-underline {
+  color: #6442f8 !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #6442f8 !important;
+}

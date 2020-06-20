@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-9 " style="height: 100%;">
-      <app-sc-car-teaser *ngFor="let rental of rentals" [rental]=rental [bundles]=bundles></app-sc-car-teaser>
+      <app-sc-car-teaser *ngFor="let rental of rentals" [rental]=rental [bundles]=bundles (delete)="deleteRental($event)" (cartUpdated)="cartUpdated($event)"></app-sc-car-teaser>
 
     </div>
     <div class="col-md-3 " style="height: 100%;">

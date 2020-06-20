@@ -36,6 +36,10 @@ public class Rental {
     @Enumerated(EnumType.STRING)
     private RentalStatus status;
 
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_id")
+    private RentalReport report;
+
     @Column(name = "deleted")
     private boolean deleted = false;
 }

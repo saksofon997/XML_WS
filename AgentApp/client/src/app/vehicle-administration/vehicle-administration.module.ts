@@ -20,6 +20,8 @@ import { PricelistDialogBoxComponent } from './pricelist-dialog-box/pricelist-di
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { ChartsModule } from 'ng2-charts';
 import { VehicleStatisticsComponent } from './vehicle-statistics/vehicle-statistics.component';
+import { OwnerRentalsComponent } from './owner-rentals/owner-rentals.component';
+import { OwnerRentalsListingComponent } from './owner-rentals-listing/owner-rentals-listing.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { VehicleStatisticsComponent } from './vehicle-statistics/vehicle-statist
     PricelistDialogBoxComponent,
     VehicleListingComponent,
     VehicleDialogBoxComponent,
+    OwnerRentalsComponent,
+    OwnerRentalsListingComponent,
     VehicleStatisticsComponent
   ],
   imports: [

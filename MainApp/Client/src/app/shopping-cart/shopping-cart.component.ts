@@ -25,7 +25,6 @@ export class ShoppingCartComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private shoppingCartService: ShoppingCartService,
     private userService: UserService,
-    private cookieService: CookieService,
     private rentalService: RentalService) {
   }
 

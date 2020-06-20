@@ -171,7 +171,12 @@ export class RentalsComponent implements OnInit {
   selectionChanged() {
 
   }
+  selectedLocation(value){
+    let location = value.Point.pos;
+    this.longitude= location.split(' ')[0];
+    this.latitude  = location.split(' ')[1];
 
+  }
   startTimeChange(value) {
     this.tripStartTime = value;
   }
@@ -190,10 +195,10 @@ export class RentalsComponent implements OnInit {
 
   getCars(pageNo: number) {
     const searchParams = {
-      loc_lat: 45.2605774,
-      loc_long: 19.8009594,
-      start: 1592838000,
-      end: 1592838300,
+      loc_lat: this.latitude ? this.latitude : 45.2605774,
+      loc_long: this.longitude ? this.longitude : 19.8009594,
+      start: this.from() ? this.from() : 1592838000,
+      end: this.to() ? this.to() : 1592838300,
       brand: this.searchParamsObjects.brands.length > 0 ? this.searchParamsObjects.brands.map(x => x.name) : null,
       model: this.searchParamsObjects.models.length > 0 ? this.searchParamsObjects.models.map(x => x.name) : null,
       category: this.searchParamsObjects.categories.length > 0 ? this.searchParamsObjects.categories.map(x => x.name) : null,
@@ -206,6 +211,7 @@ export class RentalsComponent implements OnInit {
       priceTo: this.searchParamsObjects.maxPrice ? this.searchParamsObjects.maxPrice : null,
       childSeats: this.searchParamsObjects.kidsSeatsNo ? this.searchParamsObjects.kidsSeatsNo : null
     };
+    console.log(searchParams);
     this.searchService.search(pageNo, searchParams).subscribe(
       (data: any) => {
         this.cars = data.content;
