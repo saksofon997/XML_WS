@@ -1,29 +1,46 @@
 <mat-tab-group>
     <mat-tab label="My vehicles">
+      <ng-template matTabContent>
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <app-vehicle-listing></app-vehicle-listing>
-                </div>
+          <div class="row">
+            <div class="col-12">
+              <app-vehicle-listing></app-vehicle-listing>
             </div>
+          </div>
         </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Rentals">
+      <ng-template matTabContent>
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <app-owner-rentals></app-owner-rentals>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </mat-tab>
     <mat-tab label="Pricelists">
+      <ng-template matTabContent>
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <app-pricelist-table></app-pricelist-table>
-                </div>
+          <div class="row">
+            <div class="col-12">
+              <app-pricelist-table></app-pricelist-table>
             </div>
+          </div>
         </div>
+      </ng-template>
     </mat-tab>
-    <mat-tab label="Other">
+    <mat-tab label="Statistics">
+        <ng-template matTabContent>
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <app-pricelist-table></app-pricelist-table>
+                    <app-vehicle-statistics></app-vehicle-statistics>
                 </div>
             </div>
         </div>
+    </ng-template>
     </mat-tab>
 </mat-tab-group>

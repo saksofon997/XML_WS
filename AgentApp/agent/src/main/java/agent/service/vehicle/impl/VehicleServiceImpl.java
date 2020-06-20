@@ -95,7 +95,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle savedVehicle = vehicleRepo.save(newVehicle);
 
-        return vehicleDTO;
+        return convertToDTO(savedVehicle);
     }
 
     @Override

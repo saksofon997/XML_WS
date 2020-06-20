@@ -106,7 +106,7 @@ public class VehicleServiceImpl implements VehicleService {
         System.out.println(savedVehicle.getId());
         commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.CREATE));
 
-        return vehicleDTO;
+        return convertToDTO(savedVehicle);
     }
 
     @Override

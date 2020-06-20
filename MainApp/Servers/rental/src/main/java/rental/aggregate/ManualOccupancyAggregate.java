@@ -19,7 +19,7 @@ public class ManualOccupancyAggregate {
     public ManualOccupancyAggregate(RejectRentalsCommand rejectRentalsCommand, RentalService rentalService) {
         System.out.println("USO SAM U RENTAL");
         try{
-            rentalService.rejectRentalsFromTo(rejectRentalsCommand.getVehicleId(), rejectRentalsCommand.getOccupancyDTO());
+            rentalService.rejectRentalsFromTo(rejectRentalsCommand.getVehicleId(), rejectRentalsCommand.getOccupancyDTO(), null);
             AggregateLifecycle.apply(new RejectRentalsEvent(rejectRentalsCommand.getOccupancyAggregateId()));
 
         } catch (Exception e) {

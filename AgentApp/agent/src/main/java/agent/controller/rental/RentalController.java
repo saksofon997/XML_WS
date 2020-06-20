@@ -1,10 +1,7 @@
 package agent.controller.rental;
 
 import agent.dto.rental.RentalDTO;
-import agent.exceptions.ConversionFailedError;
-import agent.exceptions.DuplicateEntity;
-import agent.exceptions.EntityNotFound;
-import agent.exceptions.UnexpectedError;
+import agent.exceptions.*;
 import agent.service.rental.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping(value = "/rental")
+@CrossOrigin(origins = "*")
 public class RentalController {
 
     @Autowired
@@ -44,7 +44,12 @@ public class RentalController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('CHANGE_RENTAL_PERMISSION')")
     public ResponseEntity<RentalDTO> update(@PathVariable Long id,
-                                          @RequestBody RentalDTO rentalDTO) throws EntityNotFound, UnexpectedError, ConversionFailedError {
+                                            @RequestBody RentalDTO rentalDTO,
+                                            @RequestAttribute("userId") Long ownerId) throws EntityNotFound, ConversionFailedError, ConflictException {
+
+        if (!Objects.equals(rentalDTO.getOwnerId(), ownerId)) {
+            throw new EntityNotFound("Invalid owner request");
+        }
 
         RentalDTO updated = rentalService.update(id, rentalDTO);
 

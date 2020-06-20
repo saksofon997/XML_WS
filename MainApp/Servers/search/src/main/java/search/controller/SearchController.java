@@ -35,6 +35,7 @@ public class SearchController {
 
             @RequestParam(value = "cdw", required = false) Boolean cdw,
             @RequestParam(value = "mileage", required = false) Long mileage,
+            @RequestParam(value = "availableMileage", required = false) Long availableMileage,
             @RequestParam(value = "priceFrom", required = false) Long priceFrom,
             @RequestParam(value = "priceTo", required = false) Long priceTo,
             @RequestParam(value = "childSeats", required = false) Integer childSeats
@@ -45,7 +46,7 @@ public class SearchController {
 
         SearchResultPageDTO vehicles = searchService.doSearch(brand, category, fuel, model,
                 transmission, loc_lat, loc_long,
-                startTime, endTime, pageNo, sort, cdw, mileage, priceFrom, priceTo, childSeats);
+                startTime, endTime, pageNo, sort, cdw, mileage, priceFrom, priceTo, childSeats, availableMileage);
 
         return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }

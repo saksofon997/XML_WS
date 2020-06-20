@@ -21,6 +21,8 @@ public interface SearchRepo extends JpaRepository<Vehicle, Long> {
             "or ((occ.startTime >= (:start_time)) and (occ.startTime < (:end_time)))" +
             "or ((occ.endTime > (:start_time)) and (occ.endTime <= (:end_time)))))" +
 
+            "and (((:available_mileage) is null) or (:available_mileage) <= (vehicle.availableMileage))" +
+
             "and (((:brands) is null ) or (vehicle.brand.name) in (:brands)) " +
             "and (((:categories) is null ) or (vehicle.category.name) in (:categories)) " +
             "and (((:fuels) is null) or (vehicle.fuel.name) in (:fuels))" +
@@ -46,5 +48,6 @@ public interface SearchRepo extends JpaRepository<Vehicle, Long> {
                                     @Param("priceFrom") Long priceFrom,
                                     @Param("priceTo") Long priceTo,
                                     @Param("childSeats") Integer childSeats,
+                                    @Param("available_mileage") Long available_mileage,
                                     Pageable pageable);
 }

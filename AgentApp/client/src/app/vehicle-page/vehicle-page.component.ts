@@ -25,7 +25,7 @@ export class VehiclePageComponent implements OnInit {
   vehicle: Car;
   reservationInfo: any;
 
-  reviews: any;
+  reviewsList: any;
 
   constructor(private activatedRoute: ActivatedRoute,
     private vehicleService: VehicleService,
@@ -100,8 +100,8 @@ export class VehiclePageComponent implements OnInit {
   getVehicleReviews(vehicleId: number) {
     let promise = new Promise((resolve, reject) => {
       this.reviewService.getByVehicle(vehicleId).subscribe(
-        (data: any) => {
-          this.reviews = data;
+        (data: Array<Review>) => {
+          this.reviewsList = data;
           resolve();
         },
         (error) => {

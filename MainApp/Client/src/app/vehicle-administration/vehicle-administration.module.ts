@@ -8,6 +8,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { VehicleAdministrationRoutingModule } from './vehicle-administration-routing.module';
 import { VehicleAdministrationComponent } from './vehicle-administration.component';
 import { PricelistTableComponent } from './pricelist-table/pricelist-table.component';
+import { VehicleStatisticsComponent } from './vehicle-statistics/vehicle-statistics.component';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -20,7 +21,7 @@ import { PricelistDialogBoxComponent } from './pricelist-dialog-box/pricelist-di
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { OwnerRentalsComponent } from './owner-rentals/owner-rentals.component';
 import { OwnerRentalsListingComponent } from './owner-rentals-listing/owner-rentals-listing.component';
-
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     VehicleAdministrationComponent,
@@ -29,7 +30,8 @@ import { OwnerRentalsListingComponent } from './owner-rentals-listing/owner-rent
     VehicleListingComponent,
     VehicleDialogBoxComponent,
     OwnerRentalsComponent,
-    OwnerRentalsListingComponent
+    OwnerRentalsListingComponent,
+    VehicleStatisticsComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { OwnerRentalsListingComponent } from './owner-rentals-listing/owner-rent
     MatIconModule,
     VehicleAdministrationRoutingModule,
     MaterialFileInputModule,
-    SharedModule
+    SharedModule,
+    ChartsModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

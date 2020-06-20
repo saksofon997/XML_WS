@@ -21,6 +21,7 @@ public class VehicleDTO {
     private double locationLatitude;
     private List<String> images;
     private Long ownerId;
+    private long availableMileage;
 
     public VehicleDTO() {
     }
@@ -29,7 +30,7 @@ public class VehicleDTO {
                       TransmissionDTO transmission, FuelDTO fuel, int seats, int childSeats,
                       long mileage, boolean cdw, PricelistDTO pricelist, int numberOfStars,
                       int numberOfReviews, double locationLongitude, double locationLatitude,
-                      List<String> images, Long ownerId) {
+                      List<String> images, Long ownerId, long availableMileage) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -47,6 +48,7 @@ public class VehicleDTO {
         this.locationLatitude = locationLatitude;
         this.images = images;
         this.ownerId = ownerId;
+        this.availableMileage = availableMileage;
     }
 
     public Long getId() {
@@ -183,5 +185,13 @@ public class VehicleDTO {
 
     public void setCdw(boolean cdw) {
         this.cdw = cdw;
+    }
+
+    public long getAvailableMileage() {
+        return availableMileage;
+    }
+
+    public void setAvailableMileage(long availableMileage) {
+        this.availableMileage = availableMileage;
     }
 }
