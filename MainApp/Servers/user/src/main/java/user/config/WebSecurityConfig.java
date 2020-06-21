@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import user.security.RestAuthenticationEntryPoint;
 import user.security.TokenAuthenticationFilter;
 import user.security.TokenUtils;
@@ -77,6 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // presretni svaki zahtev filterom
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
                         BasicAuthenticationFilter.class);
+
+        http.headers()
+                .addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"))
+                .addHeaderWriter(new StaticHeadersWriter("Access-Control-Allow-Origin","http://localhost:4200"));
         http.csrf().disable();
     }
 

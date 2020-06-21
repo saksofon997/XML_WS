@@ -21,7 +21,7 @@ public interface UserService {
 
     UserDTO update(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError;
 
-    UserDTO activateOrDeactivate(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError;
+    UserDTO activateOrDeactivate(Long id) throws EntityNotFound, ConversionFailedError;
 
     UserDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 

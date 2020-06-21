@@ -1,0 +1,29 @@
+<h1 mat-dialog-title><strong>{{action}}</strong></h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+      <p class="feature-name">Role</p>
+    </div>
+    <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+      <mat-form-field>
+        <mat-select formControlName="role" name="role">
+          <mat-option *ngFor="let role of roles" [value]="role">
+            {{role.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="!form.get('role').valid || form.get('role').touched">
+          Role is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="w-100"></div>
+
+    <ng-template #elseTemplate>
+      Sure to delete <b>{{local_data.name}}</b>?
+    </ng-template>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button class="do-button" mat-button (click)="doAction()">{{action}}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button>Cancel</button>
+</div>

@@ -6,6 +6,7 @@ import { interval, throwError, Observable } from 'rxjs';
 import { flatMap, map, catchError } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
+import { User } from '../models/User.model';
 
 const API_URL = environment.API_URL;
 
@@ -128,4 +129,53 @@ export class UserService {
     this.removeToken();
     this.router.navigate(['/login']);
   }
+
+
+  getPageable(pageNo: number) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'pageable': `true`,
+      'page': pageNo.toString()
+    });
+    return this.http.get(`${API_URL}/user`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
+  edit(userId: number, user: User) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.put(`${API_URL}/user/${userId}`, user, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response.body;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
+  delete(userId: number) {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.patch(`${API_URL}/user/${userId}`, { headers, observe: 'response' })
+      .pipe(
+        map(response => {
+          return response;
+        }),
+        catchError((response) => {
+          return throwError(response.error.message);
+        })
+      );
+  }
+
 }
