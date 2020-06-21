@@ -264,8 +264,8 @@ export class VehicleAdministrationComponent implements OnInit {
       cdw: this.form.controls.cdw.value,
       numberOfStars: 0,
       numberOfReviews: 0,
-      locationLongitude: 0,
-      locationLatitude: 0,
+      locationLongitude: 19.8317609,
+      locationLatitude: 45.2553823,
 
       ownerId: this.userService.getUser().id
     }
