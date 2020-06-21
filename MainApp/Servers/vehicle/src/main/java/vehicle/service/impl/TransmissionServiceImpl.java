@@ -21,6 +21,7 @@ import vehicle.model.Transmission;
 import vehicle.repository.TransmissionRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.TransmissionService;
+import vehicle.soap.arrays.TransmissionArray;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -75,6 +76,20 @@ public class TransmissionServiceImpl implements TransmissionService {
         return transmissionDTOS;
     }
 
+    @Override
+    public TransmissionArray getAllSOAP(){
+        List<Transmission> transmissions = transmissionRepo.findAll();
+        System.out.println("Transmissions from database: ");
+        for (Transmission transmission: transmissions) {
+            System.out.println(transmission.getName());
+        }
+        TransmissionArray transmissionArray = new TransmissionArray();
+        transmissionArray.getItem().addAll(transmissions);
+        for (Transmission transmission: transmissionArray.getItem()) {
+            System.out.println(transmission.getName());
+        }
+        return  transmissionArray;
+    }
     @Override
     public TransmissionDTO add(TransmissionDTO transmissionDTO) throws ConversionFailedError, DuplicateEntity {
 

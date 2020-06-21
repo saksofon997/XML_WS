@@ -385,9 +385,9 @@ INSERT INTO agent.vehicle( -- Toyota RAV-4 11
 INSERT INTO agent.vehicle( -- Toyota Yaris 12
     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
     VALUES (nextval('vehicle_id_seq'), 5, 13, 2, 1, 1, 4, 1, 270000, false, 4, 5, 1, 45.2553823, 19.8317609, false, 2, -1); /*12*/
-INSERT INTO agent.vehicle( -- Tesla Model S 13
-    id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
-    VALUES (nextval('vehicle_id_seq'), 6, 14, 3, 4, 3, 4, 0, 87000, true, 5, 4, 2, 44.787558, 20.450290, false, 1, 1100); /*13*/
+-- INSERT INTO agent.vehicle( -- Tesla Model S 13
+--     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
+--     VALUES (nextval('vehicle_id_seq'), 6, 14, 3, 4, 3, 4, 0, 87000, true, 5, 4, 2, 44.787558, 20.450290, false, 1, 1100); /*13*/
 
 
 INSERT INTO agent.vehicle_occupancy( -- 15.6. 15:00 -> 17.6. 15:00 UTC
@@ -524,15 +524,15 @@ INSERT INTO agent.images(
 INSERT INTO agent.images(
     id, images)
     VALUES (12, 'toyotayaris2.jpg'); /*12*/
-INSERT INTO agent.images(
-    id, images)
-    VALUES (13, 'teslamodels.jpg'); /*13*/
-INSERT INTO agent.images(
-    id, images)
-    VALUES (13, 'teslamodels1.jpg'); /*13*/
-INSERT INTO agent.images(
-    id, images)
-    VALUES (13, 'teslamodels2.jpg'); /*13*/
+-- INSERT INTO agent.images(
+--     id, images)
+--     VALUES (13, 'teslamodels.jpg'); /*13*/
+-- INSERT INTO agent.images(
+--     id, images)
+--     VALUES (13, 'teslamodels1.jpg'); /*13*/
+-- INSERT INTO agent.images(
+--     id, images)
+--     VALUES (13, 'teslamodels2.jpg'); /*13*/
 
 INSERT INTO agent.bundle(
     id, name, deleted)

@@ -5,6 +5,7 @@ import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Transmission;
+import vehicle.soap.arrays.TransmissionArray;
 
 import java.util.List;
 
@@ -19,7 +20,9 @@ public interface TransmissionService {
 
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
-    public TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError;
+    TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError;
 
-    public Transmission convertToModel(TransmissionDTO transmissionDTO) throws ConversionFailedError;
+    Transmission convertToModel(TransmissionDTO transmissionDTO) throws ConversionFailedError;
+
+    TransmissionArray getAllSOAP();
 }

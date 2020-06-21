@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface BrandRepo extends JpaRepository<Brand, Long> {
 
     boolean existsByName(String name);
+    Brand findByName(String name);
 }

@@ -1,0 +1,360 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://www.vehicle.com/vehicle" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.vehicle.com/vehicle" targetNamespace="http://www.vehicle.com/vehicle">
+    <wsdl:types>
+        <xs:schema xmlns:ve="http://www.vehicle.com/vehicle" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.vehicle.com/vehicle" version="1.0">
+            <xs:element name="commonFault" type="ve:errorFault"/>
+            <xs:element name="createNewVehicleRequest" type="ve:vehicle"/>
+            <xs:element name="createNewVehicleResponse" type="xs:long"/>
+            <xs:element name="getBrandsRequest" type="xs:string"/>
+            <xs:element name="getBrandsResponse" type="ve:brandArray"/>
+            <xs:element name="getCategoriesRequest" type="xs:string"/>
+            <xs:element name="getCategoriesResponse" type="ve:categoryArray"/>
+            <xs:element name="getFuelsRequest" type="xs:string"/>
+            <xs:element name="getFuelsResponse" type="ve:fuelArray"/>
+            <xs:element name="getModelsRequest" type="xs:long"/>
+            <xs:element name="getModelsResponse" type="ve:modelArray"/>
+            <xs:element name="getOneVehicleRequest" type="xs:long"/>
+            <xs:element name="getOneVehicleResponse" type="ve:vehicle"/>
+            <xs:element name="getTransmissionsRequest" type="xs:string"/>
+            <xs:element name="getTransmissionsResponse" type="ve:transmissionArray"/>
+            <xs:element name="getVehiclesRequest" type="xs:string"/>
+            <xs:element name="getVehiclesResponse" type="ve:vehicleArray"/>
+            <xs:element name="updateOneVehicleRequest" type="ve:vehicle"/>
+            <xs:element name="updateOneVehicleResponse" type="ve:vehicle"/>
+            <xs:complexType name="brand">
+                <xs:sequence>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="models" nillable="true" type="ve:model"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="model">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="brand" type="ve:brand"/>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="category">
+                <xs:sequence>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="fuel">
+                <xs:sequence>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="pricelist">
+                <xs:sequence>
+                    <xs:element name="cdw" type="xs:boolean"/>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="ownerId" type="xs:long"/>
+                    <xs:element name="pricePerDay" type="xs:long"/>
+                    <xs:element name="pricePerKm" type="xs:long"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="vehicles" nillable="true" type="ve:vehicle"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="vehicle">
+                <xs:sequence>
+                    <xs:element name="availableMileage" type="xs:long"/>
+                    <xs:element minOccurs="0" name="brand" type="ve:brand"/>
+                    <xs:element minOccurs="0" name="category" type="ve:category"/>
+                    <xs:element name="cdw" type="xs:boolean"/>
+                    <xs:element name="childSeats" type="xs:int"/>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="fuel" type="ve:fuel"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="images" nillable="true" type="xs:string"/>
+                    <xs:element name="locationLatitude" type="xs:double"/>
+                    <xs:element name="locationLongitude" type="xs:double"/>
+                    <xs:element name="mileage" type="xs:long"/>
+                    <xs:element minOccurs="0" name="model" type="ve:model"/>
+                    <xs:element name="numberOfReviews" type="xs:int"/>
+                    <xs:element name="numberOfStars" type="xs:int"/>
+                    <xs:element minOccurs="0" name="ownerId" type="xs:long"/>
+                    <xs:element minOccurs="0" name="pricelist" type="ve:pricelist"/>
+                    <xs:element name="seats" type="xs:int"/>
+                    <xs:element minOccurs="0" name="transmission" type="ve:transmission"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="transmission">
+                <xs:sequence>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="review">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="vehicleOccupancy">
+                <xs:sequence>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element name="endTime" type="xs:long"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="locations" type="xs:string"/>
+                    <xs:element name="startTime" type="xs:long"/>
+                    <xs:element minOccurs="0" name="type" type="xs:string"/>
+                    <xs:element minOccurs="0" name="vehicle" type="ve:vehicle"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="brandArray">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:brandDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="brandDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="models" nillable="true" type="ve:modelDTO"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="modelDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="categoryArray">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:category"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="errorFault">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" type="xs:string"/>
+                    <xs:element name="time" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="fuelArray">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:fuel"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="modelArray">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:modelDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="transmissionArray">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:transmission"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="vehicleArray">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:vehicle"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="reviewStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="PENDING"/>
+                    <xs:enumeration value="PUBLISHED"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getCategoriesResponse">
+        <wsdl:part element="tns:getCategoriesResponse" name="getCategoriesResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getOneVehicleRequest">
+        <wsdl:part element="tns:getOneVehicleRequest" name="getOneVehicleRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updateOneVehicleRequest">
+        <wsdl:part element="tns:updateOneVehicleRequest" name="updateOneVehicleRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updateOneVehicleResponse">
+        <wsdl:part element="tns:updateOneVehicleResponse" name="updateOneVehicleResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createNewVehicleResponse">
+        <wsdl:part element="tns:createNewVehicleResponse" name="createNewVehicleResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getOneVehicleResponse">
+        <wsdl:part element="tns:getOneVehicleResponse" name="getOneVehicleResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getFuelsRequest">
+        <wsdl:part element="tns:getFuelsRequest" name="getFuelsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getTransmissionsResponse">
+        <wsdl:part element="tns:getTransmissionsResponse" name="getTransmissionsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getBrandsResponse">
+        <wsdl:part element="tns:getBrandsResponse" name="getBrandsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getBrandsRequest">
+        <wsdl:part element="tns:getBrandsRequest" name="getBrandsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="commonFault">
+        <wsdl:part element="tns:commonFault" name="commonFault"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getVehiclesRequest">
+        <wsdl:part element="tns:getVehiclesRequest" name="getVehiclesRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getVehiclesResponse">
+        <wsdl:part element="tns:getVehiclesResponse" name="getVehiclesResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getCategoriesRequest">
+        <wsdl:part element="tns:getCategoriesRequest" name="getCategoriesRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getModelsResponse">
+        <wsdl:part element="tns:getModelsResponse" name="getModelsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createNewVehicleRequest">
+        <wsdl:part element="tns:createNewVehicleRequest" name="createNewVehicleRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getFuelsResponse">
+        <wsdl:part element="tns:getFuelsResponse" name="getFuelsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getModelsRequest">
+        <wsdl:part element="tns:getModelsRequest" name="getModelsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getTransmissionsRequest">
+        <wsdl:part element="tns:getTransmissionsRequest" name="getTransmissionsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="Vehicle">
+        <wsdl:operation name="getCategories">
+            <wsdl:input message="tns:getCategoriesRequest" name="getCategoriesRequest"> </wsdl:input>
+            <wsdl:output message="tns:getCategoriesResponse" name="getCategoriesResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getOneVehicle">
+            <wsdl:input message="tns:getOneVehicleRequest" name="getOneVehicleRequest"> </wsdl:input>
+            <wsdl:output message="tns:getOneVehicleResponse" name="getOneVehicleResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updateOneVehicle">
+            <wsdl:input message="tns:updateOneVehicleRequest" name="updateOneVehicleRequest"> </wsdl:input>
+            <wsdl:output message="tns:updateOneVehicleResponse" name="updateOneVehicleResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="createNewVehicle">
+            <wsdl:input message="tns:createNewVehicleRequest" name="createNewVehicleRequest"> </wsdl:input>
+            <wsdl:output message="tns:createNewVehicleResponse" name="createNewVehicleResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getFuels">
+            <wsdl:input message="tns:getFuelsRequest" name="getFuelsRequest"> </wsdl:input>
+            <wsdl:output message="tns:getFuelsResponse" name="getFuelsResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getTransmissions">
+            <wsdl:input message="tns:getTransmissionsRequest" name="getTransmissionsRequest"> </wsdl:input>
+            <wsdl:output message="tns:getTransmissionsResponse" name="getTransmissionsResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getBrands">
+            <wsdl:input message="tns:getBrandsRequest" name="getBrandsRequest"> </wsdl:input>
+            <wsdl:output message="tns:getBrandsResponse" name="getBrandsResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getVehicles">
+            <wsdl:input message="tns:getVehiclesRequest" name="getVehiclesRequest"> </wsdl:input>
+            <wsdl:output message="tns:getVehiclesResponse" name="getVehiclesResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getModels">
+            <wsdl:input message="tns:getModelsRequest" name="getModelsRequest"> </wsdl:input>
+            <wsdl:output message="tns:getModelsResponse" name="getModelsResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="VehicleSoap11" type="tns:Vehicle">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getCategories">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getCategoriesRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getCategoriesResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOneVehicle">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getOneVehicleRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getOneVehicleResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateOneVehicle">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="updateOneVehicleRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="updateOneVehicleResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createNewVehicle">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="createNewVehicleRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createNewVehicleResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getFuels">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getFuelsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getFuelsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getTransmissions">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getTransmissionsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getTransmissionsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getBrands">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getBrandsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getBrandsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getVehicles">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getVehiclesRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getVehiclesResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getModels">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getModelsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getModelsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="VehicleService">
+        <wsdl:port binding="tns:VehicleSoap11" name="VehicleSoap11">
+            <soap:address location="http://localhost:8084/vehicle/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

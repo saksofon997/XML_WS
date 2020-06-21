@@ -3,12 +3,15 @@ package vehicle.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDateTime;
 
+@XmlTransient
 public class ApiError {
 
     private HttpStatus status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+
     private LocalDateTime timestamp;
     private String message;
     private Throwable ex;

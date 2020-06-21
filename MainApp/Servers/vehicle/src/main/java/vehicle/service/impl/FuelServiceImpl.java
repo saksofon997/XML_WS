@@ -10,20 +10,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
-import saga.commands.vehiclePartsCommands.MainCategoryCommand;
 import saga.commands.vehiclePartsCommands.MainFuelCommand;
-import saga.dto.BrandDTO;
-import saga.dto.CategoryDTO;
 import saga.dto.FuelDTO;
 import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Brand;
-import vehicle.model.Category;
 import vehicle.model.Fuel;
 import vehicle.repository.FuelRepo;
 import vehicle.service.FuelService;
+import vehicle.soap.arrays.FuelArray;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -82,6 +78,18 @@ public class FuelServiceImpl implements FuelService {
             fuelDTOS.add(convertToDTO(fuel));
         }
         return fuelDTOS;
+    }
+
+    @Override
+    public FuelArray getAllSOAP() {
+        List<Fuel> fuels = fuelRepo.findAll();
+        FuelArray fuelArray = new FuelArray();
+        fuelArray.getItem().addAll(fuels);
+        for (Fuel fuel: fuelArray.getItem()) {
+            System.out.println(fuel.getName());
+        }
+
+        return fuelArray;
     }
 
     @Override
