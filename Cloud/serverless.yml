@@ -1,0 +1,47 @@
+service: xmlws
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: python3.8
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "arn:aws:lambda:${self:provider.region}:*:function:${self:service}*"
+  environment:
+    STAGE: ${self:custom.stage}
+    APP_VERSION: ${ssm:/xmlws/${self:custom.stage}/version}
+
+plugins:
+  - serverless-offline
+  - serverless-offline-ssm
+  - serverless-python-requirements
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  serverless-offline-ssm:
+    stages:
+      - offline
+  pythonRequirements:
+    dockerizePip: non-linux
+
+functions:
+  send_email:
+    handler: app.service.MailService.send
+    events:
+      - http:
+          path: email
+          method: post
+          cors: true
+  locate:
+    handler: app.service.LocationService.locate
+    events:
+      - http:
+          path: locate
+          method: get
+          cors: true
