@@ -128,98 +128,50 @@ export class UserService {
     this.router.navigate(['/login']);
   }
 
-	changePassowrd(passwordChanger) {
-		const headers = new HttpHeaders({
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-			'x-auth': `Bearer ${this.getToken()}`
-		});
-		return this.http.post('http://localhost:8090/auth/change-password', JSON.stringify(passwordChanger), { headers, observe: 'response' })
-			.pipe(
-				map((response) => {
-					this.passwordChanged = true;
-				}),
-				catchError((response) => {
-					return throwError(response.error.message);
-				})
-			);
-	}
-
-	refreshToken() {
-		if (!(this.cookieService.get('token') === '')) {
-			const headers = new HttpHeaders({
-				'x-auth': `Bearer ${this.getToken()}`
-			});
-			return this.http.post('http://localhost:8090/auth/refresh', {}, { headers, observe: 'response' })
-				.pipe(
-					map((response) => {
-						const userState = response.body;
-						this.setUser(userState['user']);
-						this.setToken(userState['token']);
-						this.passwordChanged = userState['passwordChanged'];
-						if (!this.passwordChanged) {
-							this.router.navigate(['/change-password']);
-						}
-						return this.user;
-					}),
-					catchError((response) => {
-						this.removeUser();
-						this.removeToken();
-						this.router.navigate(['/login']);
-						return throwError(response.error.message);
-					})
-				);
-		} else {
-			this.removeUser();
-			this.removeToken();
-			return new Observable();
-		}
-	}
-
 	getPageable(pageNo: number) {
 		let headers = new HttpHeaders({
-		  'Content-Type': 'application/json',
-		  'pageable': `true`,
-		  'page': pageNo.toString()
+			'Content-Type': 'application/json',
+			'pageable': `true`,
+			'page': pageNo.toString()
 		});
 		return this.http.get(`${API_URL}/user`, { headers, observe: 'response' })
-		  .pipe(
+			.pipe(
 			map(response => {
-			  return response.body;
+				return response.body;
 			}),
 			catchError((response) => {
-			  return throwError(response.error.message);
+				return throwError(response.error.message);
 			})
-		  );
-	  }
+			);
+		}
 
-	  edit(userId: number, user: User) {
+		edit(userId: number, user: User) {
 		let headers = new HttpHeaders({
-		  'Content-Type': 'application/json',
+			'Content-Type': 'application/json',
 		});
 		return this.http.put(`${API_URL}/user/${userId}`, user, { headers, observe: 'response' })
-		  .pipe(
+			.pipe(
 			map(response => {
-			  return response.body;
+				return response.body;
 			}),
 			catchError((response) => {
-			  return throwError(response.error.message);
+				return throwError(response.error.message);
 			})
-		  );
-	  }
+			);
+		}
 
-	  delete(userId: number) {
+		delete(userId: number) {
 		let headers = new HttpHeaders({
-		  'Content-Type': 'application/json',
+			'Content-Type': 'application/json',
 		});
 		return this.http.patch(`${API_URL}/user/${userId}`, { headers, observe: 'response' })
-		  .pipe(
+			.pipe(
 			map(response => {
-			  return response;
+				return response;
 			}),
 			catchError((response) => {
-			  return throwError(response.error.message);
+				return throwError(response.error.message);
 			})
-		  );
-	  }
+			);
+		}
 }
