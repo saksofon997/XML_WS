@@ -3,6 +3,7 @@ package com.spring.zuul.filter;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import com.spring.zuul.client.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class AuthFilter extends ZuulFilter {
     private final String PREFIX = "Bearer ";
 
     @Autowired
-    private AuthClient authClient;
+    private UserClient userClient;
 
     @Override
     public String filterType() {
@@ -48,7 +49,7 @@ public class AuthFilter extends ZuulFilter {
         System.out.println(jwtToken);
 
         try {
-            boolean valid = authClient.verify(jwtToken);
+            boolean valid = userClient.verify(jwtToken);
             System.out.println(valid);
             // redirection (?) -> not needed I fixed it... :) -> FUCK YEAH!
         } catch (Exception e) {

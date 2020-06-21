@@ -81,7 +81,25 @@ zuul:
       serviceId: search
 
 
+    # ----- CHAT -----
+    chat:
+      path: /conversation/**
+      stripPrefix: false
+      serviceId: chat
+    chat1:
+      path: /users/**/conversation/**
+      stripPrefix: false
+      serviceId: chat
+    chat2:
+      path: /message/**
+      stripPrefix: false
+      serviceId: chat
+
     zuul: # needed for the auth filter to work
       path: /checkout
+      stripPrefix: false
+      url: forward:/
+    zuul2:
+      path: /chat/**
       stripPrefix: false
       url: forward:/

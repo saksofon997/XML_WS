@@ -1,0 +1,25 @@
+<div id="chat-container">
+  <div id="search-container">
+    <button class="users-button" (click)="refresh()">Refresh</button>
+
+  </div>
+  <div id="conversation-list">
+    <app-conversations [conversations]=converesations (selectConversation)="selectConversation($event)"
+      [selectedUser]=selectedUser></app-conversations>
+  </div>
+  <div id="lower-left-container">
+  </div>
+  <div id="chat-title">
+    <span *ngIf="selectedUser">{{selectedUser?.name + ' ' + selectedUser?.surname}}</span>
+  </div>
+  <div id="chat-message-list">
+    <app-messages [conversation]=selectedConversation [selectedUser]=selectedUser></app-messages>
+  </div>
+  <form id="chat-form" (submit)="sendMessage()">
+      <div>
+        <input type="text" name="message" [(ngModel)]="newMessage" placeholder="type a message"
+          style="width: 80%" />
+        <input type="submit" value="Send">
+      </div>
+  </form>
+</div>
