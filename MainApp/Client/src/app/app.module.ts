@@ -27,7 +27,6 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
       LoginComponent
    ],
    imports: [
-      //Importmodules except lazy loaded
       AppRoutingModule,
       BrowserAnimationsModule,
       SharedModule,
@@ -38,7 +37,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
       MatIconModule,
       FormsModule,
       ReactiveFormsModule,
-      NgHttpLoaderModule.forRoot(),
+      NgHttpLoaderModule.forRoot()
    ],
    providers: [
       CookieService,
