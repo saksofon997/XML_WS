@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FuelRepo extends JpaRepository<Fuel, Long> {
 
     boolean existsByName(String name);
+    Fuel findByName(String name);
 }

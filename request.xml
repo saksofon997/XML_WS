@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:fu="http://www.vehicle.com/fuel">
+<soapenv:Header/>
+    <soapenv:Body>
+        <fu:getBrandName>
+        </fu:getBrandName>
+    </soapenv:Body>
+</soapenv:Envelope>

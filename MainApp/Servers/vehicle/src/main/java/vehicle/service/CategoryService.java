@@ -5,6 +5,8 @@ import vehicle.dto.CategoryPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.soap.arrays.BrandArray;
+import vehicle.soap.arrays.CategoryArray;
 
 import java.util.List;
 
@@ -20,4 +22,6 @@ public interface CategoryService {
     CategoryDTO update(Long id, CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError;
 
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
+
+    CategoryArray getAllSOAP();
 }

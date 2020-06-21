@@ -7,6 +7,7 @@ import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.UnexpectedError;
 import vehicle.model.Brand;
+import vehicle.soap.arrays.BrandArray;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface BrandService {
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
     BrandDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
+
+    BrandArray getAllSOAP();
 }

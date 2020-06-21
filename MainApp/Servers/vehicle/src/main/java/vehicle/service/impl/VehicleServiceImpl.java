@@ -19,6 +19,7 @@ import vehicle.exceptions.OperationNotAllowed;
 import vehicle.model.Vehicle;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.VehicleService;
+import vehicle.soap.arrays.VehicleArray;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -107,6 +108,50 @@ public class VehicleServiceImpl implements VehicleService {
         commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.CREATE));
 
         return convertToDTO(savedVehicle);
+    }
+
+    @Override
+    public Long addViaSoap(Vehicle vehicle) throws ConversionFailedError {
+
+        Vehicle savedVehicle = vehicleRepo.save(vehicle);
+        VehicleDTO vehicleDTO = convertToDTO(savedVehicle);
+        System.out.println(savedVehicle.getId());
+        commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.CREATE));
+
+        return savedVehicle.getId();
+    }
+
+    @Override
+    public VehicleArray getAllSOAP() {
+        List<Vehicle> vehicles = vehicleRepo.findAll();
+        VehicleArray vehicleArray = new VehicleArray();
+        vehicleArray.getItem().addAll(vehicles);
+        for (Vehicle vehicle: vehicleArray.getItem()) {
+            System.out.println("Vehicle: " + vehicle.getId());
+            System.out.println("Brand and model: " + vehicle.getBrand().getName() + vehicle.getModel().getName());
+        }
+        return vehicleArray;
+    }
+
+    @Override
+    public Vehicle getOneSOAP(Long id){
+        Optional<Vehicle> vehicle = vehicleRepo.findById(id);
+        if(vehicle.isPresent()){
+            return vehicle.get();
+        }else{
+            return new Vehicle();
+        }
+    }
+
+    @Override
+    public Vehicle updateOneSOAP(Long id, Vehicle vehicle){
+        Optional<Vehicle> change = vehicleRepo.findById(id);
+        if(change.isPresent()){
+            vehicleRepo.save(vehicle);
+            return vehicle;
+        }else{
+            return new Vehicle();
+        }
     }
 
     @Override

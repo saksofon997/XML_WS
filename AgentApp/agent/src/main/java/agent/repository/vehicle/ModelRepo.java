@@ -10,4 +10,5 @@ public interface ModelRepo extends JpaRepository<Model, Long> {
     boolean existsByName(String name);
 
     Page<Model> findByBrand(Brand brand, Pageable page);
+    Model findByName(String name);
 }

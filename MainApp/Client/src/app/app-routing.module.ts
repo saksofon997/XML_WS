@@ -14,6 +14,7 @@ const routes: Routes = [
   },
   { path: 'shopping-cart', loadChildren: () => import('./shopping-cart/shopping-cart.module').then(m => m.ShoppingCartModule) },
   { path: 'customer', loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule)},
+  { path: 'chat', loadChildren: () => import('./chat-main/chat.module').then(m => m.ChatModule)},
   { path: 'login', component: LoginComponent }
 
 ];

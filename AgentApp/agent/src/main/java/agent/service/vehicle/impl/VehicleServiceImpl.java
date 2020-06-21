@@ -5,9 +5,12 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.exceptions.OperationNotAllowed;
-import agent.model.vehicle.Vehicle;
-import agent.repository.vehicle.VehicleRepo;
+import agent.model.vehicle.*;
+import agent.model.vehicle.mappings.*;
+import agent.repository.vehicle.*;
+import agent.repository.vehicle.mappingsRepo.*;
 import agent.service.vehicle.VehicleService;
+import agent.soap.VehicleClient;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +38,33 @@ public class VehicleServiceImpl implements VehicleService {
     @Autowired
     DozerBeanMapper mapper;
 
+    @Autowired
+    VehicleClient vehicleClient;
+
+    @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
+
+    @Autowired
+    FuelRepo fuelRepo;
+    @Autowired
+    BrandRepo brandRepo;
+    @Autowired
+    ModelRepo modelRepo;
+    @Autowired
+    CategoryRepo categoryRepo;
+    @Autowired
+    TransmissionRepo transmissionRepo;
+
+    @Autowired
+    FuelMappingRepo fuelMappingRepo;
+    @Autowired
+    ModelMappingRepo modelMappingRepo;
+    @Autowired
+    BrandMappingRepo brandMappingRepo;
+    @Autowired
+    CategoryMappingRepo categoryMappingRepo;
+    @Autowired
+    TransmissionMappingRepo transmissionMappingRepo;
     @Value("${PATH_TO_IMAGES:C:\\vehicle_images}")
     private String path_to_images;
 
@@ -76,7 +106,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleDTO add(VehicleDTO vehicleDTO, MultipartFile[] images, HttpServletRequest request, Boolean isAgent) throws ConversionFailedError, DuplicateEntity, OperationNotAllowed {
+    public VehicleDTO add(VehicleDTO vehicleDTO, MultipartFile[] images, HttpServletRequest request, Boolean isAgent) throws ConversionFailedError, DuplicateEntity, OperationNotAllowed, EntityNotFound {
         System.out.println("User id: ");
         System.out.println(request.getAttribute("userId"));
 
@@ -93,11 +123,67 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleDTO.setImages(savedImagesPaths);
         Vehicle newVehicle = convertToModel(vehicleDTO);
 
-        Vehicle savedVehicle = vehicleRepo.save(newVehicle);
 
+        agent.soap.gen.Vehicle vehicleSOAP = mapper.map(newVehicle, agent.soap.gen.Vehicle.class);
+        vehicleSOAP = updateVehicleSOAPParts(vehicleSOAP);
+        Long savedId = vehicleClient.createNewVehicle(vehicleSOAP);
+
+        System.out.println("Saved Id in MS backend: " + savedId);
+        Vehicle savedVehicle = null;
+        if (savedId != 0){
+            savedVehicle = vehicleRepo.save(newVehicle);
+            VehicleMapping vehicleMapping = new VehicleMapping();
+            vehicleMapping.setVehicleAgentId(savedVehicle);
+            vehicleMapping.setVehicleBackId(savedId);
+            vehicleMappingRepo.save(vehicleMapping);
+        }else{
+            throw new EntityNotFound("Entity could not be saved on MS app. Check logs for more details.");
+        }
         return convertToDTO(savedVehicle);
     }
-
+    agent.soap.gen.Vehicle updateVehicleSOAPParts(agent.soap.gen.Vehicle vehicleToUpdate) throws EntityNotFound {
+        Fuel fuel = fuelRepo.findById(vehicleToUpdate.getFuel().getId()).orElse(null);
+        if (fuel != null) {
+            FuelMapping fm = fuelMappingRepo.findByFuelAgent(fuel);
+            if (fm == null) {
+                throw new EntityNotFound("Fuel does not exist on MS application");
+            }
+            vehicleToUpdate.getFuel().setId(fm.getFuelBackId());
+        }
+        Category category = categoryRepo.findById(vehicleToUpdate.getCategory().getId()).orElse(null);
+        if (category != null) {
+            CategoryMapping cm = categoryMappingRepo.findByCategoryAgent(category);
+            if (cm == null) {
+                throw new EntityNotFound("Category does not exist on MS application");
+            }
+            vehicleToUpdate.getCategory().setId(cm.getCategoryBackId());
+        }
+        Transmission transmission = transmissionRepo.findById(vehicleToUpdate.getTransmission().getId()).orElse(null);
+        if (transmission != null) {
+            TransmissionMapping tm = transmissionMappingRepo.findByTransmissionAgent(transmission);
+            if (tm == null) {
+                throw new EntityNotFound("Transmission does not exist on MS application");
+            }
+            vehicleToUpdate.getTransmission().setId(tm.getTransmissionBackId());
+        }
+        Brand brand = brandRepo.findById(vehicleToUpdate.getBrand().getId()).orElse(null);
+        if (brand != null) {
+            BrandMapping bm = brandMappingRepo.findByBrandAgent(brand);
+            if (bm == null) {
+                throw new EntityNotFound("Brand does not exist on MS application");
+            }
+            vehicleToUpdate.getBrand().setId(bm.getBrandBackId());
+        }
+        Model model = modelRepo.findById(vehicleToUpdate.getModel().getId()).orElse(null);
+        if (model != null) {
+            ModelMapping mm = modelMappingRepo.findByModelAgent(model);
+            if (mm == null) {
+                throw new EntityNotFound("Model does not exist on MS application");
+            }
+            vehicleToUpdate.getModel().setId(mm.getModelBackId());
+        }
+        return vehicleToUpdate;
+    }
     @Override
     public VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Vehicle> vehicle = vehicleRepo.findById(id);

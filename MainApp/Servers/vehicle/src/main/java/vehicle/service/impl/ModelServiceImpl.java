@@ -22,6 +22,7 @@ import vehicle.model.Model;
 import vehicle.repository.BrandRepo;
 import vehicle.repository.ModelRepo;
 import vehicle.service.ModelService;
+import vehicle.soap.arrays.ModelArray;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -97,6 +98,22 @@ public class ModelServiceImpl implements ModelService {
         return modelDTOS;
     }
 
+    @Override
+    @Transactional
+    public ModelArray getAllSOAP(Long brandId){
+        Optional<Brand> brand = brandRepo.findById(brandId);
+
+        if (!brand.isPresent()) {
+           return new ModelArray();
+        }
+        List<Model> models = brand.get().getModels();
+        ModelArray modelArray = new ModelArray();
+        for (Model model: models) {
+            modelArray.getItem().add(new vehicle.soap.dtos.ModelDTO(model.getId(),model.getName()));
+        }
+        return modelArray;
+
+    }
     @Override
     public ModelDTO add(Long brandId, ModelDTO modelDTO) throws ConversionFailedError, DuplicateEntity, EntityNotFound {
 
