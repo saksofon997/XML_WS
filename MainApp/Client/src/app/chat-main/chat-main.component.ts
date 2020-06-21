@@ -33,19 +33,42 @@ export class ChatMainComponent implements OnInit {
     );
   }
 
-  selectConversation(conv) {
-    // get conv messages
+  selectConversation(conversation) {
+    this.selectedConversation = conversation;
+    this.selectedUser = conversation.user;
   }
 
   sendMessage() {
+    if (!this.selectedConversation || !this.selectedUser.id || !this.newMessage) {
+      return;
+    }
+    var message = {
+      conversation_id: this.selectedConversation.id,
+      sender_id: this.userService.getUser().id,
+      receiver_id: this.selectedUser.id,
+      text: this.newMessage,
+      timestamp: (new Date()).getTime() / 1000,
+    }
+    console.log(message);
 
+
+    this.chatService.sendMessage(message).subscribe(
+      (data: any) => {
+        this.selectedConversation = undefined;
+        this.selectedConversation = this.selectedConversation;
+        this.newMessage = "";
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
   getUserInfo() {
 
   }
 
-  refresh(){
+  refresh() {
 
   }
 }

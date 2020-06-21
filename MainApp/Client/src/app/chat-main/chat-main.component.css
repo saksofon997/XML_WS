@@ -49,7 +49,7 @@
 }
 
 .users-button:hover {
-  background: rgba(148,175,101,1);
+  background: #E81831;
   text-shadow:0 1px 3px darken(#E81831, 30%);
 }
 
@@ -94,7 +94,7 @@
 }
 
 .button-link:hover {
-  background: rgba(148,175,101,1);
+  background: #E81831;
   text-shadow:0 1px 3px darken(#E81831, 30%);
 }
 
@@ -109,7 +109,7 @@
   align-items: center;
   align-content: center;
   grid-area: chat-title;
-  color: #0048AA;
+  color: #E81831;
   font-weight: bold;
   font-size: 2.0rem;
   border-radius: 0 2px 0 0;

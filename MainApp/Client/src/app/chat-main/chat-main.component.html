@@ -10,18 +10,16 @@
   <div id="lower-left-container">
   </div>
   <div id="chat-title">
-    <span>{{selectedUser?.name + selectedUser?.name}}</span>
+    <span *ngIf="selectedUser">{{selectedUser?.name + ' ' + selectedUser?.surname}}</span>
   </div>
   <div id="chat-message-list">
-    <app-messages [conversation]=selectedConversation></app-messages>
+    <app-messages [conversation]=selectedConversation [selectedUser]=selectedUser></app-messages>
   </div>
-  <form id="chat-form" onsubmit="sendMessage()">
-    <form>
+  <form id="chat-form" (submit)="sendMessage()">
       <div>
         <input type="text" name="message" [(ngModel)]="newMessage" placeholder="type a message"
           style="width: 80%" />
         <input type="submit" value="Send">
       </div>
-    </form>
   </form>
 </div>

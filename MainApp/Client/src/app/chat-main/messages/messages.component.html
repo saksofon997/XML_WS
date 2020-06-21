@@ -1,3 +1,9 @@
-<p>
-  messages works!
-</p>
+<div *ngFor="let message of messages">
+  <div class="message-row" [ngClass]="{'my-message': myMessage(message), 'other-message': !myMessage(message)}">
+    <div class="message-text">{{message.text}}</div>
+    <div>
+      <span class="message-username">{{messageSender(message) + ' at '}}</span>
+      <span class="message-time">{{ messageTime(message) }}</span>
+    </div>
+  </div>
+</div>

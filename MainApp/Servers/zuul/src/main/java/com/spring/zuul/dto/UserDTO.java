@@ -6,7 +6,7 @@ import lombok.Data;
 public class UserDTO {
 
     private Long id;
-    private String password;
+    //private String password;
     private String email;
     private String name;
     private String surname;
@@ -14,5 +14,4 @@ public class UserDTO {
     private String city;
     private String state;
     private String phoneNumber;
-    private boolean enabled;
 }
