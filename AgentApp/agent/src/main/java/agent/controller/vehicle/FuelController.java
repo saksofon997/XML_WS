@@ -7,6 +7,9 @@ import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.service.vehicle.FuelService;
 import agent.soap.VehicleClient;
+import agent.soap.gen.Brand;
+import agent.soap.gen.BrandArray;
+import agent.soap.gen.BrandDTO;
 import agent.soap.gen.Fuel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +60,15 @@ public class FuelController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FuelDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
         vehicleClient.getFuels();
+
+        BrandArray brandArray = vehicleClient.getBrands().getValue();
+        for (BrandDTO brand: brandArray.getItem()) {
+            vehicleClient.getModels(brand.getId());
+        }
+        vehicleClient.getTransmissions();
+        vehicleClient.getCategories();
+
+
 //        for (Fuel fuel: vehicleClient.getFuels().getValue()) {
 //            System.out.println(fuel.getName());
 //        }

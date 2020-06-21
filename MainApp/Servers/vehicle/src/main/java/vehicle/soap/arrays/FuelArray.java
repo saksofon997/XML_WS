@@ -6,8 +6,9 @@
 //
 
 
-package vehicle.model;
+package vehicle.soap.arrays;
 
+import vehicle.model.Fuel;
 import vehicle.soap.WSEndpoint;
 
 import javax.xml.bind.annotation.*;
@@ -21,7 +22,7 @@ import java.util.List;
 public class FuelArray {
     @XmlElement
     @XmlSchemaType(name = "fuel", namespace = WSEndpoint.NAMESPACE_URI)
-    private List<Fuel> item;
+    List<Fuel> item;
 
 
     public List<Fuel> getItem() {

@@ -22,6 +22,7 @@ import vehicle.model.Model;
 import vehicle.repository.BrandRepo;
 import vehicle.service.BrandService;
 import vehicle.service.ModelService;
+import vehicle.soap.arrays.BrandArray;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -125,6 +126,31 @@ public class BrandServiceImpl implements BrandService {
         return brandDTOS;
     }
 
+    @Override
+    @Transactional
+    public BrandArray getAllSOAP(){
+        List<Brand> brands = brandRepo.findAll();
+        BrandArray brandArray = new BrandArray();
+        for (Brand brand: brands) {
+            vehicle.soap.dtos.BrandDTO brandDTO = new vehicle.soap.dtos.BrandDTO(brand.getId(),brand.getName());
+            List<vehicle.soap.dtos.ModelDTO> modelDTOS = new ArrayList<vehicle.soap.dtos.ModelDTO>();
+            for (Model model: brand.getModels()) {
+                System.out.println("Model: " + model.getName());
+                modelDTOS.add(new vehicle.soap.dtos.ModelDTO(model.getId(),model.getName()));
+            }
+
+            brandDTO.setModels(modelDTOS);
+            brandArray.getItem().add(brandDTO);
+        }
+
+        brandArray.getItem().forEach((brand -> {
+            System.out.println("Models for brand: " + brand.getName());
+            for (vehicle.soap.dtos.ModelDTO modelDTO: brand.getModels()){
+                System.out.println(modelDTO.getName());
+            }
+        }));
+        return brandArray;
+    }
     @Override
     public BrandDTO update(Long id, BrandDTO brandDTO) throws EntityNotFound, ConversionFailedError {
 

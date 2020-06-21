@@ -2,8 +2,8 @@ package vehicle.config;
 
 import org.springframework.ws.soap.SoapFault;
 import org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver;
-import vehicle.model.ErrorResponse;
-import vehicle.model.ObjectFactory;
+import vehicle.soap.arrays.ErrorResponse;
+import vehicle.soap.arrays.ObjectFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

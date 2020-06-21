@@ -5,7 +5,7 @@ import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.FuelArray;
+import vehicle.soap.arrays.FuelArray;
 
 import java.util.List;
 
@@ -22,5 +22,5 @@ public interface FuelService {
 
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
-    public FuelArray getAllSOAP();
+    FuelArray getAllSOAP();
 }

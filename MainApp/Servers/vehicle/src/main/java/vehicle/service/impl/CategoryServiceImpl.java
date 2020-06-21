@@ -21,6 +21,7 @@ import vehicle.model.Brand;
 import vehicle.model.Category;
 import vehicle.repository.CategoryRepo;
 import vehicle.service.CategoryService;
+import vehicle.soap.arrays.CategoryArray;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -80,6 +81,16 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDTOS;
     }
 
+    @Override
+    public CategoryArray getAllSOAP(){
+        List<Category> categories = categoryRepo.findAll();
+        CategoryArray categoryArray = new CategoryArray();
+        categoryArray.getItem().addAll(categories);
+        for (Category category: categoryArray.getItem()){
+            System.out.println(category.getName());
+        }
+        return categoryArray;
+    }
 
     @Override
     public CategoryDTO add(CategoryDTO categoryDTO) throws ConversionFailedError, DuplicateEntity {

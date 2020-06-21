@@ -43,7 +43,7 @@ public class VehicleController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('CREATE_RENTAL_PERMISSION')")
-    public ResponseEntity<VehicleDTO> createNew(@RequestPart("images") MultipartFile[] images, @RequestPart("vehicle") VehicleDTO vehicleDTO, HttpServletRequest request) throws DuplicateEntity, ConversionFailedError, OperationNotAllowed {
+    public ResponseEntity<VehicleDTO> createNew(@RequestPart("images") MultipartFile[] images, @RequestPart("vehicle") VehicleDTO vehicleDTO, HttpServletRequest request) throws DuplicateEntity, ConversionFailedError, OperationNotAllowed, EntityNotFound {
 
         VehicleDTO added = vehicleService.add(vehicleDTO, images, request, true);
         return new ResponseEntity<>(added, HttpStatus.ACCEPTED);

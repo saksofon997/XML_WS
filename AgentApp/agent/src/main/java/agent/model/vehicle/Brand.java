@@ -20,7 +20,7 @@ public class Brand implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER)
     private List<Model> models;
 
     @Column(name = "deleted")

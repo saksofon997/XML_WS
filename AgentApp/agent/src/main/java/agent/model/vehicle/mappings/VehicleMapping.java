@@ -1,5 +1,6 @@
-package agent.model.vehicle;
+package agent.model.vehicle.mappings;
 
+import agent.model.vehicle.Vehicle;
 import lombok.Data;
 
 import javax.persistence.*;

@@ -6,6 +6,7 @@ import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Model;
+import vehicle.soap.arrays.ModelArray;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface ModelService {
     ModelDTO convertToDTO(Model model) throws ConversionFailedError;
 
     ModelDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
+
+    ModelArray getAllSOAP(Long brandId);
 }

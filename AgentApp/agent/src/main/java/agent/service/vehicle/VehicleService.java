@@ -23,7 +23,7 @@ public interface VehicleService {
 
     List<VehicleDTO> getOwnersVehicles(Long id) throws ConversionFailedError;
 
-    VehicleDTO add(VehicleDTO vehicleDTO, MultipartFile[] images, HttpServletRequest request, Boolean isAgent) throws ConversionFailedError, DuplicateEntity, OperationNotAllowed;
+    VehicleDTO add(VehicleDTO vehicleDTO, MultipartFile[] images, HttpServletRequest request, Boolean isAgent) throws ConversionFailedError, DuplicateEntity, OperationNotAllowed, EntityNotFound;
 
     VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 

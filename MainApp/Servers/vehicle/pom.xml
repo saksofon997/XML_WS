@@ -143,7 +143,8 @@
 				<configuration>
 					<sources>
 						<source>${basedir}/src/main/java/vehicle/model</source>
-<!--						<source>${basedir}/src/main/java/vehicle/soap/arrays</source>-->
+						<source>${basedir}/src/main/java/vehicle/soap/arrays</source>
+						<source>${basedir}/src/main/java/vehicle/soap/dtos</source>
 <!--						<source>${basedir}/src/main/java/io/github/t3rmian/jmetersamples/controller/ws/dto</source>-->
 					</sources>
 					<outputDirectory>${project.build.directory}/classes</outputDirectory>

@@ -19,7 +19,7 @@ import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Fuel;
 import vehicle.repository.FuelRepo;
 import vehicle.service.FuelService;
-import vehicle.model.FuelArray;
+import vehicle.soap.arrays.FuelArray;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -83,7 +83,6 @@ public class FuelServiceImpl implements FuelService {
     @Override
     public FuelArray getAllSOAP() {
         List<Fuel> fuels = fuelRepo.findAll();
-        Fuel[] retVal = new Fuel[fuels.size()];
         FuelArray fuelArray = new FuelArray();
         fuelArray.getItem().addAll(fuels);
         for (Fuel fuel: fuelArray.getItem()) {

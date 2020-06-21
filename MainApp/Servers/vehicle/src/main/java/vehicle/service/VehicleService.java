@@ -8,6 +8,7 @@ import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.exceptions.OperationNotAllowed;
 import vehicle.model.Vehicle;
+import vehicle.soap.arrays.VehicleArray;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -36,4 +37,10 @@ public interface VehicleService {
     Resource getImage(String path, HttpServletRequest request) throws IOException;
 
     Long addViaSoap(Vehicle vehicle) throws ConversionFailedError;
+
+    VehicleArray getAllSOAP();
+
+    Vehicle getOneSOAP(Long id);
+
+    public Vehicle updateOneSOAP(Long id, Vehicle vehicle);
 }
