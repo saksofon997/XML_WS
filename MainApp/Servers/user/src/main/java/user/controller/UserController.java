@@ -75,10 +75,9 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ACTIVATE_USER_PERMISSION') or hasAuthority('DEACTIVATE_USER_PERMISSION')")
-    public ResponseEntity<UserDTO> activateOrDeactivate(@PathVariable Long id,
-                                          @RequestBody UserDTO userDTO) throws EntityNotFound, UnexpectedError, ConversionFailedError {
+    public ResponseEntity<UserDTO> activateOrDeactivate(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
 
-        UserDTO updated = userService.activateOrDeactivate(id, userDTO);
+        UserDTO updated = userService.activateOrDeactivate(id);
 
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

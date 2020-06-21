@@ -10,10 +10,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogBoxComponent } from './dialog-box-edit/dialog-box-edit.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTabsModule } from '@angular/material/tabs';
+import { SharedModule } from '../shared/shared.module';
+import { UserRolesComponent } from './user-administration/user-roles/user-roles.component';
 
 @NgModule({
   declarations: [ // Declare all components of module
@@ -21,6 +24,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     SideListComponent,
     routingComponents,
     DialogBoxComponent,
+    UserRolesComponent,
   ],
   imports: [ // Import anything you would need to use in this module (forms...)
     CommonModule,
@@ -33,7 +37,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatIconModule,
     MatPaginatorModule,
-    AdministrationRoutingModule
+    MatTabsModule,
+    AdministrationRoutingModule,
+    ReactiveFormsModule,
+    SharedModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ], 
   // Exports should not be in lazy loaded modules

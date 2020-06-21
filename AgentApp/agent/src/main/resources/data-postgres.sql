@@ -192,6 +192,15 @@ INSERT INTO agent.users(
 INSERT INTO agent.users(
 	id, address, city, email, name, password, phone_number, state, surname, enabled, deleted ) /*2*/
 	VALUES (nextval('users_id_seq'), 'Vladimira Iljica Lenjina 1917', 'Moskva', 'che@revolution.cu', 'Ernesto', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Guevara', true, false);
+INSERT INTO agent.users(
+	id, address, city, email, name, password, phone_number, state, surname, enabled, deleted ) /*2*/
+	VALUES (nextval('users_id_seq'), 'Vladimira Iljica Lenjina 1917', 'Moskva', 'user2@car2go.rs', 'Nikola', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Markovic', true, false);
+INSERT INTO agent.users(
+	id, address, city, email, name, password, phone_number, state, surname, enabled, deleted ) /*2*/
+	VALUES (nextval('users_id_seq'), 'Vladimira Iljica Lenjina 1917', 'Moskva', 'user3@car2go.rs', 'Petar', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Nikolic', true, false);
+INSERT INTO agent.users(
+	id, address, city, email, name, password, phone_number, state, surname, enabled, deleted ) /*2*/
+	VALUES (nextval('users_id_seq'), 'Vladimira Iljica Lenjina 1917', 'Moskva', 'user4@car2go.rs', 'Mihajlo', '$2y$10$ahB446esJK/dBa0AoJlMq.F.i9s7D5/4089gX34SC4fEpvshC3T7S', '067/123',  'Srbija', 'Petrovic', true, false);
 
 /* LENJIN JE BOG */
 INSERT INTO agent.user_role(
@@ -214,6 +223,17 @@ INSERT INTO agent.user_role(
     user_id, role_id)
     VALUES (2, 3);
 
+INSERT INTO agent.user_role(
+    user_id, role_id)
+    VALUES (3, 3);
+
+INSERT INTO agent.user_role(
+    user_id, role_id)
+    VALUES (4, 3);
+
+INSERT INTO agent.user_role(
+    user_id, role_id)
+    VALUES (5, 3);
 
 INSERT INTO agent.brand(
     id, name, deleted)

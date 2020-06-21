@@ -13,6 +13,10 @@ zuul:
       path: /user/**
       stripPrefix: false
       serviceId: user
+    user3:
+      path: /role/**
+      stripPrefix: false
+      serviceId: user
 
     # ----- RENTAL -----
     rental:

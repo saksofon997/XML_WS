@@ -19,6 +19,7 @@ import user.model.Role;
 import user.model.User;
 import user.repository.RoleRepository;
 import user.repository.UserRepository;
+import user.service.RoleService;
 import user.service.UserService;
 
 import java.util.*;
@@ -56,6 +57,14 @@ public class UserServiceImpl implements UserService {
             return mapper.map(userDTO, User.class);
         } catch (Exception e) {
             throw new ConversionFailedError("Invalid data");
+        }
+    }
+
+    public Role convertToModelRole(RoleDTO roleDTO) throws ConversionFailedError {
+        try {
+            return mapper.map(roleDTO, Role.class);
+        } catch (Exception e) {
+            throw new ConversionFailedError("Internal server error");
         }
     }
 
@@ -151,17 +160,24 @@ public class UserServiceImpl implements UserService {
         user.setCity(userDTO.getCity());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setState(userDTO.getState());
+
+        Set<Role> newRoles = new HashSet<Role>();
+        for(RoleDTO rdto : userDTO.getRoles()) {
+            newRoles.add(convertToModelRole(rdto));
+        }
+
+        user.setRoles(newRoles);
         return convertToDTO(userRepository.save(user));
     }
 
     @Override
-    public UserDTO activateOrDeactivate(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError {
+    public UserDTO activateOrDeactivate(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<User> check = userRepository.findById(id);
-        if (!check.isPresent() || !id.equals(userDTO.getId())){
+        if (!check.isPresent()){
             throw new EntityNotFound("User not found, invalid data");
         }
         User user = check.get();
-        user.setEnabled(userDTO.isEnabled());
+        user.setEnabled(!user.isEnabled());
         return convertToDTO(userRepository.save(user));
     }
 
