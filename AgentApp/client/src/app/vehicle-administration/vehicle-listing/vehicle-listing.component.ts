@@ -5,6 +5,7 @@ import { Car } from 'src/app/models/Car.model';
 import { MatTable } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { VehicleDialogBoxComponent } from '../vehicle-dialog-box/vehicle-dialog-box.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-vehicle-listing',
@@ -16,10 +17,12 @@ export class VehicleListingComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
     private router: Router,
-    private vehicleService: VehicleService) { }
+    private vehicleService: VehicleService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
-    this.vehicleService.getByOwner(1).subscribe(
+    let userId = this.userService.getUser().id;
+    this.vehicleService.getByOwner(userId).subscribe(
       (data: any) => {
         this.dataSource = data;
       },
