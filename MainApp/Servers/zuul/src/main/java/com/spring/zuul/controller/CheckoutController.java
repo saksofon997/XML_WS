@@ -1,8 +1,10 @@
 package com.spring.zuul.controller;
 
+import com.spring.zuul.client.ChatClient;
 import com.spring.zuul.client.RentalClient;
 import com.spring.zuul.client.VehicleClient;
 import com.spring.zuul.dto.BundleDTO;
+import com.spring.zuul.dto.ConversationDTO;
 import com.spring.zuul.dto.RentalDTO;
 import com.spring.zuul.dto.VehicleOccupancyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +24,8 @@ public class CheckoutController {
     RentalClient rentalClient;
     @Autowired
     VehicleClient vehicleClient;
+    @Autowired
+    ChatClient chatClient;
 
     @PostMapping("/checkout")
     public ResponseEntity<?> rentalCheckout(@RequestHeader("x-auth") String auth, @RequestBody List<RentalDTO> rentals) {
@@ -31,10 +36,14 @@ public class CheckoutController {
                 return new ResponseEntity<>("One of the vehicles is not available at the chosen period", HttpStatus.BAD_REQUEST);
             } // maybe send which vehicle?
         }
+        ArrayList<Long> owners = new ArrayList<>();
         HashMap<String, BundleDTO> bundles = new HashMap<String, BundleDTO>();
         for (RentalDTO rentalDTO: rentals){
+            if (!owners.contains(rentalDTO.getOwnerId())) {
+                owners.add(rentalDTO.getOwnerId());
+            }
+
             BundleDTO bundle = rentalDTO.getBundle();
-            System.out.println(bundle);
             if (bundle == null){
                 continue;
             }
@@ -74,6 +83,13 @@ public class CheckoutController {
                 // Inform user
                 return new ResponseEntity<>("Cant create rental", HttpStatus.INTERNAL_SERVER_ERROR);
             }
+        }
+
+        for (Long owner: owners) {
+            ConversationDTO conversation = new ConversationDTO();
+            conversation.setUser1ID(rentals.get(0).getCustomerId());
+            conversation.setUser2ID(owner);
+            chatClient.createConversation(conversation, auth);
         }
 
         return new ResponseEntity<>( HttpStatus.OK);

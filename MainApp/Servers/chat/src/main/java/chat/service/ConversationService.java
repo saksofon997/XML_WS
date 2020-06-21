@@ -31,11 +31,11 @@ public class ConversationService {
     public ConversationDTO add(ConversationDTO conversationDTO) throws DuplicateEntity, ConversionFailedError {
         boolean check = conversationRepository.existsByUser1IDAndUser2ID(conversationDTO.getUser1ID(), conversationDTO.getUser2ID());
         if (check){
-            throw new DuplicateEntity("Conversation already exists");
+            return conversationDTO;
         }
         check = conversationRepository.existsByUser1IDAndUser2ID(conversationDTO.getUser2ID(), conversationDTO.getUser1ID());
         if (check){
-            throw new DuplicateEntity("Conversation already exists");
+            return conversationDTO;
         }
 
         Conversation conversation = convertConversationToModel(conversationDTO);
