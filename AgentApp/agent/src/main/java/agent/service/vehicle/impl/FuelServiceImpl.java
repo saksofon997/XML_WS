@@ -6,7 +6,9 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.model.vehicle.Fuel;
+import agent.model.vehicle.mappings.FuelMapping;
 import agent.repository.vehicle.FuelRepo;
+import agent.repository.vehicle.mappingsRepo.FuelMappingRepo;
 import agent.service.vehicle.FuelService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class FuelServiceImpl implements FuelService {
 
     @Autowired
     FuelRepo fuelRepo;
+
+    @Autowired
+    FuelMappingRepo fuelMappingRepo;
 
     @Autowired
     DozerBeanMapper mapper;
@@ -123,5 +128,23 @@ public class FuelServiceImpl implements FuelService {
         }else {
             fuelRepo.deleteById(id);
         }
+    }
+
+    @Override
+    public void addFuelViaMQ(saga.dto.FuelDTO fuelDTO){
+        Fuel fuel = fuelRepo.findByName(fuelDTO.getName());
+        if (fuel == null) {
+            fuel = mapper.map(fuelDTO, Fuel.class);
+            fuel.setId(null);
+            fuel = fuelRepo.save(fuel);
+        }
+        FuelMapping fm = fuelMappingRepo.findByFuelAgent(fuel);
+        if (fm == null) {
+            fm = new FuelMapping();
+            fm.setFuelAgent(fuel);
+            fm.setFuelBackId(fuel.getId());
+            fuelMappingRepo.save(fm);
+        }
+
     }
 }
