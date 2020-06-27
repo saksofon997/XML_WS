@@ -144,7 +144,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (cm == null) {
             cm = new CategoryMapping();
             cm.setCategoryAgent(category);
-            cm.setCategoryBackId(category.getId());
+            cm.setCategoryBackId(categoryDTO.getId());
             categoryMappingRepo.save(cm);
         }
     }

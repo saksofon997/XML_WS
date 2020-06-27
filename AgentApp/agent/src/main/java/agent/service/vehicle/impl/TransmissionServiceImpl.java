@@ -135,7 +135,7 @@ public class TransmissionServiceImpl implements TransmissionService {
         if (tm == null) {
             tm = new TransmissionMapping();
             tm.setTransmissionAgent(transmission);
-            tm.setTransmissionBackId(transmission.getId());
+            tm.setTransmissionBackId(transmissionDTO.getId());
             transmissionMappingRepo.save(tm);
         }
     }

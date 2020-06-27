@@ -175,7 +175,7 @@ public class BrandServiceImpl implements BrandService {
         if (bm == null) {
             bm = new BrandMapping();
             bm.setBrandAgent(brand);
-            bm.setBrandBackId(brand.getId());
+            bm.setBrandBackId(brandDTO.getId());
             categoryMappingRepo.save(bm);
         }
     }

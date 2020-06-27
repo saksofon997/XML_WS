@@ -142,7 +142,7 @@ public class FuelServiceImpl implements FuelService {
         if (fm == null) {
             fm = new FuelMapping();
             fm.setFuelAgent(fuel);
-            fm.setFuelBackId(fuel.getId());
+            fm.setFuelBackId(fuelDTO.getId());
             fuelMappingRepo.save(fm);
         }
 

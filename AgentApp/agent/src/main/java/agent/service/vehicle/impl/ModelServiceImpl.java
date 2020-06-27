@@ -201,7 +201,7 @@ public class ModelServiceImpl implements ModelService {
         if (mm == null) {
             mm = new ModelMapping();
             mm.setModelAgent(newModel);
-            mm.setModelBackId(newModel.getId());
+            mm.setModelBackId(modelDTO.getId());
             modelMappingRepo.save(mm);
         }
     }
