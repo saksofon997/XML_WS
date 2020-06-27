@@ -19,6 +19,7 @@ import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Brand;
 import vehicle.model.Model;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.repository.BrandRepo;
 import vehicle.service.BrandService;
 import vehicle.service.ModelService;
@@ -41,6 +42,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     ModelService modelService;
+
+    @Autowired
+    VehiclePartsSender vehiclePartsSender;
 
     @Inject
     private transient CommandGateway commandGateway;
@@ -81,6 +85,9 @@ public class BrandServiceImpl implements BrandService {
 
             String brandAggregateId = UUID.randomUUID().toString();
             System.out.println(savedBrand.getId());
+            // Send via MQ
+            vehiclePartsSender.send(convertToDTO(savedBrand));
+            // Send via SAGA
             commandGateway.send(new MainBrandCommand(savedBrand.getId(),brandDTO, TypeOfCommand.CREATE));
             return convertToDTO(savedBrand);
         } else {

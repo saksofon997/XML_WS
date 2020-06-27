@@ -1,7 +1,11 @@
 package vehicle.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +23,7 @@ import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Brand;
 import vehicle.model.Model;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.repository.BrandRepo;
 import vehicle.repository.ModelRepo;
 import vehicle.service.ModelService;
@@ -40,6 +45,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Autowired
+    VehiclePartsSender vehiclePartsSender;
 
     @Inject
     private transient CommandGateway commandGateway;
@@ -132,6 +140,22 @@ public class ModelServiceImpl implements ModelService {
         newModel.setBrand(brand.get());
         Model savedModel = modelRepo.save(newModel);
 
+        // Send via MQ
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("brandID", brandId);
+        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        messageProperties.setHeader("__TypeId__", "saga.dto.ModelDTO");
+        byte[] ModelDTOBytes = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ModelDTOBytes = objectMapper.writeValueAsBytes(convertToDTO(savedModel));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Message message = new Message(ModelDTOBytes, messageProperties);
+        vehiclePartsSender.send(message);
+
+        // Send via SAGA
         commandGateway.send(new MainModelCommand(brandId, newModel.getId(), convertToDTO(savedModel), TypeOfCommand.CREATE));
 
         return convertToDTO(savedModel);

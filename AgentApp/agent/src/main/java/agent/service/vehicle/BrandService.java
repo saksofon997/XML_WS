@@ -30,4 +30,6 @@ public interface BrandService {
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
     BrandDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
+
+    void addBrandViaMQ(saga.dto.BrandDTO brandDTO);
 }

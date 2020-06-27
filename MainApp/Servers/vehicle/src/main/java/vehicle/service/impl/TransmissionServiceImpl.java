@@ -18,6 +18,7 @@ import vehicle.model.Fuel;
 import vehicle.model.Model;
 import vehicle.model.Review;
 import vehicle.model.Transmission;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.repository.TransmissionRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.TransmissionService;
@@ -36,6 +37,9 @@ public class TransmissionServiceImpl implements TransmissionService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Autowired
+    VehiclePartsSender vehiclePartsSender;
 
     @Inject
     private transient CommandGateway commandGateway;
@@ -97,6 +101,9 @@ public class TransmissionServiceImpl implements TransmissionService {
 
         if (!transmissionRepo.existsByName(transmissionDTO.getName())) {
             Transmission savedTransmission = transmissionRepo.save(newTransmission);
+            // Send via MQ
+            vehiclePartsSender.send(convertToDTO(savedTransmission));
+            // Send via SAGA
             commandGateway.send(new MainTransmissionCommand(savedTransmission.getId(), transmissionDTO, TypeOfCommand.CREATE));
 
         } else {

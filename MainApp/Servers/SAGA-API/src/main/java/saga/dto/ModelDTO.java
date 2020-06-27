@@ -1,6 +1,8 @@
 package saga.dto;
 
-public class ModelDTO {
+import java.io.Serializable;
+
+public class ModelDTO implements Serializable {
 
     private Long id;
     private String name;

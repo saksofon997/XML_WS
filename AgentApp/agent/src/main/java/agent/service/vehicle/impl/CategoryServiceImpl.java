@@ -6,7 +6,11 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.model.vehicle.Category;
+import agent.model.vehicle.Transmission;
+import agent.model.vehicle.mappings.CategoryMapping;
+import agent.model.vehicle.mappings.TransmissionMapping;
 import agent.repository.vehicle.CategoryRepo;
+import agent.repository.vehicle.mappingsRepo.CategoryMappingRepo;
 import agent.service.vehicle.CategoryService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryRepo categoryRepo;
+
+    @Autowired
+    CategoryMappingRepo categoryMappingRepo;
 
     @Autowired
     DozerBeanMapper mapper;
@@ -122,6 +129,23 @@ public class CategoryServiceImpl implements CategoryService {
             throw new EntityNotFound("No category with ID: " + id);
         } else {
             categoryRepo.deleteById(id);
+        }
+    }
+
+    @Override
+    public void addCategoryViaMQ(saga.dto.CategoryDTO categoryDTO){
+        Category category = categoryRepo.findByName(categoryDTO.getName());
+        if (category == null) {
+            category = mapper.map(categoryDTO, Category.class);
+            category.setId(null);
+            category = categoryRepo.save(category);
+        }
+        CategoryMapping cm = categoryMappingRepo.findByCategoryAgent(category);
+        if (cm == null) {
+            cm = new CategoryMapping();
+            cm.setCategoryAgent(category);
+            cm.setCategoryBackId(categoryDTO.getId());
+            categoryMappingRepo.save(cm);
         }
     }
 }

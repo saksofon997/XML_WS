@@ -11,6 +11,7 @@ import vehicle.dto.FuelPageDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.service.FuelService;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class FuelController {
 
     @Autowired
     FuelService fuelService;
+
+    @Autowired
+    VehiclePartsSender vehiclePartsSender;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAll(
@@ -54,7 +58,7 @@ public class FuelController {
     public ResponseEntity<FuelDTO> getOne(@PathVariable Long id) throws ConversionFailedError, EntityNotFound {
 
         FuelDTO fuelDTO = fuelService.getOne(id);
-
+        vehiclePartsSender.send(fuelDTO);
         return new ResponseEntity<>(fuelDTO, HttpStatus.ACCEPTED);
     }
 

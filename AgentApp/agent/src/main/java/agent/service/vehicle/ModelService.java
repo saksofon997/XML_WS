@@ -29,4 +29,6 @@ public interface ModelService {
     ModelDTO convertToDTO(Model model) throws ConversionFailedError;
 
     ModelDTO deletePermanent(Long id) throws EntityNotFound, ConversionFailedError;
+
+    void addModelViaMQ(saga.dto.ModelDTO modelDTO, Long brandId);
 }

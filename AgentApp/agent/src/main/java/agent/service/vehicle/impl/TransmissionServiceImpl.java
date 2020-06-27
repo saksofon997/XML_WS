@@ -4,8 +4,12 @@ import agent.dto.shared.TransmissionDTO;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
+import agent.model.vehicle.Fuel;
 import agent.model.vehicle.Transmission;
+import agent.model.vehicle.mappings.FuelMapping;
+import agent.model.vehicle.mappings.TransmissionMapping;
 import agent.repository.vehicle.TransmissionRepo;
+import agent.repository.vehicle.mappingsRepo.TransmissionMappingRepo;
 import agent.service.vehicle.TransmissionService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,9 @@ public class TransmissionServiceImpl implements TransmissionService {
 
     @Autowired
     TransmissionRepo transmissionRepo;
+
+    @Autowired
+    TransmissionMappingRepo transmissionMappingRepo;
 
     @Autowired
     DozerBeanMapper mapper;
@@ -113,6 +120,23 @@ public class TransmissionServiceImpl implements TransmissionService {
         }else {
             deleted.get().setDeleted(true);
             transmissionRepo.save(deleted.get());
+        }
+    }
+
+    @Override
+    public void addTransmissionViaMQ(saga.dto.TransmissionDTO transmissionDTO){
+        Transmission transmission = transmissionRepo.findByName(transmissionDTO.getName());
+        if (transmission == null) {
+            transmission = mapper.map(transmissionDTO, Transmission.class);
+            transmission.setId(null);
+            transmission = transmissionRepo.save(transmission);
+        }
+        TransmissionMapping tm = transmissionMappingRepo.findByTransmissionAgent(transmission);
+        if (tm == null) {
+            tm = new TransmissionMapping();
+            tm.setTransmissionAgent(transmission);
+            tm.setTransmissionBackId(transmissionDTO.getId());
+            transmissionMappingRepo.save(tm);
         }
     }
 }

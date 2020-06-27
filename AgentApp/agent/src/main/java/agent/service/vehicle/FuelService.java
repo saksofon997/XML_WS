@@ -21,4 +21,6 @@ public interface FuelService {
     FuelDTO update(Long id, FuelDTO fuelDTO) throws EntityNotFound;
 
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
+
+    void addFuelViaMQ(saga.dto.FuelDTO fuelDTO);
 }

@@ -7,8 +7,12 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.model.vehicle.Brand;
+import agent.model.vehicle.Category;
 import agent.model.vehicle.Model;
+import agent.model.vehicle.mappings.BrandMapping;
+import agent.model.vehicle.mappings.CategoryMapping;
 import agent.repository.vehicle.BrandRepo;
+import agent.repository.vehicle.mappingsRepo.BrandMappingRepo;
 import agent.service.vehicle.BrandService;
 import agent.service.vehicle.ModelService;
 import org.dozer.DozerBeanMapper;
@@ -29,6 +33,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     BrandRepo brandRepo;
+
+    @Autowired
+    BrandMappingRepo categoryMappingRepo;
 
     @Autowired
     DozerBeanMapper mapper;
@@ -154,5 +161,22 @@ public class BrandServiceImpl implements BrandService {
             brandRepo.deleteById(id);
         }
         return convertToDTO(deleted.get());
+    }
+
+    @Override
+    public void addBrandViaMQ(saga.dto.BrandDTO brandDTO){
+        Brand brand = brandRepo.findByName(brandDTO.getName());
+        if (brand == null) {
+            brand = mapper.map(brandDTO, Brand.class);
+            brand.setId(null);
+            brand = brandRepo.save(brand);
+        }
+        BrandMapping bm = categoryMappingRepo.findByBrandAgent(brand);
+        if (bm == null) {
+            bm = new BrandMapping();
+            bm.setBrandAgent(brand);
+            bm.setBrandBackId(brandDTO.getId());
+            categoryMappingRepo.save(bm);
+        }
     }
 }
