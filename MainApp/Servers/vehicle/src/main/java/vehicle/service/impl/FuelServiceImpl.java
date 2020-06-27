@@ -17,6 +17,7 @@ import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Fuel;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.repository.FuelRepo;
 import vehicle.service.FuelService;
 import vehicle.soap.arrays.FuelArray;
@@ -34,6 +35,9 @@ public class FuelServiceImpl implements FuelService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Autowired
+    VehiclePartsSender vehiclePartsSender;
 
     @Inject
     private transient CommandGateway commandGateway;
@@ -99,6 +103,9 @@ public class FuelServiceImpl implements FuelService {
 
         if (!fuelRepo.existsByName(fuelDTO.getName())) {
             Fuel savedFuel = fuelRepo.save(newFuel);
+            // Send via MQ
+            vehiclePartsSender.send(convertToDTO(savedFuel));
+            // Send via SAGA
             commandGateway.send(new MainFuelCommand(savedFuel.getId(), fuelDTO, TypeOfCommand.CREATE));
             return convertToDTO(savedFuel);
         } else {

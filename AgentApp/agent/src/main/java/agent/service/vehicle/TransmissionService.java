@@ -19,7 +19,10 @@ public interface TransmissionService {
 
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
 
-    public TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError;
+    TransmissionDTO convertToDTO(Transmission transmission) throws ConversionFailedError;
 
-    public Transmission convertToModel(TransmissionDTO transmissionDTO) throws ConversionFailedError;
+    Transmission convertToModel(TransmissionDTO transmissionDTO) throws ConversionFailedError;
+
+    void addTransmissionViaMQ(saga.dto.TransmissionDTO transmissionDTO);
+
 }

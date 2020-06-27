@@ -20,4 +20,6 @@ public interface CategoryService {
     CategoryDTO update(Long id, CategoryDTO categoryDTO) throws EntityNotFound, ConversionFailedError;
 
     void delete(Long id) throws EntityNotFound, ConversionFailedError;
+
+    void addCategoryViaMQ(saga.dto.CategoryDTO categoryDTO);
 }

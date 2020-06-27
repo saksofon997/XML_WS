@@ -19,6 +19,7 @@ import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Brand;
 import vehicle.model.Category;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.repository.CategoryRepo;
 import vehicle.service.CategoryService;
 import vehicle.soap.arrays.CategoryArray;
@@ -36,6 +37,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     DozerBeanMapper mapper;
+
+    @Autowired
+    VehiclePartsSender vehiclePartsSender;
 
     @Inject
     private transient CommandGateway commandGateway;
@@ -99,6 +103,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (!categoryRepo.existsByName(categoryDTO.getName())) {
             Category savedCategory = categoryRepo.save(newCat);
+            // Send via MQ
+            vehiclePartsSender.send(convertToDTO(savedCategory));
+            // Send via SAGA
             commandGateway.send(new MainCategoryCommand(savedCategory.getId(), categoryDTO, TypeOfCommand.CREATE));
             return convertToDTO(savedCategory);
         } else {

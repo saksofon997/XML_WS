@@ -7,8 +7,11 @@ import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.model.vehicle.Brand;
 import agent.model.vehicle.Model;
+import agent.model.vehicle.mappings.BrandMapping;
+import agent.model.vehicle.mappings.ModelMapping;
 import agent.repository.vehicle.BrandRepo;
 import agent.repository.vehicle.ModelRepo;
+import agent.repository.vehicle.mappingsRepo.ModelMappingRepo;
 import agent.service.vehicle.ModelService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Autowired
     BrandRepo brandRepo;
+
+    @Autowired
+    ModelMappingRepo modelMappingRepo;
 
     @Autowired
     DozerBeanMapper mapper;
@@ -166,5 +172,37 @@ public class ModelServiceImpl implements ModelService {
             modelRepo.deleteById(id);
         }
         return convertToDTO(deleted.get());
+    }
+
+    @Override
+    public void addModelViaMQ(saga.dto.ModelDTO modelDTO, Long brandId){
+
+
+        Optional<Brand> brand = brandRepo.findById(brandId);
+
+        if (!brand.isPresent()) {
+            System.out.println("No item with ID: " + brandId);
+            return;
+        }
+
+        if (brand.get().getModels().stream().anyMatch(m -> m.getName().equals(modelDTO.getName()))) {
+            System.out.println("Item with name: "+modelDTO.getName()+" already exists");
+            return;
+        }
+
+        Model newModel = modelRepo.findByName(modelDTO.getName());
+        if (newModel == null) {
+            newModel = mapper.map(modelDTO, Model.class);
+            newModel.setBrand(brand.get());
+            newModel.setId(null);
+            newModel = modelRepo.save(newModel);
+        }
+        ModelMapping mm = modelMappingRepo.findByModelAgent(newModel);
+        if (mm == null) {
+            mm = new ModelMapping();
+            mm.setModelAgent(newModel);
+            mm.setModelBackId(newModel.getId());
+            modelMappingRepo.save(mm);
+        }
     }
 }
