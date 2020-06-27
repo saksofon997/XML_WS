@@ -18,7 +18,7 @@ public class ClientSoapConfig {
         @Bean
         public VehicleClient vehicleClient(Jaxb2Marshaller marshaller) {
             VehicleClient client = new VehicleClient();
-            client.setDefaultUri("http://localhost:8084/vehicle/ws");
+            client.setDefaultUri("http://localhost:8087/vehicle/ws");
             client.setMarshaller(marshaller);
             client.setUnmarshaller(marshaller);
             return client;
