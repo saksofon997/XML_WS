@@ -102,6 +102,7 @@ public class RentalServiceImpl implements RentalService {
             VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
             occupied.setStartTime(saved.getStartTime());
             occupied.setEndTime(saved.getEndTime());
+            occupied.setType("RENTAL");
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
             // TODO: remove other rental requests for same vehicle in this period
             commandGateway.send(new RentalReservedCommand(saved.getId(), occupied, saved.getVehicleId()));

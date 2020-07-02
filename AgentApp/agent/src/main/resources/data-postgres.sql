@@ -354,7 +354,7 @@ INSERT INTO agent.vehicle( -- BMW X5 1
     VALUES (nextval('vehicle_id_seq'), 1, 1, 1, 5, 2, 5, 1, 100000, true, 1, 4, 8, 45.2553823, 19.8317609, false, 1, -1); /*1*/
 INSERT INTO agent.vehicle( -- Mercedes CLA 220 2
     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
-    VALUES (nextval('vehicle_id_seq'), 2, 4, 3, 4, 2, 4, 0, 130000, false, 2, 3, 7, 44.766226, 20.443431, false, 2, 200); /*2*/
+    VALUES (nextval('vehicle_id_seq'), 2, 4, 3, 4, 2, 4, 0, 130000, false, 2, 3, 7, 44.766226, 20.443431, false, 1, 200); /*2*/
 INSERT INTO agent.vehicle( -- BMW Z8 3
     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
     VALUES (nextval('vehicle_id_seq'), 1, 3, 3, 1, 2, 2, 0, 90000, false, 3, 5, 3, 44.766226, 20.443431, false, 1, 700); /*3*/

@@ -8,6 +8,7 @@ import agent.model.rental.RentalReport;
 import agent.repository.rental.RentalReportRepository;
 import agent.repository.rental.RentalRepository;
 import agent.service.rental.RentalReportService;
+import agent.service.vehicle.VehicleService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class RentalReportServiceImpl implements RentalReportService {
     RentalReportRepository rentalReportRepository;
     @Autowired
     RentalRepository rentalRepository;
+    @Autowired
+    VehicleService vehicleService;
 
     @Override
     public RentalReportDTO convertToDTO(RentalReport rentalReport) throws ConversionFailedError {
@@ -53,7 +56,7 @@ public class RentalReportServiceImpl implements RentalReportService {
         RentalReport saved = rentalReportRepository.save(newReport);
         rental.get().setReport(saved);
         rentalRepository.save(rental.get());
-
+        vehicleService.updateMileage(rental.get().getVehicleId(), rentalReportDTO.getMileage());
         return convertToDTO(saved);
     }
 

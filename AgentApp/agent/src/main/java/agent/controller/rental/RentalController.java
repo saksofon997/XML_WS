@@ -45,7 +45,7 @@ public class RentalController {
     @PreAuthorize("hasAuthority('CHANGE_RENTAL_PERMISSION')")
     public ResponseEntity<RentalDTO> update(@PathVariable Long id,
                                             @RequestBody RentalDTO rentalDTO,
-                                            @RequestAttribute("userId") Long ownerId) throws EntityNotFound, ConversionFailedError, ConflictException {
+                                            @RequestAttribute("userId") Long ownerId) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity {
 
         if (!Objects.equals(rentalDTO.getOwnerId(), ownerId)) {
             throw new EntityNotFound("Invalid owner request");

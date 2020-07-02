@@ -5,6 +5,7 @@ import agent.dto.rental.RentalPageDTO;
 import agent.dto.shared.VehicleOccupancyDTO;
 import agent.exceptions.ConflictException;
 import agent.exceptions.ConversionFailedError;
+import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.model.rental.Bundle;
 import agent.model.rental.Rental;
@@ -12,6 +13,7 @@ import agent.model.rental.RentalStatus;
 import agent.repository.rental.BundleRepository;
 import agent.repository.rental.RentalRepository;
 import agent.service.rental.RentalService;
+import agent.service.vehicle.VehicleOccupancyService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,8 @@ public class RentalServiceImpl implements RentalService {
     RentalRepository rentalRepository;
     @Autowired
     BundleRepository bundleRepository;
+    @Autowired
+    VehicleOccupancyService vehicleOccupancyService;
     @Autowired
     DozerBeanMapper mapper;
 
@@ -81,7 +85,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException {
+    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity {
         Optional<Rental> rental = rentalRepository.findById(id);
 
         if (!rental.isPresent())
@@ -100,9 +104,9 @@ public class RentalServiceImpl implements RentalService {
             VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
             occupied.setStartTime(saved.getStartTime());
             occupied.setEndTime(saved.getEndTime());
+            occupied.setType("RENTAL");
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
-            // TODO: remove other rental requests for same vehicle in this period
-            //commandGateway.send(new MainBrandCommand(savedBrand.getId(), brandDTO, TypeOfCommand.UPDATE));
+            vehicleOccupancyService.add(saved.getVehicleId(), occupied);
         }
 
         return convertToDTO(saved);

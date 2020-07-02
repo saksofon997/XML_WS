@@ -35,4 +35,5 @@ public interface VehicleService {
 
     Resource getImage(String path, HttpServletRequest request) throws IOException;
 
+    void updateMileage(Long vehicleId, double mileage) throws EntityNotFound;
 }

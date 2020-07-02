@@ -18,6 +18,8 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import saga.commands.MainVehicleCommand;
+import saga.commands.TypeOfCommand;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -184,6 +186,19 @@ public class VehicleServiceImpl implements VehicleService {
         }
         return vehicleToUpdate;
     }
+
+    @Override
+    public void updateMileage(Long vehicleId, double mileage) throws EntityNotFound {
+        Optional<Vehicle> change = vehicleRepo.findById(vehicleId);
+
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + vehicleId);
+        }
+        change.get().setMileage(change.get().getMileage() + (long)mileage);
+
+        vehicleRepo.save(change.get());
+    }
+
     @Override
     public VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Vehicle> vehicle = vehicleRepo.findById(id);
