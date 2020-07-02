@@ -1,5 +1,6 @@
 package rental.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,8 +19,10 @@ import rental.model.RentalStatus;
 import rental.repository.BundleRepository;
 import rental.repository.RentalRepository;
 import rental.service.RentalService;
+import saga.commands.rentalReservedCommands.RentalReservedCommand;
 import saga.dto.VehicleOccupancyDTO;
 
+import javax.inject.Inject;
 import java.util.*;
 
 @Service
@@ -31,6 +34,8 @@ public class RentalServiceImpl implements RentalService {
     BundleRepository bundleRepository;
     @Autowired
     DozerBeanMapper mapper;
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public RentalDTO convertToDTO(Rental rental) throws ConversionFailedError {
@@ -99,7 +104,7 @@ public class RentalServiceImpl implements RentalService {
             occupied.setEndTime(saved.getEndTime());
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
             // TODO: remove other rental requests for same vehicle in this period
-            //commandGateway.send(new MainBrandCommand(savedBrand.getId(), brandDTO, TypeOfCommand.UPDATE));
+            commandGateway.send(new RentalReservedCommand(saved.getId(), occupied, saved.getVehicleId()));
         }
 
         return convertToDTO(saved);

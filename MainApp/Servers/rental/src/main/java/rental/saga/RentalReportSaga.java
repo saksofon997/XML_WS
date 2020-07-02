@@ -21,7 +21,7 @@ public class RentalReportSaga {
     private transient CommandGateway commandGateway;
 
     @StartSaga
-    @SagaEventHandler(associationProperty = "rentalId")
+    @SagaEventHandler(associationProperty = "rentalReportId")
     public void handle(NewRentalReportEvent newRentalReportEvent) {
         System.out.println("Saga invoked for rental reserved.");
 
@@ -40,7 +40,7 @@ public class RentalReportSaga {
         SagaLifecycle.end();
     }
 
-    @SagaEventHandler(associationProperty = "rentalReservedAggregateId")
+    @SagaEventHandler(associationProperty = "newRentalReportAggregateId")
     public void handle(RentalReportMileageUpdateFailedEvent rentalReportMileageUpdateFailedEvent) {
         System.out.println("Saga declined, starting compensation transaction!");
 
@@ -48,7 +48,7 @@ public class RentalReportSaga {
                 rentalReportMileageUpdateFailedEvent.getReason()));
     }
 
-    @SagaEventHandler(associationProperty = "rentalId")
+    @SagaEventHandler(associationProperty = "rentalReportId")
     public void handle(NewRentalReportRollbackEvent newRentalReportRollbackEvent) {
         System.out.println("Saga finishing!");
         SagaLifecycle.end();
