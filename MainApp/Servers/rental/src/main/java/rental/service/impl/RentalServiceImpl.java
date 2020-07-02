@@ -179,4 +179,15 @@ public class RentalServiceImpl implements RentalService {
 
         return pageDTO;
     }
+
+    @Override
+    public void sagaRollback(Long rentalId) throws EntityNotFound {
+        Optional<Rental> rental = rentalRepository.findById(rentalId);
+        if(!rental.isPresent()) {
+            throw new EntityNotFound("Rental not found");
+        }
+
+        rental.get().setStatus(RentalStatus.PENDING);
+        rentalRepository.save(rental.get());
+    }
 }

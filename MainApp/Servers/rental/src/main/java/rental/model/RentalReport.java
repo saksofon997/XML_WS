@@ -1,11 +1,13 @@
 package rental.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Where(clause="deleted=false")
 public class RentalReport {
 
     @Id
@@ -22,4 +24,7 @@ public class RentalReport {
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 }
