@@ -17,12 +17,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
- * <p>Java class for errorFault complex type.
+ * <p>Java class for errorFault2 complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="errorFault"&gt;
+ * &lt;complexType name="errorFault2"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
@@ -37,11 +37,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "errorFault", propOrder = {
+@XmlType(name = "errorFault2", namespace = "http://www.vehicle.com/rental", propOrder = {
     "error",
     "time"
 })
-public class ErrorFault {
+public class ErrorFault2 {
 
     protected String error;
     @XmlElement(required = true)

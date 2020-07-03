@@ -5,6 +5,7 @@ package agent;
 import agent.model.vehicle.mappings.*;
 import agent.repository.vehicle.*;
 import agent.repository.vehicle.mappingsRepo.*;
+import agent.soap.RentalClient;
 import agent.soap.VehicleClient;
 import agent.soap.gen.*;
 import org.dozer.DozerBeanMapper;
@@ -30,6 +31,8 @@ import java.util.List;
 public class AgentApplication {
 	@Autowired
 	VehicleClient vehicleClient;
+	@Autowired
+	RentalClient rentalClient;
 	@Autowired
 	FuelRepo fuelRepo;
 	@Autowired
@@ -90,6 +93,11 @@ public class AgentApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void  updateDatabase(){
+		agent.soap.gen.BundleDTO bundleDTO = new BundleDTO();
+		bundleDTO.setId(1L);
+		bundleDTO.setName("NOVI BUNDLE");
+
+		rentalClient.addBundle(bundleDTO);
 		List<Fuel> fuels = vehicleClient.getFuels().getValue().getItem();
 		for (Fuel fuel : fuels) {
 			agent.model.vehicle.Fuel f = fuelRepo.findByName(fuel.getName());

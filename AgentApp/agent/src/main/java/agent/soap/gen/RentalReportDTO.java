@@ -8,27 +8,25 @@
 
 package agent.soap.gen;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for brandDTO complex type.
+ * <p>Java class for rentalReportDTO complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="brandDTO"&gt;
+ * &lt;complexType name="rentalReportDTO"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
- *         &lt;element name="models" type="{http://www.vehicle.com/vehicle}modelDTO" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="mileage" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
+ *         &lt;element name="rentalId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,17 +36,42 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "brandDTO", propOrder = {
+@XmlType(name = "rentalReportDTO", namespace = "http://www.vehicle.com/rental", propOrder = {
+    "description",
     "id",
-    "models",
-    "name"
+    "mileage",
+    "rentalId"
 })
-public class BrandDTO {
+public class RentalReportDTO {
 
+    protected String description;
     protected Long id;
-    @XmlElement(nillable = true)
-    protected List<ModelDTO> models;
-    protected String name;
+    protected double mileage;
+    protected Long rentalId;
+
+    /**
+     * Gets the value of the description property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the value of the description property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDescription(String value) {
+        this.description = value;
+    }
 
     /**
      * Gets the value of the id property.
@@ -75,56 +98,43 @@ public class BrandDTO {
     }
 
     /**
-     * Gets the value of the models property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the models property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getModels().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ModelDTO }
-     * 
+     * Gets the value of the mileage property.
      * 
      */
-    public List<ModelDTO> getModels() {
-        if (models == null) {
-            models = new ArrayList<ModelDTO>();
-        }
-        return this.models;
+    public double getMileage() {
+        return mileage;
     }
 
     /**
-     * Gets the value of the name property.
+     * Sets the value of the mileage property.
+     * 
+     */
+    public void setMileage(double value) {
+        this.mileage = value;
+    }
+
+    /**
+     * Gets the value of the rentalId property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Long }
      *     
      */
-    public String getName() {
-        return name;
+    public Long getRentalId() {
+        return rentalId;
     }
 
     /**
-     * Sets the value of the name property.
+     * Sets the value of the rentalId property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Long }
      *     
      */
-    public void setName(String value) {
-        this.name = value;
+    public void setRentalId(Long value) {
+        this.rentalId = value;
     }
 
 }

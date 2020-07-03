@@ -19,7 +19,7 @@ import rental.exceptions.ConversionFailedError;
 import rental.exceptions.EntityNotFound;
 import rental.model.Bundle;
 import rental.model.Rental;
-import rental.model.RentalStatus;
+import rental.dto.RentalStatus;
 import rental.mq.RentalMQSender;
 import rental.repository.BundleRepository;
 import rental.repository.RentalRepository;

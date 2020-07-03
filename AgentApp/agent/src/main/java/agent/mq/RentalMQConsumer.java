@@ -28,6 +28,7 @@ public class RentalMQConsumer {
     DozerBeanMapper mapper;
     @RabbitListener(queues = {"${queue.rental.name}"})
     public void receive(@Payload Message message){
+
         String className = message.getMessageProperties().getHeader("__TypeId__");
         System.out.println("Pristigla poruka: " + message);
         System.out.println("Class: " + message.getMessageProperties().getHeader("__TypeId__"));
@@ -65,6 +66,7 @@ public class RentalMQConsumer {
                 rentalService.rejectRentalsFromTo(message.getMessageProperties().getHeader("vehicleID"),
                         mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class), message.getMessageProperties().getHeader("excludeID"));
             }
+
         }
     }
 

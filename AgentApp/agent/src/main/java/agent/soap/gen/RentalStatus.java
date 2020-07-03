@@ -13,32 +13,36 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for reviewStatus.
+ * <p>Java class for rentalStatus.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="reviewStatus"&gt;
+ * &lt;simpleType name="rentalStatus"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
+ *     &lt;enumeration value="CANCELED"/&gt;
  *     &lt;enumeration value="PENDING"/&gt;
- *     &lt;enumeration value="PUBLISHED"/&gt;
+ *     &lt;enumeration value="RESERVED"/&gt;
+ *     &lt;enumeration value="FINISHED"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
  * 
  */
-@XmlType(name = "reviewStatus")
+@XmlType(name = "rentalStatus", namespace = "http://www.vehicle.com/rental")
 @XmlEnum
-public enum ReviewStatus {
+public enum RentalStatus {
 
+    CANCELED,
     PENDING,
-    PUBLISHED;
+    RESERVED,
+    FINISHED;
 
     public String value() {
         return name();
     }
 
-    public static ReviewStatus fromValue(String v) {
+    public static RentalStatus fromValue(String v) {
         return valueOf(v);
     }
 

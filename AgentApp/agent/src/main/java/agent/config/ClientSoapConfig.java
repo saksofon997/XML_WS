@@ -1,5 +1,6 @@
 package agent.config;
 
+import agent.soap.RentalClient;
 import agent.soap.VehicleClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,14 @@ public class ClientSoapConfig {
         public VehicleClient vehicleClient(Jaxb2Marshaller marshaller) {
             VehicleClient client = new VehicleClient();
             client.setDefaultUri("http://localhost:8087/vehicle/ws");
+            client.setMarshaller(marshaller);
+            client.setUnmarshaller(marshaller);
+            return client;
+        }
+        @Bean
+        public RentalClient rentalClient(Jaxb2Marshaller marshaller) {
+            RentalClient client = new RentalClient();
+            client.setDefaultUri("http://localhost:8082/rental/ws");
             client.setMarshaller(marshaller);
             client.setUnmarshaller(marshaller);
             return client;

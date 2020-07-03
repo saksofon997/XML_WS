@@ -2,6 +2,7 @@ package rental.model;
 
 import lombok.Data;
 import org.hibernate.annotations.Where;
+import rental.dto.RentalStatus;
 
 import javax.persistence.*;
 

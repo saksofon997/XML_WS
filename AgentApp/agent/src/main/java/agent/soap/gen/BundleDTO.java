@@ -17,18 +17,18 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for brandDTO complex type.
+ * <p>Java class for bundleDTO complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="brandDTO"&gt;
+ * &lt;complexType name="bundleDTO"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
- *         &lt;element name="models" type="{http://www.vehicle.com/vehicle}modelDTO" maxOccurs="unbounded" minOccurs="0"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="rentals" type="{http://www.vehicle.com/rental}rentalDTO" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,17 +38,17 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "brandDTO", propOrder = {
+@XmlType(name = "bundleDTO", namespace = "http://www.vehicle.com/rental", propOrder = {
     "id",
-    "models",
-    "name"
+    "name",
+    "rentals"
 })
-public class BrandDTO {
+public class BundleDTO {
 
     protected Long id;
-    @XmlElement(nillable = true)
-    protected List<ModelDTO> models;
     protected String name;
+    @XmlElement(nillable = true)
+    protected List<RentalDTO> rentals;
 
     /**
      * Gets the value of the id property.
@@ -75,35 +75,6 @@ public class BrandDTO {
     }
 
     /**
-     * Gets the value of the models property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the models property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getModels().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ModelDTO }
-     * 
-     * 
-     */
-    public List<ModelDTO> getModels() {
-        if (models == null) {
-            models = new ArrayList<ModelDTO>();
-        }
-        return this.models;
-    }
-
-    /**
      * Gets the value of the name property.
      * 
      * @return
@@ -125,6 +96,35 @@ public class BrandDTO {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Gets the value of the rentals property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the rentals property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getRentals().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link RentalDTO }
+     * 
+     * 
+     */
+    public List<RentalDTO> getRentals() {
+        if (rentals == null) {
+            rentals = new ArrayList<RentalDTO>();
+        }
+        return this.rentals;
     }
 
 }

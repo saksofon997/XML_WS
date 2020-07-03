@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://www.vehicle.com/rental" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.vehicle.com/rental" targetNamespace="http://www.vehicle.com/rental">
+    <wsdl:types>
+        <xs:schema xmlns:re="http://www.vehicle.com/rental" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.vehicle.com/rental" version="1.0">
+            <xs:element name="createNewBundleRequest" type="re:bundleDTO"/>
+            <xs:element name="createNewBundleResponse" type="re:bundleDTO"/>
+            <xs:element name="createNewRentalRequest" type="re:rentalDTO"/>
+            <xs:element name="createNewRentalResponse" type="re:rentalDTO"/>
+            <xs:element name="rentalcommonFault" type="re:errorFault2"/>
+            <xs:complexType name="bundleDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="rentals" nillable="true" type="re:rentalDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="rentalDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="bundle" type="re:bundleDTO"/>
+                    <xs:element minOccurs="0" name="customerId" type="xs:long"/>
+                    <xs:element name="endTime" type="xs:long"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="ownerId" type="xs:long"/>
+                    <xs:element minOccurs="0" name="report" type="re:rentalReportDTO"/>
+                    <xs:element name="startTime" type="xs:long"/>
+                    <xs:element minOccurs="0" name="status" type="re:rentalStatus"/>
+                    <xs:element minOccurs="0" name="vehicleId" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="rentalReportDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element name="mileage" type="xs:double"/>
+                    <xs:element minOccurs="0" name="rentalId" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="rentalPageDTO">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="content" nillable="true" type="re:rentalDTO"/>
+                    <xs:element name="pageNo" type="xs:int"/>
+                    <xs:element name="totalPages" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="errorFault2">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" type="xs:string"/>
+                    <xs:element name="time" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="rentalStatus">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="CANCELED"/>
+                    <xs:enumeration value="PENDING"/>
+                    <xs:enumeration value="RESERVED"/>
+                    <xs:enumeration value="FINISHED"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="createNewRentalResponse">
+        <wsdl:part element="tns:createNewRentalResponse" name="createNewRentalResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createNewRentalRequest">
+        <wsdl:part element="tns:createNewRentalRequest" name="createNewRentalRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createNewBundleResponse">
+        <wsdl:part element="tns:createNewBundleResponse" name="createNewBundleResponse">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createNewBundleRequest">
+        <wsdl:part element="tns:createNewBundleRequest" name="createNewBundleRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="rentalcommonFault">
+        <wsdl:part element="tns:rentalcommonFault" name="rentalcommonFault">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="Rental">
+        <wsdl:operation name="createNewRental">
+            <wsdl:input message="tns:createNewRentalRequest" name="createNewRentalRequest">
+            </wsdl:input>
+            <wsdl:output message="tns:createNewRentalResponse" name="createNewRentalResponse">
+            </wsdl:output>
+            <wsdl:fault message="tns:rentalcommonFault" name="rentalcommonFault">
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="createNewBundle">
+            <wsdl:input message="tns:createNewBundleRequest" name="createNewBundleRequest">
+            </wsdl:input>
+            <wsdl:output message="tns:createNewBundleResponse" name="createNewBundleResponse">
+            </wsdl:output>
+            <wsdl:fault message="tns:rentalcommonFault" name="rentalcommonFault">
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="rental">
+            <wsdl:fault message="tns:rentalcommonFault" name="rentalcommonFault">
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="RentalSoap11" type="tns:Rental">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="createNewRental">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="createNewRentalRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createNewRentalResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createNewBundle">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="createNewBundleRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createNewBundleResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="rental">
+            <soap:operation soapAction=""/>
+            <wsdl:fault name="rentalcommonFault">
+                <soap:fault name="rentalcommonFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="RentalService">
+        <wsdl:port binding="tns:RentalSoap11" name="RentalSoap11">
+            <soap:address location="http://localhost:8082/rental/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
