@@ -117,7 +117,7 @@ INSERT INTO vehicle.vehicle( -- BMW X5 1
     VALUES (nextval('vehicle_id_seq'), 1, 1, 1, 5, 2, 5, 1, 100000, true, 1, 4, 1, 45.2553823, 19.8317609, false, 1, -1); /*1*/
 INSERT INTO vehicle.vehicle( -- Mercedes CLA 220 2
     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
-    VALUES (nextval('vehicle_id_seq'), 2, 4, 3, 4, 2, 4, 0, 130000, false, 2, 3, 1, 44.766226, 20.443431, false, 2, 2000); /*2*/
+    VALUES (nextval('vehicle_id_seq'), 2, 4, 3, 4, 2, 4, 0, 130000, false, 2, 3, 1, 44.766226, 20.443431, false, 1, 2000); /*2*/
 INSERT INTO vehicle.vehicle( -- BMW Z8 3
     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)
     VALUES (nextval('vehicle_id_seq'), 1, 3, 3, 1, 2, 2, 0, 90000, false, 3, 5, 1, 44.766226, 20.443431, false, 1, 7000); /*3*/

@@ -1,5 +1,6 @@
 package rental.service.impl;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,9 @@ import rental.model.RentalReport;
 import rental.repository.RentalReportRepository;
 import rental.repository.RentalRepository;
 import rental.service.RentalReportService;
+import saga.commands.rentalReportCommands.NewRentalReportCommand;
 
+import javax.inject.Inject;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,8 @@ public class RentalReportServiceImpl implements RentalReportService {
     RentalReportRepository rentalReportRepository;
     @Autowired
     RentalRepository rentalRepository;
+    @Inject
+    private transient CommandGateway commandGateway;
 
     @Override
     public RentalReportDTO convertToDTO(RentalReport rentalReport) throws ConversionFailedError {
@@ -54,7 +59,25 @@ public class RentalReportServiceImpl implements RentalReportService {
         rental.get().setReport(saved);
         rentalRepository.save(rental.get());
 
+        commandGateway.send(new NewRentalReportCommand(saved.getId(), saved.getRental().getVehicleId(), saved.getMileage()));
+
         return convertToDTO(saved);
     }
+
+    @Override
+    public void delete(Long rentalReportId) throws EntityNotFound {
+        Optional<RentalReport> deleted = rentalReportRepository.findById(rentalReportId);
+
+        if(!deleted.isPresent()) {
+            throw new EntityNotFound("Items not found");
+        }
+        deleted.get().setDeleted(true);
+
+        Rental rental = deleted.get().getRental();
+        rental.setReport(null);
+        rentalRepository.save(rental);
+        rentalReportRepository.save(deleted.get());
+    }
+
 
 }

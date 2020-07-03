@@ -6,6 +6,7 @@
           <li class="list-group-item" [ngClass]="{'active': status==='PENDING'}" (click)="changeStatus('PENDING')">Pending</li>
           <li class="list-group-item" [ngClass]="{'active': status==='RESERVED'}" (click)="changeStatus('RESERVED')">Reserved</li>
           <li class="list-group-item" [ngClass]="{'active': status==='FINISHED'}" (click)="changeStatus('FINISHED')">Finished</li>
+          <li class="list-group-item" [ngClass]="{'active': status==='CANCELED'}" (click)="changeStatus('CANCELED')">Canceled</li>
         </nav>
       </div>
 

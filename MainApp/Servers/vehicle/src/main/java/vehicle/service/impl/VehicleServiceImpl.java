@@ -155,6 +155,20 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public void updateMileage(Long vehicleId, double mileage) throws EntityNotFound, ConversionFailedError {
+        Optional<Vehicle> change = vehicleRepo.findById(vehicleId);
+
+        if (!change.isPresent()) {
+            throw new EntityNotFound("No item with ID: " + vehicleId);
+        }
+        change.get().setMileage(change.get().getMileage() + (long)mileage);
+
+        Vehicle savedVehicle = vehicleRepo.save(change.get());
+        VehicleDTO vehicleDTO = convertToDTO(savedVehicle);
+        commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.UPDATE));
+    }
+
+    @Override
     public VehicleDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {
         Optional<Vehicle> vehicle = vehicleRepo.findById(id);
         if (!vehicle.isPresent()) {

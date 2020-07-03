@@ -8,6 +8,7 @@ import agent.model.vehicle.Vehicle;
 import agent.model.vehicle.VehicleOccupancy;
 import agent.repository.vehicle.VehicleOccupancyRepo;
 import agent.repository.vehicle.VehicleRepo;
+import agent.service.rental.RentalService;
 import agent.service.vehicle.VehicleOccupancyService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,13 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
     @Autowired
     VehicleOccupancyRepo vehicleOccupancyRepo;
-
+    @Autowired
+    RentalService rentalService;
+    @Autowired
+    VehicleRepo vehicleRepo;
     @Autowired
     DozerBeanMapper mapper;
 
-    @Autowired
-    VehicleRepo vehicleRepo;
 
     @Override
     public VehicleOccupancyDTO convertToDTO(VehicleOccupancy vehicleOccupancy) throws ConversionFailedError {
@@ -85,6 +87,9 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
         if(checkAvailable(vehicleId, newOccupancy)) {
             VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
 
+            if (saved.getType().equals("MANUAL")) {
+                rentalService.rejectRentalsFromTo(saved.getVehicle().getId(), vehicleOccupancyDTO, null);
+            }
         } else {
             throw new DuplicateEntity("The vehicle is already reserved at the given time");
         }

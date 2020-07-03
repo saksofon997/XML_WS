@@ -14,4 +14,5 @@ public interface RentalReportService {
 
     RentalReportDTO add(RentalReportDTO rentalReportDTO) throws DuplicateEntity, ConversionFailedError, EntityNotFound;
 
+    void delete(Long rentalReportId) throws EntityNotFound;
 }

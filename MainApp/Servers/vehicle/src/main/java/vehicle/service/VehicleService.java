@@ -43,4 +43,6 @@ public interface VehicleService {
     Vehicle getOneSOAP(Long id);
 
     public Vehicle updateOneSOAP(Long id, Vehicle vehicle);
+
+    void updateMileage(Long vehicleId, double mileage) throws EntityNotFound, ConversionFailedError;
 }

@@ -32,4 +32,15 @@
       </div>
     </ng-template>
   </mat-tab>
+  <mat-tab label="Canceled">
+    <ng-template matTabContent>
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <app-customer-rentals-listing [status]="'CANCELED'"></app-customer-rentals-listing>
+              </div>
+          </div>
+      </div>
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>

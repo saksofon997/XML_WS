@@ -20,7 +20,7 @@ public interface RentalService {
 
     RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException;
+    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity;
 
     void delete(Long id) throws EntityNotFound;
 
