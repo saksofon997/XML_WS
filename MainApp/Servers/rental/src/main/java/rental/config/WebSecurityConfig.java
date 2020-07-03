@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .antMatchers("/rental/ws/**").permitAll()
 
                 .anyRequest().authenticated().and().cors().and()
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)

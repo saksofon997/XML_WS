@@ -5,6 +5,7 @@ package agent;
 import agent.model.vehicle.mappings.*;
 import agent.repository.vehicle.*;
 import agent.repository.vehicle.mappingsRepo.*;
+import agent.soap.RentalClient;
 import agent.soap.VehicleClient;
 import agent.soap.gen.*;
 import org.dozer.DozerBeanMapper;
@@ -31,6 +32,8 @@ public class AgentApplication {
 	@Autowired
 	VehicleClient vehicleClient;
 	@Autowired
+	RentalClient rentalClient;
+	@Autowired
 	FuelRepo fuelRepo;
 	@Autowired
 	BrandRepo brandRepo;
@@ -55,25 +58,32 @@ public class AgentApplication {
 	@Value("${queue.vehicleParts.name}")
 	private String testQueue;
 
+	@Value("${queue.rental.name}")
+	private String rentalQueue;
+
 	public static void main(String[] args) {
 		SpringApplication.run(AgentApplication.class, args);
 	}
-
-	@Bean
-	public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-		final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-		rabbitTemplate.setMessageConverter(consumerJackson2MessageConverter());
-		return rabbitTemplate;
-	}
-
-	@Bean
-	public Jackson2JsonMessageConverter consumerJackson2MessageConverter() {
-		return new Jackson2JsonMessageConverter();
-	}
+//
+//	@Bean
+//	public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+//		final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+//		rabbitTemplate.setMessageConverter(consumerJackson2MessageConverter());
+//		return rabbitTemplate;
+//	}
+//
+//	@Bean
+//	public Jackson2JsonMessageConverter consumerJackson2MessageConverter() {
+//		return new Jackson2JsonMessageConverter();
+//	}
 
 	@Bean
 	public Queue queue(){
 		return new Queue(testQueue,true);
+	}
+	@Bean
+	public Queue queue2(){
+		return new Queue(rentalQueue,true);
 	}
 
 	@Bean
@@ -83,6 +93,11 @@ public class AgentApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void  updateDatabase(){
+		agent.soap.gen.BundleDTO bundleDTO = new BundleDTO();
+		bundleDTO.setId(1L);
+		bundleDTO.setName("NOVI BUNDLE");
+
+		rentalClient.addBundle(bundleDTO);
 		List<Fuel> fuels = vehicleClient.getFuels().getValue().getItem();
 		for (Fuel fuel : fuels) {
 			agent.model.vehicle.Fuel f = fuelRepo.findByName(fuel.getName());
