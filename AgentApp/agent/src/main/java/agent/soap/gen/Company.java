@@ -8,23 +8,26 @@
 
 package agent.soap.gen;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for model complex type.
+ * <p>Java class for company complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="model"&gt;
+ * &lt;complexType name="company"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="brand" type="{http://www.vehicle.com/vehicle}brand" minOccurs="0"/&gt;
- *         &lt;element name="deleted" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="agents" type="{http://www.vehicle.com/users}user" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
@@ -36,57 +39,71 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "model", propOrder = {
-    "brand",
-    "deleted",
+@XmlType(name = "company", namespace = "http://www.vehicle.com/users", propOrder = {
+    "agents",
+    "cid",
     "id",
     "name"
 })
-public class Model {
+public class Company {
 
-    protected Brand brand;
-    protected boolean deleted;
+    @XmlElement(nillable = true)
+    protected List<User> agents;
+    protected String cid;
     protected Long id;
     protected String name;
 
     /**
-     * Gets the value of the brand property.
+     * Gets the value of the agents property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the agents property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAgents().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link User }
+     * 
+     * 
+     */
+    public List<User> getAgents() {
+        if (agents == null) {
+            agents = new ArrayList<User>();
+        }
+        return this.agents;
+    }
+
+    /**
+     * Gets the value of the cid property.
      * 
      * @return
      *     possible object is
-     *     {@link Brand }
+     *     {@link String }
      *     
      */
-    public Brand getBrand() {
-        return brand;
+    public String getCid() {
+        return cid;
     }
 
     /**
-     * Sets the value of the brand property.
+     * Sets the value of the cid property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Brand }
+     *     {@link String }
      *     
      */
-    public void setBrand(Brand value) {
-        this.brand = value;
-    }
-
-    /**
-     * Gets the value of the deleted property.
-     * 
-     */
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    /**
-     * Sets the value of the deleted property.
-     * 
-     */
-    public void setDeleted(boolean value) {
-        this.deleted = value;
+    public void setCid(String value) {
+        this.cid = value;
     }
 
     /**

@@ -47,4 +47,28 @@ public class Permission {
         return (anotherPermission.id != null && (anotherPermission.id == this.id))
                 || (anotherPermission.id == null && anotherPermission.name != null && (anotherPermission.name.equals(this.name)));
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }

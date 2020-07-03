@@ -5,8 +5,6 @@ import user.dto.UserPageDTO;
 import user.exceptions.*;
 import user.model.User;
 
-import java.util.List;
-
 public interface UserService {
 
     UserDTO convertToDTO(User user) throws ConversionFailedError;
@@ -25,4 +23,5 @@ public interface UserService {
 
     UserDTO delete(Long id) throws EntityNotFound, ConversionFailedError;
 
+    UserDTO createAgent(UserDTO agent) throws DuplicateEntity, ConversionFailedError;
 }

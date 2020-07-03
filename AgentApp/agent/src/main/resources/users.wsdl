@@ -1,0 +1,116 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://www.vehicle.com/users" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.vehicle.com/users" targetNamespace="http://www.vehicle.com/users">
+    <wsdl:types>
+        <xs:schema xmlns:us="http://www.vehicle.com/users" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.vehicle.com/users" version="1.0">
+            <xs:element name="addAgentRequest" type="us:userDTO"/>
+            <xs:element name="addAgentResponse" type="us:userDTO"/>
+            <xs:element name="usercommonFault" type="us:usercommonFault"/>
+            <xs:complexType name="usercommonFault">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="error" type="xs:string"/>
+                    <xs:element name="time" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="userDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="address" type="xs:string"/>
+                    <xs:element minOccurs="0" name="city" type="xs:string"/>
+                    <xs:element minOccurs="0" name="company" type="us:company"/>
+                    <xs:element minOccurs="0" name="email" type="xs:string"/>
+                    <xs:element name="enabled" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="password" type="xs:string"/>
+                    <xs:element minOccurs="0" name="phoneNumber" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" nillable="true" type="us:roleDTO"/>
+                    <xs:element minOccurs="0" name="state" type="xs:string"/>
+                    <xs:element minOccurs="0" name="surname" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="company">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="agents" nillable="true" type="us:user"/>
+                    <xs:element minOccurs="0" name="cid" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="user">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="address" type="xs:string"/>
+                    <xs:element minOccurs="0" name="city" type="xs:string"/>
+                    <xs:element minOccurs="0" name="company" type="us:company"/>
+                    <xs:element name="deleted" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="email" type="xs:string"/>
+                    <xs:element name="enabled" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="password" type="xs:string"/>
+                    <xs:element minOccurs="0" name="phoneNumber" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" nillable="true" type="us:role"/>
+                    <xs:element minOccurs="0" name="state" type="xs:string"/>
+                    <xs:element minOccurs="0" name="surname" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="role">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="permissions" nillable="true" type="us:permission"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="permission">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="roles" nillable="true" type="us:role"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="roleDTO">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="userPageDTO">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="content" nillable="true" type="us:userDTO"/>
+                    <xs:element name="pageNo" type="xs:int"/>
+                    <xs:element name="totalPages" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="addAgentRequest">
+        <wsdl:part element="tns:addAgentRequest" name="addAgentRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="usercommonFault">
+        <wsdl:part element="tns:usercommonFault" name="usercommonFault"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addAgentResponse">
+        <wsdl:part element="tns:addAgentResponse" name="addAgentResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="Users">
+        <wsdl:operation name="addAgent">
+            <wsdl:input message="tns:addAgentRequest" name="addAgentRequest"> </wsdl:input>
+            <wsdl:output message="tns:addAgentResponse" name="addAgentResponse"> </wsdl:output>
+            <wsdl:fault message="tns:usercommonFault" name="usercommonFault"> </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="UsersSoap11" type="tns:Users">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="addAgent">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="addAgentRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addAgentResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="UsersService">
+        <wsdl:port binding="tns:UsersSoap11" name="UsersSoap11">
+            <soap:address location="http://localhost:8081/user/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

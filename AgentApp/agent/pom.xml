@@ -173,6 +173,7 @@
 					<schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
 					<schemaIncludes>
 						<include>vehicle.wsdl</include>
+						<include>users.wsdl</include>
 					</schemaIncludes>
 				</configuration>
 			</plugin>

@@ -8,25 +8,27 @@
 
 package agent.soap.gen;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for model complex type.
+ * <p>Java class for role complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="model"&gt;
+ * &lt;complexType name="role"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="brand" type="{http://www.vehicle.com/vehicle}brand" minOccurs="0"/&gt;
- *         &lt;element name="deleted" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="permissions" type="{http://www.vehicle.com/users}permission" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,58 +38,17 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "model", propOrder = {
-    "brand",
-    "deleted",
+@XmlType(name = "role", namespace = "http://www.vehicle.com/users", propOrder = {
     "id",
-    "name"
+    "name",
+    "permissions"
 })
-public class Model {
+public class Role {
 
-    protected Brand brand;
-    protected boolean deleted;
     protected Long id;
     protected String name;
-
-    /**
-     * Gets the value of the brand property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Brand }
-     *     
-     */
-    public Brand getBrand() {
-        return brand;
-    }
-
-    /**
-     * Sets the value of the brand property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Brand }
-     *     
-     */
-    public void setBrand(Brand value) {
-        this.brand = value;
-    }
-
-    /**
-     * Gets the value of the deleted property.
-     * 
-     */
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    /**
-     * Sets the value of the deleted property.
-     * 
-     */
-    public void setDeleted(boolean value) {
-        this.deleted = value;
-    }
+    @XmlElement(nillable = true)
+    protected List<Permission> permissions;
 
     /**
      * Gets the value of the id property.
@@ -135,6 +96,35 @@ public class Model {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Gets the value of the permissions property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the permissions property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getPermissions().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Permission }
+     * 
+     * 
+     */
+    public List<Permission> getPermissions() {
+        if (permissions == null) {
+            permissions = new ArrayList<Permission>();
+        }
+        return this.permissions;
     }
 
 }
