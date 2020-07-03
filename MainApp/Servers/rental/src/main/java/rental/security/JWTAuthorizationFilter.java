@@ -35,7 +35,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         try {
-            System.out.println("------------------------- ODJE SAAM ----------------------------");
             if (checkJWTToken(request, response)) {
                 Claims claims = validateToken(request);
                 if (claims.get("userId") != null){
