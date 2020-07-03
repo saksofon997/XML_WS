@@ -1,12 +1,10 @@
 package user.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @RequiredArgsConstructor
@@ -22,9 +20,6 @@ public class Company {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<User> agents;
 
     public Long getId() {
         return id;
@@ -48,13 +43,5 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<User> getAgents() {
-        return agents;
-    }
-
-    public void setAgents(Set<User> agents) {
-        this.agents = agents;
     }
 }

@@ -47,10 +47,10 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    private Company company;
+    @Column(name = "company")
+    private String company;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
@@ -166,14 +166,6 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
@@ -188,6 +180,14 @@ public class User implements UserDetails {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }
 

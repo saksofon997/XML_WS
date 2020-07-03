@@ -197,6 +197,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = convertToModel(agent);
+        user.setId(null);
         Set<Role> roles = new HashSet<Role>();
         roles.add(roleRepository.findByName("ROLE_VEHICLE_OWNER"));
         user.setRoles(roles);

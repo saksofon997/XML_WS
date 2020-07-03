@@ -20,7 +20,4 @@ public class Company {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<User> agents;
 }
