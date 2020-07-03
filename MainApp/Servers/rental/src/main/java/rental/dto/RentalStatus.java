@@ -1,4 +1,4 @@
-package rental.model;
+package rental.dto;
 
 public enum RentalStatus {
     CANCELED, PENDING, RESERVED, FINISHED;

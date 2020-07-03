@@ -1,7 +1,11 @@
 package rental.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +19,8 @@ import rental.exceptions.ConversionFailedError;
 import rental.exceptions.EntityNotFound;
 import rental.model.Bundle;
 import rental.model.Rental;
-import rental.model.RentalStatus;
+import rental.dto.RentalStatus;
+import rental.mq.RentalMQSender;
 import rental.repository.BundleRepository;
 import rental.repository.RentalRepository;
 import rental.service.RentalService;
@@ -34,6 +39,8 @@ public class RentalServiceImpl implements RentalService {
     BundleRepository bundleRepository;
     @Autowired
     DozerBeanMapper mapper;
+    @Autowired
+    RentalMQSender rentalMQSender;
     @Inject
     private transient CommandGateway commandGateway;
 
@@ -73,7 +80,7 @@ public class RentalServiceImpl implements RentalService {
 
         newRental.setStatus(RentalStatus.PENDING);
         Rental saved = rentalRepository.save(newRental);
-
+        rentalMQSender.send(convertToDTO(saved));
         return convertToDTO(saved);
     }
 
@@ -97,6 +104,20 @@ public class RentalServiceImpl implements RentalService {
         rental.get().setStatus(rentalDTO.getStatus());
         Rental saved = rentalRepository.save(rental.get());
         System.out.println(saved.getStatus());
+
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("rentalID", id);
+        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        messageProperties.setHeader("__TypeId__", "rental.dto.RentalDTO");
+        byte[] ModelDTOBytes = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ModelDTOBytes = objectMapper.writeValueAsBytes(convertToDTO(saved));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Message message = new Message(ModelDTOBytes, messageProperties);
+        rentalMQSender.send(message);
 
         if (saved.getStatus().equals(RentalStatus.RESERVED)) {
             VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
@@ -146,6 +167,21 @@ public class RentalServiceImpl implements RentalService {
                 }
             }
         }
+
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("vehicleID", vehicleId);
+        messageProperties.setHeader("excludeID", excludeId);
+        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        messageProperties.setHeader("__TypeId__", "saga.dto.VehicleOccupancyDTO");
+        byte[] ModelDTOBytes = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ModelDTOBytes = objectMapper.writeValueAsBytes(occupancyDTO);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Message message = new Message(ModelDTOBytes, messageProperties);
+        rentalMQSender.send(message);
     }
 
     @Override

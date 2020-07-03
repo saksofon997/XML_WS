@@ -14,6 +14,7 @@ import agent.repository.rental.BundleRepository;
 import agent.repository.rental.RentalRepository;
 import agent.service.rental.RentalService;
 import agent.service.vehicle.VehicleOccupancyService;
+import agent.soap.RentalClient;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,8 @@ public class RentalServiceImpl implements RentalService {
     VehicleOccupancyService vehicleOccupancyService;
     @Autowired
     DozerBeanMapper mapper;
-
+    @Autowired
+    RentalClient rentalClient;
     @Override
     public RentalDTO convertToDTO(Rental rental) throws ConversionFailedError {
         try {
@@ -75,7 +77,8 @@ public class RentalServiceImpl implements RentalService {
 
         newRental.setStatus(RentalStatus.PENDING);
         Rental saved = rentalRepository.save(newRental);
-
+        RentalDTO savedDTO = convertToDTO(saved);
+        rentalClient.addRental(mapper.map(savedDTO, agent.soap.gen.RentalDTO.class));
         return convertToDTO(saved);
     }
 
@@ -112,6 +115,9 @@ public class RentalServiceImpl implements RentalService {
         return convertToDTO(saved);
     }
 
+    public void updateViaMQ(Long id, RentalDTO rentalDTO){
+
+    }
     @Override
     public void delete(Long id) throws EntityNotFound {
         Optional<Rental> rental = rentalRepository.findById(id);

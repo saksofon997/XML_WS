@@ -30,13 +30,13 @@ public class Rental {
     @Column(name = "end_time", nullable = false)
     private long endTime;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Bundle bundle;
 
     @Enumerated(EnumType.STRING)
     private RentalStatus status;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "report_id")
     private RentalReport report;
 

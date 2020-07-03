@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rental.dto.RentalPageDTO;
 import rental.exceptions.*;
+import rental.mq.RentalMQSender;
 import rental.service.RentalService;
 
 import java.util.Objects;

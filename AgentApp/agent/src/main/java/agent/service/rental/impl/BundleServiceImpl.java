@@ -7,6 +7,7 @@ import agent.exceptions.EntityNotFound;
 import agent.model.rental.Bundle;
 import agent.repository.rental.BundleRepository;
 import agent.service.rental.BundleService;
+import agent.soap.RentalClient;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class BundleServiceImpl implements BundleService {
 
     @Autowired
     DozerBeanMapper mapper;
+    @Autowired
+    RentalClient rentalClient;
 
     @Override
     public BundleDTO convertToDTO(Bundle bundle) throws ConversionFailedError {
@@ -44,7 +47,8 @@ public class BundleServiceImpl implements BundleService {
     public BundleDTO add(BundleDTO bundleDTO) throws DuplicateEntity, ConversionFailedError {
         Bundle newBundle = convertToModel(bundleDTO);
         Bundle saved = bundleRepository.save(newBundle);
-
+        BundleDTO savedDTO = convertToDTO(saved);
+        rentalClient.addBundle(mapper.map(savedDTO, agent.soap.gen.BundleDTO.class));
         return convertToDTO(saved);
     }
 
