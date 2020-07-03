@@ -59,6 +59,8 @@ services:
       DATABASE_DOMAIN: postgres
       REGISTRY_HOST: eureka-serviceregistry
       AXON_HOST: axon-server
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
     tty: true
     depends_on:
       - eureka-serviceregistry
@@ -96,6 +98,8 @@ services:
       REGISTRY_HOST: eureka-serviceregistry
       AXON_HOST: axon-server
       PATH_TO_IMAGES: /root/vehicle_images
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
     tty: true
     depends_on:
       - eureka-serviceregistry
