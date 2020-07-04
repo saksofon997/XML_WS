@@ -4,9 +4,17 @@ package agent;
 
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.EntityNotFound;
+import agent.model.rental.Bundle;
+import agent.model.rental.Rental;
+import agent.model.rental.mappings.BundleMapping;
+import agent.model.rental.mappings.RentalMapping;
 import agent.model.user.User;
 import agent.model.vehicle.mappings.*;
 import agent.model.user.mappings.UserMapping;
+import agent.repository.rental.BundleRepository;
+import agent.repository.rental.RentalRepository;
+import agent.repository.rental.mappingsRepo.BundleMappingRepo;
+import agent.repository.rental.mappingsRepo.RentalMappingRepo;
 import agent.repository.user.UserMappingRepo;
 import agent.repository.user.UserRepository;
 import agent.repository.vehicle.*;
@@ -71,6 +79,15 @@ public class AgentApplication {
 	VehicleMappingRepo vehicleMappingRepo;
 	@Autowired
 	VehicleService vehicleService;
+
+	@Autowired
+	BundleMappingRepo bundleMappingRepo;
+	@Autowired
+	RentalMappingRepo rentalMappingRepo;
+	@Autowired
+	RentalRepository rentalRepo;
+	@Autowired
+	BundleRepository bundleRepo;
 
 	@Value("${queue.vehicleParts.name}")
 	private String testQueue;
@@ -243,7 +260,55 @@ public class AgentApplication {
 			}
 		}
 
+		// Send rentals with bundles to MS
+		List<Rental> rentals = rentalRepo.findAll();
+		for(Rental rental : rentals) {
+			// Rental can be in the bundle or not
+			Long backBundleId = null;
+			Bundle rentalBundle = rental.getBundle();
+			// If rental is in the bundle
+			if(rentalBundle != null) {
+				// Check if bundle was already saved during previous bundle processing
+				BundleMapping bundleMapping = bundleMappingRepo.findByBundleAgent(rentalBundle);
+				if(bundleMapping == null){
+					// If not, save bundle in MS and map the id
+					BundleDTO savedBundleDTO = rentalClient.addBundle(mapper().map(rentalBundle, BundleDTO.class)).getValue();
+					if(savedBundleDTO != null) {
+						BundleMapping newBundleMapping = new BundleMapping();
+						newBundleMapping.setBundleAgent(rentalBundle);
+						newBundleMapping.setBundleBackId(savedBundleDTO.getId());
+						bundleMappingRepo.save(newBundleMapping);
+						backBundleId = savedBundleDTO.getId();
+					}
+				}else{
+					backBundleId = bundleMapping.getBundleBackId();
+				}
+			}
+			// Get the mappings for owner and vehicle
+			agent.model.vehicle.Vehicle vehicle = vehicleRepo.findById(rental.getVehicleId()).get();
+			VehicleMapping vehicleMapping = vehicleMappingRepo.findByVehicleAgentId(vehicle);
+			User owner = userRepository.findById(rental.getOwnerId()).get();
+			UserMapping ownerMapping = userMappingRepo.findByUserAgentId(owner);
+			// Convert rental to DTO with mapped id's
+			// Todo: mappings for rental report & (?) Customer (?)
+			RentalDTO rentalDTOtoSend = convertRentalToSOAPDTO(rental, vehicleMapping.getVehicleBackId(), backBundleId, ownerMapping.getId());
+			// Send rental to MS and map the ID.
+			RentalDTO savedRentalDTO = rentalClient.addRental(rentalDTOtoSend).getValue();
+			if(savedRentalDTO != null) {
+				RentalMapping rentalMapping = new RentalMapping();
+				rentalMapping.setRentalAgentId(rental);
+				rentalMapping.setRentalBackId(savedRentalDTO.getId());
+				rentalMappingRepo.save(rentalMapping);
+			}
+		}
 
 	}
-
+	// Function to convert rental to DTO with mapped id's
+	private agent.soap.gen.RentalDTO convertRentalToSOAPDTO(Rental rental, Long vehicleId, Long bundleId, Long ownerId){
+		agent.soap.gen.RentalDTO retVal = mapper().map(rental, agent.soap.gen.RentalDTO.class);
+		retVal.getBundle().setId(bundleId);
+		retVal.setVehicleId(vehicleId);
+		retVal.setOwnerId(ownerId);
+		return retVal;
+	}
 }
