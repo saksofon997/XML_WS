@@ -5,8 +5,11 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.exceptions.OperationNotAllowed;
+import agent.model.user.User;
 import agent.model.vehicle.*;
 import agent.model.vehicle.mappings.*;
+import agent.repository.user.UserMappingRepo;
+import agent.repository.user.UserRepository;
 import agent.repository.vehicle.*;
 import agent.repository.vehicle.mappingsRepo.*;
 import agent.service.vehicle.VehicleService;
@@ -18,8 +21,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import saga.commands.MainVehicleCommand;
-import saga.commands.TypeOfCommand;
+import agent.model.user.mappings.UserMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -56,6 +58,8 @@ public class VehicleServiceImpl implements VehicleService {
     CategoryRepo categoryRepo;
     @Autowired
     TransmissionRepo transmissionRepo;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     FuelMappingRepo fuelMappingRepo;
@@ -67,6 +71,9 @@ public class VehicleServiceImpl implements VehicleService {
     CategoryMappingRepo categoryMappingRepo;
     @Autowired
     TransmissionMappingRepo transmissionMappingRepo;
+    @Autowired
+    UserMappingRepo userMappingRepo;
+
     @Value("${PATH_TO_IMAGES:C:\\vehicle_images}")
     private String path_to_images;
 
@@ -143,7 +150,9 @@ public class VehicleServiceImpl implements VehicleService {
         }
         return convertToDTO(savedVehicle);
     }
-    agent.soap.gen.Vehicle updateVehicleSOAPParts(agent.soap.gen.Vehicle vehicleToUpdate) throws EntityNotFound {
+
+    @Override
+    public agent.soap.gen.Vehicle updateVehicleSOAPParts(agent.soap.gen.Vehicle vehicleToUpdate) throws EntityNotFound {
         Fuel fuel = fuelRepo.findById(vehicleToUpdate.getFuel().getId()).orElse(null);
         if (fuel != null) {
             FuelMapping fm = fuelMappingRepo.findByFuelAgent(fuel);
@@ -183,6 +192,14 @@ public class VehicleServiceImpl implements VehicleService {
                 throw new EntityNotFound("Model does not exist on MS application");
             }
             vehicleToUpdate.getModel().setId(mm.getModelBackId());
+        }
+        User owner = userRepository.findById(vehicleToUpdate.getOwnerId()).orElse(null);
+        if (owner != null) {
+            UserMapping um = userMappingRepo.findByUserAgentId(owner);
+            if (um == null) {
+                throw new EntityNotFound("Owner does not exist on MS application");
+            }
+            vehicleToUpdate.setOwnerId(um.getUserBackId());
         }
         return vehicleToUpdate;
     }

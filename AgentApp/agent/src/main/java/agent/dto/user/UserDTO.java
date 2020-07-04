@@ -21,7 +21,7 @@ public class UserDTO {
     private String state;
     private String phoneNumber;
     private boolean enabled;
-    private Company company;
+    private String company;
     private Set<RoleDTO> roles = new HashSet<RoleDTO>();
 
     public UserDTO() {
@@ -37,6 +37,7 @@ public class UserDTO {
         this.city = user.getCity();
         this.state = user.getState();
         this.phoneNumber = user.getPhoneNumber();
+        this.company = user.getCompany();
         for (Role role: user.getRoles()) {
             this.roles.add(new RoleDTO(role));
         }

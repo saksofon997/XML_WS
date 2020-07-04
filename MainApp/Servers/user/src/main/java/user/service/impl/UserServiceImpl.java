@@ -1,9 +1,7 @@
 package user.service.impl;
 
 import org.dozer.DozerBeanMapper;
-import org.dozer.loader.api.BeanMappingBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +17,6 @@ import user.model.Role;
 import user.model.User;
 import user.repository.RoleRepository;
 import user.repository.UserRepository;
-import user.service.RoleService;
 import user.service.UserService;
 
 import java.util.*;
@@ -190,6 +187,25 @@ public class UserServiceImpl implements UserService {
         User user = check.get();
         user.setDeleted(true);
         return convertToDTO(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO createAgent(UserDTO agent) throws DuplicateEntity, ConversionFailedError {
+        User check = userRepository.findByEmail(agent.getEmail());
+        if (check != null){
+            throw new DuplicateEntity("User with this email already exists");
+        }
+
+        User user = convertToModel(agent);
+        user.setId(null);
+        Set<Role> roles = new HashSet<Role>();
+        roles.add(roleRepository.findByName("ROLE_VEHICLE_OWNER"));
+        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(agent.getPassword()));
+        user.setEnabled(true);
+
+        User registered = userRepository.save(user);
+        return convertToDTO(registered);
     }
 
     public static boolean isValidEmailAddress(String email) {

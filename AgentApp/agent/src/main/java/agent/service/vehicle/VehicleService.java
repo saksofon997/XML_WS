@@ -36,4 +36,6 @@ public interface VehicleService {
     Resource getImage(String path, HttpServletRequest request) throws IOException;
 
     void updateMileage(Long vehicleId, double mileage) throws EntityNotFound;
+
+    agent.soap.gen.Vehicle updateVehicleSOAPParts(agent.soap.gen.Vehicle vehicleToUpdate) throws EntityNotFound;
 }

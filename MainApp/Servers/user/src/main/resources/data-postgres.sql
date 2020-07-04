@@ -235,3 +235,7 @@ INSERT INTO users.user_role(
 INSERT INTO users.user_role(
     user_id, role_id)
     VALUES (5, 3);
+
+INSERT INTO users.company(
+    id, cid, name)
+    VALUES (nextval('company_id_seq'), '123456', 'PICICI DOO');
