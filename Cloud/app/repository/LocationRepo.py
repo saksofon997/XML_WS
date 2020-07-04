@@ -25,10 +25,3 @@ class LocationRepo(object):
         )
         coordinates = [x["coordinates"] for x in response["Items"]]
         return coordinates[0]
-
-    def find(self, id: str):
-        response = self.table.query(
-            KeyConditionExpression=Key("pk").eq(id) & Key("sk").begins_with(LocationRepo.VEHICLE_PREFIX)
-        )
-        coordinates = [x["coordinates"] for x in response["Items"]]
-        return coordinates[0]
