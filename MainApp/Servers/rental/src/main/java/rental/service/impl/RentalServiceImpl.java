@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import rental.dto.RentalDTO;
 import rental.dto.RentalPageDTO;
 import rental.exceptions.ConflictException;
@@ -45,6 +46,7 @@ public class RentalServiceImpl implements RentalService {
     private transient CommandGateway commandGateway;
 
     @Override
+    @Transactional
     public RentalDTO convertToDTO(Rental rental) throws ConversionFailedError {
         try {
             RentalDTO rentalDTO = mapper.map(rental, RentalDTO.class);
@@ -83,6 +85,25 @@ public class RentalServiceImpl implements RentalService {
         rentalMQSender.send(convertToDTO(saved));
         return convertToDTO(saved);
     }
+
+    @Override
+    @Transactional
+    public RentalDTO addViaSOAP(RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError {
+        Rental newRental = convertToModel(rentalDTO);
+
+        if (rentalDTO.getBundle() != null) {
+            Optional<Bundle> bundle = bundleRepository.findById(rentalDTO.getBundle().getId());
+            if (!bundle.isPresent()) {
+                throw new EntityNotFound("Bundle is not found");
+            }
+            newRental.setBundle(bundle.get());
+        }
+
+        newRental.setStatus(rentalDTO.getStatus());
+        Rental saved = rentalRepository.save(newRental);
+        return convertToDTO(saved);
+    }
+
 
     @Override
     public RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError {

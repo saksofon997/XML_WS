@@ -39,13 +39,13 @@ public class RentalEndpoint implements WSEndpoint{
         rentalDTO.setId(null);
         RentalDTO savedRental = null;
         try {
-           savedRental = rentalService.add(rentalDTO);
+           savedRental = rentalService.addViaSOAP(rentalDTO);
         } catch (ConversionFailedError conversionFailedError) {
             conversionFailedError.printStackTrace();
             RentalDTO errorDTO = new RentalDTO();
             errorDTO.setId(-1L);
             return objectFactory.createNewRentalResponse(errorDTO);
-        } catch (EntityNotFound | DuplicateEntity exception) {
+        } catch (EntityNotFound exception) {
             exception.printStackTrace();
         }
         return objectFactory.createNewRentalResponse(savedRental);
