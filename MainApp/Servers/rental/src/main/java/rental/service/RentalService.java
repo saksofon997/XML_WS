@@ -27,4 +27,6 @@ public interface RentalService {
     RentalPageDTO getByOwnerAndByStatusPageable(Integer pageNo, String sort, Long id, String status) throws ConversionFailedError, EntityNotFound;
 
     void sagaRollback(Long rentalId) throws EntityNotFound;
+
+    RentalDTO addViaSOAP(RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError;
 }

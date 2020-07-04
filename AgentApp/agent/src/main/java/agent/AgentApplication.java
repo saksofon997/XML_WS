@@ -291,7 +291,7 @@ public class AgentApplication {
 			UserMapping ownerMapping = userMappingRepo.findByUserAgentId(owner);
 			// Convert rental to DTO with mapped id's
 			// Todo: mappings for rental report & (?) Customer (?)
-			RentalDTO rentalDTOtoSend = convertRentalToSOAPDTO(rental, vehicleMapping.getVehicleBackId(), backBundleId, ownerMapping.getId());
+			RentalDTO rentalDTOtoSend = convertRentalToSOAPDTO(rental, vehicleMapping.getVehicleBackId(), backBundleId, ownerMapping.getUserBackId());
 			// Send rental to MS and map the ID.
 			RentalDTO savedRentalDTO = rentalClient.addRental(rentalDTOtoSend).getValue();
 			if(savedRentalDTO != null) {
@@ -306,7 +306,9 @@ public class AgentApplication {
 	// Function to convert rental to DTO with mapped id's
 	private agent.soap.gen.RentalDTO convertRentalToSOAPDTO(Rental rental, Long vehicleId, Long bundleId, Long ownerId){
 		agent.soap.gen.RentalDTO retVal = mapper().map(rental, agent.soap.gen.RentalDTO.class);
-		retVal.getBundle().setId(bundleId);
+		if (retVal.getBundle() != null) {
+			retVal.getBundle().setId(bundleId);
+		}
 		retVal.setVehicleId(vehicleId);
 		retVal.setOwnerId(ownerId);
 		return retVal;
