@@ -9,9 +9,4 @@ def handle(event, context):
 
     coords = repo.find(id)
 
-    response = {
-        "lat": int(coords["lat"]),
-        "long": int(coords["long"])
-    }
-
-    return Response.ok(response)
+    return Response.ok(coords)
