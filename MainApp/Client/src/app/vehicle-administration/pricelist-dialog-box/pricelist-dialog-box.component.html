@@ -9,7 +9,10 @@
         <input [disabled]="getDisabledValue()" placeholder="Price per day" matInput [(ngModel)]="local_data.pricePerDay">
       </mat-form-field>
       <mat-form-field>
-        <input [disabled]="getDisabledValue()" placeholder="Collision Damage Waiver" matInput [(ngModel)]="local_data.cdw">
+        <mat-select placeholder="Collision Damage Waiver" [(ngModel)]="local_data.cdw">
+          <mat-option [value]="true">Yes</mat-option>
+          <mat-option [value]="false">No</mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field>
         <input [disabled]="getDisabledValue()" placeholder="Price per kilometer" matInput [(ngModel)]="local_data.pricePerKm">

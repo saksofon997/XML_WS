@@ -5,9 +5,10 @@ import requests
 from faker import Faker
 
 faker = Faker()
+Faker.seed(time.time())
 
 while 1:
-    time.sleep(20)
+    time.sleep(5)
 
     coords = faker.local_latlng(country_code='RS', coords_only=True)
 

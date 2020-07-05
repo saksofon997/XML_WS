@@ -1,10 +1,12 @@
 import { VehicleService } from './../services/vehicle.service';
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Car } from '../models/Car.model';
 import { environment } from 'src/environments/environment';
 import { Review } from '../models/Review.model';
 import { ReviewService } from '../services/review.service';
+import { getLocaleDirection } from '@angular/common';
+import { LocationService } from '../services/location.service';
 
 @Component({
   selector: 'app-vehicle-page',
@@ -16,7 +18,7 @@ export class VehiclePageComponent implements OnInit {
   imageSize: Object = { width: '400px', height: '300px', space: 4 }
   images: Array<Object>;
 
-  //location: Number[] = [37.587874, 55.73367];
+  coordinates: Number[];
   vehicleID: number;
   tripStartDate: string;
   tripEndDate: string;
@@ -29,7 +31,8 @@ export class VehiclePageComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
     private vehicleService: VehicleService,
-    private reviewService: ReviewService) {
+    private reviewService: ReviewService,
+    private locationService: LocationService) {
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.vehicleID = +params['vehicleID'];
@@ -40,7 +43,7 @@ export class VehiclePageComponent implements OnInit {
 
       this.images = new Array();
     });
-
+    this.getLocation(this.vehicleID);
 
     this.loadData();
   }
@@ -73,7 +76,6 @@ export class VehiclePageComponent implements OnInit {
           resolve();
         }, () => reject());
       }, () => reject());
-
     });
     return promise;
   }
@@ -131,6 +133,27 @@ export class VehiclePageComponent implements OnInit {
               thumbImage: this.API_URL + "/vehicle/image/" + imageName
             })
           });
+          resolve();
+        },
+        (error) => {
+          console.log(error);
+          reject();
+        }
+      )
+    });
+    return promise;
+  }
+
+  getLocation(vehicleID: number) {
+    let promise = new Promise((resolve, reject) => {
+      this.locationService.locate(vehicleID).subscribe(
+        (data: any) => {
+          let location = [0, 0];
+          location[0] = Number(data.lat);
+          location[1] = Number(data.long);
+
+          this.coordinates = location;
+
           resolve();
         },
         (error) => {

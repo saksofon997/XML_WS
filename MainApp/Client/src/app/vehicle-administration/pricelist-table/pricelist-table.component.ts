@@ -5,6 +5,7 @@ import { PricelistDialogBoxComponent } from '../pricelist-dialog-box/pricelist-d
 import { Pricelist } from 'src/app/models/Pricelist.model';
 import { PricelistService } from 'src/app/services/pricelist.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-pricelist-table',
@@ -21,10 +22,12 @@ export class PricelistTableComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private pricelistService: PricelistService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService) { }
 
   ngOnInit(): void {
-    this.getPricelists(this.userId); //TODO users
+    this.userId = this.userService.getUser().id;
+    this.getPricelists(this.userId);
   }
 
   getPricelists(userId: number) {
@@ -56,9 +59,11 @@ export class PricelistTableComponent implements OnInit {
   }
 
   addRowData(pricelist) {
+    pricelist.ownerId = this.userId;
+    console.log(pricelist);
     this.pricelistService.add(pricelist).subscribe(
       (data: Pricelist) => {
-        this.pricelistService.getByOwner(1).subscribe(
+        this.pricelistService.getByOwner(this.userId).subscribe(
           (data: any) => {
             this.dataSource = data;
           },
@@ -73,11 +78,13 @@ export class PricelistTableComponent implements OnInit {
   }
 
   updateRowData(pricelist) {
+    pricelist.ownerId = this.userId;
     this.pricelistService.edit(pricelist.id, pricelist).subscribe(
       (data: Pricelist) => {
         this.dataSource = this.dataSource.filter((value, key) => {
           if (value.id === pricelist.id) {
             value.name = pricelist.name;
+            value.ownerId = this.userId;
             value.pricePerDay = pricelist.pricePerDay;
             value.cdw = pricelist.cdw;
             value.pricePerKm = pricelist.pricePerKm;

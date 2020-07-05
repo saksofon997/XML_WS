@@ -127,6 +127,17 @@
       <div class="w-200"></div>
 
       <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
+        <p class="feature-name">Android Device</p>
+      </div>
+      <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
+        <mat-checkbox class="feature" [labelPosition]="'after'" formControlName="hasAndroid" style="padding-left: 0.8rem;">
+          &nbsp;
+          {{ form.get('hasAndroid').value ? 'Available' : 'Not available' }}
+        </mat-checkbox>
+      </div>
+      <div class="w-100"></div>
+
+      <div class="col-sm-4 d-flex justify-content-sm-end justify-content-center mt-2">
         <p class="feature-name">Images</p>
       </div>
       <div class="col-sm-8 d-flex justify-content-sm-start justify-content-center mt-2">
