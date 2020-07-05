@@ -52,7 +52,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     MaterialFileInputModule,
     
     NgImageSliderModule,
-    AngularYandexMapsModule.forRoot("73d3c687-6c0b-4a6a-9d44-865e790fb034"),
+    AngularYandexMapsModule.forRoot("396fefe7-95c2-486a-ae3e-c8f062813962"),
 
     VehiclePageRoutingModule,
     SharedModule,

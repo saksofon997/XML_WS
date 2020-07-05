@@ -60,7 +60,6 @@ export class PricelistTableComponent implements OnInit {
 
   addRowData(pricelist) {
     pricelist.ownerId = this.userId;
-    console.log(pricelist);
     this.pricelistService.add(pricelist).subscribe(
       (data: Pricelist) => {
         this.pricelistService.getByOwner(this.userId).subscribe(
