@@ -56,7 +56,6 @@ public class PricelistServiceImpl implements PricelistService {
             Pricelist savedPriceList = pricelistRepo.save(newPricelist);
             return convertToDTO(savedPriceList);
         } else {
-            System.out.println(newPricelist);
             throw new DuplicateEntity("Item already exists");
         }
     }
