@@ -160,6 +160,28 @@
         <a class="btn btn-sm btn-outline-danger search-button" (click)="getCars(pageNo)">Search</a>
       </div>
     </div>
+
+    <mat-form-field class="form-field">
+      <mat-label>Sort by</mat-label>
+      <mat-select (selectionChange)="sortKeyChanged($event.value)">
+        <input matInput type="text"/>
+        <mat-option value="brand">Brand</mat-option>
+        <mat-option value="category">Category</mat-option>
+        <mat-option value="fuel">Fuel</mat-option>
+        <mat-option value="model">Model</mat-option>
+        <mat-option value="transmission">Transmission</mat-option>
+        <mat-option value="numberOfStars">Number of Stars</mat-option>
+        <mat-option value="mileage">Mileage</mat-option>
+        <mat-option value="availableMileage">Available Mileage</mat-option>
+        <mat-option value="pricelist.pricePerDay">Price per day</mat-option>
+        <mat-option value="pricelist.pricePerKm">Price per KM</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+      <mat-label>Order: </mat-label>
+      &nbsp;
+      <mat-checkbox [labelPosition]="'after'" (change)="sortOrderChanged($event.checked)"> {{ sortOrder == "ascending" ? 'Ascending' : 'Descending' }} </mat-checkbox>
+      
   </form>
 
 </div>
