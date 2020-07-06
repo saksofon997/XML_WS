@@ -90,6 +90,9 @@ export class RentalsComponent implements OnInit {
   tripStartTime: number;
   tripEndTime: number;
 
+  from: number = 0;
+  to: number = 0;
+
   constructor(private locationService: LocationService,
     private searchService: SearchService,
     private brandService: BrandService,
@@ -188,12 +191,16 @@ export class RentalsComponent implements OnInit {
     this.tripEndTime = value;
   }
 
-  from() {
-    return Number(this.tripStartDate?.getTime()) / 1000 + this.tripStartTime * 60;
+  fromFun() {
+    let from = Number(this.tripStartDate?.getTime()) / 1000 + this.tripStartTime * 60;
+    this.from = from;
+    return from;
   }
 
-  to() {
-    return Number(this.tripEndDate?.getTime()) / 1000 + this.tripEndTime * 60;
+  toFun() {
+    let to = Number(this.tripEndDate?.getTime()) / 1000 + this.tripEndTime * 60;
+    this.to = to;
+    return to;
   }
 
   sortKeyChanged(value) {
@@ -215,8 +222,8 @@ export class RentalsComponent implements OnInit {
     const searchParams = {
       loc_lat: this.latitude ? this.latitude : 45.2605774,
       loc_long: this.longitude ? this.longitude : 19.8009594,
-      start: this.from() ? this.from() : 1592838000,
-      end: this.to() ? this.to() : 1592838300,
+      start: this.fromFun() ? this.fromFun() : 1592838000,
+      end: this.toFun() ? this.toFun() : 1592838300,
       brand: this.searchParamsObjects.brands.length > 0 ? this.searchParamsObjects.brands.map(x => x.name) : null,
       model: this.searchParamsObjects.models.length > 0 ? this.searchParamsObjects.models.map(x => x.name) : null,
       category: this.searchParamsObjects.categories.length > 0 ? this.searchParamsObjects.categories.map(x => x.name) : null,
