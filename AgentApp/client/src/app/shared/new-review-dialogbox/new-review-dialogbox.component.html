@@ -4,7 +4,7 @@
     <div>
       <div class="row-sm-12">
         <mat-form-field style="width: 80%;">
-          <textarea rows="4" placeholder="Review text" matInput [(ngModel)]="local_data.text"> </textarea>
+          <textarea rows="4" placeholder="Review text" matInput [(ngModel)]="review.text"> </textarea>
         </mat-form-field>
       </div>
       <div class="row-sm-12">
@@ -12,7 +12,7 @@
           <p>Rating</p>
         </div>
         <div class="row mt-3 mb-3 d-flex justify-content-center align-self-center">
-          <ngb-rating [(rate)]="local_data.stars" max=5>
+          <ngb-rating [(rate)]="review.stars" max=5>
             <ng-template let-fill="fill" let-index="index">
               <span class="star" [class.filled]="fill === 100">&#9733;</span>
             </ng-template>

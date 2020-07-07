@@ -53,7 +53,7 @@ export class RentalTeaserComponent implements OnInit {
     $event.stopPropagation();
     const dialogRef = this.dialog.open(NewReviewDialogboxComponent, {
       width: '500px',
-      data: new Review()
+      data: {review: new Review(), rental: this.rental}
     });
 
     dialogRef.afterClosed().subscribe(result => {
