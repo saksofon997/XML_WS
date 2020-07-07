@@ -2,7 +2,6 @@ import { Component, Optional, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Pricelist } from 'src/app/models/Pricelist.model';
 
-
 @Component({
   selector: 'app-pricelist-dialog-box',
   templateUrl: './pricelist-dialog-box.component.html',
