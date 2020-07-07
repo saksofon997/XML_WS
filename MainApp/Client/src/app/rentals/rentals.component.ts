@@ -79,6 +79,9 @@ export class RentalsComponent implements OnInit {
 
   searchParamsObjects: SearchParams;
 
+  sortKey: string = "id";
+  sortOrder: string = "ascending";
+
   cars: Car[];
   pageNo: number;
   totalPages: number;
@@ -193,6 +196,21 @@ export class RentalsComponent implements OnInit {
     return Number(this.tripEndDate?.getTime()) / 1000 + this.tripEndTime * 60;
   }
 
+  sortKeyChanged(value) {
+    this.sortKey = value;
+
+    // if (value == "price") {
+    //     this.cars.sort((a, b) => (a.pricelist.pricePerDay > b.pricelist.pricePerDay) ? 1 : -1)
+    // }
+
+    this.getCars(this.pageNo);
+  }
+
+  sortOrderChanged(value) {
+    this.sortOrder = value ? "ascending" : "descending";
+    this.getCars(this.pageNo);
+  }
+
   getCars(pageNo: number) {
     const searchParams = {
       loc_lat: this.latitude ? this.latitude : 45.2605774,
@@ -209,9 +227,10 @@ export class RentalsComponent implements OnInit {
       availableMileage: this.searchParamsObjects.allowedMileage ? this.searchParamsObjects.allowedMileage : null,
       priceFrom: this.searchParamsObjects.minPrice ? this.searchParamsObjects.minPrice : 0,
       priceTo: this.searchParamsObjects.maxPrice ? this.searchParamsObjects.maxPrice : null,
-      childSeats: this.searchParamsObjects.kidsSeatsNo ? this.searchParamsObjects.kidsSeatsNo : null
+      childSeats: this.searchParamsObjects.kidsSeatsNo ? this.searchParamsObjects.kidsSeatsNo : null,
+      sort: this.sortKey ? this.sortKey : "id",
+      order: this.sortOrder ? this.sortOrder : "ascending"
     };
-    console.log(searchParams);
     this.searchService.search(pageNo, searchParams).subscribe(
       (data: any) => {
         this.cars = data.content;

@@ -10,6 +10,7 @@ public interface SearchService {
                                  double loc_lat, double loc_long,
                                  long startTime, long endTime,
                                  Integer pageNo, String sortKey, Boolean cdw,
-                                 Long mileage, Long priceFrom, Long priceTo, Integer childSeats, Long availableMileage) throws ConversionFailedError;
+                                 Long mileage, Long priceFrom, Long priceTo, Integer childSeats, Long availableMileage,
+                                 String order) throws ConversionFailedError;
 
 }

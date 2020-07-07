@@ -30,9 +30,10 @@ public class SearchServiceImpl implements SearchService {
                                         String transmission, double loc_lat, double loc_long,
                                         long startTime, long endTime,
                                         Integer pageNo, String sortKey, Boolean cdw, Long mileage,
-                                        Long priceFrom, Long priceTo, Integer childSeats, Long availableMileage) throws ConversionFailedError {
+                                        Long priceFrom, Long priceTo, Integer childSeats, Long availableMileage,
+                                        String order) throws ConversionFailedError {
 
-        Pageable page = PageRequest.of(pageNo, 10, Sort.by(sortKey));
+        Pageable page = order.equals("ascending") ? PageRequest.of(pageNo, 10, Sort.by(sortKey).ascending()) : PageRequest.of(pageNo, 10, Sort.by(sortKey).descending());
 
         List<String> brands = brand == null ? null : Arrays.asList(brand.split(","));
         List<String> categories = category == null ? null : Arrays.asList(category.split(","));
