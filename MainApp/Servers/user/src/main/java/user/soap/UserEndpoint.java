@@ -14,6 +14,7 @@ import user.service.UserService;
 
 
 import javax.xml.bind.JAXBElement;
+import java.io.IOException;
 
 @Endpoint
 public class UserEndpoint implements WSEndpoint{
@@ -40,7 +41,7 @@ public class UserEndpoint implements WSEndpoint{
     // Agent : add new
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addAgentRequest")
     @ResponsePayload
-    public JAXBElement<UserDTO> addAgent(@RequestPayload JAXBElement<UserDTO> agent) throws DuplicateEntity, ConversionFailedError {
+    public JAXBElement<UserDTO> addAgent(@RequestPayload JAXBElement<UserDTO> agent) throws DuplicateEntity, ConversionFailedError, IOException {
         UserDTO created = userService.createAgent(agent.getValue());
         return objectFactory.createAddAgentResponse(created);
     }

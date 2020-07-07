@@ -18,7 +18,9 @@ import user.model.User;
 import user.repository.RoleRepository;
 import user.repository.UserRepository;
 import user.service.UserService;
+import user.utils.Requests;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO add(UserDTO userDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError {
+    public UserDTO add(UserDTO userDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError, IOException {
         if (!isValidEmailAddress(userDTO.getEmail())){
             throw new InvalidEmailOrPasswordError("Email is invalid");
         }
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private UserDTO userRegistration(UserDTO userDTO) throws DuplicateEntity, ConversionFailedError {
+    private UserDTO userRegistration(UserDTO userDTO) throws DuplicateEntity, ConversionFailedError, IOException {
         User check = userRepository.findByEmail(userDTO.getEmail());
         if (check != null){
             throw new DuplicateEntity("User with this email already exists");
@@ -94,11 +96,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEnabled(true);
 
+        Requests.sendEmail(userDTO.getEmail(), "Successful registration to Car2Go.");
+
         User registered = userRepository.save(user);
         return convertToDTO(registered);
     }
 
-    private UserDTO userCreationByAdmin(UserDTO userDTO) throws DuplicateEntity, ConversionFailedError {
+    private UserDTO userCreationByAdmin(UserDTO userDTO) throws DuplicateEntity, ConversionFailedError, IOException {
         User check = userRepository.findByEmail(userDTO.getEmail());
         if (check != null){
             throw new DuplicateEntity("User with this email already exists");
@@ -113,6 +117,8 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEnabled(true);
+
+        Requests.sendEmail(userDTO.getEmail(), "Successful registration to Car2Go.");
 
         User registered = userRepository.save(user);
         return convertToDTO(registered);
@@ -145,7 +151,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError {
+    public UserDTO update(Long id, UserDTO userDTO) throws EntityNotFound, ConversionFailedError, IOException {
         Optional<User> check = userRepository.findById(id);
         if (!check.isPresent() || !id.equals(userDTO.getId())){
             throw new EntityNotFound("User not found, invalid data");
@@ -163,34 +169,42 @@ public class UserServiceImpl implements UserService {
             newRoles.add(convertToModelRole(rdto));
         }
 
+        Requests.sendEmail(userDTO.getEmail(), "Successfuly updated user account");
+
         user.setRoles(newRoles);
         return convertToDTO(userRepository.save(user));
     }
 
     @Override
-    public UserDTO activateOrDeactivate(Long id) throws EntityNotFound, ConversionFailedError {
+    public UserDTO activateOrDeactivate(Long id) throws EntityNotFound, ConversionFailedError, IOException {
         Optional<User> check = userRepository.findById(id);
         if (!check.isPresent()){
             throw new EntityNotFound("User not found, invalid data");
         }
         User user = check.get();
         user.setEnabled(!user.isEnabled());
+
+        Requests.sendEmail(user.getEmail(), "User status changed");
+
         return convertToDTO(userRepository.save(user));
     }
 
     @Override
-    public UserDTO delete(Long id) throws EntityNotFound, ConversionFailedError {
+    public UserDTO delete(Long id) throws EntityNotFound, ConversionFailedError, IOException {
         Optional<User> check = userRepository.findById(id);
         if (!check.isPresent()){
             throw new EntityNotFound("User not found, invalid data");
         }
         User user = check.get();
         user.setDeleted(true);
+
+        Requests.sendEmail(user.getEmail(), "User account deleted");
+
         return convertToDTO(userRepository.save(user));
     }
 
     @Override
-    public UserDTO createAgent(UserDTO agent) throws DuplicateEntity, ConversionFailedError {
+    public UserDTO createAgent(UserDTO agent) throws DuplicateEntity, ConversionFailedError, IOException {
         User check = userRepository.findByEmail(agent.getEmail());
         if (check != null){
             throw new DuplicateEntity("User with this email already exists");
@@ -203,6 +217,8 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(agent.getPassword()));
         user.setEnabled(true);
+
+        Requests.sendEmail(user.getEmail(), "Successfully registered as Agent.");
 
         User registered = userRepository.save(user);
         return convertToDTO(registered);

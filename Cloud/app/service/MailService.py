@@ -1,20 +1,14 @@
 import json
 
-from app.api import JsonResponse
 from app.external.MailProxy import MailProxy
 
 
-def send(event, context):
-    if event["queryStringParameters"]["security"] == "picici2":
+def handle(event, context):
+    body = json.loads(event["Records"][0]["body"])
 
-        data = json.loads(event["body"])
-        print(data)
+    address = body["address"]
+    message = body["message"]
 
-        address = data["address"]
-        message = data["message"]
+    MailProxy().send(toaddrs=address, message=message)
 
-        MailProxy().send(toaddrs=address, message=message)
-
-        return JsonResponse.accepted()
-
-    return JsonResponse.no_content()
+    return True

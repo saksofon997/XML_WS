@@ -1,14 +1,6 @@
 import { Component, Optional, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-export interface Pricing {
-  id: number;
-  name: string;
-  pricePerDay: number;
-  cdw: number;
-  pricePerKm: number;
-  description: string;
-}
+import { Pricelist } from 'src/app/models/Pricelist.model';
 
 @Component({
   selector: 'app-pricelist-dialog-box',
@@ -23,7 +15,7 @@ export class PricelistDialogBoxComponent{
   constructor(
     public dialogRef: MatDialogRef<PricelistDialogBoxComponent>,
     //@Optional() is used to prevent error if no data is passed
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: Pricing) {
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: Pricelist) {
     this.local_data = {...data};
     this.action = this.local_data.action;
   }
@@ -36,6 +28,7 @@ export class PricelistDialogBoxComponent{
   }
  
   doAction(){
+    delete this.local_data.action;
     this.dialogRef.close({event:this.action,data:this.local_data});
   }
  

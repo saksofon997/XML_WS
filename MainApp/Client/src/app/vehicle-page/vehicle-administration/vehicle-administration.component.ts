@@ -131,6 +131,8 @@ export class VehicleAdministrationComponent implements OnInit {
       seats: ['', [Validators.required]],
       childSeats: ['', [Validators.required]],
 
+      hasAndroid: [false],
+
       alwaysAvailable: [false],
       occupiedFrom: [''],
       occupiedTo: [''],
@@ -200,6 +202,12 @@ export class VehicleAdministrationComponent implements OnInit {
     this.vehicleService.addVehicle(vehicle, images).subscribe(
       (data: any) => {
         alert("Vehicle created");
+
+        if(this.form.controls.hasAndroid.value) {
+          let rand = Math.random();
+          let message = `This is a token for your vehicles Android device: ${data.id} ${rand}`;
+          alert(message);
+        }
 
         if (!this.form.controls.alwaysAvailable.value) {
           let occupancy = new VehicleOccupancy(null, Number(this.form.controls.occupiedFrom.value) / 1000, Number(this.form.controls.occupiedTo.value) / 1000, "MANUAL", null);

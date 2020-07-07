@@ -12,6 +12,7 @@ import user.exceptions.*;
 import user.service.UserService;
 
 import javax.ws.rs.PathParam;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -43,7 +44,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('CREATE_USER_PERMISSION')")
-    public ResponseEntity<UserDTO> createNew(@RequestBody UserDTO userDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError {
+    public ResponseEntity<UserDTO> createNew(@RequestBody UserDTO userDTO) throws DuplicateEntity, InvalidEmailOrPasswordError, ConversionFailedError, IOException {
 
         UserDTO added = userService.add(userDTO);
 
@@ -64,7 +65,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('CHANGE_USER_PERMISSION')")
     public ResponseEntity<UserDTO> update(@PathVariable Long id,
-                                           @RequestBody UserDTO userDTO) throws EntityNotFound, UnexpectedError, ConversionFailedError {
+                                           @RequestBody UserDTO userDTO) throws EntityNotFound, ConversionFailedError, IOException {
 
         UserDTO updated = userService.update(id, userDTO);
 
@@ -75,7 +76,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('ACTIVATE_USER_PERMISSION') or hasAuthority('DEACTIVATE_USER_PERMISSION')")
-    public ResponseEntity<UserDTO> activateOrDeactivate(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
+    public ResponseEntity<UserDTO> activateOrDeactivate(@PathVariable Long id) throws EntityNotFound, ConversionFailedError, IOException {
 
         UserDTO updated = userService.activateOrDeactivate(id);
 
@@ -85,7 +86,7 @@ public class UserController {
     @DeleteMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('REMOVE_USER_PERMISSION')")
-    public ResponseEntity<UserDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError {
+    public ResponseEntity<UserDTO> delete(@PathVariable Long id) throws EntityNotFound, ConversionFailedError, IOException {
 
         UserDTO deleted = userService.delete(id);
 
