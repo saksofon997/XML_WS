@@ -32,7 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.GET , "/brand").permitAll()
+                .antMatchers(HttpMethod.GET , "/category").permitAll()
+                .antMatchers(HttpMethod.GET , "/fuel").permitAll()
+                .antMatchers(HttpMethod.GET , "/brand/{id}/model").permitAll()
+                .antMatchers(HttpMethod.GET , "/vehicle/{id}/review").permitAll()
+                .antMatchers(HttpMethod.GET , "/transmission").permitAll()
+                .antMatchers(HttpMethod.GET , "/vehicle/{id}").permitAll()
+                .antMatchers(HttpMethod.GET , "/vehicle/image/{path}").permitAll()
+
 
                 .anyRequest().authenticated().and()
                 .cors().and()

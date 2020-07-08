@@ -17,12 +17,15 @@ export class TokenInterceptor implements HttpInterceptor {
         const register = /register/gi;
         const locate = /locate/gi;
 
-        if (request.url.search(login) === -1 && request.url.search(yandex) === -1 && request.url.search(register) === -1 && request.url.search(locate) === -1) {
-            request = request.clone({
-                setHeaders: {
-                    'x-auth': `Bearer ${this.userService.getToken()}`
-                }
-            });
+        if (request.url.search(login) === -1 && request.url.search(yandex) === -1 &&
+         request.url.search(register) === -1 && request.url.search(locate) === -1) {
+            if (this.userService.checkLoggedIn()) {
+                request = request.clone({
+                    setHeaders: {
+                        'x-auth': `Bearer ${this.userService.getToken()}`
+                    }
+                });
+            }
         }
         return next.handle(request);
     }
