@@ -11,19 +11,13 @@ import { RentalFront } from 'src/app/models/Rental.model';
 })
 export class NewReviewDialogboxComponent {
 
-  local_data: any;
-  rental: RentalFront;
-  review: Review;
+  local_data: Review;
 
   constructor(
     public dialogRef: MatDialogRef<NewReviewDialogboxComponent>,
     // @Optional() is used to prevent error if no data is passed
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: Review) {
     this.local_data = { ...data };
-    this.rental = this.local_data.rental;
-    this.review = this.local_data.review;
-
-    console.log(this.rental.car.pricelist.discount);
   }
 
   doAction() {
