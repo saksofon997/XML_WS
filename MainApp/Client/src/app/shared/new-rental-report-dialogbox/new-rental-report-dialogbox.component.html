@@ -9,9 +9,28 @@
       </div>
       <div class="row-sm-12">
         <mat-form-field style="width: 80%;">
-          <input type="number" name="mileage" placeholder="Mileage" matInput [(ngModel)]="local_data.mileage">
+          <input type="number" name="mileage" placeholder="Mileage" (change)="calculatePenalty($event)" matInput
+            [(ngModel)]="local_data.mileage">
         </mat-form-field>
       </div>
+
+      <div class="row">
+        <div class="col-sm-6 d-flex justify-content-center">
+          <p class="label">Final price: </p>
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <p class="number">{{ finalPrice() }}</p>
+        </div>
+      </div>
+      <div *ngIf="penalty" class="row">
+        <div class="col-sm-6 d-flex justify-content-center">
+          <p class="label">Penalty: </p>
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center">
+          <p class="number">{{ getPenalty() }}</p>
+        </div>
+      </div>
+
     </div>
   </div>
   <div class="text-right">
