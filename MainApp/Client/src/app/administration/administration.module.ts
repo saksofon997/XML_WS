@@ -17,6 +17,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { UserRolesComponent } from './user-administration/user-roles/user-roles.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SharedModule } from '../shared/shared.module';
+import { CompanyAdministrationComponent } from './company-administration/company-administration.component';
+import { NewCompanyComponent } from './company-administration/new-company/new-company.component';
 
 @NgModule({
   declarations: [ // Declare all components of module
@@ -24,7 +26,9 @@ import { SharedModule } from '../shared/shared.module';
     SideListComponent,
     routingComponents,
     DialogBoxComponent,
-    UserRolesComponent
+    UserRolesComponent,
+    CompanyAdministrationComponent,
+    NewCompanyComponent,
   ],
   imports: [ // Import anything you would need to use in this module (forms...)
     CommonModule,

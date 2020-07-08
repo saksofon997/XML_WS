@@ -2,7 +2,7 @@ zuul:
   routes:
     # ----- USER -----
     user:
-      path: /test/**
+      path: /company/**
       stripPrefix: false
       serviceId: user
     user1:
