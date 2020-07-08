@@ -113,6 +113,7 @@ export class UserService {
       .pipe(
         map((response) => {
           const userState = response.body;
+          alert("Registration successful");
           this.router.navigate(['/login']);
 
           return this.user;

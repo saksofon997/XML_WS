@@ -97,6 +97,7 @@ public class UserServiceImpl implements UserService {
         User user = convertToModel(userDTO);
         Set<Role> roles = new HashSet<Role>();
         roles.add(roleRepository.findByName("SIMPLE_USER"));
+        roles.add(roleRepository.findByName("ROLE_VEHICLE_OWNER"));
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEnabled(true);

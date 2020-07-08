@@ -107,11 +107,11 @@ export class UserService {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     });
-    return this.http.post(`${API_URL}/auth/signup`, registerRequest, { headers, observe: 'response' })
+    return this.http.post(`${API_URL}/auth/register`, registerRequest, { headers, observe: 'response' })
       .pipe(
         map((response) => {
           const userState = response.body;
-          alert("Your request has been sent. Check your email.")
+          alert("Registration successful");
           this.router.navigate(['/login']);
 
           return this.user;

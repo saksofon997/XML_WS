@@ -17,6 +17,7 @@ import { TokenInterceptor } from './services/token.interceptor';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
    declarations: [
@@ -24,7 +25,8 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
       HeaderComponent,
       routingComponents,
       FooterComponent,
-      LoginComponent
+      LoginComponent,
+      RegisterComponent
    ],
    imports: [
       //Importmodules except lazy loaded
