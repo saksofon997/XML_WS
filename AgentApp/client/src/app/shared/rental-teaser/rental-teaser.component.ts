@@ -141,7 +141,7 @@ export class RentalTeaserComponent implements OnInit {
 
     const dialogRef = this.dialog.open(NewRentalReportDialogboxComponent, {
       width: '500px',
-      data: new RentalReport()
+      data: {report: new RentalReport(), rental: this.rental}
     });
 
     dialogRef.afterClosed().subscribe(result => {

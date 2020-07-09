@@ -336,20 +336,20 @@ INSERT INTO agent.fuel(
     VALUES (nextval('fuel_id_seq'), 'Electric', false); /*2*/
 
 INSERT INTO agent.pricelist(
-    id, owner, name, price_per_day, price_per_km, cdw, description, deleted)
-    VALUES (nextval('pricelist_id_seq'), 1, 'BMW SUV 2020', 180, 1.2, true, 'Price for 2020 BMW SUV models.', false); /*1*/
+    id, owner, name, price_per_day, price_per_km, cdw, description, deleted, discount, penalty)
+    VALUES (nextval('pricelist_id_seq'), 1, 'BMW SUV 2020', 180, 1.2, true, 'Price for 2020 BMW SUV models.', false, 0.2, 0.1); /*1*/
 INSERT INTO agent.pricelist(
-    id, owner, name, price_per_day, price_per_km, cdw, description, deleted)
-    VALUES (nextval('pricelist_id_seq'), 1, 'Mercedes CLA', 220, 1.8, true, 'Price for Mercedes CLA models.', false); /*2*/
+    id, owner, name, price_per_day, price_per_km, cdw, description, deleted, discount, penalty)
+    VALUES (nextval('pricelist_id_seq'), 1, 'Mercedes CLA', 220, 1.8, true, 'Price for Mercedes CLA models.', false, 0.3, 0.2); /*2*/
 INSERT INTO agent.pricelist(
-    id, owner, name, price_per_day, price_per_km, cdw, description, deleted)
-    VALUES (nextval('pricelist_id_seq'), 1, 'Lower class and old', 90, 0.9, false, 'Price for older models and lower class cars.', false); /*3*/
+    id, owner, name, price_per_day, price_per_km, cdw, description, deleted, discount, penalty)
+    VALUES (nextval('pricelist_id_seq'), 1, 'Lower class and old', 90, 0.9, false, 'Price for older models and lower class cars.', false, 0.15, 0.05); /*3*/
 INSERT INTO agent.pricelist(
-    id, owner, name, price_per_day, price_per_km, cdw, description, deleted)
-    VALUES (nextval('pricelist_id_seq'), 1, 'Compacts', 150, 1.1, false, 'Price for compact economic cars.', false); /*4*/
+    id, owner, name, price_per_day, price_per_km, cdw, description, deleted, discount, penalty)
+    VALUES (nextval('pricelist_id_seq'), 1, 'Compacts', 150, 1.1, false, 'Price for compact economic cars.', false, 0.2, 0.1); /*4*/
 INSERT INTO agent.pricelist(
-    id, owner, name, price_per_day, price_per_km, cdw, description, deleted)
-    VALUES (nextval('pricelist_id_seq'), 1, 'Modern sedans', 160, 1.5, true, 'Price for modern sedans', false); /*5*/
+    id, owner, name, price_per_day, price_per_km, cdw, description, deleted, discount, penalty)
+    VALUES (nextval('pricelist_id_seq'), 1, 'Modern sedans', 160, 1.5, true, 'Price for modern sedans', false, 0.3, 0.2); /*5*/
 
 INSERT INTO agent.vehicle( -- BMW X5 1
     id, brand_id, model_id, category_id, transmission_id, fuel_id, seats, child_seats, mileage, cdw, pricelist_id, number_of_stars, number_of_reviews, location_latitude, location_longitude, deleted, owner_id, available_mileage)

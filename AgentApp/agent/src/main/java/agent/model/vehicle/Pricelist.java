@@ -43,6 +43,12 @@ public class Pricelist implements Serializable {
     @Column(name = "deleted")
     private boolean deleted = false;
 
+    @Column(name = "discount")
+    private double discount;
+
+    @Column(name = "penalty")
+    private double penalty;
+
     public Pricelist() {
     }
 
@@ -52,7 +58,9 @@ public class Pricelist implements Serializable {
                      long pricePerDay,
                      long pricePerKm,
                      boolean cdw,
-                     String description) {
+                     String description,
+                     double discount,
+                     double penalty) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -60,6 +68,8 @@ public class Pricelist implements Serializable {
         this.pricePerKm = pricePerKm;
         this.cdw = cdw;
         this.description = description;
+        this.discount = discount;
+        this.penalty = penalty;
     }
 
     public Pricelist(Long id,
@@ -69,6 +79,8 @@ public class Pricelist implements Serializable {
                      long pricePerKm,
                      boolean cdw,
                      String description,
+                     double discount,
+                     double penalty,
                      List<Vehicle> vehicles) {
         this.id = id;
         this.ownerId = ownerId;
@@ -77,6 +89,8 @@ public class Pricelist implements Serializable {
         this.pricePerKm = pricePerKm;
         this.cdw = cdw;
         this.description = description;
+        this.discount = discount;
+        this.penalty = penalty;
         this.vehicles = vehicles;
     }
 
@@ -150,5 +164,21 @@ public class Pricelist implements Serializable {
 
     public void setCdw(boolean cdw) {
         this.cdw = cdw;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(double penalty) {
+        this.penalty = penalty;
     }
 }

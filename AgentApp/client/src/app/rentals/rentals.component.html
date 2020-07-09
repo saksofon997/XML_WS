@@ -308,7 +308,7 @@
           List of cars
       -->
       <div class="teaser" style="padding: 0.01em;" *ngFor="let car of cars" (click)="showVehicle(car)">
-        <app-car-teaser [car]=car [from]="from()" [to]="to()">
+        <app-car-teaser [car]=car [from]="from" [to]="to">
         </app-car-teaser>
       </div>
 
