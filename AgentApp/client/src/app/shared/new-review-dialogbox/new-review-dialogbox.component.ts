@@ -1,6 +1,8 @@
 import { Component, Optional, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Review } from 'src/app/models/Review.model';
+import { Car } from 'src/app/models/Car.model';
+import { RentalFront } from 'src/app/models/Rental.model';
 
 @Component({
   selector: 'app-new-review-dialogbox',

@@ -26,9 +26,6 @@ export class CarTeaserComponent implements OnInit {
   }
 
   ngOnInit() {
-    // TEMP FOR TESTING SHOPPING CART SERVICE
-    this.from = 1592406000;
-    this.to = 1592578800;
   }
 
   checkMileage(mileage) {
@@ -46,9 +43,6 @@ export class CarTeaserComponent implements OnInit {
 
   addToCart($event) {
     $event.stopPropagation();
-    //TODO start - end time
-    this.from = 1592406000;
-    this.to = 1592578800;
 
     let rental = new RentalFront(null, this.car, this.from, this.to, null, null, null, this.car.ownerId);
     rental.customerId = this.userService.getUser().id;

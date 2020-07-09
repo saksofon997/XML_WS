@@ -9,6 +9,8 @@ public class PricelistDTO {
     private long pricePerKm;
     private boolean cdw;
     private String description;
+    private double discount;
+    private double penalty;
 
     public PricelistDTO() {
     }
@@ -19,7 +21,9 @@ public class PricelistDTO {
                         long pricePerDay,
                         long pricePerKm,
                         boolean cdw,
-                        String description) {
+                        String description,
+                        double discount,
+                        double penalty) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
@@ -27,6 +31,8 @@ public class PricelistDTO {
         this.pricePerKm = pricePerKm;
         this.cdw = cdw;
         this.description = description;
+        this.discount = discount;
+        this.penalty = penalty;
     }
 
     public Long getId() {
@@ -83,5 +89,21 @@ public class PricelistDTO {
 
     public void setCdw(boolean cdw) {
         this.cdw = cdw;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(double penalty) {
+        this.penalty = penalty;
     }
 }

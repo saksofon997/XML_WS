@@ -13,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./pricelist-table.component.css']
 })
 export class PricelistTableComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'pricePerDay', 'cdw', 'pricePerKm', 'action'];
+  displayedColumns: string[] = ['name', 'pricePerDay', 'cdw', 'pricePerKm', 'discount', 'penalty', 'action'];
   dataSource: Pricelist[];
   userId = 1;
 
@@ -27,7 +27,7 @@ export class PricelistTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.userService.getUser().id;
-    this.getPricelists(this.userId);
+    this.getPricelists(this.userId); //TODO users
   }
 
   getPricelists(userId: number) {

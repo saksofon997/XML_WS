@@ -18,6 +18,12 @@
         <input [disabled]="getDisabledValue()" placeholder="Price per kilometer" matInput [(ngModel)]="local_data.pricePerKm">
       </mat-form-field>
       <mat-form-field>
+        <input [disabled]="getDisabledValue()" placeholder="Discount" matInput [(ngModel)]="local_data.discount">
+      </mat-form-field>
+      <mat-form-field>
+        <input [disabled]="getDisabledValue()" placeholder="Penalty" matInput [(ngModel)]="local_data.penalty">
+      </mat-form-field>
+      <mat-form-field>
         <input [disabled]="getDisabledValue()" placeholder="Description" matInput [(ngModel)]="local_data.description">
       </mat-form-field>
     </div>
