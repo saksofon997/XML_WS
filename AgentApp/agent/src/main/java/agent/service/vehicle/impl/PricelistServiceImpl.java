@@ -48,9 +48,14 @@ public class PricelistServiceImpl implements PricelistService {
     }
 
     @Override
-    public PricelistDTO add(PricelistDTO pricelistDTO) throws ConversionFailedError, DuplicateEntity {
+    public PricelistDTO add(PricelistDTO pricelistDTO, Boolean isAgent) throws ConversionFailedError, DuplicateEntity {
 
         Pricelist newPricelist = convertToModel(pricelistDTO);
+
+        if(!isAgent) {
+            newPricelist.setDiscount(0);
+            newPricelist.setPenalty(0);
+        }
 
         if (!pricelistRepo.existsByNameAndOwnerId(pricelistDTO.getName(), pricelistDTO.getOwnerId())) {
             Pricelist savedPriceList = pricelistRepo.save(newPricelist);

@@ -12,6 +12,7 @@ import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
 import vehicle.service.PricelistService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -25,10 +26,12 @@ public class PricelistController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('CREATE_PRICELIST_PERMISSION')")
-    public ResponseEntity<PricelistDTO> createNew(@RequestBody PricelistDTO pricelistDTO)
+    public ResponseEntity<PricelistDTO> createNew(HttpServletRequest request, @RequestBody PricelistDTO pricelistDTO)
             throws ConversionFailedError, DuplicateEntity {
 
-        PricelistDTO added = pricelistService.add(pricelistDTO);
+        Boolean isAgent = (Boolean) request.getAttribute("isAgent");
+
+        PricelistDTO added = pricelistService.add(pricelistDTO, isAgent);
 
         return new ResponseEntity<>(pricelistDTO, HttpStatus.ACCEPTED);
     }

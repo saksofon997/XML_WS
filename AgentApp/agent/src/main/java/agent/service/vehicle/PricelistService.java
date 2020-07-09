@@ -10,7 +10,7 @@ import agent.model.vehicle.Pricelist;
 import java.util.List;
 
 public interface PricelistService {
-    PricelistDTO add(PricelistDTO pricelistDTO) throws ConversionFailedError, DuplicateEntity;
+    PricelistDTO add(PricelistDTO pricelistDTO, Boolean isAgent) throws ConversionFailedError, DuplicateEntity;
 
     PricelistDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 

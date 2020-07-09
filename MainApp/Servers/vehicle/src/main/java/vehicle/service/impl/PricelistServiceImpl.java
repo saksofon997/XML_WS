@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saga.commands.TypeOfCommand;
 import saga.commands.priceListCommands.MainPriceListCommand;
-import saga.dto.ModelDTO;
 import saga.dto.PricelistDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.exceptions.DuplicateEntity;
 import vehicle.exceptions.EntityNotFound;
-import vehicle.model.Model;
 import vehicle.model.Pricelist;
 import vehicle.repository.PricelistRepo;
 import vehicle.repository.VehicleRepo;
@@ -57,9 +55,14 @@ public class PricelistServiceImpl implements PricelistService {
     }
 
     @Override
-    public PricelistDTO add(PricelistDTO pricelistDTO) throws ConversionFailedError, DuplicateEntity {
+    public PricelistDTO add(PricelistDTO pricelistDTO, Boolean isAgent) throws ConversionFailedError, DuplicateEntity {
 
         Pricelist newPricelist = convertToModel(pricelistDTO);
+
+        if(!isAgent) {
+            newPricelist.setDiscount(0);
+            newPricelist.setPenalty(0);
+        }
 
         if (!pricelistRepo.existsByNameAndOwnerId(pricelistDTO.getName(), pricelistDTO.getOwnerId())) {
             Pricelist savedPriceList = pricelistRepo.save(newPricelist);
