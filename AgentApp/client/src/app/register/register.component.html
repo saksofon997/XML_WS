@@ -1,0 +1,79 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <div class="card">
+      <h4 class="card-header">Register to Clinical System</h4>
+      <div class="card-body">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" name="email" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.email.errors }" class="form-control" formControlName="email" placeholder="example@kcv.rs"/>
+                    <div *ngIf="submitted && loginForm.controls.email.errors" class="invalid-feedback">
+                        <div *ngIf="loginForm.controls.email.errors.required">Email is required</div>
+                        <div *ngIf="loginForm.controls.email.errors.email">Email must be a valid email address</div>
+                    </div>
+              </div>
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password"  name="password" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.password.errors }" class="form-control" formControlName="password" placeholder="******"/>
+                    <div *ngIf="submitted && loginForm.controls.password.errors" class="invalid-feedback">
+                        <div *ngIf="loginForm.controls.password.errors.required">Password is required</div>
+                        <div *ngIf="loginForm.controls.password.errors.minlength">Password is at least 6 characters long</div>
+                        <div *ngIf="loginForm.controls.password.errors.maxlength">Password is maximum 24 characters long</div>
+                    </div>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm password</label>
+                <input type="password" name="confirmPassword" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.confirmPassword.errors }" class="form-control" formControlName="confirmPassword" placeholder="******"/>
+                  <div *ngIf="submitted && loginForm.controls.confirmPassword.errors" class="invalid-feedback">
+                    <div *ngIf="loginForm.controls.confirmPassword.errors.required">Password is required</div>
+                    <div *ngIf="loginForm.controls.confirmPassword.errors.minlength">Password is at least 6 characters long</div>
+                    <div *ngIf="loginForm.controls.confirmPassword.errors.maxlength">Password is maximum 24 characters long</div>
+                    <div *ngIf="loginForm.controls.confirmPassword.errors.mustMatch">Passwords must match</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.name.errors }" class="form-control" formControlName="name" placeholder=""/>
+                  <div *ngIf="submitted && loginForm.controls.name.errors" class="invalid-feedback">
+                      <div *ngIf="loginForm.controls.name.errors.required">Name is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="surname">Surname</label>
+                <input type="text" name="surname" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.surname.errors }" class="form-control" formControlName="surname" placeholder=""/>
+                  <div *ngIf="submitted && loginForm.controls.surname.errors" class="invalid-feedback">
+                      <div *ngIf="loginForm.controls.surname.errors.required">Surname is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" name="address" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.address.errors }" class="form-control" formControlName="address" placeholder=""/>
+                  <div *ngIf="submitted && loginForm.controls.address.errors" class="invalid-feedback">
+                      <div *ngIf="loginForm.controls.address.errors.required">Address is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" name="city" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.city.errors }" class="form-control" formControlName="city" placeholder=""/>
+                  <div *ngIf="submitted && loginForm.controls.city.errors" class="invalid-feedback">
+                      <div *ngIf="loginForm.controls.city.errors.required">City is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" name="state" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.state.errors }" class="form-control" formControlName="state" placeholder=""/>
+                  <div *ngIf="submitted && loginForm.controls.state.errors" class="invalid-feedback">
+                      <div *ngIf="loginForm.controls.state.errors.required">State is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone number</label>
+                <input type="text" name="phoneNumber" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.phoneNumber.errors }" class="form-control" formControlName="phoneNumber" placeholder=""/>
+                  <div *ngIf="submitted && loginForm.controls.phoneNumber.errors" class="invalid-feedback">
+                      <div *ngIf="loginForm.controls.phoneNumber.errors.required">Phone number is required</div>
+                  </div>
+              </div>
+              <button class="btn btn-primary">Submit</button>
+          </form>
+      </div>
+  </div>
+</div>

@@ -4,17 +4,18 @@
       src="assets/images/logo.png" alt=""></a>
 
   <div class="navbar-brand links">
-    <a class="p-2 link" href="/vehicle-administration">Vehicle Administration</a>
-    <a class="p-2 link" href="/customer">Customer</a>
-    <a class="p-2 link" href="/rentals">Rentals</a>
-    <a class="p-2 link" href="/chat">Chat</a>
+    <a class="p-2 link" routerLink="/administration" routerLinkActive="active" *ngIf="administrator()">Administration</a>
+    <a class="p-2 link" href="/vehicle-administration" *ngIf="owner()">Owner dashboard</a>
+    <a class="p-2 link" href="/customer" *ngIf="this.userService.checkLoggedIn()">My rentals</a>
+    <a class="p-2 link" href="/chat" *ngIf="this.userService.checkLoggedIn()">Chat</a>
+    <a class="p-2 link" href="/rentals">Search vehicles</a>
 
     <!-- <a class="p-2 link" routerLink="/vehicle" routerLinkActive="active">Vehicle</a> -->
-    <a class="p-2 link" routerLink="/administration" routerLinkActive="active">Administration</a>
-    <mat-icon routerLink="/shopping-cart">shopping_cart</mat-icon>
+    <mat-icon routerLink="/shopping-cart" *ngIf="this.userService.checkLoggedIn()">shopping_cart</mat-icon>
 
   </div>
-  <a class="btn btn-outline-danger" href="/login">Login</a>
+  <a class="btn btn-outline-danger" *ngIf="!this.userService.checkLoggedIn()" href="/login">Login</a>
+  <a class="btn btn-outline-danger" *ngIf="this.userService.checkLoggedIn()" (click)="logout()">Logout</a>
 
 </nav>
 <div id="bottom">

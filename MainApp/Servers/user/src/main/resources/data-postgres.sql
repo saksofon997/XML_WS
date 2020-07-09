@@ -71,6 +71,10 @@ INSERT INTO users.permission(
     id, name)
     VALUES (nextval('permissions_id_seq'), 'DELETE_VEHICLE_OCCUPANCY'); /*22*/
 
+INSERT INTO users.permission(
+    id, name)
+    VALUES (nextval('permissions_id_seq'), 'COMPANY_ADMINISTRATION'); /*23*/
+
 
 INSERT INTO users.role(
     id, name)
@@ -137,6 +141,9 @@ INSERT INTO users.role_permission(
 INSERT INTO users.role_permission(
     roles_id, permissions_id)
     VALUES (1, 22);
+INSERT INTO users.role_permission(
+    roles_id, permissions_id)
+    VALUES (1, 23);
 
 /*Add permissions to other users after consulting*/
 INSERT INTO users.role_permission(
@@ -238,4 +245,4 @@ INSERT INTO users.user_role(
 
 INSERT INTO users.company(
     id, cid, name)
-    VALUES (nextval('company_id_seq'), '123456', 'PICICI DOO');
+    VALUES (nextval('company_id_seq'), '123456', 'PERUN doo');

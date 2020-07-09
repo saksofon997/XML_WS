@@ -70,7 +70,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidEmailOrPasswordError.class)
     protected ResponseEntity<Object> handleInvalidEmailorPasswordError(
             InvalidEmailOrPasswordError ex) {
-        ApiError apiError = new ApiError(INTERNAL_SERVER_ERROR);
+        ApiError apiError = new ApiError(UNPROCESSABLE_ENTITY);
         apiError.setMessage(ex.getMessage());
         apiError.setEx(ex);
         return buildResponseEntity(apiError);

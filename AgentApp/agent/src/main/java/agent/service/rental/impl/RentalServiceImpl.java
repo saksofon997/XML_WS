@@ -110,9 +110,24 @@ public class RentalServiceImpl implements RentalService {
             occupied.setType("RENTAL");
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
             vehicleOccupancyService.add(saved.getVehicleId(), occupied);
+        } else if (saved.getStatus().equals(RentalStatus.CANCELED)) {
+            this.rejectRentalsFromBundle(saved.getBundle());
         }
 
         return convertToDTO(saved);
+    }
+
+    private void rejectRentalsFromBundle(Bundle bundle) {
+        if (bundle == null) {
+            return;
+        }
+        List<Rental> rentals = rentalRepository.findAllByBundle(bundle);
+        for (Rental rental: rentals) {
+            if (rental.getStatus() != RentalStatus.CANCELED){
+                rental.setStatus(RentalStatus.CANCELED);
+                rentalRepository.save(rental);
+            }
+        }
     }
 
     public void updateViaMQ(Long id, RentalDTO rentalDTO){

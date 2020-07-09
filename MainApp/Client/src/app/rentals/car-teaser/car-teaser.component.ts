@@ -43,8 +43,11 @@ export class CarTeaserComponent implements OnInit {
 
   addToCart($event) {
     $event.stopPropagation();
-    //TODO start - end time - should worK?
-
+    //TODO start - end time
+    if (!this.userService.checkLoggedIn()) {
+      alert("Please log in");
+      return;
+    }
     let rental = new RentalFront(null, this.car, this.from, this.to, null, null, null, this.car.ownerId);
     rental.customerId = this.userService.getUser().id;
     this.shoppingCartService.addRentalToCart(rental);

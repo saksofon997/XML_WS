@@ -148,9 +148,24 @@ public class RentalServiceImpl implements RentalService {
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
             // TODO: remove other rental requests for same vehicle in this period
             commandGateway.send(new RentalReservedCommand(saved.getId(), occupied, saved.getVehicleId()));
+        } else if (saved.getStatus().equals(RentalStatus.CANCELED)) {
+            this.rejectRentalsFromBundle(saved.getBundle());
         }
 
         return convertToDTO(saved);
+    }
+
+    private void rejectRentalsFromBundle(Bundle bundle) {
+        if (bundle == null) {
+            return;
+        }
+        List<Rental> rentals = rentalRepository.findAllByBundle(bundle);
+        for (Rental rental: rentals) {
+            if (rental.getStatus() != RentalStatus.CANCELED){
+                rental.setStatus(RentalStatus.CANCELED);
+                rentalRepository.save(rental);
+            }
+        }
     }
 
     @Override

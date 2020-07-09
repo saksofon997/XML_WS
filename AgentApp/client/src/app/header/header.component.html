@@ -12,8 +12,8 @@
     <mat-icon routerLink="/shopping-cart">shopping_cart</mat-icon>
 
   </div>
-  <a class="btn btn-outline-danger" href="/login">Login</a>
-
+  <a class="btn btn-outline-danger" *ngIf="!this.userService.checkLoggedIn()" href="/login">Login</a>
+  <a class="btn btn-outline-danger" *ngIf="this.userService.checkLoggedIn()" (click)="logout()">Logout</a>
 </nav>
 <div id="bottom">
 </div>

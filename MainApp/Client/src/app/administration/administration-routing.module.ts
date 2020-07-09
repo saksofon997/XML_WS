@@ -8,6 +8,7 @@ import { FuelTableComponent } from './fuel-table/fuel-table.component';
 import { TransmissionTableComponent } from './transmission-table/transmission-table.component';
 import { PendingReviewsComponent } from './pending-reviews/pending-reviews.component';
 import { UserAdministrationComponent } from './user-administration/user-administration.component';
+import { CompanyAdministrationComponent } from './company-administration/company-administration.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,8 @@ const routes: Routes = [
       { path: 'transmission', component: TransmissionTableComponent },
       { path: 'pending-reviews', component: PendingReviewsComponent },
       { path: 'users', component: UserAdministrationComponent },
+      { path: 'companies', component: CompanyAdministrationComponent },
+
     ]
   },
   { path: '**', redirectTo: '' }
