@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import saga.dto.VehicleOccupancyDTO;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -58,7 +57,7 @@ public class RentalMQConsumer {
         }
         if(result instanceof RentalDTO){
             String checkCid = ((RentalDTO)result).getCid();
-            if ( checkCid == null || checkCid.equals(this.cid) ){
+            if ( checkCid == null || !checkCid.equals(this.cid) ){
                 return;
             }
             if(message.getMessageProperties().getHeader("rentalID") != null) {
@@ -72,7 +71,7 @@ public class RentalMQConsumer {
                 try {
                     Long msId = ((RentalDTO)result).getId();
                     ((RentalDTO)result).setCustomerId(null);
-
+                    // TODO: get owner and maybe vehicle mapping
                     RentalDTO saved = rentalService.add((RentalDTO)result, true);
                     if(saved != null) {
                         RentalMapping rentalMapping = new RentalMapping();

@@ -37,10 +37,10 @@ export class RentalBack {
   bundle: Bundle = null;
   report: RentalReport;
   status: string;
-  company: any;
+  cid: any;
 
   constructor(id: number, vehicleId: number, customerId: number, ownerId: number,
-    startTime: number, endTime: number, bundle: Bundle, report: RentalReport, status: string, company: any) {
+    startTime: number, endTime: number, bundle: Bundle, report: RentalReport, status: string, cid: any) {
     this.id = id;
     this.vehicleId = vehicleId;
     this.customerId = customerId;
@@ -50,6 +50,6 @@ export class RentalBack {
     this.bundle = bundle;
     this.report = report;
     this.status = status;
-    this.company = company;
+    this.cid = cid;
   }
 }

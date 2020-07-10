@@ -89,6 +89,7 @@ public class SearchServiceImpl implements SearchService {
             vehicleDTO.setImages(vehicle.getImages());
             vehicleDTO.setOwnerId(vehicle.getOwnerId());
             vehicleDTO.setAvailableMileage(vehicle.getAvailableMileage());
+            vehicleDTO.setCid(vehicle.getCid());
             return vehicleDTO;
         } catch (Exception e) {
             throw new ConversionFailedError("Internal server error");

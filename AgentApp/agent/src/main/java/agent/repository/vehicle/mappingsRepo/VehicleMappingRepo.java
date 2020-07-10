@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VehicleMappingRepo extends JpaRepository<VehicleMapping, Long> {
     VehicleMapping findByVehicleAgentId(Vehicle vehicle);
+
+    VehicleMapping findByVehicleBackId(Long id);
 }

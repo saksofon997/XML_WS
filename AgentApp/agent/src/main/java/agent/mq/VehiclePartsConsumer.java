@@ -3,6 +3,7 @@ package agent.mq;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
+import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
 import agent.service.vehicle.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,9 @@ public class VehiclePartsConsumer {
     VehicleOccupancyService vehicleOccupancyService;
 
     @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
+
+    @Autowired
     DozerBeanMapper mapper;
 
     @RabbitListener(queues = {"${queue.vehicleParts.name}"})
@@ -54,6 +58,7 @@ public class VehiclePartsConsumer {
         }catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
+
         if (result instanceof saga.dto.FuelDTO) {
             fuelService.addFuelViaMQ((saga.dto.FuelDTO)result);
             System.out.println("Result: " + ((FuelDTO) result).getName());
@@ -75,7 +80,12 @@ public class VehiclePartsConsumer {
             System.out.println("Result: " + ((saga.dto.BrandDTO) result).getName());
         }
         if (result instanceof saga.dto.VehicleOccupancyDTO) {
-            Long vehicleID = testMessage.getMessageProperties().getHeader("vehicleID");
+            Long vehicleID = null;
+            try {
+                vehicleID = vehicleMappingRepo.findByVehicleBackId(testMessage.getMessageProperties().getHeader("vehicleID")).getVehicleAgentId().getId();
+            } catch (Exception e) {
+                return;
+            }
             vehicleOccupancyService.add(vehicleID, mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class), true);
             System.out.println("Result: " + (mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class)).getType() + " occupancy");
         }
