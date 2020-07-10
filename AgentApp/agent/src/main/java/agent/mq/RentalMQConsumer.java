@@ -63,6 +63,7 @@ public class RentalMQConsumer {
         }
         if(result instanceof saga.dto.VehicleOccupancyDTO){
             if(message.getMessageProperties().getHeader("vehicleID") != null) {
+                // Todo: add occupancy instead of rejecting
                 rentalService.rejectRentalsFromTo(message.getMessageProperties().getHeader("vehicleID"),
                         mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class), message.getMessageProperties().getHeader("excludeID"));
             }

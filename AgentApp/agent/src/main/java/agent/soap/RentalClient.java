@@ -25,4 +25,5 @@ public class RentalClient extends WebServiceGatewaySupport {
         System.out.println("RentalDTO: " + response.getValue().getId() + " " + response.getValue().getCustomerId());
         return response;
     }
+    // Todo: update rental
 }

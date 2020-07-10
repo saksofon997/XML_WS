@@ -1,5 +1,6 @@
 package rental.dto;
 
+import javax.persistence.Column;
 import java.util.Objects;
 
 public class RentalDTO {
@@ -13,8 +14,9 @@ public class RentalDTO {
     private BundleDTO bundle;
     private RentalStatus status;
     private RentalReportDTO report;
+    private String cid;
 
-    public RentalDTO(Long id, Long vehicleId, Long customerId, Long ownerId, long startTime, long endTime, BundleDTO bundle, RentalStatus status, RentalReportDTO report) {
+    public RentalDTO(Long id, Long vehicleId, Long customerId, Long ownerId, long startTime, long endTime, BundleDTO bundle, RentalStatus status, RentalReportDTO report, String cid) {
         this.id = id;
         this.vehicleId = vehicleId;
         this.customerId = customerId;
@@ -24,6 +26,7 @@ public class RentalDTO {
         this.bundle = bundle;
         this.status = status;
         this.report = report;
+        this.cid = cid;
     }
 
     public RentalDTO() {
@@ -99,6 +102,14 @@ public class RentalDTO {
 
     public void setReport(RentalReportDTO report) {
         this.report = report;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 
     @Override

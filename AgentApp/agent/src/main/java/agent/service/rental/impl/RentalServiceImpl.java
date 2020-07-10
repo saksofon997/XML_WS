@@ -87,6 +87,7 @@ public class RentalServiceImpl implements RentalService {
         return null;
     }
 
+    // Todo: flag to prevent cycle
     @Override
     public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity {
         Optional<Rental> rental = rentalRepository.findById(id);
@@ -101,6 +102,7 @@ public class RentalServiceImpl implements RentalService {
 
         rental.get().setStatus(rentalDTO.getStatus());
         Rental saved = rentalRepository.save(rental.get());
+        // Todo: send SOAP
         System.out.println(saved.getStatus());
 
         if (saved.getStatus().equals(RentalStatus.RESERVED)) {

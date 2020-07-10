@@ -22,6 +22,7 @@ public class VehicleDTO {
     private List<String> images;
     private Long ownerId;
     private long availableMileage;
+    private String cid;
 
     public VehicleDTO() {
     }
@@ -193,5 +194,13 @@ public class VehicleDTO {
 
     public void setAvailableMileage(long availableMileage) {
         this.availableMileage = availableMileage;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }

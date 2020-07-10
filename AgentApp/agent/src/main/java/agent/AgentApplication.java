@@ -293,6 +293,7 @@ public class AgentApplication {
 			// Todo: mappings for rental report & (?) Customer (?)
 			RentalDTO rentalDTOtoSend = convertRentalToSOAPDTO(rental, vehicleMapping.getVehicleBackId(), backBundleId, ownerMapping.getUserBackId());
 			// Send rental to MS and map the ID.
+			rentalDTOtoSend.setCustomerId(null);
 			RentalDTO savedRentalDTO = rentalClient.addRental(rentalDTOtoSend).getValue();
 			if(savedRentalDTO != null) {
 				RentalMapping rentalMapping = new RentalMapping();

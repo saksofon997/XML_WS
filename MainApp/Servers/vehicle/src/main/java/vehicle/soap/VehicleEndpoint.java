@@ -5,6 +5,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import saga.dto.VehicleOccupancyDTO;
 import vehicle.exceptions.ConversionFailedError;
 import vehicle.service.*;
 import vehicle.soap.arrays.*;
@@ -123,6 +124,22 @@ public class VehicleEndpoint implements WSEndpoint{
         return objectFactory.createNewVehicleResponse(savedVehicle);
     }
 
+    // Todo: adapt
+    // Vehicle: add new vehicle
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createOccupancyRequest")
+    @ResponsePayload
+    public JAXBElement<Boolean> createoccupancy(@RequestPayload JAXBElement<VehicleOccupancyDTO> occupancy) {
+//        Vehicle vehicleReal = vehicle.getValue();
+//        vehicleReal.setId(null);
+//        Long savedVehicle = null;
+//        try {
+//            savedVehicle = vehicleService.addViaSoap(vehicleReal);
+//        } catch (ConversionFailedError conversionFailedError) {
+//            conversionFailedError.printStackTrace();
+//            return objectFactory.createNewVehicleResponse(-1L);
+//        }
+        return objectFactory.createOccupancyResponse(new Boolean(true));
+    }
 //    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getTransmissionRequest")
 //    @ResponsePayload
 //    public JAXBElement<TransmissionDTO> getBrandName() {

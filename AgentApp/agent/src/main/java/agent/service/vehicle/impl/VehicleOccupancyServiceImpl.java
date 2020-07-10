@@ -77,7 +77,7 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
         return vehicleOccupancyDTOS;
     }
-
+    // Todo: flag to prevent cycle
     @Override
     public VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO)
             throws ConversionFailedError, DuplicateEntity, EntityNotFound {
@@ -86,7 +86,7 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
         if(checkAvailable(vehicleId, newOccupancy)) {
             VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
-
+            // Todo: send via SOAP
             if (saved.getType().equals("MANUAL")) {
                 rentalService.rejectRentalsFromTo(saved.getVehicle().getId(), vehicleOccupancyDTO, null);
             }

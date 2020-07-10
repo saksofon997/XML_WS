@@ -42,4 +42,7 @@ public class Rental {
 
     @Column(name = "deleted")
     private boolean deleted = false;
+
+    @Column(name = "cid")
+    private String cid;
 }
