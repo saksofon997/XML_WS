@@ -25,7 +25,7 @@ public class RentalController {
     @PreAuthorize("hasAuthority('CREATE_RENTAL_PERMISSION')")
     public ResponseEntity<RentalDTO> createNew(@RequestBody RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError, EntityNotFound {
 
-        RentalDTO added = rentalService.add(rentalDTO);
+        RentalDTO added = rentalService.add(rentalDTO, false);
 
         return new ResponseEntity<>(added, HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class RentalController {
             throw new EntityNotFound("Invalid owner request");
         }
 
-        RentalDTO updated = rentalService.update(id, rentalDTO);
+        RentalDTO updated = rentalService.update(id, rentalDTO, false);
 
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

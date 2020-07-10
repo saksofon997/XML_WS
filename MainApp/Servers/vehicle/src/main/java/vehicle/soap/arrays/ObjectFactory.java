@@ -135,11 +135,11 @@ public class ObjectFactory {
     public JAXBElement<Long> createNewVehicleResponse(Long value) {
         return new JAXBElement<>(QNames.createNewVehicleResponse, Long.class, null, value);
     }
-    // Todo: adapt
+
     // Vehicle : add One
     @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createOccupancyRequest")
-    public JAXBElement<VehicleOccupancyDTO> createOccupancyRequest(VehicleOccupancyDTO value) {
-        return new JAXBElement<>(QNames.createOccupancyRequest, VehicleOccupancyDTO.class, null, value);
+    public JAXBElement<vehicle.soap.dtos.VehicleOccupancyDTO> createOccupancyRequest(vehicle.soap.dtos.VehicleOccupancyDTO value) {
+        return new JAXBElement<>(QNames.createOccupancyRequest, vehicle.soap.dtos.VehicleOccupancyDTO.class, null, value);
     }
     @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createOccupancyResponse")
     public JAXBElement<Boolean> createOccupancyResponse(Boolean value) {

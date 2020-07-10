@@ -19,7 +19,7 @@ public class RentalReservedAggregate {
     public RentalReservedAggregate(RentalVehicleOccupancyAddCommand rentalVehicleOccupancyAddCommand, VehicleOccupancyService vehicleOccupancyService) {
         System.out.println("Rental reserved -> vehicle occupancy update");
         try{
-            vehicleOccupancyService.add(rentalVehicleOccupancyAddCommand.getVehicleId(), rentalVehicleOccupancyAddCommand.getOccupancyDTO());
+            vehicleOccupancyService.add(rentalVehicleOccupancyAddCommand.getVehicleId(), rentalVehicleOccupancyAddCommand.getOccupancyDTO(), false);
             AggregateLifecycle.apply(new RentalVehicleOccupancyAddEvent(rentalVehicleOccupancyAddCommand.getRentalReservedAggregateId()));
         } catch (Exception e) {
             System.out.println(e.getMessage());

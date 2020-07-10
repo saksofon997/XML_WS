@@ -22,8 +22,16 @@ public class RentalClient extends WebServiceGatewaySupport {
                 new JAXBElement(new QName("http://www.vehicle.com/rental","createNewRentalRequest"),
                         RentalDTO.class, rentalDTO);
         JAXBElement<RentalDTO> response = (JAXBElement<RentalDTO>) getWebServiceTemplate().marshalSendAndReceive(jaxbElement);
-        System.out.println("RentalDTO: " + response.getValue().getId() + " " + response.getValue().getCustomerId());
+        System.out.println("RentalDTO: " + response.getValue().getId() + " Owner: " + response.getValue().getOwnerId());
         return response;
     }
-    // Todo: update rental
+
+    public JAXBElement<RentalDTO> updateRental(RentalDTO rentalDTO){
+        JAXBElement<RentalDTO> jaxbElement =
+                new JAXBElement(new QName("http://www.vehicle.com/rental","createUpdateRentalRequest"),
+                        RentalDTO.class, rentalDTO);
+        JAXBElement<RentalDTO> response = (JAXBElement<RentalDTO>) getWebServiceTemplate().marshalSendAndReceive(jaxbElement);
+        System.out.println("RentalDTO: " + response.getValue().getId() + " Owner: " + response.getValue().getOwnerId());
+        return response;
+    }
 }

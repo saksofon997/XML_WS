@@ -7,6 +7,7 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import rental.dto.BundleDTO;
 import rental.dto.RentalDTO;
+import rental.exceptions.ConflictException;
 import rental.exceptions.ConversionFailedError;
 import rental.exceptions.DuplicateEntity;
 import rental.exceptions.EntityNotFound;
@@ -37,6 +38,7 @@ public class RentalEndpoint implements WSEndpoint{
     public JAXBElement<RentalDTO> createNewRental(@RequestPayload JAXBElement<RentalDTO> rental) {
         RentalDTO rentalDTO = rental.getValue();
         rentalDTO.setId(null);
+        rentalDTO.setCustomerId(null);
         RentalDTO savedRental = null;
         try {
            savedRental = rentalService.addViaSOAP(rentalDTO);
@@ -49,6 +51,24 @@ public class RentalEndpoint implements WSEndpoint{
             exception.printStackTrace();
         }
         return objectFactory.createNewRentalResponse(savedRental);
+    }
+
+    // Rental: update rental
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createUpdateRentalRequest")
+    @ResponsePayload
+    public JAXBElement<RentalDTO> updateRental(@RequestPayload JAXBElement<RentalDTO> rental) {
+        RentalDTO rentalDTO = rental.getValue();
+        rentalDTO.setId(null);
+        RentalDTO savedRental = null;
+        try {
+            savedRental = rentalService.update(rentalDTO.getVehicleId(), rentalDTO, true);
+        } catch (ConversionFailedError | EntityNotFound | ConflictException conversionFailedError) {
+            conversionFailedError.printStackTrace();
+            RentalDTO errorDTO = new RentalDTO();
+            errorDTO.setId(-1L);
+            return objectFactory.createUpdateRentalResponse(errorDTO);
+        }
+        return objectFactory.createUpdateRentalResponse(savedRental);
     }
 
     // Bundle: add new bundle

@@ -16,7 +16,7 @@ public interface RentalService {
 
     RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException;
+    RentalDTO update(Long id, RentalDTO rentalDTO, boolean overSoap) throws EntityNotFound, ConversionFailedError, ConflictException;
 
     void delete(Long id) throws EntityNotFound;
 

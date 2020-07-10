@@ -1,8 +1,12 @@
 package agent.mq;
 
+import agent.exceptions.ConversionFailedError;
+import agent.exceptions.DuplicateEntity;
+import agent.exceptions.EntityNotFound;
 import agent.service.vehicle.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.dozer.DozerBeanMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +33,14 @@ public class VehiclePartsConsumer {
     @Autowired
     ModelService modelService;
 
+    @Autowired
+    VehicleOccupancyService vehicleOccupancyService;
+
+    @Autowired
+    DozerBeanMapper mapper;
+
     @RabbitListener(queues = {"${queue.vehicleParts.name}"})
-    public void receive(@Payload Message testMessage){
+    public void receive(@Payload Message testMessage) throws ConversionFailedError, EntityNotFound, DuplicateEntity {
         String className = testMessage.getMessageProperties().getHeader("__TypeId__");
         System.out.println("Pristigla poruka: " + testMessage);
         System.out.println("Class: " + testMessage.getMessageProperties().getHeader("__TypeId__"));
@@ -64,7 +74,11 @@ public class VehiclePartsConsumer {
             brandService.addBrandViaMQ((saga.dto.BrandDTO)result);
             System.out.println("Result: " + ((saga.dto.BrandDTO) result).getName());
         }
-
+        if (result instanceof saga.dto.VehicleOccupancyDTO) {
+            Long vehicleID = testMessage.getMessageProperties().getHeader("vehicleID");
+            vehicleOccupancyService.add(vehicleID, mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class), true);
+            System.out.println("Result: " + (mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class)).getType() + " occupancy");
+        }
     }
 
 }

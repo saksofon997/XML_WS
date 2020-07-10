@@ -11,8 +11,10 @@ export class RentalFront {
   report: RentalReport;
   customerId: number;
   ownerId: number;
+  company: any;
 
-  constructor(id: number, car: Car, from: number, to: number, bundle: string, report: RentalReport, customerId: number, ownerId: number) {
+  constructor(id: number, car: Car, from: number, to: number, bundle: string, report: RentalReport, customerId: number,
+     ownerId: number, company: any) {
     this.id = id;
     this.car = car;
     this.from = from;
@@ -21,6 +23,7 @@ export class RentalFront {
     this.report = report;
     this.customerId = customerId;
     this.ownerId = ownerId;
+    this.company = company;
   }
 }
 
@@ -34,9 +37,10 @@ export class RentalBack {
   bundle: Bundle = null;
   report: RentalReport;
   status: string;
+  company: any;
 
   constructor(id: number, vehicleId: number, customerId: number, ownerId: number,
-    startTime: number, endTime: number, bundle: Bundle, report: RentalReport, status: string) {
+    startTime: number, endTime: number, bundle: Bundle, report: RentalReport, status: string, company: any) {
     this.id = id;
     this.vehicleId = vehicleId;
     this.customerId = customerId;
@@ -46,5 +50,6 @@ export class RentalBack {
     this.bundle = bundle;
     this.report = report;
     this.status = status;
+    this.company = company;
   }
 }

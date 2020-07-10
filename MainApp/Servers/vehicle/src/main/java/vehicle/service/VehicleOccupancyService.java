@@ -11,7 +11,7 @@ import java.util.List;
 public interface VehicleOccupancyService {
     List<VehicleOccupancyDTO> getAll(Long vehicleId) throws EntityNotFound, ConversionFailedError;
 
-    VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, DuplicateEntity, EntityNotFound;
+    VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO, boolean overSoap) throws ConversionFailedError, DuplicateEntity, EntityNotFound;
 
     VehicleOccupancyDTO update(Long vehicleId, Long id, VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, EntityNotFound, DuplicateEntity;
 

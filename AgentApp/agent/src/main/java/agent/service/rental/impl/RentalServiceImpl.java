@@ -64,7 +64,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO add(RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError {
+    public RentalDTO add(RentalDTO rentalDTO, boolean overMq) throws EntityNotFound, ConversionFailedError {
         Rental newRental = convertToModel(rentalDTO);
 
         if (rentalDTO.getBundle() != null) {
@@ -78,7 +78,9 @@ public class RentalServiceImpl implements RentalService {
         newRental.setStatus(RentalStatus.PENDING);
         Rental saved = rentalRepository.save(newRental);
         RentalDTO savedDTO = convertToDTO(saved);
-        rentalClient.addRental(mapper.map(savedDTO, agent.soap.gen.RentalDTO.class));
+        if (!overMq) {
+            rentalClient.addRental(mapper.map(savedDTO, agent.soap.gen.RentalDTO.class));
+        }
         return convertToDTO(saved);
     }
 
@@ -89,7 +91,7 @@ public class RentalServiceImpl implements RentalService {
 
     // Todo: flag to prevent cycle
     @Override
-    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity {
+    public RentalDTO update(Long id, RentalDTO rentalDTO, boolean overMq) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity {
         Optional<Rental> rental = rentalRepository.findById(id);
 
         if (!rental.isPresent())
@@ -102,8 +104,13 @@ public class RentalServiceImpl implements RentalService {
 
         rental.get().setStatus(rentalDTO.getStatus());
         Rental saved = rentalRepository.save(rental.get());
-        // Todo: send SOAP
         System.out.println(saved.getStatus());
+
+        // Todo: send SOAP
+        if (!overMq && rental.get().getCustomerId() == null) {
+            agent.soap.gen.RentalDTO soapDTO = mapper.map(rental, agent.soap.gen.RentalDTO.class);
+            rentalClient.updateRental(soapDTO);
+        }
 
         if (saved.getStatus().equals(RentalStatus.RESERVED)) {
             VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
@@ -111,7 +118,7 @@ public class RentalServiceImpl implements RentalService {
             occupied.setEndTime(saved.getEndTime());
             occupied.setType("RENTAL");
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
-            vehicleOccupancyService.add(saved.getVehicleId(), occupied);
+            vehicleOccupancyService.add(saved.getVehicleId(), occupied, false);
         } else if (saved.getStatus().equals(RentalStatus.CANCELED)) {
             this.rejectRentalsFromBundle(saved.getBundle());
         }

@@ -17,4 +17,5 @@ public class RentalDTO {
     private BundleDTO bundle;
     private RentalStatus status;
     private RentalReportDTO report;
+    private String cid;
 }

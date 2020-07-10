@@ -14,22 +14,20 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for vehicleOccupancy complex type.
+ * <p>Java class for vehicleOccupancyDTO complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="vehicleOccupancy"&gt;
+ * &lt;complexType name="vehicleOccupancyDTO"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="deleted" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *         &lt;element name="endTime" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *         &lt;element name="locations" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="startTime" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="type" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="vehicle" type="{http://www.vehicle.com/vehicle}vehicle" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -39,40 +37,20 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "vehicleOccupancy", propOrder = {
-    "deleted",
+@XmlType(name = "vehicleOccupancyDTO", propOrder = {
     "endTime",
     "id",
     "locations",
     "startTime",
-    "type",
-    "vehicle"
+    "type"
 })
-public class VehicleOccupancy {
+public class VehicleOccupancyDTO {
 
-    protected boolean deleted;
     protected long endTime;
     protected Long id;
     protected String locations;
     protected long startTime;
     protected String type;
-    protected Vehicle vehicle;
-
-    /**
-     * Gets the value of the deleted property.
-     * 
-     */
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    /**
-     * Sets the value of the deleted property.
-     * 
-     */
-    public void setDeleted(boolean value) {
-        this.deleted = value;
-    }
 
     /**
      * Gets the value of the endTime property.
@@ -176,30 +154,6 @@ public class VehicleOccupancy {
      */
     public void setType(String value) {
         this.type = value;
-    }
-
-    /**
-     * Gets the value of the vehicle property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Vehicle }
-     *     
-     */
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    /**
-     * Sets the value of the vehicle property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Vehicle }
-     *     
-     */
-    public void setVehicle(Vehicle value) {
-        this.vehicle = value;
     }
 
 }

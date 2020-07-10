@@ -6,6 +6,9 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.model.rental.Rental;
+import agent.model.rental.mappings.RentalMapping;
+import agent.repository.rental.RentalRepository;
+import agent.repository.rental.mappingsRepo.RentalMappingRepo;
 import agent.service.rental.RentalService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +16,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import saga.dto.VehicleOccupancyDTO;
@@ -25,7 +29,13 @@ public class RentalMQConsumer {
     @Autowired
     RentalService rentalService;
     @Autowired
+    RentalMappingRepo rentalMappingRepo;
+    @Autowired
+    RentalRepository rentalRepository;
+    @Autowired
     DozerBeanMapper mapper;
+    @Value("${company}")
+    private String cid;
     @RabbitListener(queues = {"${queue.rental.name}"})
     public void receive(@Payload Message message){
 
@@ -47,15 +57,30 @@ public class RentalMQConsumer {
             e.printStackTrace();
         }
         if(result instanceof RentalDTO){
+            String checkCid = ((RentalDTO)result).getCid();
+            if ( checkCid == null || checkCid.equals(this.cid) ){
+                return;
+            }
             if(message.getMessageProperties().getHeader("rentalID") != null) {
                 try {
-                    rentalService.update(message.getMessageProperties().getHeader("rentalID"), convertToDTO(result));
+                    Long rentalId = rentalMappingRepo.findByRentalBackId(message.getMessageProperties().getHeader("rentalID")).getRentalAgentId().getId();
+                    rentalService.update(rentalId, convertToDTO(result), true);
                 } catch (EntityNotFound | ConversionFailedError | ConflictException | DuplicateEntity exception) {
                     exception.printStackTrace();
                 }
             }else{
                 try {
-                    rentalService.add((RentalDTO)result);
+                    Long msId = ((RentalDTO)result).getId();
+                    ((RentalDTO)result).setCustomerId(null);
+
+                    RentalDTO saved = rentalService.add((RentalDTO)result, true);
+                    if(saved != null) {
+                        RentalMapping rentalMapping = new RentalMapping();
+                        Rental rental = rentalRepository.findById(saved.getId()).orElse(null);
+                        rentalMapping.setRentalAgentId(rental);
+                        rentalMapping.setRentalBackId(msId);
+                        rentalMappingRepo.save(rentalMapping);
+                    }
                 } catch (DuplicateEntity | ConversionFailedError | EntityNotFound exception) {
                     exception.printStackTrace();
                 }

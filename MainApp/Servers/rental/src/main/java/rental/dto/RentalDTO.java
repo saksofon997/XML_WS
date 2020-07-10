@@ -1,6 +1,5 @@
 package rental.dto;
 
-import javax.persistence.Column;
 import java.util.Objects;
 
 public class RentalDTO {

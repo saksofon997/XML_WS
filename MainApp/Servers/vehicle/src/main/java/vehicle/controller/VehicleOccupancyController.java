@@ -37,7 +37,7 @@ public class VehicleOccupancyController {
     public ResponseEntity<VehicleOccupancyDTO> createNew(@PathVariable Long vehicleId,
                                                          @RequestBody VehicleOccupancyDTO vehicleOccupancyDTO) throws ConversionFailedError, EntityNotFound, DuplicateEntity {
 
-        VehicleOccupancyDTO added = vehicleOccupancyService.add(vehicleId, vehicleOccupancyDTO);
+        VehicleOccupancyDTO added = vehicleOccupancyService.add(vehicleId, vehicleOccupancyDTO, false);
 
         return new ResponseEntity<>(added, HttpStatus.ACCEPTED);
     }

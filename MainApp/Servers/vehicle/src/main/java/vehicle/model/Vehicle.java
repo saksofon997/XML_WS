@@ -72,11 +72,11 @@ public class Vehicle {
     @Column(name = "images")
     List<String> images;
 
-    @Column(name = "deleted")
-    private boolean deleted = false;
-
     @Column(name = "cid")
     private String cid;
+
+    @Column(name = "deleted")
+    private boolean deleted = false;
 
     public Vehicle() {
     }
@@ -98,7 +98,8 @@ public class Vehicle {
                    double locationLongitude,
                    double locationLatitude,
                    Long owner_id,
-                   long availableMileage) {
+                   long availableMileage,
+                   String cid) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -117,6 +118,7 @@ public class Vehicle {
         this.images = images;
         this.ownerId = owner_id;
         this.availableMileage = availableMileage;
+        this.cid = cid;
     }
 
     public Long getId() {

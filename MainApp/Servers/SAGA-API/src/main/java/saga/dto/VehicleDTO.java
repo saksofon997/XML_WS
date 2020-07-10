@@ -31,7 +31,7 @@ public class VehicleDTO {
                       TransmissionDTO transmission, FuelDTO fuel, int seats, int childSeats,
                       long mileage, boolean cdw, PricelistDTO pricelist, int numberOfStars,
                       int numberOfReviews, double locationLongitude, double locationLatitude,
-                      List<String> images, Long ownerId, long availableMileage) {
+                      List<String> images, Long ownerId, long availableMileage, String cid) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -50,6 +50,7 @@ public class VehicleDTO {
         this.images = images;
         this.ownerId = ownerId;
         this.availableMileage = availableMileage;
+        this.cid = cid;
     }
 
     public Long getId() {

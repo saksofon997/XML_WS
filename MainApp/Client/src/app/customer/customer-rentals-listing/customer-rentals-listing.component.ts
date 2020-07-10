@@ -36,7 +36,7 @@ export class CustomerRentalsListingComponent implements OnInit, OnChanges {
         data.content.forEach(rentalBack => {
           this.getVehicle(rentalBack.vehicleId).then((vehicle: Car) => {
             const rental = new RentalFront(rentalBack.id, vehicle, rentalBack.startTime,
-               rentalBack.endTime, rentalBack.bundle, null, rentalBack.customerId, rentalBack.ownerId);
+               rentalBack.endTime, rentalBack.bundle, null, rentalBack.customerId, rentalBack.ownerId, rentalBack.company);
             this.rentals.push(rental);
           });
         });

@@ -51,7 +51,7 @@ public class RentalController {
             throw new EntityNotFound("Invalid owner request");
         }
 
-        RentalDTO updated = rentalService.update(id, rentalDTO);
+        RentalDTO updated = rentalService.update(id, rentalDTO, false);
 
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

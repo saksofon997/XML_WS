@@ -22,6 +22,7 @@ export class Car {
   numberOfStars: number;
   numberOfReviews: number;
   availableMileage: number;
+  company: any;
 
   // constructor(id: number, ownerId: number, images: string[], brand: Brand,
   //   model: Model, category: Category, fuel: Fuel, transmission: Transmission,

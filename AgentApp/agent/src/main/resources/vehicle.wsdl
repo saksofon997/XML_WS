@@ -4,6 +4,8 @@
             <xs:element name="commonFault" type="ve:errorFault"/>
             <xs:element name="createNewVehicleRequest" type="ve:vehicle"/>
             <xs:element name="createNewVehicleResponse" type="xs:long"/>
+            <xs:element name="createOccupancyRequest" type="ve:vehicleOccupancyDTO"/>
+            <xs:element name="createOccupancyResponse" type="xs:boolean"/>
             <xs:element name="getBrandsRequest" type="xs:string"/>
             <xs:element name="getBrandsResponse" type="ve:brandArray"/>
             <xs:element name="getCategoriesRequest" type="xs:string"/>
@@ -55,9 +57,11 @@
                     <xs:element name="cdw" type="xs:boolean"/>
                     <xs:element name="deleted" type="xs:boolean"/>
                     <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element name="discount" type="xs:double"/>
                     <xs:element minOccurs="0" name="id" type="xs:long"/>
                     <xs:element minOccurs="0" name="name" type="xs:string"/>
                     <xs:element minOccurs="0" name="ownerId" type="xs:long"/>
+                    <xs:element name="penalty" type="xs:double"/>
                     <xs:element name="pricePerDay" type="xs:long"/>
                     <xs:element name="pricePerKm" type="xs:long"/>
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="vehicles" nillable="true" type="ve:vehicle"/>
@@ -70,6 +74,7 @@
                     <xs:element minOccurs="0" name="category" type="ve:category"/>
                     <xs:element name="cdw" type="xs:boolean"/>
                     <xs:element name="childSeats" type="xs:int"/>
+                    <xs:element minOccurs="0" name="cid" type="xs:string"/>
                     <xs:element name="deleted" type="xs:boolean"/>
                     <xs:element minOccurs="0" name="fuel" type="ve:fuel"/>
                     <xs:element minOccurs="0" name="id" type="xs:long"/>
@@ -156,6 +161,15 @@
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="item" type="ve:vehicle"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="vehicleOccupancyDTO">
+                <xs:sequence>
+                    <xs:element name="endTime" type="xs:long"/>
+                    <xs:element minOccurs="0" name="id" type="xs:long"/>
+                    <xs:element minOccurs="0" name="locations" type="xs:string"/>
+                    <xs:element name="startTime" type="xs:long"/>
+                    <xs:element minOccurs="0" name="type" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:simpleType name="reviewStatus">
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="PENDING"/>
@@ -164,6 +178,9 @@
             </xs:simpleType>
         </xs:schema>
     </wsdl:types>
+    <wsdl:message name="createOccupancyResponse">
+        <wsdl:part element="tns:createOccupancyResponse" name="createOccupancyResponse"> </wsdl:part>
+    </wsdl:message>
     <wsdl:message name="getCategoriesResponse">
         <wsdl:part element="tns:getCategoriesResponse" name="getCategoriesResponse"> </wsdl:part>
     </wsdl:message>
@@ -212,6 +229,9 @@
     <wsdl:message name="createNewVehicleRequest">
         <wsdl:part element="tns:createNewVehicleRequest" name="createNewVehicleRequest"> </wsdl:part>
     </wsdl:message>
+    <wsdl:message name="createOccupancyRequest">
+        <wsdl:part element="tns:createOccupancyRequest" name="createOccupancyRequest"> </wsdl:part>
+    </wsdl:message>
     <wsdl:message name="getFuelsResponse">
         <wsdl:part element="tns:getFuelsResponse" name="getFuelsResponse"> </wsdl:part>
     </wsdl:message>
@@ -222,6 +242,11 @@
         <wsdl:part element="tns:getTransmissionsRequest" name="getTransmissionsRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:portType name="Vehicle">
+        <wsdl:operation name="createOccupancy">
+            <wsdl:input message="tns:createOccupancyRequest" name="createOccupancyRequest"> </wsdl:input>
+            <wsdl:output message="tns:createOccupancyResponse" name="createOccupancyResponse"> </wsdl:output>
+            <wsdl:fault message="tns:commonFault" name="commonFault"> </wsdl:fault>
+        </wsdl:operation>
         <wsdl:operation name="getCategories">
             <wsdl:input message="tns:getCategoriesRequest" name="getCategoriesRequest"> </wsdl:input>
             <wsdl:output message="tns:getCategoriesResponse" name="getCategoriesResponse"> </wsdl:output>
@@ -270,6 +295,15 @@
     </wsdl:portType>
     <wsdl:binding name="VehicleSoap11" type="tns:Vehicle">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="createOccupancy">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="createOccupancyRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createOccupancyResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="getCategories">
             <soap:operation soapAction=""/>
             <wsdl:input name="getCategoriesRequest">
@@ -354,7 +388,7 @@
     </wsdl:binding>
     <wsdl:service name="VehicleService">
         <wsdl:port binding="tns:VehicleSoap11" name="VehicleSoap11">
-            <soap:address location="http://localhost:8084/vehicle/ws"/>
+            <soap:address location="http://172.22.108.193:8084/vehicle/ws"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

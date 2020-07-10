@@ -1,6 +1,5 @@
 package agent.soap;
 
-import agent.dto.shared.VehicleOccupancyDTO;
 import agent.soap.gen.*;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
@@ -85,11 +84,10 @@ public class VehicleClient extends WebServiceGatewaySupport {
         return response;
     }
 
-    // Todo: use DTO from gen package
     public JAXBElement<Boolean> addOccupancy(VehicleOccupancyDTO vehicleOccupancyDTO){
         JAXBElement<VehicleOccupancyDTO> jaxbElement =
                 new JAXBElement(new QName("http://www.vehicle.com/vehicle","createOccupancyRequest"),
-                        Long.class, vehicleOccupancyDTO);
+                        VehicleOccupancyDTO.class, vehicleOccupancyDTO);
         JAXBElement<Boolean> response = (JAXBElement<Boolean>) getWebServiceTemplate().marshalSendAndReceive(jaxbElement);
         System.out.println(response.getValue());
         return response;

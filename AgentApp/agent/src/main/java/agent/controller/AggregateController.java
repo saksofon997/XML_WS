@@ -82,7 +82,7 @@ public class AggregateController {
             }
             RentalDTO response = null;
             try {
-                response = rentalService.add(rental);
+                response = rentalService.add(rental, false);
             } catch (DuplicateEntity duplicateEntity) {
                 // Delete created rentals
                 for (int j = 0; j < i; j++){
