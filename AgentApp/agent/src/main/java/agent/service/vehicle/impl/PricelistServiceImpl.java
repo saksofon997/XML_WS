@@ -132,10 +132,6 @@ public class PricelistServiceImpl implements PricelistService {
 
         List<Pricelist> pricelists = pricelistRepo.findAllByOwnerId(ownerId);
 
-        if (pricelists.isEmpty()) {
-            throw new EntityNotFound("Items not found");
-        }
-
         List<PricelistDTO> pricelistDTOS = new ArrayList<>();
 
         for (Pricelist p : pricelists) {

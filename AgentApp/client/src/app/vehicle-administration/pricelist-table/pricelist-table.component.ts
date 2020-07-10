@@ -27,7 +27,7 @@ export class PricelistTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.userService.getUser().id;
-    this.getPricelists(this.userId); //TODO users
+    this.getPricelists(this.userId);
   }
 
   getPricelists(userId: number) {

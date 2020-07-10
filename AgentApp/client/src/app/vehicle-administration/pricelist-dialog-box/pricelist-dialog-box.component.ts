@@ -25,7 +25,7 @@ export class PricelistDialogBoxComponent{
     this.local_data = {...data};
     this.action = this.local_data.action;
 
-    this.isAgent = this.userService.getUser().company.equals(null) ? false : true;
+    this.isAgent = this.userService.getUser().company ? true : false;
   }
 
   getDisabledValue() {

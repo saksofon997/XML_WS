@@ -24,8 +24,6 @@ export class PricelistDialogBoxComponent{
     this.local_data = {...data};
     this.action = this.local_data.action;
 
-    console.log(this.userService.getUser().company)
-
     this.isAgent = this.userService.getUser().company ? true : false;
   }
 

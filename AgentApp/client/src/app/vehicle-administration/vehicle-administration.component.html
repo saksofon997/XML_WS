@@ -32,7 +32,7 @@
         </div>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Statistics">
+    <mat-tab *ngIf="isAgent" label="Statistics">
         <ng-template matTabContent>
         <div class="container">
             <div class="row">
