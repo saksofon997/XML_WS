@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
         roles.add(roleRepository.findByName("ROLE_VEHICLE_OWNER"));
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
         user.setEnabled(true);
 
         Requests.sendEmail(userDTO.getEmail(), "Successful registration to Car2Go.");

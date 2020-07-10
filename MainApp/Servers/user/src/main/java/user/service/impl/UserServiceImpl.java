@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<Role>();
         roles.add(roleRepository.findByName("ROLE_VEHICLE_OWNER"));
         user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(agent.getPassword()));
+        user.setPassword(agent.getPassword());
         user.setEnabled(true);
 
         Requests.sendEmail(user.getEmail(), "Successfully registered as Agent.");

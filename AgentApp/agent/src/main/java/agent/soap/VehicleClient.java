@@ -1,12 +1,15 @@
 package agent.soap;
 
 import agent.soap.gen.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 public class VehicleClient extends WebServiceGatewaySupport {
+    @Value("${company}")
+    private String cid;
 
     public JAXBElement<FuelArray> getFuels() {
         JAXBElement<String> jaxbElement =
@@ -22,6 +25,7 @@ public class VehicleClient extends WebServiceGatewaySupport {
     }
 
     public Long createNewVehicle(Vehicle newVehicle) {
+        newVehicle.setCid(this.cid);
         JAXBElement<Vehicle> jaxbElement =
                 new JAXBElement(new QName("http://www.vehicle.com/vehicle","createNewVehicleRequest"),
                         Vehicle.class, newVehicle);

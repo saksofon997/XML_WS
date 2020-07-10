@@ -1,12 +1,15 @@
 package agent.soap;
 
 import agent.soap.gen.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 public class RentalClient extends WebServiceGatewaySupport {
+    @Value("${company}")
+    private String cid;
 
     public JAXBElement<BundleDTO> addBundle(BundleDTO brandDTO){
         JAXBElement<BundleDTO> jaxbElement =
@@ -18,6 +21,7 @@ public class RentalClient extends WebServiceGatewaySupport {
     }
 
     public JAXBElement<RentalDTO> addRental(RentalDTO rentalDTO){
+        rentalDTO.setCid(this.cid);
         JAXBElement<RentalDTO> jaxbElement =
                 new JAXBElement(new QName("http://www.vehicle.com/rental","createNewRentalRequest"),
                         RentalDTO.class, rentalDTO);
