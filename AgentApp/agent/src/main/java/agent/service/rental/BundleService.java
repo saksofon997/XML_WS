@@ -13,7 +13,7 @@ public interface BundleService {
 
     Bundle convertToModel(BundleDTO bundleDTO) throws ConversionFailedError;
 
-    BundleDTO add(BundleDTO bundleDTO) throws DuplicateEntity, ConversionFailedError;
+    BundleDTO add(BundleDTO bundleDTO, boolean overMq) throws DuplicateEntity, ConversionFailedError;
 
     void delete(Long id) throws EntityNotFound;
 }

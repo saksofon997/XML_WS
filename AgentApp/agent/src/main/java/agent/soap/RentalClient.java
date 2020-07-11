@@ -31,6 +31,8 @@ public class RentalClient extends WebServiceGatewaySupport {
     }
 
     public JAXBElement<RentalDTO> updateRental(RentalDTO rentalDTO){
+        System.out.println("----------------------------" + rentalDTO.getId() + "----" + rentalDTO.getStatus());
+
         JAXBElement<RentalDTO> jaxbElement =
                 new JAXBElement(new QName("http://www.vehicle.com/rental","createUpdateRentalRequest"),
                         RentalDTO.class, rentalDTO);

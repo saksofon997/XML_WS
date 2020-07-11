@@ -129,7 +129,7 @@ public class RentalServiceImpl implements RentalService {
         System.out.println(saved.getStatus());
 
         if (!overMq) {
-            agent.soap.gen.RentalDTO soapDTO = mapper.map(rental, agent.soap.gen.RentalDTO.class);
+            agent.soap.gen.RentalDTO soapDTO = mapper.map(saved, agent.soap.gen.RentalDTO.class);
             // Only id and status is important when updating
             soapDTO.setId(rentalMappingRepo.findByRentalAgentId(saved).getRentalBackId());
             soapDTO.setCustomerId(null);

@@ -10,11 +10,13 @@ import agent.model.rental.Bundle;
 import agent.model.rental.Rental;
 import agent.model.rental.mappings.BundleMapping;
 import agent.model.rental.mappings.RentalMapping;
+import agent.repository.rental.BundleRepository;
 import agent.repository.rental.RentalRepository;
 import agent.repository.rental.mappingsRepo.BundleMappingRepo;
 import agent.repository.rental.mappingsRepo.RentalMappingRepo;
 import agent.repository.user.UserMappingRepo;
 import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
+import agent.service.rental.BundleService;
 import agent.service.rental.RentalService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +45,10 @@ public class RentalMQConsumer {
     UserMappingRepo userMappingRepo;
     @Autowired
     BundleMappingRepo bundleMappingRepo;
+    @Autowired
+    BundleService bundleService;
+    @Autowired
+    BundleRepository bundleRepository;
     @Autowired
     DozerBeanMapper mapper;
     @Value("${company}")
@@ -86,16 +92,29 @@ public class RentalMQConsumer {
                     rentalDTO.setCustomerId(null);
                     Long vehicleID = vehicleMappingRepo.findByVehicleBackId(rentalDTO.getVehicleId()).getVehicleAgentId().getId();
                     rentalDTO.setVehicleId(vehicleID);
-                    Long ownerID = userMappingRepo.findByUserBackId(rentalDTO.getOwnerId()).getId();
+                    Long ownerID = userMappingRepo.findByUserBackId(rentalDTO.getOwnerId()).getUserAgentId().getId();
                     rentalDTO.setOwnerId(ownerID);
 
-                    // TODO: uncomment when and if new bundle on ms is replicated here
-//                    if (rentalDTO.getBundle() != null) {
-//                        BundleMapping bundleMapping = bundleMappingRepo.findByBundleBackId(rentalDTO.getBundle().getId());
-//                        BundleDTO bundleDTO = new BundleDTO();
-//                        bundleDTO.setId(bundleMapping.getBundleAgent().getId());
-//                        rentalDTO.setBundle(bundleDTO);
-//                    }
+                    if (rentalDTO.getBundle() != null) {
+                        BundleMapping bundleMapping = bundleMappingRepo.findByBundleBackId(rentalDTO.getBundle().getId());
+                        if (bundleMapping == null) {
+                            BundleDTO bundleDTO = new BundleDTO();
+                            bundleDTO.setName(rentalDTO.getBundle().getName());
+                            BundleDTO saved = bundleService.add(bundleDTO, true);
+
+                            Bundle bundle = bundleRepository.findById(saved.getId()).get();
+                            BundleMapping newBundleMapping = new BundleMapping();
+                            newBundleMapping.setBundleAgent(bundle);
+                            newBundleMapping.setBundleBackId(rentalDTO.getBundle().getId());
+                            bundleMappingRepo.save(newBundleMapping);
+
+                            rentalDTO.setBundle(saved);
+                        } else {
+                            BundleDTO bundleDTO = new BundleDTO();
+                            bundleDTO.setId(bundleMapping.getBundleAgent().getId());
+                            rentalDTO.setBundle(bundleDTO);
+                        }
+                    }
 
                     RentalDTO saved = rentalService.add(rentalDTO, true);
                     if(saved != null) {

@@ -15,8 +15,7 @@ public class Vehicle {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name="vehicle_id_seq",sequenceName="vehicle_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="vehicle_id_seq")
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)

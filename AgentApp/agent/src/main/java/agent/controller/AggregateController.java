@@ -2,7 +2,6 @@ package agent.controller;
 
 import agent.dto.rental.BundleDTO;
 import agent.dto.rental.RentalDTO;
-import agent.dto.shared.ConversationDTO;
 import agent.dto.shared.VehicleOccupancyDTO;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
@@ -14,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +65,7 @@ public class AggregateController {
         for (BundleDTO bundle: bundles.values()){
             BundleDTO response = null;
             try {
-                response = bundleService.add(bundle);
+                response = bundleService.add(bundle, false);
             } catch (DuplicateEntity duplicateEntity) {
                 // Delete created bundles
                 for (BundleDTO toDelete: createdBundles.values()){

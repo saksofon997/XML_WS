@@ -82,7 +82,9 @@ public class RentalServiceImpl implements RentalService {
 
         newRental.setStatus(RentalStatus.PENDING);
         Rental saved = rentalRepository.save(newRental);
-        rentalMQSender.send(convertToDTO(saved));
+        if (saved.getCid() != null) {
+            rentalMQSender.send(convertToDTO(saved));
+        }
         return convertToDTO(saved);
     }
 
@@ -113,9 +115,11 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalDTO update(Long id, RentalDTO rentalDTO, boolean overSoap) throws EntityNotFound, ConversionFailedError, ConflictException {
         Optional<Rental> rental = rentalRepository.findById(id);
+        System.out.println("--------SERVICE-------" + rental.get().getId() + "----" + rental.get().getStatus());
 
-        if (!rental.isPresent())
+        if (!rental.isPresent()) {
             throw new EntityNotFound("Invalid rental id");
+        }
 
         if (rentalDTO.getStatus().equals(RentalStatus.RESERVED) &&
                 rental.get().getStatus().equals(RentalStatus.CANCELED)) {
