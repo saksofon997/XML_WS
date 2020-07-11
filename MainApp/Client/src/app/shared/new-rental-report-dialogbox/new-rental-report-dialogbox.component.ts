@@ -31,7 +31,7 @@ export class NewRentalReportDialogboxComponent {
   calculatePenalty(event) {
     this.mileage = event.target.value;
     
-    if((this.mileage > this.rental.car.availableMileage) && this.rental.car.availableMileage != -1) {
+    if((this.mileage > this.rental.car.availableMileage) && (this.rental.car.availableMileage != -1) && (this.rental.car.pricelist.penalty != 0)) {
       this.penalty = true;
       this.penaltyValue = (this.mileage - this.rental.car.availableMileage) * this.rental.car.pricelist.penalty;
     }
@@ -52,7 +52,7 @@ export class NewRentalReportDialogboxComponent {
 
     let price =  days * this.rental.car.pricelist.pricePerDay;
 
-    if(days > 5) {
+    if(days > 10) {
       price = price -  price * this.rental.car.pricelist.discount;
     }
 

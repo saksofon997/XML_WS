@@ -165,6 +165,7 @@ public class UserServiceImpl implements UserService {
         user.setCity(userDTO.getCity());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setState(userDTO.getState());
+        user.setCompany(userDTO.getCompany());
 
         Set<Role> newRoles = new HashSet<Role>();
         for(RoleDTO rdto : userDTO.getRoles()) {

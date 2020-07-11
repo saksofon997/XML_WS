@@ -8,6 +8,7 @@ import { tap } from 'rxjs/operators';
 import { Review } from 'src/app/models/Review.model';
 import { UserService } from 'src/app/services/user.service';
 import { UserRolesComponent } from './user-roles/user-roles.component';
+import { ChangeCompanyComponent } from './change-company/change-company.component';
 
 @Component({
   selector: 'app-user-administration',
@@ -39,6 +40,20 @@ export class UserAdministrationComponent implements OnInit {
         tap(() => this.getPageableUsers(this.paginator.pageIndex))
       )
       .subscribe();
+  }
+
+  changeCompany(data) {
+    const dialogRef = this.dialog.open(ChangeCompanyComponent, {
+      width: '300px',
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.event == 'Cancel') {
+        return;
+      } 
+      this.updateRowData(result.data);
+    });
   }
 
   openDialog(action, obj) {

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-vehicle-administration',
@@ -8,7 +9,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class VehicleAdministrationComponent implements OnInit {
 
-  constructor() { }
+  isAgent: boolean = false;
+
+  constructor(
+    private userService: UserService
+  ) {
+    this.isAgent = this.userService.getUser().company ? true : false;
+   }
 
   ngOnInit(): void {
   }
