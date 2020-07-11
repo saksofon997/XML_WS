@@ -101,8 +101,15 @@ public class VehicleServiceImpl implements VehicleService {
         System.out.println(savedImagesPaths);
         vehicleDTO.setImages(savedImagesPaths);
         Vehicle newVehicle = convertToModel(vehicleDTO);
+        newVehicle.setLocationLatitude(45.2671);
+        newVehicle.setLocationLongitude(19.8335);
+
+        vehicleDTO.setLocationLatitude(45.2671);
+        vehicleDTO.setLocationLongitude(19.8335);
 
         Vehicle savedVehicle = vehicleRepo.save(newVehicle);
+
+        vehicleDTO.setId(savedVehicle.getId());
 
         System.out.println(savedVehicle.getId());
         commandGateway.send(new MainVehicleCommand(savedVehicle.getId(), vehicleDTO, TypeOfCommand.CREATE));

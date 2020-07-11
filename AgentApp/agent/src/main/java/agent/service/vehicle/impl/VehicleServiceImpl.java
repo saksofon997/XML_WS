@@ -132,6 +132,9 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleDTO.setImages(savedImagesPaths);
         Vehicle newVehicle = convertToModel(vehicleDTO);
 
+        newVehicle.setLocationLatitude(45.2671);
+        newVehicle.setLocationLongitude(19.8335);
+
 
         agent.soap.gen.Vehicle vehicleSOAP = mapper.map(newVehicle, agent.soap.gen.Vehicle.class);
         vehicleSOAP = updateVehicleSOAPParts(vehicleSOAP);

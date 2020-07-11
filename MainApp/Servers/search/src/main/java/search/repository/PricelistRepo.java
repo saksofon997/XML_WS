@@ -11,4 +11,6 @@ public interface PricelistRepo extends JpaRepository<Pricelist, Long> {
     boolean existsByOwnerId(Long ownerId);
 
     List<Pricelist> findAllByOwnerId(Long ownerId);
+
+    boolean existsByNameAndOwnerId(String name, Long ownerId);
 }

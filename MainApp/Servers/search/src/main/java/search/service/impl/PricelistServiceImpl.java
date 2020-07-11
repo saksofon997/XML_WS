@@ -50,8 +50,7 @@ public class PricelistServiceImpl implements PricelistService {
 
         Pricelist newPricelist = convertToModel(pricelistDTO);
 
-        if (pricelistRepo.existsByName(pricelistDTO.getName()) &&
-                pricelistRepo.existsByOwnerId(pricelistDTO.getOwnerId())) {
+        if (!pricelistRepo.existsByNameAndOwnerId(pricelistDTO.getName(), pricelistDTO.getOwnerId())) {
             pricelistRepo.save(newPricelist);
         } else {
             throw new DuplicateEntity("Item already exists");

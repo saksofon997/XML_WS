@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
         Set<Role> newRoles = new HashSet<Role>();
         for(RoleDTO rdto : userDTO.getRoles()) {
-            newRoles.add(convertToModelRole(rdto));
+            newRoles.add(roleRepository.findByName(rdto.getName()));
         }
 
         Requests.sendEmail(userDTO.getEmail(), "Successfuly updated user account");
