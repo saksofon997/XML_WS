@@ -1,14 +1,20 @@
 package agent.mq;
 
+import agent.dto.rental.BundleDTO;
 import agent.dto.rental.RentalDTO;
 import agent.exceptions.ConflictException;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
+import agent.model.rental.Bundle;
 import agent.model.rental.Rental;
+import agent.model.rental.mappings.BundleMapping;
 import agent.model.rental.mappings.RentalMapping;
 import agent.repository.rental.RentalRepository;
+import agent.repository.rental.mappingsRepo.BundleMappingRepo;
 import agent.repository.rental.mappingsRepo.RentalMappingRepo;
+import agent.repository.user.UserMappingRepo;
+import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
 import agent.service.rental.RentalService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +37,12 @@ public class RentalMQConsumer {
     RentalMappingRepo rentalMappingRepo;
     @Autowired
     RentalRepository rentalRepository;
+    @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
+    @Autowired
+    UserMappingRepo userMappingRepo;
+    @Autowired
+    BundleMappingRepo bundleMappingRepo;
     @Autowired
     DozerBeanMapper mapper;
     @Value("${company}")
@@ -69,10 +81,23 @@ public class RentalMQConsumer {
                 }
             }else{
                 try {
-                    Long msId = ((RentalDTO)result).getId();
-                    ((RentalDTO)result).setCustomerId(null);
-                    // TODO: get owner and maybe vehicle mapping
-                    RentalDTO saved = rentalService.add((RentalDTO)result, true);
+                    RentalDTO rentalDTO = (RentalDTO)result;
+                    Long msId = rentalDTO.getId();
+                    rentalDTO.setCustomerId(null);
+                    Long vehicleID = vehicleMappingRepo.findByVehicleBackId(rentalDTO.getVehicleId()).getVehicleAgentId().getId();
+                    rentalDTO.setVehicleId(vehicleID);
+                    Long ownerID = userMappingRepo.findByUserBackId(rentalDTO.getOwnerId()).getId();
+                    rentalDTO.setOwnerId(ownerID);
+
+                    // TODO: uncomment when and if new bundle on ms is replicated here
+//                    if (rentalDTO.getBundle() != null) {
+//                        BundleMapping bundleMapping = bundleMappingRepo.findByBundleBackId(rentalDTO.getBundle().getId());
+//                        BundleDTO bundleDTO = new BundleDTO();
+//                        bundleDTO.setId(bundleMapping.getBundleAgent().getId());
+//                        rentalDTO.setBundle(bundleDTO);
+//                    }
+
+                    RentalDTO saved = rentalService.add(rentalDTO, true);
                     if(saved != null) {
                         RentalMapping rentalMapping = new RentalMapping();
                         Rental rental = rentalRepository.findById(saved.getId()).orElse(null);
@@ -91,7 +116,6 @@ public class RentalMQConsumer {
                 rentalService.rejectRentalsFromTo(message.getMessageProperties().getHeader("vehicleID"),
                         mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class), message.getMessageProperties().getHeader("excludeID"));
             }
-
         }
     }
 

@@ -58,10 +58,9 @@ public class RentalEndpoint implements WSEndpoint{
     @ResponsePayload
     public JAXBElement<RentalDTO> updateRental(@RequestPayload JAXBElement<RentalDTO> rental) {
         RentalDTO rentalDTO = rental.getValue();
-        rentalDTO.setId(null);
         RentalDTO savedRental = null;
         try {
-            savedRental = rentalService.update(rentalDTO.getVehicleId(), rentalDTO, true);
+            savedRental = rentalService.update(rentalDTO.getId(), rentalDTO, true);
         } catch (ConversionFailedError | EntityNotFound | ConflictException conversionFailedError) {
             conversionFailedError.printStackTrace();
             RentalDTO errorDTO = new RentalDTO();

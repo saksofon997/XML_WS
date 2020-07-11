@@ -48,7 +48,6 @@ export class CarTeaserComponent implements OnInit {
       alert("Please log in");
       return;
     }
-    console.log(this.car);
     let rental = new RentalFront(null, this.car, this.from, this.to, null, null, null, this.car.ownerId, this.car.cid);
     rental.customerId = this.userService.getUser().id;
     this.shoppingCartService.addRentalToCart(rental);

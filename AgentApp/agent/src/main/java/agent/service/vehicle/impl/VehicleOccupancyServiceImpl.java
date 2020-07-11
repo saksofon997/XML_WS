@@ -8,6 +8,7 @@ import agent.model.vehicle.Vehicle;
 import agent.model.vehicle.VehicleOccupancy;
 import agent.repository.vehicle.VehicleOccupancyRepo;
 import agent.repository.vehicle.VehicleRepo;
+import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
 import agent.service.rental.RentalService;
 import agent.service.vehicle.VehicleOccupancyService;
 import agent.soap.VehicleClient;
@@ -28,6 +29,8 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     RentalService rentalService;
     @Autowired
     VehicleRepo vehicleRepo;
+    @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
     @Autowired
     DozerBeanMapper mapper;
     @Autowired
@@ -93,7 +96,8 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
                 rentalService.rejectRentalsFromTo(saved.getVehicle().getId(), vehicleOccupancyDTO, null);
                 if (!overMq) {
                     agent.soap.gen.VehicleOccupancyDTO soapDTO = mapper.map(saved, agent.soap.gen.VehicleOccupancyDTO.class);
-                    soapDTO.setId(vehicleId);
+                    Vehicle vehicle = vehicleRepo.findById(vehicleId).orElse(null);
+                    soapDTO.setId(vehicleMappingRepo.findByVehicleAgentId(vehicle).getVehicleBackId());
                     vehicleClient.addOccupancy(soapDTO);
                 }
             }

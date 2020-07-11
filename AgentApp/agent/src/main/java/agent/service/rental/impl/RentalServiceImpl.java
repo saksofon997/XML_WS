@@ -10,11 +10,23 @@ import agent.exceptions.EntityNotFound;
 import agent.model.rental.Bundle;
 import agent.model.rental.Rental;
 import agent.model.rental.RentalStatus;
+import agent.model.rental.mappings.BundleMapping;
+import agent.model.rental.mappings.RentalMapping;
+import agent.model.user.User;
+import agent.model.user.mappings.UserMapping;
+import agent.model.vehicle.mappings.VehicleMapping;
 import agent.repository.rental.BundleRepository;
 import agent.repository.rental.RentalRepository;
+import agent.repository.rental.mappingsRepo.BundleMappingRepo;
+import agent.repository.rental.mappingsRepo.RentalMappingRepo;
+import agent.repository.user.UserMappingRepo;
+import agent.repository.user.UserRepository;
+import agent.repository.vehicle.VehicleRepo;
+import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
 import agent.service.rental.RentalService;
 import agent.service.vehicle.VehicleOccupancyService;
 import agent.soap.RentalClient;
+import agent.soap.gen.BundleDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +49,18 @@ public class RentalServiceImpl implements RentalService {
     BundleRepository bundleRepository;
     @Autowired
     VehicleOccupancyService vehicleOccupancyService;
+    @Autowired
+    RentalMappingRepo rentalMappingRepo;
+    @Autowired
+    BundleMappingRepo bundleMappingRepo;
+    @Autowired
+    VehicleRepo vehicleRepo;
+    @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
+    @Autowired
+    UserMappingRepo userMappingRepo;
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     DozerBeanMapper mapper;
     @Autowired
@@ -77,9 +101,8 @@ public class RentalServiceImpl implements RentalService {
 
         newRental.setStatus(RentalStatus.PENDING);
         Rental saved = rentalRepository.save(newRental);
-        RentalDTO savedDTO = convertToDTO(saved);
         if (!overMq) {
-            rentalClient.addRental(mapper.map(savedDTO, agent.soap.gen.RentalDTO.class));
+            sendRentalViaSoap(saved);
         }
         return convertToDTO(saved);
     }
@@ -89,7 +112,6 @@ public class RentalServiceImpl implements RentalService {
         return null;
     }
 
-    // Todo: flag to prevent cycle
     @Override
     public RentalDTO update(Long id, RentalDTO rentalDTO, boolean overMq) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity {
         Optional<Rental> rental = rentalRepository.findById(id);
@@ -106,9 +128,11 @@ public class RentalServiceImpl implements RentalService {
         Rental saved = rentalRepository.save(rental.get());
         System.out.println(saved.getStatus());
 
-        // Todo: send SOAP
-        if (!overMq && rental.get().getCustomerId() == null) {
+        if (!overMq) {
             agent.soap.gen.RentalDTO soapDTO = mapper.map(rental, agent.soap.gen.RentalDTO.class);
+            // Only id and status is important when updating
+            soapDTO.setId(rentalMappingRepo.findByRentalAgentId(saved).getRentalBackId());
+            soapDTO.setCustomerId(null);
             rentalClient.updateRental(soapDTO);
         }
 
@@ -215,5 +239,57 @@ public class RentalServiceImpl implements RentalService {
         }
 
         return pageDTO;
+    }
+
+    public void sendRentalViaSoap(Rental rental) {
+        // Rental can be in the bundle or not
+        Long backBundleId = null;
+        Bundle rentalBundle = rental.getBundle();
+        // If rental is in the bundle
+        if(rentalBundle != null) {
+            // Check if bundle was already saved during previous bundle processing
+            BundleMapping bundleMapping = bundleMappingRepo.findByBundleAgent(rentalBundle);
+            if(bundleMapping == null){
+                // If not, save bundle in MS and map the id
+                BundleDTO savedBundleDTO = rentalClient.addBundle(mapper.map(rentalBundle, BundleDTO.class)).getValue();
+                if(savedBundleDTO != null) {
+                    BundleMapping newBundleMapping = new BundleMapping();
+                    newBundleMapping.setBundleAgent(rentalBundle);
+                    newBundleMapping.setBundleBackId(savedBundleDTO.getId());
+                    bundleMappingRepo.save(newBundleMapping);
+                    backBundleId = savedBundleDTO.getId();
+                }
+            }else{
+                backBundleId = bundleMapping.getBundleBackId();
+            }
+        }
+        // Get the mappings for owner and vehicle
+        agent.model.vehicle.Vehicle vehicle = vehicleRepo.findById(rental.getVehicleId()).get();
+        VehicleMapping vehicleMapping = vehicleMappingRepo.findByVehicleAgentId(vehicle);
+        User owner = userRepository.findById(rental.getOwnerId()).get();
+        UserMapping ownerMapping = userMappingRepo.findByUserAgentId(owner);
+        // Convert rental to DTO with mapped id's
+        // Todo: mappings for rental report & (?) Customer (?)
+        agent.soap.gen.RentalDTO rentalDTOtoSend = convertRentalToSOAPDTO(rental, vehicleMapping.getVehicleBackId(), backBundleId, ownerMapping.getUserBackId());
+        // Send rental to MS and map the ID.
+        rentalDTOtoSend.setCustomerId(null);
+        agent.soap.gen.RentalDTO savedRentalDTO = rentalClient.addRental(rentalDTOtoSend).getValue();
+        if(savedRentalDTO != null) {
+            RentalMapping rentalMapping = new RentalMapping();
+            rentalMapping.setRentalAgentId(rental);
+            rentalMapping.setRentalBackId(savedRentalDTO.getId());
+            rentalMappingRepo.save(rentalMapping);
+        }
+    }
+
+    // Function to convert rental to DTO with mapped id's
+    private agent.soap.gen.RentalDTO convertRentalToSOAPDTO(Rental rental, Long vehicleId, Long bundleId, Long ownerId){
+        agent.soap.gen.RentalDTO retVal = mapper.map(rental, agent.soap.gen.RentalDTO.class);
+        if (retVal.getBundle() != null) {
+            retVal.getBundle().setId(bundleId);
+        }
+        retVal.setVehicleId(vehicleId);
+        retVal.setOwnerId(ownerId);
+        return retVal;
     }
 }
