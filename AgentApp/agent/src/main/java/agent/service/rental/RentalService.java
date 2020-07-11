@@ -16,11 +16,11 @@ public interface RentalService {
 
     Rental convertToModel(RentalDTO rentalDTO) throws ConversionFailedError;
 
-    RentalDTO add(RentalDTO rentalDTO) throws DuplicateEntity, ConversionFailedError, EntityNotFound;
+    RentalDTO add(RentalDTO rentalDTO, boolean overMq) throws DuplicateEntity, ConversionFailedError, EntityNotFound;
 
     RentalDTO getOne(Long id) throws EntityNotFound, ConversionFailedError;
 
-    RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity;
+    RentalDTO update(Long id, RentalDTO rentalDTO, boolean overMq) throws EntityNotFound, ConversionFailedError, ConflictException, DuplicateEntity;
 
     void delete(Long id) throws EntityNotFound;
 

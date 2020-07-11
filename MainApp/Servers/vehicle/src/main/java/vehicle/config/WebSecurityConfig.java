@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET , "/transmission").permitAll()
                 .antMatchers(HttpMethod.GET , "/vehicle/{id}").permitAll()
                 .antMatchers(HttpMethod.GET , "/vehicle/image/{path}").permitAll()
+                .antMatchers("/vehicle/ws/**").permitAll()
 
 
                 .anyRequest().authenticated().and()

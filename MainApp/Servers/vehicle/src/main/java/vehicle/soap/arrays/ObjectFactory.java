@@ -1,5 +1,6 @@
 package vehicle.soap.arrays;
 
+import saga.dto.VehicleOccupancyDTO;
 import vehicle.model.Vehicle;
 import vehicle.soap.VehicleEndpoint;
 
@@ -38,6 +39,9 @@ public class ObjectFactory {
         // Vehicle : add One
         QName createNewVehicleRequest = new QName(VehicleEndpoint.NAMESPACE_URI, "createNewVehicleRequest");
         QName createNewVehicleResponse = new QName(VehicleEndpoint.NAMESPACE_URI, "createNewVehicleResponse");
+        // Occupancy : add One
+        QName createOccupancyRequest = new QName(VehicleEndpoint.NAMESPACE_URI, "createOccupancyRequest");
+        QName createOccupancyResponse = new QName(VehicleEndpoint.NAMESPACE_URI, "createOccupancyResponse");
 
         QName commonFault = new QName(VehicleEndpoint.NAMESPACE_URI, "commonFault");
     }
@@ -130,6 +134,16 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createNewVehicleResponse")
     public JAXBElement<Long> createNewVehicleResponse(Long value) {
         return new JAXBElement<>(QNames.createNewVehicleResponse, Long.class, null, value);
+    }
+
+    // Vehicle : add One
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createOccupancyRequest")
+    public JAXBElement<vehicle.soap.dtos.VehicleOccupancyDTO> createOccupancyRequest(vehicle.soap.dtos.VehicleOccupancyDTO value) {
+        return new JAXBElement<>(QNames.createOccupancyRequest, vehicle.soap.dtos.VehicleOccupancyDTO.class, null, value);
+    }
+    @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "createOccupancyResponse")
+    public JAXBElement<Boolean> createOccupancyResponse(Boolean value) {
+        return new JAXBElement<>(QNames.createOccupancyResponse, Boolean.class, null, value);
     }
 
     @XmlElementDecl(namespace = VehicleEndpoint.NAMESPACE_URI, name = "commonFault")

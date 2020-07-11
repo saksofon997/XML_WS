@@ -1,14 +1,18 @@
 package vehicle.soap;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import vehicle.exceptions.ConversionFailedError;
+import vehicle.exceptions.DuplicateEntity;
+import vehicle.exceptions.EntityNotFound;
 import vehicle.service.*;
 import vehicle.soap.arrays.*;
 import vehicle.model.Vehicle;
+import vehicle.soap.dtos.VehicleOccupancyDTO;
 
 import javax.xml.bind.JAXBElement;
 
@@ -21,12 +25,16 @@ public class VehicleEndpoint implements WSEndpoint{
     CategoryService categoryService;
     TransmissionService transmissionService;
     VehicleService vehicleService;
+    VehicleOccupancyService vehicleOccupancyService;
     private ObjectFactory objectFactory;
+    @Autowired
+    DozerBeanMapper mapper;
 
     @Autowired
     public VehicleEndpoint(FuelService fuelService,
                            TransmissionService transmissionService,
                            VehicleService vehicleService,
+                           VehicleOccupancyService vehicleOccupancyService,
                            BrandService brandService,
                            CategoryService categoryService,
                            ModelService modelService) {
@@ -34,6 +42,7 @@ public class VehicleEndpoint implements WSEndpoint{
         this.objectFactory = new ObjectFactory();
         this.transmissionService = transmissionService;
         this.vehicleService = vehicleService;
+        this.vehicleOccupancyService = vehicleOccupancyService;
         this.brandService = brandService;
         this.categoryService = categoryService;
         this.modelService = modelService;
@@ -123,6 +132,21 @@ public class VehicleEndpoint implements WSEndpoint{
         return objectFactory.createNewVehicleResponse(savedVehicle);
     }
 
+    // Vehicle occupancy: add manual occupancy
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createOccupancyRequest")
+    @ResponsePayload
+    public JAXBElement<Boolean> createOccupancy(@RequestPayload JAXBElement<VehicleOccupancyDTO> occupancy) {
+        VehicleOccupancyDTO occupancyDTO = occupancy.getValue();
+        // HAX
+        Long vehicleId = occupancyDTO.getId();
+        try {
+            vehicleOccupancyService.add(vehicleId, mapper.map(occupancyDTO, saga.dto.VehicleOccupancyDTO.class), true);
+        } catch (ConversionFailedError | DuplicateEntity | EntityNotFound conversionFailedError) {
+            conversionFailedError.printStackTrace();
+            return objectFactory.createOccupancyResponse(Boolean.FALSE);
+        }
+        return objectFactory.createOccupancyResponse(Boolean.TRUE);
+    }
 //    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getTransmissionRequest")
 //    @ResponsePayload
 //    public JAXBElement<TransmissionDTO> getBrandName() {

@@ -5,7 +5,6 @@ import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
 import agent.service.rental.BundleService;
-import agent.soap.RentalClient;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class BundleController {
     @PreAuthorize("hasAuthority('CREATE_RENTAL_PERMISSION')")
     public ResponseEntity<BundleDTO> createNew(@RequestBody BundleDTO bundleDTO) throws DuplicateEntity, ConversionFailedError {
 
-        BundleDTO added = bundleService.add(bundleDTO);
+        BundleDTO added = bundleService.add(bundleDTO, false);
 
         return new ResponseEntity<>(added, HttpStatus.CREATED);
     }

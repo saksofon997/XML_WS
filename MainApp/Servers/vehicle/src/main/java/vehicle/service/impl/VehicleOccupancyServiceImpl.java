@@ -1,7 +1,11 @@
 package vehicle.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.dozer.DozerBeanMapper;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saga.commands.TypeOfCommand;
@@ -16,6 +20,7 @@ import vehicle.exceptions.EntityNotFound;
 import vehicle.model.Review;
 import vehicle.model.Vehicle;
 import vehicle.model.VehicleOccupancy;
+import vehicle.mq.VehiclePartsSender;
 import vehicle.repository.VehicleOccupancyRepo;
 import vehicle.repository.VehicleRepo;
 import vehicle.service.VehicleOccupancyService;
@@ -30,15 +35,15 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
 
     @Autowired
     VehicleOccupancyRepo vehicleOccupancyRepo;
-
-    @Autowired
-    DozerBeanMapper mapper;
-
     @Autowired
     VehicleRepo vehicleRepo;
 
+    @Autowired
+    DozerBeanMapper mapper;
     @Inject
     private transient CommandGateway commandGateway;
+    @Autowired
+    VehiclePartsSender mqSender;
 
     @Override
     public VehicleOccupancyDTO convertToDTO(VehicleOccupancy vehicleOccupancy) throws ConversionFailedError {
@@ -88,16 +93,38 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     }
 
     @Override
-    public VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO)
+    public VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO, boolean overSoap)
             throws ConversionFailedError, DuplicateEntity, EntityNotFound {
-
+        Vehicle vehicle = vehicleRepo.findById(vehicleId).orElse(null);
+        if (vehicle == null) {
+            throw new EntityNotFound("Vehicle not found");
+        }
         VehicleOccupancy newOccupancy = convertToModel(vehicleOccupancyDTO);
 
         if(checkAvailable(vehicleId, newOccupancy)) {
             VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
 
             commandGateway.send(new MainOccupancyCommand(saved.getId(), vehicleId, convertToDTO(saved), TypeOfCommand.CREATE));
-            commandGateway.send(new ManualOccupancyCommand(saved.getId(), convertToDTO(saved), vehicleId));
+
+            if (saved.getType().equals("MANUAL")) {
+                commandGateway.send(new ManualOccupancyCommand(saved.getId(), convertToDTO(saved), vehicleId));
+            }
+
+            if (saved.getType().equals("MANUAL") && !overSoap && vehicle.getCid() != null) {
+                MessageProperties messageProperties = new MessageProperties();
+                messageProperties.setHeader("vehicleID", vehicleId);
+                messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+                messageProperties.setHeader("__TypeId__", "saga.dto.VehicleOccupancyDTO");
+                byte[] ModelDTOBytes = null;
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    ModelDTOBytes = objectMapper.writeValueAsBytes(convertToDTO(saved));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                Message message = new Message(ModelDTOBytes, messageProperties);
+                mqSender.send(message);
+            }
 
         } else {
             throw new DuplicateEntity("The vehicle is already reserved at the given ime");

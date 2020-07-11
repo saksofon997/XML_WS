@@ -82,7 +82,9 @@ public class RentalServiceImpl implements RentalService {
 
         newRental.setStatus(RentalStatus.PENDING);
         Rental saved = rentalRepository.save(newRental);
-        rentalMQSender.send(convertToDTO(saved));
+        if (saved.getCid() != null) {
+            rentalMQSender.send(convertToDTO(saved));
+        }
         return convertToDTO(saved);
     }
 
@@ -111,34 +113,26 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public RentalDTO update(Long id, RentalDTO rentalDTO) throws EntityNotFound, ConversionFailedError, ConflictException {
+    public RentalDTO update(Long id, RentalDTO rentalDTO, boolean overSoap) throws EntityNotFound, ConversionFailedError, ConflictException {
         Optional<Rental> rental = rentalRepository.findById(id);
+        System.out.println("--------SERVICE-------" + rental.get().getId() + "----" + rental.get().getStatus());
 
-        if (!rental.isPresent())
+        if (!rental.isPresent()) {
             throw new EntityNotFound("Invalid rental id");
+        }
 
         if (rentalDTO.getStatus().equals(RentalStatus.RESERVED) &&
                 rental.get().getStatus().equals(RentalStatus.CANCELED)) {
             throw new ConflictException("Rental request has already been canceled");
         }
-
         rental.get().setStatus(rentalDTO.getStatus());
         Rental saved = rentalRepository.save(rental.get());
         System.out.println(saved.getStatus());
 
-        MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setHeader("rentalID", id);
-        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
-        messageProperties.setHeader("__TypeId__", "rental.dto.RentalDTO");
-        byte[] ModelDTOBytes = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ModelDTOBytes = objectMapper.writeValueAsBytes(convertToDTO(saved));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        // Update on agent
+        if (!overSoap && saved.getCid() != null) {
+            sendOverMq(id, saved);
         }
-        Message message = new Message(ModelDTOBytes, messageProperties);
-        rentalMQSender.send(message);
 
         if (saved.getStatus().equals(RentalStatus.RESERVED)) {
             VehicleOccupancyDTO occupied = new VehicleOccupancyDTO();
@@ -146,7 +140,6 @@ public class RentalServiceImpl implements RentalService {
             occupied.setEndTime(saved.getEndTime());
             occupied.setType("RENTAL");
             this.rejectRentalsFromTo(saved.getVehicleId(), occupied, saved.getId());
-            // TODO: remove other rental requests for same vehicle in this period
             commandGateway.send(new RentalReservedCommand(saved.getId(), occupied, saved.getVehicleId()));
         } else if (saved.getStatus().equals(RentalStatus.CANCELED)) {
             this.rejectRentalsFromBundle(saved.getBundle());
@@ -204,20 +197,20 @@ public class RentalServiceImpl implements RentalService {
             }
         }
 
-        MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setHeader("vehicleID", vehicleId);
-        messageProperties.setHeader("excludeID", excludeId);
-        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
-        messageProperties.setHeader("__TypeId__", "saga.dto.VehicleOccupancyDTO");
-        byte[] ModelDTOBytes = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ModelDTOBytes = objectMapper.writeValueAsBytes(occupancyDTO);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        Message message = new Message(ModelDTOBytes, messageProperties);
-        rentalMQSender.send(message);
+//        MessageProperties messageProperties = new MessageProperties();
+//        messageProperties.setHeader("vehicleID", vehicleId);
+//        messageProperties.setHeader("excludeID", excludeId);
+//        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+//        messageProperties.setHeader("__TypeId__", "saga.dto.VehicleOccupancyDTO");
+//        byte[] ModelDTOBytes = null;
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            ModelDTOBytes = objectMapper.writeValueAsBytes(occupancyDTO);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//        Message message = new Message(ModelDTOBytes, messageProperties);
+//        rentalMQSender.send(message);
     }
 
     @Override
@@ -267,5 +260,21 @@ public class RentalServiceImpl implements RentalService {
 
         rental.get().setStatus(RentalStatus.PENDING);
         rentalRepository.save(rental.get());
+    }
+
+    public void sendOverMq(Long id, Rental saved) {
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("rentalID", id);
+        messageProperties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        messageProperties.setHeader("__TypeId__", "rental.dto.RentalDTO");
+        byte[] ModelDTOBytes = null;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ModelDTOBytes = objectMapper.writeValueAsBytes(convertToDTO(saved));
+        } catch (JsonProcessingException | ConversionFailedError e) {
+            e.printStackTrace();
+        }
+        Message message = new Message(ModelDTOBytes, messageProperties);
+        rentalMQSender.send(message);
     }
 }

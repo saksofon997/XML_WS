@@ -15,8 +15,7 @@ public class Vehicle {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name="vehicle_id_seq",sequenceName="vehicle_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="vehicle_id_seq")
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
@@ -72,6 +71,9 @@ public class Vehicle {
     @Column(name = "images")
     List<String> images;
 
+    @Column(name = "cid")
+    private String cid;
+
     @Column(name = "deleted")
     private boolean deleted = false;
 
@@ -95,7 +97,8 @@ public class Vehicle {
                    double locationLongitude,
                    double locationLatitude,
                    Long owner_id,
-                   long availableMileage) {
+                   long availableMileage,
+                   String cid) {
         this.id = id;
         this.brand = brand;
         this.model = model;
@@ -114,6 +117,7 @@ public class Vehicle {
         this.images = images;
         this.ownerId = owner_id;
         this.availableMileage = availableMileage;
+        this.cid = cid;
     }
 
     public Long getId() {
@@ -266,5 +270,13 @@ public class Vehicle {
 
     public void setAvailableMileage(long availableMileage) {
         this.availableMileage = availableMileage;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }

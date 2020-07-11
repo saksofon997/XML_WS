@@ -275,7 +275,8 @@ export class VehicleAdministrationComponent implements OnInit {
       locationLongitude: 19.8317609,
       locationLatitude: 45.2553823,
 
-      ownerId: this.userService.getUser().id
+      ownerId: this.userService.getUser().id,
+      company: this.userService.getUser().company
     }
 
     this.addVehicle(vehicle, this.images.files);

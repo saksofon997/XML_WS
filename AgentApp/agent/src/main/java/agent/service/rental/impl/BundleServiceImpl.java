@@ -44,11 +44,13 @@ public class BundleServiceImpl implements BundleService {
     }
 
     @Override
-    public BundleDTO add(BundleDTO bundleDTO) throws DuplicateEntity, ConversionFailedError {
+    public BundleDTO add(BundleDTO bundleDTO, boolean overMq) throws DuplicateEntity, ConversionFailedError {
         Bundle newBundle = convertToModel(bundleDTO);
         Bundle saved = bundleRepository.save(newBundle);
         BundleDTO savedDTO = convertToDTO(saved);
-        rentalClient.addBundle(mapper.map(savedDTO, agent.soap.gen.BundleDTO.class));
+        if (!overMq) {
+            rentalClient.addBundle(mapper.map(savedDTO, agent.soap.gen.BundleDTO.class));
+        }
         return convertToDTO(saved);
     }
 

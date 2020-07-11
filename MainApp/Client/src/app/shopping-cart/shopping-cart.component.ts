@@ -79,7 +79,7 @@ export class ShoppingCartComponent implements OnInit {
       let rentalFront = this.rentals[i];
 
       let rental = new RentalBack(rentalFront.id, rentalFront.car.id, null,
-        rentalFront.ownerId, rentalFront.from, rentalFront.to, null, null, null);
+        rentalFront.ownerId, rentalFront.from, rentalFront.to, null, null, null, rentalFront.company);
 
       rental.customerId = this.userService.getUser().id;
 

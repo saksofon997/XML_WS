@@ -1,11 +1,22 @@
 package agent.mq;
 
+import agent.dto.rental.BundleDTO;
 import agent.dto.rental.RentalDTO;
 import agent.exceptions.ConflictException;
 import agent.exceptions.ConversionFailedError;
 import agent.exceptions.DuplicateEntity;
 import agent.exceptions.EntityNotFound;
+import agent.model.rental.Bundle;
 import agent.model.rental.Rental;
+import agent.model.rental.mappings.BundleMapping;
+import agent.model.rental.mappings.RentalMapping;
+import agent.repository.rental.BundleRepository;
+import agent.repository.rental.RentalRepository;
+import agent.repository.rental.mappingsRepo.BundleMappingRepo;
+import agent.repository.rental.mappingsRepo.RentalMappingRepo;
+import agent.repository.user.UserMappingRepo;
+import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
+import agent.service.rental.BundleService;
 import agent.service.rental.RentalService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,9 +24,9 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import saga.dto.VehicleOccupancyDTO;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -25,7 +36,23 @@ public class RentalMQConsumer {
     @Autowired
     RentalService rentalService;
     @Autowired
+    RentalMappingRepo rentalMappingRepo;
+    @Autowired
+    RentalRepository rentalRepository;
+    @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
+    @Autowired
+    UserMappingRepo userMappingRepo;
+    @Autowired
+    BundleMappingRepo bundleMappingRepo;
+    @Autowired
+    BundleService bundleService;
+    @Autowired
+    BundleRepository bundleRepository;
+    @Autowired
     DozerBeanMapper mapper;
+    @Value("${company}")
+    private String cid;
     @RabbitListener(queues = {"${queue.rental.name}"})
     public void receive(@Payload Message message){
 
@@ -47,15 +74,56 @@ public class RentalMQConsumer {
             e.printStackTrace();
         }
         if(result instanceof RentalDTO){
+            String checkCid = ((RentalDTO)result).getCid();
+            if ( checkCid == null || !checkCid.equals(this.cid) ){
+                return;
+            }
             if(message.getMessageProperties().getHeader("rentalID") != null) {
                 try {
-                    rentalService.update(message.getMessageProperties().getHeader("rentalID"), convertToDTO(result));
+                    Long rentalId = rentalMappingRepo.findByRentalBackId(message.getMessageProperties().getHeader("rentalID")).getRentalAgentId().getId();
+                    rentalService.update(rentalId, convertToDTO(result), true);
                 } catch (EntityNotFound | ConversionFailedError | ConflictException | DuplicateEntity exception) {
                     exception.printStackTrace();
                 }
             }else{
                 try {
-                    rentalService.add((RentalDTO)result);
+                    RentalDTO rentalDTO = (RentalDTO)result;
+                    Long msId = rentalDTO.getId();
+                    rentalDTO.setCustomerId(null);
+                    Long vehicleID = vehicleMappingRepo.findByVehicleBackId(rentalDTO.getVehicleId()).getVehicleAgentId().getId();
+                    rentalDTO.setVehicleId(vehicleID);
+                    Long ownerID = userMappingRepo.findByUserBackId(rentalDTO.getOwnerId()).getUserAgentId().getId();
+                    rentalDTO.setOwnerId(ownerID);
+
+                    if (rentalDTO.getBundle() != null) {
+                        BundleMapping bundleMapping = bundleMappingRepo.findByBundleBackId(rentalDTO.getBundle().getId());
+                        if (bundleMapping == null) {
+                            BundleDTO bundleDTO = new BundleDTO();
+                            bundleDTO.setName(rentalDTO.getBundle().getName());
+                            BundleDTO saved = bundleService.add(bundleDTO, true);
+
+                            Bundle bundle = bundleRepository.findById(saved.getId()).get();
+                            BundleMapping newBundleMapping = new BundleMapping();
+                            newBundleMapping.setBundleAgent(bundle);
+                            newBundleMapping.setBundleBackId(rentalDTO.getBundle().getId());
+                            bundleMappingRepo.save(newBundleMapping);
+
+                            rentalDTO.setBundle(saved);
+                        } else {
+                            BundleDTO bundleDTO = new BundleDTO();
+                            bundleDTO.setId(bundleMapping.getBundleAgent().getId());
+                            rentalDTO.setBundle(bundleDTO);
+                        }
+                    }
+
+                    RentalDTO saved = rentalService.add(rentalDTO, true);
+                    if(saved != null) {
+                        RentalMapping rentalMapping = new RentalMapping();
+                        Rental rental = rentalRepository.findById(saved.getId()).orElse(null);
+                        rentalMapping.setRentalAgentId(rental);
+                        rentalMapping.setRentalBackId(msId);
+                        rentalMappingRepo.save(rentalMapping);
+                    }
                 } catch (DuplicateEntity | ConversionFailedError | EntityNotFound exception) {
                     exception.printStackTrace();
                 }
@@ -63,10 +131,10 @@ public class RentalMQConsumer {
         }
         if(result instanceof saga.dto.VehicleOccupancyDTO){
             if(message.getMessageProperties().getHeader("vehicleID") != null) {
+                // Todo: add occupancy instead of rejecting
                 rentalService.rejectRentalsFromTo(message.getMessageProperties().getHeader("vehicleID"),
                         mapper.map(result, agent.dto.shared.VehicleOccupancyDTO.class), message.getMessageProperties().getHeader("excludeID"));
             }
-
         }
     }
 

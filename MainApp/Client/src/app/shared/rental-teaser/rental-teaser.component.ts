@@ -90,7 +90,7 @@ export class RentalTeaserComponent implements OnInit {
     $event.stopPropagation();
 
     const rental = new RentalBack(this.rental.id, this.rental.car.id, this.rental.customerId,
-      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'RESERVED');
+      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'RESERVED', this.rental.company);
     this.rentalService.edit(this.rental.id, rental).subscribe(
       (data: any) => {
         this.delete.emit(this.rental);
@@ -108,7 +108,7 @@ export class RentalTeaserComponent implements OnInit {
     $event.stopPropagation();
 
     const rental = new RentalBack(this.rental.id, this.rental.car.id, this.rental.customerId,
-      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'CANCELED');
+      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'CANCELED', this.rental.company);
 
     this.rentalService.edit(this.rental.id, rental).subscribe(
       (data: any) => {
@@ -124,7 +124,7 @@ export class RentalTeaserComponent implements OnInit {
     $event.stopPropagation();
 
     const rental = new RentalBack(this.rental.id, this.rental.car.id, this.rental.customerId,
-      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'FINISHED');
+      this.rental.ownerId, this.rental.from, this.rental.to, null, null, 'FINISHED', this.rental.company);
 
     this.rentalService.edit(this.rental.id, rental).subscribe(
       (data: any) => {

@@ -15,4 +15,5 @@ public class RentalDTO {
     private long endTime;
     private BundleDTO bundle;
     private RentalStatus status;
+    private String cid;
 }

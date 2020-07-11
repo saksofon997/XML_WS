@@ -16,33 +16,16 @@ public class ObjectFactory {
         // Rental : create new
         QName createNewRentalRequest = new QName(RentalEndpoint.NAMESPACE_URI, "createNewRentalRequest");
         QName createNewRentalResponse = new QName(RentalEndpoint.NAMESPACE_URI, "createNewRentalResponse");
+        // Rental : update
+        QName createUpdateRentalRequest = new QName(RentalEndpoint.NAMESPACE_URI, "createUpdateRentalRequest");
+        QName createUpdateRentalResponse = new QName(RentalEndpoint.NAMESPACE_URI, "createUpdateRentalResponse");
+
         // RentalReport : create new
         QName createNewRentalReportRequest = new QName(RentalEndpoint.NAMESPACE_URI, "createNewRentalReportRequest");
         QName createNewRentalReportResponse = new QName(RentalEndpoint.NAMESPACE_URI, "createNewRentalReportResponse");
         // Bundle : create new
         QName createNewBundleRequest = new QName(RentalEndpoint.NAMESPACE_URI, "createNewBundleRequest");
         QName createNewBundleResponse = new QName(RentalEndpoint.NAMESPACE_URI, "createNewBundleResponse");
-//        // Category : get All
-//        QName getCategoriesRequest = new QName(RentalEndpoint.NAMESPACE_URI, "getCategoriesRequest");
-//        QName getCategoriesResponse = new QName(RentalEndpoint.NAMESPACE_URI, "getCategoriesResponse");
-//        // Transmission : get All
-//        QName getTransmissionsRequest = new QName(RentalEndpoint.NAMESPACE_URI, "getTransmissionsRequest");
-//        QName getTransmissionsResponse = new QName(RentalEndpoint.NAMESPACE_URI, "getTransmissionsResponse");
-//        // Model : get All
-//        QName getModelsRequest = new QName(RentalEndpoint.NAMESPACE_URI, "getModelsRequest");
-//        QName getModelsResponse = new QName(RentalEndpoint.NAMESPACE_URI, "getModelsResponse");
-//        // Vehicle : get All
-//        QName getVehiclesRequest = new QName(RentalEndpoint.NAMESPACE_URI, "getVehiclesRequest");
-//        QName getVehiclesResponse = new QName(RentalEndpoint.NAMESPACE_URI, "getVehiclesResponse");
-//        // Vehicle : get One
-//        QName getOneVehicleRequest = new QName(RentalEndpoint.NAMESPACE_URI, "getOneVehicleRequest");
-//        QName getOneVehicleResponse = new QName(RentalEndpoint.NAMESPACE_URI, "getOneVehicleResponse");
-//        // Vehicle : update One
-//        QName updateOneVehicleRequest = new QName(RentalEndpoint.NAMESPACE_URI, "updateOneVehicleRequest");
-//        QName updateOneVehicleResponse = new QName(RentalEndpoint.NAMESPACE_URI, "updateOneVehicleResponse");
-//        // Vehicle : add One
-//        QName createNewVehicleRequest = new QName(RentalEndpoint.NAMESPACE_URI, "createNewVehicleRequest");
-//        QName createNewVehicleResponse = new QName(RentalEndpoint.NAMESPACE_URI, "createNewVehicleResponse");
 
         QName rentalcommonFault = new QName(RentalEndpoint.NAMESPACE_URI, "rentalcommonFault");
     }
@@ -54,6 +37,16 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = RentalEndpoint.NAMESPACE_URI, name = "createNewRentalResponse")
     public JAXBElement<RentalDTO> createNewRentalResponse(RentalDTO value) {
         return new JAXBElement<>(QNames.createNewRentalResponse, RentalDTO.class, null, value);
+    }
+
+    // Rental : add One
+    @XmlElementDecl(namespace = RentalEndpoint.NAMESPACE_URI, name = "createUpdateRentalRequest")
+    public JAXBElement<RentalDTO> createUpdateRentalRequest(RentalDTO value) {
+        return new JAXBElement<>(QNames.createUpdateRentalRequest, RentalDTO.class, null, value);
+    }
+    @XmlElementDecl(namespace = RentalEndpoint.NAMESPACE_URI, name = "createUpdateRentalResponse")
+    public JAXBElement<RentalDTO> createUpdateRentalResponse(RentalDTO value) {
+        return new JAXBElement<>(QNames.createUpdateRentalResponse, RentalDTO.class, null, value);
     }
 
     // Bundle : add One

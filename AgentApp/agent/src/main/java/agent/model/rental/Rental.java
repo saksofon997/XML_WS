@@ -18,7 +18,7 @@ public class Rental {
     @Column(name = "vehicle_id", nullable = false)
     private Long vehicleId;
 
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "customer_id")
     private Long customerId;
 
     @Column(name = "owner_id", nullable = false)
@@ -42,4 +42,7 @@ public class Rental {
 
     @Column(name = "deleted")
     private boolean deleted = false;
+
+    @Column(name = "cid")
+    private String cid;
 }

@@ -8,8 +8,10 @@ import agent.model.vehicle.Vehicle;
 import agent.model.vehicle.VehicleOccupancy;
 import agent.repository.vehicle.VehicleOccupancyRepo;
 import agent.repository.vehicle.VehicleRepo;
+import agent.repository.vehicle.mappingsRepo.VehicleMappingRepo;
 import agent.service.rental.RentalService;
 import agent.service.vehicle.VehicleOccupancyService;
+import agent.soap.VehicleClient;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,11 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     @Autowired
     VehicleRepo vehicleRepo;
     @Autowired
+    VehicleMappingRepo vehicleMappingRepo;
+    @Autowired
     DozerBeanMapper mapper;
+    @Autowired
+    VehicleClient vehicleClient;
 
 
     @Override
@@ -79,16 +85,21 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     }
 
     @Override
-    public VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO)
+    public VehicleOccupancyDTO add(Long vehicleId, VehicleOccupancyDTO vehicleOccupancyDTO, boolean overMq)
             throws ConversionFailedError, DuplicateEntity, EntityNotFound {
 
         VehicleOccupancy newOccupancy = convertToModel(vehicleOccupancyDTO);
 
         if(checkAvailable(vehicleId, newOccupancy)) {
             VehicleOccupancy saved = vehicleOccupancyRepo.save(newOccupancy);
-
             if (saved.getType().equals("MANUAL")) {
                 rentalService.rejectRentalsFromTo(saved.getVehicle().getId(), vehicleOccupancyDTO, null);
+                if (!overMq) {
+                    agent.soap.gen.VehicleOccupancyDTO soapDTO = mapper.map(saved, agent.soap.gen.VehicleOccupancyDTO.class);
+                    Vehicle vehicle = vehicleRepo.findById(vehicleId).orElse(null);
+                    soapDTO.setId(vehicleMappingRepo.findByVehicleAgentId(vehicle).getVehicleBackId());
+                    vehicleClient.addOccupancy(soapDTO);
+                }
             }
         } else {
             throw new DuplicateEntity("The vehicle is already reserved at the given time");

@@ -74,6 +74,9 @@ public class Vehicle {
     @Column(name = "deleted")
     private boolean deleted = false;
 
+    @Column(name = "cid")
+    private String cid;
+
     public Vehicle() {
     }
 
@@ -264,5 +267,13 @@ public class Vehicle {
 
     public void setAvailableMileage(long availableMileage) {
         this.availableMileage = availableMileage;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }

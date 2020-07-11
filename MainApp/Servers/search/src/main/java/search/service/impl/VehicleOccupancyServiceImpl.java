@@ -103,34 +103,14 @@ public class VehicleOccupancyServiceImpl implements VehicleOccupancyService {
     }
 
     private boolean checkAvailable(Long vehicleId, VehicleOccupancy newOccupancy) throws EntityNotFound {
-
         Optional<Vehicle> vehicle = vehicleRepo.findById(vehicleId);
-
         if(!vehicle.isPresent()) {
-            throw new EntityNotFound("Items not found");
+            throw new EntityNotFound("Vehicle not found");
         }
+        newOccupancy.setVehicle(vehicle.get());
 
-        List<VehicleOccupancy> vehicleOccupancies = vehicleOccupancyRepo.findByVehicle(vehicle.get());
+        List<VehicleOccupancy> occupancies = vehicleOccupancyRepo.findByVehicleAndByStartAndEndTime(vehicle.get(), newOccupancy.getStartTime(), newOccupancy.getEndTime());
 
-        long startingTimeStamp = newOccupancy.getStartTime();
-        long endingTimeStamp = newOccupancy.getEndTime();
-
-        for (VehicleOccupancy v : vehicleOccupancies) {
-
-            if (startingTimeStamp >= v.getStartTime()
-                    && endingTimeStamp < v.getEndTime()) {
-                return false;
-            }
-            if (v.getStartTime() >= startingTimeStamp
-                    && v.getStartTime() <= endingTimeStamp) {
-                return false;
-            }
-            if (v.getEndTime() > startingTimeStamp
-                    && v.getEndTime() <= endingTimeStamp) {
-                return false;
-            }
-        }
-
-        return true;
+        return occupancies.size() == 0;
     }
 }

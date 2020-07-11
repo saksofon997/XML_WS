@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BundleMappingRepo  extends JpaRepository<BundleMapping, Long> {
     BundleMapping findByBundleAgent(Bundle bundle);
+
+    BundleMapping findByBundleBackId(Long id);
 }
